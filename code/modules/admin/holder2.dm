@@ -35,6 +35,8 @@ var/list/admin_datums = list()
 		owner.holder = src
 		owner.add_admin_verbs()	//TODO
 		admins |= C
+		try_give_devtools()
+		try_give_profiling()
 
 /datum/admins/proc/disassociate()
 	if(owner)
