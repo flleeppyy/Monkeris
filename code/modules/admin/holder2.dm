@@ -53,8 +53,9 @@ var/list/admin_datums = list()
 		owner.add_admin_verbs()
 
 /datum/admins/proc/try_give_devtools()
-	if(!check_rights(R_ADMIN) || owner.byond_version < 516)
+	if(!check_rights(R_DEBUG) || owner.byond_version < 516)
 		return
+	to_chat(usr, span_warning("516 notice: Attempting to give you devtools, may or may not work."))
 	winset(owner, null, "browser-options=byondstorage,find,refresh,devtools")
 
 /datum/admins/proc/try_give_profiling()

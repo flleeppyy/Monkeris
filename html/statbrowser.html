@@ -243,6 +243,7 @@ img {
 </head>
 <body>
 <ul id="menu" class="button-container"></ul>
+<div id="under_menu"></div>
 <div id="statcontent"></div>
 <script>
 // Polyfills and compatibility ------------------------------------------------
@@ -319,6 +320,7 @@ var permanent_tabs = []; // tabs that won't be cleared by wipes
 var turfcontents = [];
 var turfname = "";
 var menu = document.querySelector('#menu');
+var under_menu = document.getElementById('under_menu');
 
 function createStatusTab(name) {
 	if(document.getElementById(name) || name.trim() == "")
@@ -340,6 +342,7 @@ function createStatusTab(name) {
 	}
 	//END ORDERING
 	menu.appendChild(B);
+	under_menu.style.height = menu.clientHeight + 'px';
 }
 
 function removeStatusTab(name) {
@@ -353,6 +356,7 @@ function removeStatusTab(name) {
 	menu.removeChild(document.getElementById(name));
 	if(document.getElementById(name)) // repeat for duplicates
 		removeStatusTab(name);
+	under_menu.style.height = menu.clientHeight + 'px';
 }
 
 function addPermanentTab(name) {
@@ -368,6 +372,10 @@ function removePermanentTab(name) {
 		}
 	}
 	removeStatusTab(name);
+}
+
+window.onresize = function () {
+	under_menu.style.height = menu.clientHeight + 'px';
 }
 
 function checkStatusTab() {
