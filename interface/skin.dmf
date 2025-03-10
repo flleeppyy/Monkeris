@@ -48,6 +48,12 @@ macro "robot"
 		name = "S+UP"
 		command = "MoveKey 2 0"
 	elem
+		name = "U"
+		command = "looc"
+	elem
+		name = "O"
+		command = "ooc"
+	elem
 		name = "TAB"
 		command = ".winset \"input.focus=true ? input.focus=false mapwindow.map.focus=true : mapwindow.map.focus=false input.focus=true""
 	elem
@@ -311,6 +317,12 @@ macro "default"
 		name = "S+UP"
 		command = "MoveKey 2 0"
 	elem
+		name = "U"
+		command = "looc"
+	elem
+		name = "O"
+		command = "ooc"
+	elem
 		name = "SHIFT+X"
 		command = ".wield"
 	elem
@@ -517,9 +529,6 @@ macro "default"
 	elem
 		name = "CTRL+SHIFT+F1+REP"
 		command = ".options"
-	elem
-		name = "F2"
-		command = "ooc"
 	elem
 		name = "F2+REP"
 		command = ".screenshot auto"
