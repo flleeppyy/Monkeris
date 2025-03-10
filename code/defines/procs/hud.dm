@@ -57,7 +57,7 @@ the HUD updates properly! */
 
 		P.Client.images += comrade.hud_list[EXCELSIOR_HUD]
 
-datum/arranged_hud_process
+/datum/arranged_hud_process
 	var/client/Client
 	var/mob/Mob
 	var/turf/Turf
@@ -80,7 +80,7 @@ datum/arranged_hud_process
 	return 1
 
 //Deletes the current HUD images so they can be refreshed with new ones.
-mob/proc/handle_hud_glasses() //Used in the life.dm of mobs that can use HUDs.
+/mob/proc/handle_hud_glasses() //Used in the life.dm of mobs that can use HUDs.
 	if(client)
 		for(var/image/hud in client.images)
 			if(copytext(hud.icon_state, 1, 4) == "hud")
@@ -88,7 +88,7 @@ mob/proc/handle_hud_glasses() //Used in the life.dm of mobs that can use HUDs.
 	med_hud_users -= src
 	sec_hud_users -= src
 
-mob/proc/in_view(var/turf/T)
+/mob/proc/in_view(var/turf/T)
 	return view(T)
 
 /mob/observer/eye/in_view(var/turf/T)

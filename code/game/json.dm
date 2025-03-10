@@ -81,7 +81,7 @@ var/makejson = 1 //temp
 	message_admins("Done")
 	world.Reboot("Switching to [newmap]")
 
-obj/mapinfo
+/obj/mapinfo
 	invisibility = 101
 	var/mapname = "thismap"
 	var/decks = 4
