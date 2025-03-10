@@ -86,6 +86,8 @@ var/game_id
 	diary = file("data/logs/[date_string].log")
 	diary << "[log_end]\n[log_end]\nStarting up. (ID: [game_id]) [time2text(world.timeofday, "hh:mm.ss")][log_end]\n---------------------[log_end]"
 
+	InitTgs()
+
 	// TODO: globalize me
 	var/latest_changelog = file("html/changelogs/archive/" + time2text(world.timeofday, "YYYY-MM") + ".yml")
 	changelog_hash = fexists(latest_changelog) ? md5(latest_changelog) : 0 //for telling if the changelog has changed recently
@@ -118,7 +120,7 @@ var/game_id
 	if(NO_INIT_PARAMETER in params)
 		return
 
-	Master.Initialize(10, FALSE)
+	Master.Initialize(10, FALSE, TRUE)
 
 	#ifdef UNIT_TESTS
 	HandleTestRun()
@@ -128,6 +130,11 @@ var/game_id
 		SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(ToRban_autoupdate)))
 
 	call_restart_webhook()
+	TgsInitializationComplete()
+
+/world/proc/InitTgs()
+	TgsNew(new /datum/tgs_event_handler/impl, TGS_SECURITY_TRUSTED)
+	revdata.load_tgs_info()
 
 /world/proc/HandleTestRun()
 	//trigger things to run the whole process
@@ -163,6 +170,7 @@ var/world_topic_spam_protect_ip = "0.0.0.0"
 var/world_topic_spam_protect_time = world.timeofday
 
 /world/Topic(T, addr, master, key)
+	TGS_TOPIC //redirect to server tools if necessary
 	var/list/topic_handlers = WorldTopicHandlers()
 
 	var/list/input = params2list(T)
@@ -219,6 +227,8 @@ var/world_topic_spam_protect_time = world.timeofday
 	for(var/client/C in clients)
 		if(config.server)	//if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
 			C << link("byond://[config.server]")
+
+	TgsReboot()
 
 	#ifdef UNIT_TESTS
 	FinishTestRun()
