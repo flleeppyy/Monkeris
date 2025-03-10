@@ -1,4 +1,4 @@
-var/list/admin_datums = list()
+GLOBAL_LIST_EMPTY(admin_datums)
 
 /datum/admins
 	var/rank			= "Temporary Admin"
@@ -27,7 +27,7 @@ var/list/admin_datums = list()
 	admincaster_signature = "[company_name] Officer #[rand(0,9)][rand(0,9)][rand(0,9)]"
 	rank = initial_rank
 	rights = initial_rights
-	admin_datums[ckey] = src
+	GLOB.admin_datums[ckey] = src
 
 /datum/admins/proc/associate(client/C)
 	if(istype(C))
