@@ -2,7 +2,7 @@
 var/jsonpath = "/home/bay12/public_html"
 var/dmepath = "/home/bay12/git/baystation12.dme"
 var/makejson = 1 //temp
-proc/makejson()
+/proc/makejson()
 
 	if(!makejson)
 		return
@@ -85,7 +85,7 @@ obj/mapinfo
 	invisibility = 101
 	var/mapname = "thismap"
 	var/decks = 4
-proc/GetMapInfo()
+/proc/GetMapInfo()
 //	var/obj/mapinfo/M = locate()
 //	Just removing these to try and fix the occasional JSON -> WORLD issue.
 //	world << M.name
@@ -94,6 +94,6 @@ client/proc/ChangeMap(var/X as text)
 	set name = "Change Map"
 	set category  = "Admin"
 	switchmap(X,X)
-proc/send2adminirc(channel,msg)
+/proc/send2adminirc(channel,msg)
 	world << channel << " "<< msg
 	shell("python nudge.py '[channel]' [msg]")

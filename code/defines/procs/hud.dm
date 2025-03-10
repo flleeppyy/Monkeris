@@ -3,7 +3,7 @@ Use the regular_hud_updates() proc before process_med_hud(mob) or process_sec_hu
 the HUD updates properly! */
 
 //Medical HUD outputs. Called by the Life() proc of the mob using it, usually.
-proc/process_med_hud(var/mob/M, var/local_scanner, var/mob/Alt)
+/proc/process_med_hud(var/mob/M, var/local_scanner, var/mob/Alt)
 	if(!can_process_hud(M))
 		return
 
@@ -23,7 +23,7 @@ proc/process_med_hud(var/mob/M, var/local_scanner, var/mob/Alt)
 				P.Client.images += patient.hud_list[LIFE_HUD]
 
 //Security HUDs. Pass a value for the second argument to enable implant viewing or other special features.
-proc/process_sec_hud(var/mob/M, var/advanced_mode, var/mob/Alt)
+/proc/process_sec_hud(var/mob/M, var/advanced_mode, var/mob/Alt)
 	if(!can_process_hud(M))
 		return
 	var/datum/arranged_hud_process/P = arrange_hud_process(M, Alt, sec_hud_users)
@@ -47,7 +47,7 @@ proc/process_sec_hud(var/mob/M, var/advanced_mode, var/mob/Alt)
 		P.Client.images += image('icons/mob/hud.dmi', loc = perp, icon_state = "hudbroken[pick(1,2,3,4,5,6,7)]")
 
 //Excelsior HUDs.
-proc/process_excel_hud(mob/M, mob/Alt)
+/proc/process_excel_hud(mob/M, mob/Alt)
 	if(!can_process_hud(M))
 		return
 	var/datum/arranged_hud_process/P = arrange_hud_process(M, Alt, excel_hud_users)
@@ -62,7 +62,7 @@ datum/arranged_hud_process
 	var/mob/Mob
 	var/turf/Turf
 
-proc/arrange_hud_process(var/mob/M, var/mob/Alt, var/list/hud_list)
+/proc/arrange_hud_process(var/mob/M, var/mob/Alt, var/list/hud_list)
 	hud_list |= M
 	var/datum/arranged_hud_process/P = new
 	P.Client = M.client
@@ -70,7 +70,7 @@ proc/arrange_hud_process(var/mob/M, var/mob/Alt, var/list/hud_list)
 	P.Turf = get_turf(P.Mob)
 	return P
 
-proc/can_process_hud(var/mob/M)
+/proc/can_process_hud(var/mob/M)
 	if(!M)
 		return 0
 	if(!M.client)

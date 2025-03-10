@@ -197,6 +197,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	clients += src
 	directory[ckey] = src
 
+	if(byond_version >= 516)
+		winset(src, null, list("browser-options" = "find,refresh,byondstorage"))
+
 	// Instantiate ~~tgui~~ goonchat panel
 	// tgui_panel = new(src)
 	chatOutput = new /datum/chatOutput(src)
