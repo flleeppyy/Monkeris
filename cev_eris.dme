@@ -2817,7 +2817,7 @@
 #include "code\ZAS\Diagnostic.dm"
 #include "code\ZAS\Fire.dm"
 #include "code\ZAS\Plasma.dm"
-#include "code\ZAS\VariableSettings.dm"
+#include "code\ZAS\Turf.dm"
 #include "code\ZAS\VariableSettings.dm"
 #include "code\ZAS\Zone.dm"
 #include "interface\interface.dm"
