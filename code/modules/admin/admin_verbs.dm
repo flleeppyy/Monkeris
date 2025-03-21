@@ -541,7 +541,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 
 	// Give profiler access
 	world.SetConfig("APP/admin", ckey, "role=admin")
-	to_chat(src, "Press <a href='?debug=profile'>here</a> to access profiler panel. It will replace verb panel, and you may have to wait a couple of seconds for it to display.")
+	to_chat(src, "Press <a href='byond://?debug=profile'>here</a> to access profiler panel. It will replace verb panel, and you may have to wait a couple of seconds for it to display.")
 
 /client/proc/kill_air()
 	set category = "Debug"
@@ -555,7 +555,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	message_admins("\blue [key_name_admin(usr)] used 'kill air'. [msg]", 1)
 
 /client/proc/readmin_self()
-	set name = "Re-Admin self"
+	set name = "Readmin"
 	set category = "Admin"
 
 	if(deadmin_holder)
@@ -567,7 +567,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 
 //destroys our own admin datum so we can play as a regular player
 /client/proc/deadmin_self()
-	set name = "De-admin self"
+	set name = "Deadmin"
 	set category = "Admin"
 
 	if(holder)

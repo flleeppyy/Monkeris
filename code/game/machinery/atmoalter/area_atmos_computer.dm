@@ -27,10 +27,7 @@
 		if(..(user))
 			return
 		src.add_fingerprint(usr)
-		var/dat = {"
-		<html>
-			<head>
-				<style type="text/css">
+		var/header = {"<style type="text/css">
 					a.green:link
 					{
 						color:#00CC00;
@@ -63,9 +60,8 @@
 					{
 						color:#FF0000;
 					}
-				</style>
-			</head>
-			<body>
+				</style>"}
+		var/dat = {"
 				<center><h1>Area Air Control</h1></center>
 				<font color="red">[status]</font><br>
 				<a href="?src=\ref[src];scan=1">Scan</a>
@@ -87,10 +83,8 @@
 
 		dat += {"
 				</table><br>
-				<i>[zone]</i>
-			</body>
-		</html>"}
-		user << browse("[dat]", "window=miningshuttle;size=400x400")
+				<i>[zone]</i>"}
+		user << browse(HTML_SKELETON_INTERNAL(header, dat), "window=miningshuttle;size=400x400")
 		status = ""
 
 	Topic(href, href_list)
