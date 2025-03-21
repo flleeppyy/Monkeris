@@ -82,7 +82,9 @@ GLOBAL_LIST_INIT(admin_verbs_debug, list(
 	/client/proc/apply_random_map,
 	/client/proc/overlay_random_map,
 	/client/proc/ZASSettings,
-	/client/proc/enable_debug_verbs))
+	/client/proc/enable_debug_verbs,
+	/client/proc/tracy_next_round,
+	/client/proc/start_tracy))
 
 GLOBAL_LIST_INIT(admin_verbs_debug_extra, list(
 	/client/proc/hide_debug_verbs,
@@ -372,7 +374,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 		if(turf.air)
 			turf.reset_air()
 
-	for(var/zone/zone in SSair.zones)
+	for(var/datum/zone/zone in SSair.zones)
 		// Often zone's air ends up with more gas than was put in,
 		// probably due to rounding errors or bad volume/temperature math
 		// If left alone, extra gas will leak to the individual turfs
