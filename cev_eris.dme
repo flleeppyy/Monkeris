@@ -2664,7 +2664,7 @@
 #include "code\modules\scrap\scrap_pileripper.dm"
 #include "code\modules\scrap\scrap_refine.dm"
 #include "code\modules\scrap\scrap_refinery.dm"
-#include "code\modules\scrap\scrap_stacker.dm"
+#include "code\modules\security levels\keycard_authentication.dm"
 #include "code\modules\security levels\keycard authentication.dm"
 #include "code\modules\shield_generators\floor_diffuser.dm"
 #include "code\modules\shield_generators\handheld_diffuser.dm"
