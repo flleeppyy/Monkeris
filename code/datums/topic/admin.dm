@@ -797,7 +797,7 @@
 
 /datum/admin_topic/ppbyckey
 	keyword = "ppbyckey"
-	require_perms = list(R_FUN)
+	require_perms = list(R_ADMIN)
 
 /datum/admin_topic/ppbyckey/Run(list/input)
 	var/target_ckey = input["ppbyckey"]
