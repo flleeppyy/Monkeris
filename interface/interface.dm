@@ -60,7 +60,7 @@
 	if(prefs.lastchangelog != changelog_hash)
 		prefs.lastchangelog = changelog_hash
 		prefs.save_preferences()
-		winset(src, "infowindow.changelog", "font-style=;")
+		winset(src, "infobuttons.changelog", "font-style=;")
 
 /client/verb/tickets()
 	set name = "tickets"

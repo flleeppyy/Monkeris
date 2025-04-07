@@ -1303,6 +1303,43 @@ non_blocking var, if true, will allow sleeping to prevent server freeze, at the 
 	var/icon/I = getFlatIcon(thing)
 	return icon2html(I, target, sourceonly = sourceonly)
 
+/// Checks whether a given icon state exists in a given icon file. If `file` and `state` both exist,
+/// this will return `TRUE` - otherwise, it will return `FALSE`.
+///
+/// If you want a stack trace to be output when the given state/file doesn't exist, use
+/// `/proc/icon_exists_or_scream()`.
+/proc/icon_exists(file, state)
+	var/static/list/icon_states_cache = list()
+	if(isnull(file) || isnull(state))
+		return FALSE //This is common enough that it shouldn't panic, imo.
+
+	if(isnull(icon_states_cache[file]))
+		icon_states_cache[file] = list()
+		var/file_string = "[file]"
+		if(isfile(file) && length(file_string)) // ensure that it's actually a file, and not a runtime icon
+			for(var/istate in json_decode(rustg_dmi_icon_states(file_string)))
+				icon_states_cache[file][istate] = TRUE
+		else // Otherwise, we have to use the slower BYOND proc
+			for(var/istate in icon_states(file))
+				icon_states_cache[file][istate] = TRUE
+
+	return !isnull(icon_states_cache[file][state])
+
+/// Functions the same as `/proc/icon_exists()`, but with the addition of a stack trace if the
+/// specified file or state doesn't exist.
+///
+/// Stack traces will only be output once for each file.
+/proc/icon_exists_or_scream(file, state)
+	if(icon_exists(file, state))
+		return TRUE
+
+	var/static/list/screams = list()
+	if(!isnull(screams[file]))
+		screams[file] = TRUE
+		stack_trace("State [state] in file [file] does not exist.")
+
+	return FALSE
+
 /// Returns a list containing the width and height of an icon file
 /proc/get_icon_dimensions(icon_path)
 	// Icons can be a real file(), a rsc backed file(), a dynamic rsc (dyn.rsc) reference (known as a cache reference in byond docs), or an /icon which is pointing to one of those.
