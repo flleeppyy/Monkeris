@@ -279,7 +279,7 @@
 	var/seconds = round(time / 1000, 0.01)
 
 	var/msg = "Initialized [name] subsystem within [seconds] second[seconds == 1 ? "" : "s"]!"
-	to_chat(world, span_boldannounce("[msg]"))
+	to_chat(world, span_boldannounce(msg))
 	log_world(msg)
 	return seconds
 
