@@ -169,6 +169,12 @@ GLOBAL_LIST_EMPTY(storyteller_cache)
 
 	var/start_location = "asteroid" // Start location defaults to asteroid.
 
+	var/cache_assets = TRUE
+	var/smart_cache_assets = TRUE
+	var/save_spritesheets = FALSE
+
+	var/tgui_max_chunk_count
+
 	// Event settings
 	var/expected_round_length = 3 * 60 * 60 * 10 // 3 hours
 	// If the first delay has a custom start time
@@ -749,6 +755,15 @@ GLOBAL_LIST_EMPTY(storyteller_cache)
 
 				if("profiler_permission")
 					config.profiler_permission = text2num(value)
+
+				if("cache_assets")
+					config.cache_assets = text2num(value)
+				if("smart_cache_assets")
+					config.smart_cache_assets = TRUE
+				if("save_spritesheets")
+					config.save_spritesheets = TRUE
+				if("tgui_max_chunk_count")
+					config.tgui_max_chunk_count = text2num(value)
 
 				if("generate_loot_data")
 					config.generate_loot_data = TRUE

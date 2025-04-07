@@ -479,7 +479,7 @@ var/failed_old_db_connections = 0
 		GLOB.tracy_initialized = TRUE
 		SEND_TEXT(world.log, "byond-tracy already initialized ([GLOB.tracy_log ? "logfile: [GLOB.tracy_log]" : "no logfile"])")
 	else if(init_result != "0")
-		GLOB.tracy_init_error = init_result // monkestation edit: log tracy errors
+		GLOB.tracy_init_error = init_result
 		SEND_TEXT(world.log, "Error initializing byond-tracy: [init_result]")
 		CRASH("Error initializing byond-tracy: [init_result]")
 	else

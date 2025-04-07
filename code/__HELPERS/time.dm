@@ -53,7 +53,7 @@ var/next_station_date_change = 1 DAYS
 	. = text2num(time2text(world.time + (roundstart_hour HOURS), "hh"))
 
 /proc/worlddate2text()
-	return num2text(game_year) + "-" + time2text(world.timeofday, "MM-DD")
+	return num2text(CURRENT_SHIP_YEAR) + "-" + time2text(world.timeofday, "MM-DD", NO_TIMEZONE)
 
 
 /* Returns 1 if it is the selected month and day */

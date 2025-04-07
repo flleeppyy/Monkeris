@@ -82,6 +82,8 @@
 #define REFERENCE_TRACKING
 #define REFERENCE_TRACKING_DEBUG
 #define FIND_REF_NO_CHECK_TICK
+//Ensures all early assets can actually load early
+#define DO_NOT_DEFER_ASSETS
 #endif
 
 // Keep savefile compatibilty at minimum supported level

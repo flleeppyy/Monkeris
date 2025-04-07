@@ -492,3 +492,5 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 
 /mob/dview/Initialize() // Properly prevents this mob from gaining huds or joining any global lists
 	return INITIALIZE_HINT_NORMAL
+
+#define ISADVANCEDTOOLUSER(mob) (mob.IsAdvancedToolUser())

@@ -86,6 +86,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		cmd_admin_irc_pm(href_list["irc_msg"])
 		return
 
+	if(href_list["commandbar_typing"])
+		handle_commandbar_typing(href_list)
+
 	switch(href_list["_src_"])
 		if("holder")
 			hsrc = holder
@@ -98,7 +101,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		if("vars")
 			return view_var_Topic(href,href_list,hsrc)
 		if("chat")
-			return chatOutput.Topic(href, href_list)
+			return tgui_panel.Topic(href, href_list)
 
 	switch(href_list["action"])
 		if("openLink")
@@ -202,7 +205,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 	// Instantiate ~~tgui~~ goonchat panel
 	// tgui_panel = new(src)
-	chatOutput = new /datum/chatOutput(src)
+	// tgui_panel = new /datum/tgui_panel(src)
 
 	var/connecting_admin = FALSE //because de-admined admins connecting should be treated like admins.
 	//Admin Authorisation
@@ -267,16 +270,26 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 				qdel(src)
 				return
 
-	// Initialize tgui panel
 	src << browse(file('html/statbrowser.html'), "window=statbrowser")
 	// addtimer(CALLBACK(src, PROC_REF(check_panel_loaded)), 30 SECONDS)
 	// Starts the chat
-	chatOutput.start()
+
+	// Instantiate tgui panel
+	tgui_panel = new(src, "browseroutput")
+
+	// tgui_say = new(src, "tgui_say")
+	initialize_commandbar_spy()
+
 
 	connection_time = world.time
 	connection_realtime = world.realtime
 	connection_timeofday = world.timeofday
 	winset(src, null, "command=\".configure graphics-hwmode on\"")
+
+	// Initialize tgui panel
+	tgui_panel.initialize()
+
+	// tgui_say.initialize()
 
 	/* byond err version check here (configurable) */
 
