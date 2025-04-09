@@ -384,7 +384,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 					else										// Everyone else (dead people who didn't ghost yet, etc.)
 						lname = name
 				lname = "[span_name("[lname]")] "
-			to_chat(M, span_deadsay("" + create_text_tag("dead", "DEAD:", M.client) + " [lname][follow][message]"))
+			to_chat(M, span_deadsay("DEAD: [lname][follow][message]"))
 
 //Announces that a ghost has joined/left, mainly for use with wizards
 /proc/announce_ghost_joinleave(O, var/joined_ghosts = 1, var/message = "")
