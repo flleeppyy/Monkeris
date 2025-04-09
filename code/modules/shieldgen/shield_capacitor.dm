@@ -50,7 +50,7 @@
 	if(QUALITY_BOLT_TURNING in I.tool_qualities)
 		if(I.use_tool(user, src, WORKTIME_FAST, QUALITY_BOLT_TURNING, FAILCHANCE_EASY,  required_stat = STAT_MEC))
 			src.anchored = !src.anchored
-			src.visible_message("\blue \icon[src] [src] has been [anchored ? "bolted to the floor" : "unbolted from the floor"] by [user].")
+			src.visible_message(span_blue("[icon2html(src, viewers(src))] [src] has been [anchored ? "bolted to the floor" : "unbolted from the floor"] by [user]."))
 
 			if(anchored)
 				spawn(0)

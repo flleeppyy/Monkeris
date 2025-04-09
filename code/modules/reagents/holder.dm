@@ -131,6 +131,7 @@
 	var/list/eligible_reactions = list()
 
 	var/temperature = chem_temp
+	var/htmlicon = icon2html(my_atom, viewers(src))
 	for(var/thing in reagent_list)
 		var/datum/reagent/R = thing
 		if(R.custom_temperature_effects(temperature))
@@ -162,7 +163,7 @@
 
 			if(my_atom)
 				if(replace_message)
-					my_atom.visible_message(span_notice("\icon[my_atom] [replace_message]"))
+					my_atom.visible_message(span_notice("[htmlicon] [replace_message]"))
 				if(replace_sound)
 					playsound(my_atom, replace_sound, 80, 1)
 

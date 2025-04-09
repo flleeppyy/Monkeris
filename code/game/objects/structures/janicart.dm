@@ -33,9 +33,9 @@
 	if(get_dist(user, src) < 2)
 		if(mybucket)
 			var/contains = mybucket.reagents.total_volume
-			to_chat(user, "\icon[src] The bucket contains [contains] unit\s of liquid!")
+			to_chat(user, "[icon2html(src, user)] The bucket contains [contains] unit\s of liquid!")
 		else
-			to_chat(user, "\icon[src] There is no bucket mounted on it!")
+			to_chat(user, "[icon2html(src, user)] There is no bucket mounted on it!")
 	..(user, extra_description)
 
 /obj/structure/janitorialcart/MouseDrop_T(atom/movable/O as mob|obj, mob/living/user as mob)

@@ -277,8 +277,9 @@
 	gl_uid++
 
 /obj/machinery/proc/state(var/msg)
-	for(var/mob/O in hearers(src, null))
-		O.show_message("\icon[src] <span class = 'notice'>[msg]</span>", 2)
+	var/listeners = hearers(src, null)
+	for(var/mob/O in listeners)
+		O.show_message("[icon2html(src, listeners)] <span class = 'notice'>[msg]</span>", 2)
 
 /obj/machinery/proc/ping(text="\The [src] pings.")
 	state(text, "blue")

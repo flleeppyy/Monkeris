@@ -275,7 +275,7 @@
 
 /mob/living/simple_animal/spiderbot/examine(mob/user, extra_description = "")
 	if(held_item)
-		extra_description += "\nIt is carrying \icon[src.held_item] \a [src.held_item]."
+		extra_description += "\nIt is carrying [icon2html(src.held_item, user)] \a [src.held_item]."
 	..(user, extra_description)
 
 /mob/living/simple_animal/spiderbot/cannot_use_vents()

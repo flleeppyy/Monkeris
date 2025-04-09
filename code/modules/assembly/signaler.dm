@@ -142,8 +142,10 @@
 	pulse(1)
 
 	if(!holder)
-		for(var/mob/O in hearers(1, src.loc))
-			O.show_message("\icon[src] *beep* *beep*", 3, "*beep* *beep*", 2)
+		var/our_hearers = hearers(1, src.loc)
+		var/htmlicon = icon2html(src, our_hearers)
+		for(var/mob/O in our_hearers)
+			O.show_message("[htmlicon] *beep* *beep*", 3, "*beep* *beep*", 2)
 
 
 /obj/item/device/assembly/signaler/proc/set_frequency(new_frequency)
@@ -228,9 +230,9 @@
 	var/local_message = ""
 	switch(signal.data["message"])
 		if("DATA_DOOR_OPENED")
-			local_message = "\icon[src] beeps twice."
+			local_message = "[icon2html(src, hearers(src))] beeps twice."
 		if("DATA_DOOR_CLOSED")
-			local_message = "\icon[src] beeps once."
+			local_message = "[icon2html(src, hearers(src))] beeps once."
 		if("CMD_DOOR_OPEN")
 			return
 		if("CMD_DOOR_CLOSE")
@@ -240,7 +242,7 @@
 		if("CMD_DOOR_STATE")
 			return
 		else
-			local_message = "\icon[src] beeps ominously."
+			local_message = "[icon2html(src, hearers(src))] beeps ominously."
 	last_message = world.timeofday + 1 SECONDS
 
 	for(var/mob/O in hearers(1, src.loc))

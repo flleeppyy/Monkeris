@@ -613,7 +613,7 @@ There are 9 wires.
 
 /obj/machinery/door/airlock/examine(mob/user, extra_description = "")
 	if(wedged_item)
-		extra_description += "You can see \icon[wedged_item] [wedged_item] wedged into it."
+		extra_description += "You can see [icon2html(wedged_item, user)] [wedged_item] wedged into it."
 	..(user, extra_description)
 
 /obj/machinery/door/airlock/proc/generate_wedge_overlay()

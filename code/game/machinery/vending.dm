@@ -554,7 +554,7 @@
 			if(S.amount)
 				should_qdel = FALSE		// Don't qdel a stack with remaining charges
 		else
-			to_chat(user, span_warning("\icon[I] That is not enough money."))
+			to_chat(user, span_warning("[icon2html(I, user)] That is not enough money."))
 			return FALSE
 	else
 		return FALSE

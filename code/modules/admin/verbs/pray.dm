@@ -17,7 +17,12 @@
 			return
 
 	var/image/cross = image('icons/obj/storage.dmi',"bible")
-	msg = "\blue \icon[cross] <b><font color=purple>PRAY: </font>[key_name(src, 1)] (<A href='byond://?_src_=holder;[HrefToken()];adminmoreinfo=\ref[src]'>?</A>) (<A href='byond://?_src_=holder;[HrefToken()];adminplayeropts=\ref[src]'>PP</A>) (<A href='byond://?_src_=vars;Vars=\ref[src]'>VV</A>) (<A href='byond://?_src_=holder;[HrefToken()];subtlemessage=\ref[src]'>SM</A>) ([admin_jump_link(src, src)]) (<A href='byond://?_src_=holder;[HrefToken()];secretsadmin=check_antagonist'>CA</A>) (<A href='byond://?_src_=holder;[HrefToken()];adminspawncookie=\ref[src]'>SC</a>):</b> [msg]"
+	// List of people who will see the bibble icon
+	var/receivers = list()
+	receivers |= src
+	receivers |= GLOB.admins
+
+	msg = span_blue("[icon2html(cross, receivers)] <b><font color=purple>PRAY: </font>[key_name(src, 1)] (<A href='byond://?_src_=holder;[HrefToken()];adminmoreinfo=\ref[src]'>?</A>) (<A href='byond://?_src_=holder;[HrefToken()];adminplayeropts=\ref[src]'>PP</A>) (<A href='byond://?_src_=vars;Vars=\ref[src]'>VV</A>) (<A href='byond://?_src_=holder;[HrefToken()];subtlemessage=\ref[src]'>SM</A>) ([admin_jump_link(src, src)]) (<A href='byond://?_src_=holder;[HrefToken()];secretsadmin=check_antagonist'>CA</A>) (<A href='byond://?_src_=holder;[HrefToken()];adminspawncookie=\ref[src]'>SC</a>):</b> [msg]")
 
 	for(var/client/C in GLOB.admins)
 		if(R_ADMIN & C.holder.rights)

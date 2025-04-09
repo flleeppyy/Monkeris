@@ -328,10 +328,11 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 
 /proc/broadcast_hud_message(var/message, var/broadcast_source, var/list/targets, var/icon)
 	var/turf/sourceturf = get_turf(broadcast_source)
+	var/htmlicon = icon2html(icon, targets)
 	for(var/mob/M in targets)
 		var/turf/targetturf = get_turf(M)
 		if((targetturf.z == sourceturf.z))
-			M.show_message(span_info("\icon[icon] [message]"), 1)
+			M.show_message(span_info("[htmlicon] [message]"), 1)
 
 /proc/mobs_in_area(var/area/A)
 	var/list/mobs = new

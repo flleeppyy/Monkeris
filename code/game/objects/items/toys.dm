@@ -374,7 +374,7 @@
 
 /obj/item/toy/waterflower/examine(mob/user, extra_description = "")
 	if(get_dist(user, src) < 2)
-		extra_description += "\icon[src] [reagents.total_volume] units of water left!"
+		extra_description += "[icon2html(src, user)] [reagents.total_volume] units of water left!"
 	..(user, extra_description)
 
 /*

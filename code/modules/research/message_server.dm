@@ -96,7 +96,16 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 		authmsg += "[id_auth]<br>"
 	if (stamp)
 		authmsg += "[stamp]<br>"
+
+	var/all_hearers = list()
 	for (var/obj/machinery/requests_console/Console in allConsoles)
+		all_hearers |= hearers(Console)
+
+	var/our_once_icon
+	for (var/obj/machinery/requests_console/Console in allConsoles)
+		// for efficiency, because icon2html is expensive, we're going to create ONE icon, then give it to everyone.
+		our_once_icon ||= icon2html(Console, all_hearers)
+
 		if (ckey(Console.department) == ckey(recipient))
 			if(Console.inoperable())
 				Console.message_log += "<B>Message lost due to console failure.</B><BR>Please contact [station_name()] system adminsitrator or AI for technical assistance.<BR>"
@@ -108,12 +117,12 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 				if(2)
 					if(!Console.silent)
 						playsound(Console.loc, 'sound/machines/twobeep.ogg', 50, 1)
-						Console.audible_message(text("\icon[Console] *The Requests Console beeps: 'PRIORITY Alert in [sender]'"),,5)
+						Console.audible_message("[our_once_icon] *The Requests Console beeps: 'PRIORITY Alert in [sender]'")
 					Console.message_log += "<B><FONT color='red'>High Priority message from <A href='byond://?src=\ref[Console];write=[sender]'>[sender]</A></FONT></B><BR>[authmsg]"
 				else
 					if(!Console.silent)
 						playsound(Console.loc, 'sound/machines/twobeep.ogg', 50, 1)
-						Console.audible_message(text("\icon[Console] *The Requests Console beeps: 'Message from [sender]'"),,4)
+						Console.audible_message("[our_once_icon] *The Requests Console beeps: 'Message from [sender]'")
 					Console.message_log += "<B>Message from <A href='byond://?src=\ref[Console];write=[sender]'>[sender]</A></B><BR>[authmsg]"
 			Console.set_light(2)
 

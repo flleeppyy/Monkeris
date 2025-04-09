@@ -1428,8 +1428,6 @@ var/list/rank_prefix = list(\
 
 	combined_msg += "\n"
 
-	var/fullness = (carbon.nutrition + (carbon.reagents.get_reagent_amount("nutriment") * 25)) * fullness_modifier
-
 	switch(nutrition)
 		if(NUTRITION_LEVEL_FULL to INFINITY)
 			combined_msg += span_info("I'm completely stuffed!")

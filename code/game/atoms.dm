@@ -360,7 +360,7 @@ its easier to just keep the beam vertical.
 		else
 			full_name += "oil-stained [name]."
 
-	output += "\icon[src] This is [full_name]"
+	output += "[icon2html(src, user)] This is [full_name]"
 	if(desc)
 		output += "\n[desc]"
 	if(extra_description)
