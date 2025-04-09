@@ -1,4 +1,7 @@
 
+GLOBAL_VAR_INIT(OOC_COLOR, null)//If this is null, use the CSS for OOC. Otherwise, use a custom colour.
+GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
+
 /client/verb/ooc(msg as text)
 	set name = "OOC"
 	set category = "OOC"
@@ -36,29 +39,61 @@
 
 	msg = emoji_parse(msg)
 
-	var/ooc_style = "everyone"
-	if(holder && !holder.fakekey)
-		ooc_style = "elevated"
-		if(holder.rights & R_MOD)
-			ooc_style = "moderator"
-		if(holder.rights & R_DEBUG)
-			ooc_style = "developer"
-		if(holder.rights & R_ADMIN)
-			ooc_style = "admin"
+	var/keyname = key
+	if(!!IsByondMember())
+		// if(prefs.toggles & MEMBER_PUBLIC)
+		keyname = "<font color='[src.prefs.ooccolor || GLOB.normal_ooc_colour]'>[icon2html('icons/ui_icons/chat/member_content.dmi', world, "blag")][keyname]</font>"
+	// var/ooc_style = "everyone"
+	// if(holder && !holder.fakekey)
+	// 	ooc_style = "elevated"
+	// 	if(holder.rights & R_MOD)
+	// 		ooc_style = "moderator"
+	// 	if(holder.rights & R_DEBUG)
+	// 		ooc_style = "developer"
+	// 	if(holder.rights & R_ADMIN)
+	// 		ooc_style = "admin"
 
-	for(var/client/target in GLOB.clients)
-		if(target.get_preference_value(/datum/client_preference/show_ooc) == GLOB.PREF_SHOW)
-			var/display_name = src.key
-			if(holder)
-				if(holder.fakekey)
-					if(target.holder)
-						display_name = "[holder.fakekey]/([src.key])"
-					else
-						display_name = holder.fakekey
-			if(holder && !holder.fakekey && (holder.rights & R_ADMIN) && config.allow_admin_ooccolor && (src.prefs.ooccolor != initial(src.prefs.ooccolor))) // keeping this for the badmins
-				to_chat(target, span_ooc("" + create_text_tag("ooc", "OOC:", target) + " <font color='[src.prefs.ooccolor]'><EM>[display_name]:</EM></font> <span class='[ooc_style]'><span class='message linkify'>[msg]</span></span>"))
+
+	// for(var/client/target in GLOB.clients)
+	// 	if(target.get_preference_value(/datum/client_preference/show_ooc) != GLOB.PREF_SHOW)
+	// 		continue
+	// 	var/display_name = src.key
+	// 	if(holder)
+	// 		if(holder.fakekey)
+	// 			if(target.holder)
+	// 				display_name = "[holder.fakekey]/([src.key])"
+	// 			else
+	// 				display_name = holder.fakekey
+	// 	if(holder && !holder.fakekey && (holder.rights & R_ADMIN) && config.allow_admin_ooccolor && (src.prefs.ooccolor != initial(src.prefs.ooccolor))) // keeping this for the badmins
+	// 		to_chat(target, span_ooc("" + create_text_tag("ooc", "OOC:", target) + " <font color='[src.prefs.ooccolor]'><EM>[display_name]:</EM></font> <span class='[ooc_style]'><span class='message linkify'>[msg]</span></span>"))
+	// 	else
+	// 		to_chat(target, span_ooc("<span class='[ooc_style]'>" + create_text_tag("ooc", "OOC:", target) + " <EM>[display_name]:</EM> <span class='message linkify'>[msg]</span></span>"))
+	for(var/client/receiver as anything in GLOB.clients)
+		if(!receiver.prefs) // Client being created or deleted. Despite all, this can be null.
+			continue
+		if(receiver.get_preference_value(/datum/client_preference/show_ooc) != GLOB.PREF_SHOW)
+			continue
+		if(holder?.fakekey in receiver.prefs.ignored_players)
+			continue
+		var/avoid_highlight = receiver == src
+		if(holder)
+			if(!holder.fakekey || receiver.holder)
+				if(check_rights_for(src, R_ADMIN))
+					var/ooc_color = src.prefs.ooccolor
+					to_chat(receiver, span_adminooc("[config.allow_admin_ooccolor && ooc_color ? "<font color=[ooc_color]>" :"" ][span_prefix("OOC:")] <EM>[keyname][holder.fakekey ? "/([holder.fakekey])" : ""]:</EM> <span class='message linkify'>[msg]</span>"), avoid_highlighting = avoid_highlight)
+				else
+					to_chat(receiver, span_adminobserverooc(span_prefix("OOC:</span> <EM>[keyname][holder.fakekey ? "/([holder.fakekey])" : ""]:</EM> <span class='message linkify'>[msg]")), avoid_highlighting = avoid_highlight)
 			else
-				to_chat(target, span_ooc("<span class='[ooc_style]'>" + create_text_tag("ooc", "OOC:", target) + " <EM>[display_name]:</EM> <span class='message linkify'>[msg]</span></span>"))
+				if(GLOB.OOC_COLOR)
+					to_chat(receiver, span_oocplain("<font color='[GLOB.OOC_COLOR]'><b>[span_prefix("OOC:")] <EM>[holder.fakekey ? holder.fakekey : key]:</EM> <span class='message linkify'>[msg]</span></b></font>"), avoid_highlighting = avoid_highlight)
+				else
+					to_chat(receiver, span_ooc(span_prefix("OOC:</span> <EM>[holder.fakekey ? holder.fakekey : key]:</EM> <span class='message linkify'>[msg]")), avoid_highlighting = avoid_highlight)
+
+		else if(!(key in receiver.prefs.ignored_players))
+			if(GLOB.OOC_COLOR)
+				to_chat(receiver, span_oocplain("<font color='[GLOB.OOC_COLOR]'><b>[span_prefix("OOC:")] <EM>[keyname]:</EM> <span class='message linkify'>[msg]</span></b></font>"), avoid_highlighting = avoid_highlight)
+			else
+				to_chat(receiver, span_ooc(span_prefix("OOC:</span> <EM>[keyname]:</EM> <span class='message linkify'>[msg]")), avoid_highlighting = avoid_highlight)
 
 /client/verb/looc(msg as text)
 	set name = "LOOC"
@@ -101,12 +136,6 @@
 
 	var/mob/source = mob.get_looc_source()
 
-	var/display_name = key
-	if(holder && holder.fakekey)
-		display_name = holder.fakekey
-	if(mob.stat != DEAD)
-		display_name = mob.name
-
 	var/turf/T = get_turf(source)
 	var/list/listening = list()
 	listening |= src	// We can always hear ourselves.
@@ -145,27 +174,27 @@
 				listening |= M.client
 
 
-	for(var/client/t in listening)
+	for(var/client/hearer in listening)
 		var/admin_stuff = ""
 		var/prefix = ""
-		if(t in GLOB.admins)
+		if(hearer in GLOB.admins)
 			admin_stuff += "/([key])"
-			if(t != src)
-				admin_stuff += "([admin_jump_link(mob, t.holder)])"
-		if(isAI(t.mob))
-			if(t in eye_heard)
+			if(hearer != src)
+				admin_stuff += "([admin_jump_link(mob, hearer.holder)])"
+		if(isAI(hearer.mob))
+			if(hearer in eye_heard)
 				prefix = "(Eye) "
 			else
 				prefix = "(Core) "
-		to_chat(t, span_ooc(span_looc("" + create_text_tag("looc", "LOOC:", t) + " [span_prefix("[prefix]")]<EM>[display_name][admin_stuff]:</EM> [span_message("[msg]")]")))
+		to_chat(hearer, span_looc("[span_prefix("LOOC:")] [span_prefix(prefix)]<EM>[span_name("[mob.name]")][admin_stuff]:</EM> <span class='message linkify'>[msg]</span>"), type = MESSAGE_TYPE_LOOC, avoid_highlighting = (hearer == mob))
 
-
-	for(var/client/adm in GLOB.admins)	//Now send to all admins that weren't in range.
-		if(!(adm in listening) && adm.get_preference_value(/datum/client_preference/staff/show_rlooc) == GLOB.PREF_SHOW)
-			var/admin_stuff = "/([key])([admin_jump_link(mob, adm.holder)])"
-			var/prefix = "(R)"
-
-			to_chat(adm, span_ooc(span_looc("" + create_text_tag("looc", "LOOC:", adm) + " [span_prefix("[prefix]")]<EM>[display_name][admin_stuff]:</EM> [span_message("[msg]")]")))
+	for(var/client/client in GLOB.admins)	//Now send to all admins that weren't in range.
+		if(!(client in listening) && client.get_preference_value(/datum/client_preference/staff/show_rlooc) == GLOB.PREF_SHOW)
+			var/admin_stuff = "/([key])([admin_jump_link(client, client.holder)])"
+			var/prefix = "[listening[client] ? "" : "(R)"]LOOC"
+			// if(client.prefs.read_preference(/datum/preference/toggle/enable_runechat_looc))
+				// client.mob?.create_chat_message(mob, /datum/language/common, "\[LOOC: [raw_msg]\]", runechat_flags = LOOC_MESSAGE)
+			to_chat(client, span_looc("[span_prefix("[prefix]:")] <EM>[admin_stuff]:</EM> <span class='message linkify'>[msg]</span>"), type = MESSAGE_TYPE_LOOC, avoid_highlighting = (client == src))
 
 /mob/proc/get_looc_source()
 	return src

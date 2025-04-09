@@ -168,6 +168,8 @@ if(Datum.is_processing) {\
 /// The timer key used to know how long subsystem initialization takes
 #define SS_INIT_TIMER_KEY "ss_init"
 
+#define SS_HOLOMAPS_TIMER_KEY "ss_holomaps"
+
 /**
 	Create a new timer and add it to the queue.
 	* Arguments:

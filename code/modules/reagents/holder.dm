@@ -393,7 +393,7 @@
 /datum/reagents/proc/trans_to(datum/target, amount = 1, multiplier = 1, copy = 0, ignore_isinjectable = FALSE)
 	if(istype(target, /datum/reagents))
 		return trans_to_holder(target, amount, multiplier, copy)
-	else if(istype(target, /atom))
+	else if(isatom(target))
 		var/atom/A = target
 		touch(A)
 		if(ismob(target))

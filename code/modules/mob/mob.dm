@@ -364,7 +364,7 @@
 	if(incapacitated())
 		return
 
-	var/obj/item/W = get_active_hand()
+	var/obj/item/W = get_active_held_item()
 	if (W)
 		W.attack_self(src)
 
@@ -376,7 +376,7 @@
 	if(incapacitated())
 		return
 
-	var/obj/item/item = get_active_hand()
+	var/obj/item/item = get_active_held_item()
 	if(!item)
 		return
 
@@ -442,7 +442,7 @@
 	if(msg != null)
 		flavor_text = msg
 
-/mob/proc/print_flavor_text()
+/mob/proc/get_flavor_text()
 	if (flavor_text && flavor_text != "")
 		var/msg = trim(replacetext(flavor_text, "\n", " "))
 		if(!msg) return ""
@@ -589,6 +589,7 @@
 	set category = "IC"
 
 	if(pulling)
+		animate_interact(pulling, INTERACT_UNPULL)
 		pulling.pulledby = null
 		pulling = null
 		if(HUDneed.Find("pull"))
@@ -654,13 +655,12 @@
 	src.pulling = AM
 	AM.pulledby = src
 
-	/*if(pullin)
-		pullin.icon_state = "pull1"*/
+	animate_interact(AM, INTERACT_PULL)
 
 	if(ishuman(AM))
 		var/mob/living/carbon/human/H = AM
 		if(H.pull_damage())
-			to_chat(src, "\red <B>Pulling \the [H] in their current condition would probably be a bad idea.</B>")
+			to_chat(src, span_boldwarning("Pulling \the [H] in their current condition would probably be a bad idea."))
 
 	//Attempted fix for people flying away through space when cuffed and dragged.
 	if(ismob(AM))

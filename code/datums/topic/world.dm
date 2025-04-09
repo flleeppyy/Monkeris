@@ -41,7 +41,7 @@
 			return GLOB.topic_status_cache
 		GLOB.topic_status_lastcache = world.time + 5
 	var/list/s = list()
-	s["version"] = game_version
+	s["version"] = GLOB.game_version
 	s["storyteller"] = master_storyteller
 	s["respawn"] = config.abandon_allowed
 	s["enter"] = config.enter_allowed

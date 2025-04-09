@@ -166,7 +166,7 @@
 		to_chat(D, "\red \b You ran over [H]!")
 		visible_message("<B>\red \The [src] ran over [H]!</B>")
 		attack_log += text("\[[time_stamp()]\] <font color='red'>ran over [H.name] ([H.ckey]), driven by [D.name] ([D.ckey])</font>")
-		msg_admin_attack("[D.name] ([D.ckey]) ran over [H.name] ([H.ckey]). (<A href='byond://?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>JMP</a>)")
+		msg_admin_attack("[D.name] ([D.ckey]) ran over [H.name] ([H.ckey]). [ADMIN_JMP(src)]")
 	else
 		attack_log += text("\[[time_stamp()]\] <font color='red'>ran over [H.name] ([H.ckey])</font>")
 
@@ -245,7 +245,7 @@
 		turn_off()
 
 	key.loc = usr.loc
-	if(!usr.get_active_hand())
+	if(!usr.get_active_held_item())
 		usr.put_in_hands(key)
 	key = null
 

@@ -402,28 +402,43 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 /client/proc/colorooc()
 	set category = "Fun"
 	set name = "OOC Text Color"
-	if(!holder)	return
+	if(!holder)
+		return
 	var/response = alert(src, "Please choose a distinct color that is easy to read and doesn't mix with all the other chat and radio frequency colors.", "Change own OOC color", "Pick new color", "Reset to default", "Cancel")
 	if(response == "Pick new color")
 		prefs.ooccolor = input(src, "Please select your OOC colour.", "OOC colour") as color
 	else if(response == "Reset to default")
-		prefs.ooccolor = initial(prefs.ooccolor)
+		prefs.ooccolor = GLOB.OOC_COLOR
+	prefs.save_preferences()
+
+//allows us to set a custom colour for everythign we say in asay
+/client/proc/colorasay()
+	set category = "Admin"
+	set name = "ASAY Text Color"
+	if(!holder)
+		return
+	var/response = alert(src, "Please choose a distinct color that is easy to read and doesn't mix with all the other chat and radio frequency colors.", "Change own ASAY color", "Pick new color", "Reset to default", "Cancel")
+	if(response == "Pick new color")
+		prefs.asaycolor = input(src, "Please select your ASAY colour.", "ASAY colour") as color
+	else if(response == "Reset to default")
+		prefs.asaycolor = DEFAULT_ASAY_COLOR
 	prefs.save_preferences()
 
 /client/proc/stealth()
 	set category = "Admin"
 	set name = "Stealth Mode"
-	if(holder)
-		if(holder.fakekey)
-			holder.fakekey = null
-		else
-			var/new_key = ckeyEx(input("Enter your desired display name.", "Fake Key", key) as text|null)
-			if(!new_key)	return
-			if(length(new_key) >= 26)
-				new_key = copytext(new_key, 1, 26)
-			holder.fakekey = new_key
-		log_admin("[key_name(usr)] has turned stealth mode [holder.fakekey ? "ON" : "OFF"]")
-		message_admins("[key_name_admin(usr)] has turned stealth mode [holder.fakekey ? "ON" : "OFF"]", 1)
+	if(!holder)
+		return
+	if(holder.fakekey)
+		holder.fakekey = null
+	else
+		var/new_key = ckeyEx(input("Enter your desired display name.", "Fake Key", key) as text|null)
+		if(!new_key)	return
+		if(length(new_key) >= 26)
+			new_key = copytext(new_key, 1, 26)
+		holder.fakekey = new_key
+	log_admin("[key_name(usr)] has turned stealth mode [holder.fakekey ? "ON" : "OFF"]")
+	message_admins("[key_name_admin(usr)] has turned stealth mode [holder.fakekey ? "ON" : "OFF"]", 1)
 
 /client/proc/hivemind_panel()
 	set category = "Fun"

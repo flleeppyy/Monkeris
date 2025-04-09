@@ -71,7 +71,7 @@ var/global/datum/ErrorViewer/ErrorCache/error_cache = null
 		back_to_param = ";viewruntime_backto=\ref[back_to]"
 	if(linear)
 		back_to_param += ";viewruntime_linear=1"
-	return "<A href='byond://?_src_=holder;viewruntime=\ref[src][back_to_param]'>[html_encode(linktext)]</A>"
+	return "<A href='byond://?_src_=holder;[HrefToken()];viewruntime=\ref[src][back_to_param]'>[html_encode(linktext)]</A>"
 
 /datum/ErrorViewer/ErrorCache
 	var/list/errors = list()
@@ -176,18 +176,18 @@ var/global/datum/ErrorViewer/ErrorCache/error_cache = null
 	if(srcRef)
 		html += "<br>src: <a href='byond://?_src_=vars;Vars=[srcRef]'>VV</a>"
 		if(ispath(srcType, /mob))
-			html += " <a href='byond://?_src_=holder;adminplayeropts=[srcRef]'>PP</a>"
-			html += " <a href='byond://?_src_=holder;adminplayerobservefollow=[srcRef]'>Follow</a>"
+			html += " [ADMIN_PP(srcRef)]"
+			html += " [ADMIN_FLW(srcRef)]"
 		if(istype(srcLoc))
-			html += "<br>src.loc: <a href='byond://?_src_=vars;Vars=\ref[srcLoc]'>VV</a>"
-			html += " <a href='byond://?_src_=holder;adminplayerobservecoodjump=1;X=[srcLoc.x];Y=[srcLoc.y];Z=[srcLoc.z]'>JMP</a>"
+			html += "<br>src.loc: [ADMIN_VV(srcLoc)]"
+			html += " [ADMIN_JMP(srcLoc)]"
 	if(usrRef)
-		html += "<br>usr: <a href='byond://?_src_=vars;Vars=[usrRef]'>VV</a>"
-		html += " <a href='byond://?_src_=holder;adminplayeropts=[usrRef]'>PP</a>"
-		html += " <a href='byond://?_src_=holder;adminplayerobservefollow=[usrRef]'>Follow</a>"
+		html += "<br>usr: [ADMIN_VV(usrRef)]"
+		html += " [ADMIN_PP(usrRef)]"
+		html += " [ADMIN_FLW(usrRef)]"
 		if(istype(usrLoc))
 			html += "<br>usr.loc: <a href='byond://?_src_=vars;Vars=\ref[usrLoc]'>VV</a>"
-			html += " <a href='byond://?_src_=holder;adminplayerobservecoodjump=1;X=[usrLoc.x];Y=[usrLoc.y];Z=[usrLoc.z]'>JMP</a>"
+			html += " [ADMIN_JMP(usrLoc)]"
 	browseTo(user, html)
 
 /datum/ErrorViewer/ErrorEntry/makeLink(var/linktext, var/datum/ErrorViewer/back_to, var/linear)

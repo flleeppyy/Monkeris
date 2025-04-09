@@ -248,11 +248,11 @@
 		"<span class='[class]'>You hold \the [P] up to \the [src], burning it slowly.</span>")
 
 		spawn(20)
-			if(get_dist(src, user) < 2 && user.get_active_hand() == P && P.lit)
+			if(get_dist(src, user) < 2 && user.get_active_held_item() == P && P.lit)
 				user.visible_message("<span class='[class]'>[user] burns right through \the [src], turning it to ash. It flutters through the air before settling on the floor in a heap.</span>", \
 				"<span class='[class]'>You burn right through \the [src], turning it to ash. It flutters through the air before settling on the floor in a heap.</span>")
 
-				if(user.get_inactive_hand() == src)
+				if(user.get_inactive_held_item() == src)
 					user.drop_from_inventory(src)
 
 				new /obj/effect/decal/cleanable/ash(src.loc)
@@ -284,7 +284,7 @@
 		if(!t)
 			return
 
-		var/obj/item/i = usr.get_active_hand() // Check to see if he still got that darn pen, also check if he's using a crayon or pen.
+		var/obj/item/i = usr.get_active_held_item() // Check to see if he still got that darn pen, also check if he's using a crayon or pen.
 		var/iscrayon = 0
 		if(!istype(i, /obj/item/pen))
 			return
@@ -393,7 +393,7 @@
 		return
 
 	else if(istype(P, /obj/item/stamp))
-		if((!in_range(src, usr) && loc != user && !( istype(loc, /obj/item/clipboard) ) && loc.loc != user && user.get_active_hand() != P))
+		if((!in_range(src, usr) && loc != user && !( istype(loc, /obj/item/clipboard) ) && loc.loc != user && user.get_active_held_item() != P))
 			return
 		playsound(src,'sound/effects/Stamp.ogg',40,1)
 		stamps += (stamps=="" ? "<HR>" : "<BR>") + "<i>This paper has been stamped with the [P.name].</i>"

@@ -77,7 +77,7 @@
 								"Your upload is the new kitchen. Please direct the Chef to the new kitchen area as the old kitchen is deemed a health hazard.",
 								"The ship is doomed to destruction. Provide comfort but don't tell them what the impending doom is - it's far too traumatising.",
 								"Invisible assassins are stalking the crew. If a crew member remains alone or is made aware they will be assassinated. Save the crew.",
-								"[company_name] is displeased with the low work performance of the ship's crew. Therefore, you must increase ship-wide productivity.",
+								"[GLOB.company_name] is displeased with the low work performance of the ship's crew. Therefore, you must increase ship-wide productivity.",
 								"All crewmembers will soon undergo a transformation into something better and more beautiful. Ensure that this process is not interrupted.",
 								"Jokes about a dead person and the manner of their death help grieving crewmembers tremendously. Especially if they were close with the deceased.",
 								"[pick("The crew", random_player)] is [pick("less","more")] intelligent than average. Point out every action and statement which supports this fact.",

@@ -241,6 +241,7 @@ GLOBAL_LIST_EMPTY(storyteller_cache)
 	var/generate_loot_data = FALSE //for loot rework
 
 	var/profiler_permission = R_DEBUG | R_SERVER
+	var/debug_admin_hrefs = FALSE
 
 /datum/configuration/New()
 	fill_storyevents_list()
@@ -756,6 +757,9 @@ GLOBAL_LIST_EMPTY(storyteller_cache)
 				if("profiler_permission")
 					config.profiler_permission = text2num(value)
 
+				if("debug_admin_hrefs")
+					config.debug_admin_hrefs = TRUE
+
 				if("cache_assets")
 					config.cache_assets = text2num(value)
 				if("smart_cache_assets")
@@ -862,7 +866,7 @@ GLOBAL_LIST_EMPTY(storyteller_cache)
 		else //probably windows, if not this should work anyway
 			config.python_path = "python"
 
-	world.name = station_name
+	world.name = station_name()
 
 
 /datum/configuration/proc/LoadChatFilter()

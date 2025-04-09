@@ -37,7 +37,7 @@
 		to_chat(src, span_danger("Error: Admin-PM: You are unable to use admin PM-s (muted)."))
 		return
 
-	if(!istype(C,/client))
+	if(!isclient(C))
 		if(holder)
 			to_chat(src, "<font color='red'>Error: Private-Message: Client not found.</font>")
 		else

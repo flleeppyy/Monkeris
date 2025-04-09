@@ -393,7 +393,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 		var/mob/M = O
 		if(M.client)
 			C = M.client
-	else if(istype(O, /client))
+	else if(isclient(O))
 		C = O
 	else if(istype(O, /datum/mind))
 		var/datum/mind/M = O
@@ -521,10 +521,10 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 	return can_admin_interact() && ..(ghost_multitool)
 
 /mob/living/carbon/human/get_multitool()
-	return ..(get_active_hand())
+	return ..(get_active_held_item())
 
 /mob/living/silicon/robot/get_multitool()
-	return ..(get_active_hand())
+	return ..(get_active_held_item())
 
 /mob/living/silicon/ai/get_multitool()
 	return ..(aiMulti)

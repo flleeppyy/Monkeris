@@ -131,7 +131,7 @@
 					var/tipsAndTricks/jobs/JT = T
 					var/datum/job/J = pick(JT.jobs_list)
 					typeText = initial(J.title)
-				to_chat(world, SStips.formatTip(T, "Random Tip \[[typeText]\]: "))
+				to_chat(world, SStips.formatTip(T, "Random Tip \[[typeText]\]"))
 	pregame = FALSE
 
 /datum/vote_choice/storyteller

@@ -1,3 +1,16 @@
+/datum/admins/proc/CheckAdminHref(href, href_list)
+	var/auth = href_list["admin_token"]
+	. = auth && (auth == href_token || auth == GLOB.href_token)
+	if(.)
+		return
+	var/msg = !auth ? "no" : "a bad"
+	message_admins("[key_name_admin(usr)] clicked an href with [msg] authorization key!")
+	if(config.debug_admin_hrefs)
+		message_admins("Debug mode enabled, call not blocked. Please ask your coders to review this round's logs.")
+		log_world("UAH: [href]")
+		return TRUE
+	log_admin("[key_name(usr)] clicked an href with [msg] authorization key! [href]")
+
 /datum/admins/proc/formatJob(var/mob/mob, var/title, var/bantype)
 	if(!bantype)
 		bantype = title

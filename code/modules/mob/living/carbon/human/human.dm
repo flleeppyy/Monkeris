@@ -1211,7 +1211,7 @@ var/list/rank_prefix = list(\
 			fail_msg = "There is no exposed flesh or thin material [target_zone == BP_HEAD ? "on their head" : "on their body"] to inject into."
 		to_chat(user, span_warning(fail_msg))
 
-/mob/living/carbon/human/print_flavor_text(shrink = 1)
+/mob/living/carbon/human/get_flavor_text(shrink = 1)
 	var/list/equipment = list(src.head,src.wear_mask,src.glasses,src.w_uniform,src.wear_suit,src.gloves,src.shoes)
 
 	for(var/obj/item/clothing/C in equipment)
@@ -1302,8 +1302,8 @@ var/list/rank_prefix = list(\
 			var/obj/item/clothing/under/U = w_uniform
 			if(U.accessories.len)
 				for(var/obj/item/clothing/accessory/holster/H in U.accessories)
-					if(get_active_hand())//do we hold something?
-						H.attackby(get_active_hand(), src)
+					if(get_active_held_item())//do we hold something?
+						H.attackby(get_active_held_item(), src)
 					else
 						H.attack_hand(src)
 					holster_found = TRUE
@@ -1376,8 +1376,11 @@ var/list/rank_prefix = list(\
 /mob/living/carbon/human/proc/check_self_for_injuries()
 	if(stat)
 		return
+	visible_message(span_notice("You examine yourself."), span_notice("[src] examines themself."))
 
-	to_chat(src, span_notice("You check yourself for injuries."))
+	var/list/combined_msg = list()
+
+	combined_msg += span_boldnotice("I check myself for injuries.")
 
 	for(var/obj/item/organ/external/org in organs)
 		var/list/status = list()
@@ -1421,7 +1424,27 @@ var/list/rank_prefix = list(\
 		if(status.len)
 			status_text = span_warning(english_list(status))
 
-		src.show_message("My [org.name] is [status_text].",1)
+		combined_msg += "My [org.name] is [status_text]."
+
+	combined_msg += "\n"
+
+	var/fullness = (carbon.nutrition + (carbon.reagents.get_reagent_amount("nutriment") * 25)) * fullness_modifier
+
+	switch(nutrition)
+		if(NUTRITION_LEVEL_FULL to INFINITY)
+			combined_msg += span_info("I'm completely stuffed!")
+		if(NUTRITION_LEVEL_WELL_FED to NUTRITION_LEVEL_FULL)
+			combined_msg += span_info("I'm well fed!")
+		if(NUTRITION_LEVEL_FED to NUTRITION_LEVEL_WELL_FED)
+			combined_msg += span_info("I'm not hungry.")
+		if(NUTRITION_LEVEL_HUNGRY to NUTRITION_LEVEL_FED)
+			combined_msg += span_info("I could use a bite to eat.")
+		if(NUTRITION_LEVEL_STARVING to NUTRITION_LEVEL_HUNGRY)
+			combined_msg += span_info("I feel quite hungry.")
+		if(0 to NUTRITION_LEVEL_STARVING)
+			combined_msg += span_danger("I'm starving!")
+
+	to_chat(src, boxed_message(combined_msg.Join("\n")))
 
 /mob/living/carbon/human/need_breathe()
 //	if(!(mNobreath in mutations))

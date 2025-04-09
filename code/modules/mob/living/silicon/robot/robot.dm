@@ -1048,7 +1048,7 @@
 	set category = "IC"
 	set src = usr
 
-	var/obj/item/W = get_active_hand()
+	var/obj/item/W = get_active_held_item()
 	if(W)
 		W.attack_self(src)
 

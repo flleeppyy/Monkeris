@@ -695,12 +695,12 @@
 
 
 /proc/is_proper_datum(object)
-	return istype(object, /datum) || istype(object, /client)
+	return isdatum(object) || isclient(object)
 
 /proc/SDQL_print(object, list/text_list)
 	if (is_proper_datum(object))
 		text_list += "<A href='byond://?_src_=vars;Vars=\ref[object]'>\ref[object]</A>"
-		if(istype(object, /atom))
+		if(isatom(object))
 			var/atom/a = object
 
 			if(a.x)

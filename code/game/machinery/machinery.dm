@@ -208,21 +208,21 @@
 
 /obj/machinery/attack_hand(mob/user as mob)
 	if(inoperable(MAINT))
-		return 1
+		return
 	if(user.lying || user.stat)
-		return 1
+		return
 	if(!user.IsAdvancedToolUser())
 		to_chat(usr, span_warning("You don't have the dexterity to do this!"))
-		return 1
+		return FALSE
 
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H.getBrainLoss() >= 55)
 			visible_message(span_warning("[H] stares cluelessly at [src]."))
-			return 1
+			return FALSE
 		else if(prob(H.getBrainLoss()))
 			to_chat(user, span_warning("You momentarily forget how to use \the [src]."))
-			return 1
+			return FALSE
 
 	src.add_fingerprint(user)
 

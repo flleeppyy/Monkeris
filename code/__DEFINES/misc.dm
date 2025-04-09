@@ -276,7 +276,7 @@
 // Spawns multiple objects of the same type
 #define cast_new(type, num, args...) if((num) == 1) { new type(args) } else { for(var/i in 1 to num) { new type(args) } }
 
-#define CLIENT_FROM_VAR(I) (ismob(I) ? I:client : (istype(I, /client) ? I : (istype(I, /datum/mind) ? I:current?:client : null)))
+#define CLIENT_FROM_VAR(I) (ismob(I) ? I:client : (isclient(I) ? I : (istype(I, /datum/mind) ? I:current?:client : null)))
 
 
 // Maploader bounds indices

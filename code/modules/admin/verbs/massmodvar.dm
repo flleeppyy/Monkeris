@@ -77,7 +77,7 @@
 		var_value = "\icon[var_value]"
 		default = "icon"
 
-	else if(istype(var_value,/atom) || istype(var_value,/datum))
+	else if(isatom(var_value) || isdatum(var_value))
 		to_chat(usr, "Variable appears to be <b>TYPE</b>.")
 		default = "type"
 
@@ -85,7 +85,7 @@
 		to_chat(usr, "Variable appears to be <b>LIST</b>.")
 		default = "list"
 
-	else if(istype(var_value,/client))
+	else if(isclient(var_value))
 		to_chat(usr, "Variable appears to be <b>CLIENT</b>.")
 		default = "cancel"
 
@@ -125,7 +125,7 @@
 
 	var/original_name
 
-	if (!istype(O, /atom))
+	if (!isatom(O))
 		original_name = "\ref[O] ([O])"
 	else
 		original_name = O:name

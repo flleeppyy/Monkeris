@@ -116,6 +116,24 @@ var/global/log_end= world.system_type == UNIX ? ascii2text(13) : ""
 	if (config.log_adminwarn)
 		game_log("ADMINWARN", text)
 
+/proc/log_bomber(atom/user, details, atom/bomb, additional_details, message_admins = TRUE)
+	// We pass in `null` for the target, which makes it work as before.
+	log_bomber_targeted(user, details, bomb, null, additional_details, message_admins)
+
+// Like `/proc/log_bomber`, but with a target specified. This also marks pacifist characters as
+// pacifist, so we can see if they're bypassing the trait when they shouldn't.
+/proc/log_bomber_targeted(atom/user, details, atom/bomb, atom/target, additional_details, message_admins = TRUE)
+	var/bomb_message = "[details][bomb ? " [bomb.name] at [AREACOORD(bomb)]": ""][target ? " on [target.name] at [AREACOORD(target)]" : ""][additional_details ? " [additional_details]" : ""]."
+
+	if(user)
+		log_attack(bomb_message) //let it go to individual logs as well as the game log
+		bomb_message = "[key_name(user)] at [AREACOORD(user)] [bomb_message]."
+	else
+		log_attack(bomb_message)
+
+	if(message_admins)
+		message_admins("[user ? "[ADMIN_LOOKUPFLW(user)] at [ADMIN_VERBOSEJMP(user)] " : ""][details][bomb ? " [bomb.name] at [ADMIN_VERBOSEJMP(bomb)]": ""][target ? " on [target.name] at [ADMIN_VERBOSEJMP(target)]" : ""][additional_details ? " [additional_details]" : ""].")
+
 
 /**
  * Appends a tgui-related log entry. All arguments are optional.
@@ -130,7 +148,7 @@ var/global/log_end= world.system_type == UNIX ? ascii2text(13) : ""
 	else if(istype(user, /mob))
 		var/mob/mob = user
 		entry += "[mob.ckey] (as [mob] at [mob.x],[mob.y],[mob.z])"
-	else if(istype(user, /client))
+	else if(isclient(user))
 		var/client/client = user
 		entry += "[client.ckey]"
 	// Insert context
@@ -192,7 +210,7 @@ var/global/log_end= world.system_type == UNIX ? ascii2text(13) : ""
 	return english_list(comps, nothing_text="0", and_text="|", comma_text="|")
 
 /* Helper procs for building detailed log lines */
-/proc/key_name(whom, include_link = null, include_name = TRUE, highlight_special_characters = TRUE)
+/proc/key_name(whom, include_link = null, include_name = TRUE)
 	var/mob/M
 	var/client/C
 	var/key
@@ -201,7 +219,7 @@ var/global/log_end= world.system_type == UNIX ? ascii2text(13) : ""
 
 	if(!whom)
 		return "*null*"
-	if(istype(whom, /client))
+	if(isclient(whom))
 		C = whom
 		M = C.mob
 		key = C.key
@@ -214,10 +232,10 @@ var/global/log_end= world.system_type == UNIX ? ascii2text(13) : ""
 	else if(istext(whom))
 		key = whom
 		ckey = ckey(whom)
-		// C = GLOB.directory[ckey]
-		// if(C)
-		// 	M = C.mob
-	else if(istype(whom, /datum/mind))
+		C = GLOB.directory[ckey]
+		if(C)
+			M = C.mob
+	else if(istype(whom,/datum/mind))
 		var/datum/mind/mind = whom
 		key = mind.key
 		ckey = ckey(key)
@@ -230,10 +248,10 @@ var/global/log_end= world.system_type == UNIX ? ascii2text(13) : ""
 	else // Catch-all cases if none of the types above match
 		var/swhom = null
 
-		if(istype(whom, /atom))
+		if(isatom(whom))
 			var/atom/A = whom
 			swhom = "[A.name]"
-		else if(istype(whom, /datum))
+		else if(isdatum(whom))
 			swhom = "[whom]"
 
 		if(!swhom)
@@ -253,7 +271,7 @@ var/global/log_end= world.system_type == UNIX ? ascii2text(13) : ""
 			. += "Administrator"
 		else
 			if(include_link)
-				. += "<a href='byond://?priv_msg=[REF(ckey)]'>"
+				. += "<a href='byond://?priv_msg=[ckey]'>"
 			. += key
 		if(!C)
 			. += "\[DC\]"
@@ -264,19 +282,13 @@ var/global/log_end= world.system_type == UNIX ? ascii2text(13) : ""
 		. += "*no key*"
 
 	if(include_name)
-		var/name
 		if(M)
 			if(M.real_name)
-				name += "/([M.real_name])"
+				. += "/([M.real_name])"
 			else if(M.name)
-				name += "/([M.name])"
+				. += "/([M.name])"
 		else if(fallback_name)
-			name += "/([fallback_name])"
-
-		if(include_link && is_special_character(M) && highlight_special_characters)
-			. += "/(<font color='#FFA500'>[name]</font>)" //Orange
-		else
-			. += "/([name])"
+			. += "/([fallback_name])"
 
 	return .
 

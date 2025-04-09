@@ -14,7 +14,7 @@
 	if (!user)
 		user = usr
 	if (!istype(user))
-		if (istype(user, /client))
+		if (isclient(user))
 			var/client/client = user
 			user = client.mob
 		else
@@ -111,7 +111,7 @@
 	data["message"] = message
 	/* data["large_buttons"] = user.client.prefs.read_preference(/datum/preference/toggle/tgui_input_large)
 	data["swapped_buttons"] = user.client.prefs.read_preference(/datum/preference/toggle/tgui_input_swapped) */
-	data["large_buttons"] = FALSE
+	data["large_buttons"] = TRUE
 	data["swapped_buttons"] = FALSE
 	data["title"] = title
 	return data

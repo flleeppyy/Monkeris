@@ -121,7 +121,7 @@
 //Altclick the cart with a reagent container to pour things into the bucket without putting the bottle in trash
 /obj/structure/janitorialcart/AltClick(mob/living/user)
 	if(user.incapacitated() || !Adjacent(user))	return
-	var/obj/I = usr.get_active_hand()
+	var/obj/I = usr.get_active_held_item()
 	if(istype(I, /obj/item/mop))
 		if(!mymop)
 			usr.drop_from_inventory(I,src)

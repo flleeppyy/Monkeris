@@ -62,7 +62,7 @@ GLOBAL_LIST_EMPTY(all_catalog_entries_by_type)
 				GLOB.all_catalog_entries_by_type[thing.type] = new /datum/catalog_entry/drink(thing)
 			else
 				GLOB.all_catalog_entries_by_type[thing.type] = new /datum/catalog_entry/reagent(thing)
-		else if(istype(thing, /atom))
+		else if(isatom(thing))
 			GLOB.all_catalog_entries_by_type[thing.type] = new /datum/catalog_entry/atom(thing)
 		else
 			var/list/element = GLOB.catalogs[catalog_id]

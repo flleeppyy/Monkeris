@@ -24,7 +24,7 @@
 	if(wear_mask)
 		skipface |= wear_mask.flags_inv & HIDEFACE
 
-	var/msg = "<div id='examine'><span class='info'>This is "
+	var/msg = "This is "
 
 	var/datum/gender/T = gender_datums[gender]
 	if(skipjumpsuit && skipface) //big suits/masks/helmets make it hard to tell their gender
@@ -292,7 +292,7 @@
 		if(perpname)
 			var/datum/computer_file/report/crew_record/R = get_crewmember_record(perpname)
 			criminal = R ? R.get_criminalStatus() : "None"
-
+			msg += "\n"
 			msg += "<span class = 'deptradio'>Criminal status:</span> <a href='byond://?src=\ref[src];criminal=1'>\[[criminal]\]</a>\n"
 			msg += "<span class = 'deptradio'>Security records:</span> <a href='byond://?src=\ref[src];secrecord=`'>\[View\]</a>  <a href='byond://?src=\ref[src];secrecordadd=`'>\[Add comment\]</a>\n"
 
@@ -313,24 +313,26 @@
 					if (R.fields["id"] == E.fields["id"])
 						medical = R.fields["p_stat"]
 
+		msg += "\n"
 		msg += "<span class = 'deptradio'>Physical status:</span> <a href='byond://?src=\ref[src];medical=1'>\[[medical]\]</a>\n"
 		msg += "<span class = 'deptradio'>Medical records:</span> <a href='byond://?src=\ref[src];medrecord=`'>\[View\]</a> <a href='byond://?src=\ref[src];medrecordadd=`'>\[Add comment\]</a>\n"
 
 		var/obj/item/clothing/under/U = w_uniform
 		if(U && istype(U) && U.sensor_mode >= 2)
 			msg += "[span_deptradio("<b>Damage Specifics:")] <span style=\"color:blue\">[round(src.getOxyLoss(), 1)]</span>-<span style=\"color:green\">[round(src.getToxLoss(), 1)]</span>-<span style=\"color:#FFA500\">[round(src.getFireLoss(), 1)]</span>-<span style=\"color:red\">[round(src.getBruteLoss(), 1)]</span></b>\n"
-	if(print_flavor_text()) msg += "[print_flavor_text()]\n"
+	var/flavor_text = get_flavor_text()
+	if(flavor_text) msg += "[flavor_text]"
 
-	msg += "*---------*</span>"
 	if (pose)
+		msg += "\n"
 		if( findtext(pose,".",length(pose)) == 0 && findtext(pose,"!",length(pose)) == 0 && findtext(pose,"?",length(pose)) == 0 )
 			pose = addtext(pose,".") //Makes sure all emotes end with a period.
 		msg += "\n[T.He] [T.is] [pose]"
 
 	if(isobserver(user))
-		to_chat(user, msg)
+		to_chat(user, boxed_message("[span_infoplain(msg)]"))
 	else
-		user.visible_message("<font size=1>[user.name] looks at [src].</font>", msg)
+		user.visible_message("<font size=1>[user.name] looks at [src].</font>", boxed_message("[span_infoplain(msg)]"))
 
 //Helper procedure. Called by /mob/living/carbon/human/examine() and /mob/living/carbon/human/Topic() to determine HUD access to security and medical records.
 /proc/hasHUD(mob/M as mob, hudtype)

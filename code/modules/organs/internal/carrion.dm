@@ -370,7 +370,7 @@
 		return
 	src = maw
 
-	var/food = owner.get_active_hand()
+	var/food = owner.get_active_held_item()
 
 	if(!food)
 		to_chat(owner, span_warning("You can't eat nothing."))

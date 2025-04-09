@@ -574,7 +574,7 @@ There are 9 wires.
 	if(!isliving(usr))
 		to_chat(usr, span_warning("You can't do this."))
 		return
-	var/obj/item/tool/T = usr.get_active_hand()
+	var/obj/item/tool/T = usr.get_active_held_item()
 	if(istype(T) && T.w_class >= ITEM_SIZE_NORMAL) // We do the checks before proc call, because see "proc overhead".
 		if(!density)
 			usr.drop_item()
@@ -848,7 +848,7 @@ There are 9 wires.
 			return
 
 
-	if(user.a_intent == I_GRAB && wedged_item && !user.get_active_hand())
+	if(user.a_intent == I_GRAB && wedged_item && !user.get_active_held_item())
 		take_out_wedged_item(user)
 		return
 

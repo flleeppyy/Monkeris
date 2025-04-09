@@ -35,7 +35,7 @@ log transactions
 
 /obj/machinery/atm/Initialize()
 	. = ..()
-	machine_id = "[station_name] RT #[num_financial_terminals++]"
+	machine_id = "[station_name()] RT #[num_financial_terminals++]"
 	spark_system = new /datum/effect/effect/system/spark_spread
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
@@ -411,7 +411,7 @@ log transactions
 					if(emagged > 0)
 						to_chat(usr, "\red \icon[src] The ATM card reader rejected your ID because this machine has been sabotaged!")
 					else
-						var/obj/item/I = usr.get_active_hand()
+						var/obj/item/I = usr.get_active_held_item()
 						if (istype(I, /obj/item/card/id))
 							usr.drop_item()
 							I.loc = src
@@ -432,14 +432,14 @@ log transactions
 	held_card.forceMove(get_turf(src))
 	authenticated_account = null
 
-	if(ishuman(human_user) && !human_user.get_active_hand())
+	if(ishuman(human_user) && !human_user.get_active_held_item())
 		human_user.put_in_hands(held_card)
 	held_card = null
 	update_icon()
 
 /obj/machinery/atm/proc/spawn_ewallet(var/sum, loc, mob/living/carbon/human/human_user as mob)
 	var/obj/item/spacecash/ewallet/E = new /obj/item/spacecash/ewallet(loc)
-	if(ishuman(human_user) && !human_user.get_active_hand())
+	if(ishuman(human_user) && !human_user.get_active_held_item())
 		human_user.put_in_hands(E)
 	E.worth = sum
 	E.owner_name = authenticated_account.owner_name

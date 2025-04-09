@@ -193,7 +193,7 @@
 	if (!User)
 		User = usr
 	if (!istype(User))
-		if (istype(User, /client))
+		if (isclient(User))
 			var/client/client = User
 			User = client.mob
 		else

@@ -15,7 +15,7 @@
 
 /obj/item/device/eftpos/New()
 	..()
-	machine_id = "[station_name] EFTPOS #[num_financial_terminals++]"
+	machine_id = "[station_name()] EFTPOS #[num_financial_terminals++]"
 	access_code = rand(1111,111111)
 	spawn(0)
 		print_reference()
@@ -202,14 +202,14 @@
 					to_chat(usr, "\icon[src][span_warning("No account connected to send transactions to.")]")
 			if("scan_card")
 				if(linked_account)
-					var/obj/item/I = usr.get_active_hand()
+					var/obj/item/I = usr.get_active_held_item()
 					if (istype(I, /obj/item/card))
 						scan_card(I)
 				else
 					to_chat(usr, "\icon[src][span_warning("Unable to link accounts.")]")
 			if("reset")
 				//reset the access code - requires HoP/captain access
-				var/obj/item/I = usr.get_active_hand()
+				var/obj/item/I = usr.get_active_held_item()
 				if (istype(I, /obj/item/card))
 					var/obj/item/card/id/C = I
 					if(access_cent_captain in C.access || (access_hop in C.access) || (access_captain in C.access))

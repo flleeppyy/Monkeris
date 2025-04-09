@@ -215,8 +215,8 @@
 
 			//Try to reduce damage by blocking
 			if(blocking)
-				if(istype(get_active_hand(), /obj/item/grab))//we are blocking with a human shield! We redirect the attack. You know, because grab doesn't exist as an item.
-					var/obj/item/grab/G = get_active_hand()
+				if(istype(get_active_held_item(), /obj/item/grab))//we are blocking with a human shield! We redirect the attack. You know, because grab doesn't exist as an item.
+					var/obj/item/grab/G = get_active_held_item()
 					grab_redirect_attack(M, G)
 					return
 				else
@@ -247,7 +247,7 @@
 			if(w_uniform)
 				w_uniform.add_fingerprint(M)
 
-			var/list/holding = list(get_active_hand() = 40, get_inactive_hand = 20)
+			var/list/holding = list(get_active_held_item() = 40, get_inactive_held_item = 20)
 
 			//See if they have any guns that might go off
 			for(var/obj/item/gun/W in holding)
@@ -277,7 +277,7 @@
 							visible_message(span_warning("[M] attempted to disarm [src]"))
 							return
 					if(istype(I, /obj/item/twohanded/offhand)) //did someone dare to switch to offhand to not get disarmed?
-						unEquip(src.get_inactive_hand())
+						unEquip(src.get_inactive_held_item())
 						visible_message(span_danger("[M] has disarmed [src]!"))
 						playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 						return

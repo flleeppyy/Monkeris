@@ -178,7 +178,7 @@ Proc for attack log creation, because really why not
 	var/user_loc = user.loc
 	var/target_loc = target.loc
 
-	var/holding = user.get_active_hand()
+	var/holding = user.get_active_held_item()
 	var/datum/progressbar/progbar
 	if (progress)
 		progbar = new(user, time, target)
@@ -204,7 +204,7 @@ Proc for attack log creation, because really why not
 			. = 0
 			break
 
-		if(user.get_active_hand() != holding)
+		if(user.get_active_held_item() != holding)
 			. = 0
 			break
 
@@ -221,7 +221,7 @@ Proc for attack log creation, because really why not
 
 	var/atom/original_loc = user.loc
 
-	var/holding = user.get_active_hand()
+	var/holding = user.get_active_held_item()
 
 	var/datum/progressbar/progbar
 
@@ -257,7 +257,7 @@ Proc for attack log creation, because really why not
 			break
 
 		if(needhand)
-			if(user.get_active_hand() != holding)
+			if(user.get_active_held_item() != holding)
 				. = 0
 				break
 

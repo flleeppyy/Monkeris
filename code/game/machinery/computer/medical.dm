@@ -28,7 +28,7 @@
 	if(scan)
 		to_chat(usr, "You remove \the [scan] from \the [src].")
 		scan.loc = get_turf(src)
-		if(!usr.get_active_hand() && ishuman(usr))
+		if(!usr.get_active_held_item() && ishuman(usr))
 			usr.put_in_hands(scan)
 		scan = null
 	else
@@ -152,7 +152,7 @@
 				if(ishuman(usr))
 					scan.loc = usr.loc
 
-					if(!usr.get_active_hand())
+					if(!usr.get_active_held_item())
 						usr.put_in_hands(scan)
 
 					scan = null
@@ -162,7 +162,7 @@
 					src.scan = null
 
 			else
-				var/obj/item/I = usr.get_active_hand()
+				var/obj/item/I = usr.get_active_held_item()
 				if (istype(I, /obj/item/card/id))
 					usr.drop_item()
 					I.loc = src

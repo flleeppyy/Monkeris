@@ -29,7 +29,7 @@
 			return
 
 		var/D = locate(href_list["datumedit"])
-		if(!istype(D,/datum) && !istype(D,/client))
+		if(!isdatum(D) && !isclient(D))
 			to_chat(usr, "This can only be used on instances of types /client or /datum")
 			return
 
@@ -40,7 +40,7 @@
 			return
 
 		var/D = locate(href_list["datumchange"])
-		if(!istype(D,/datum) && !istype(D,/client))
+		if(!isdatum(D) && !isclient(D))
 			to_chat(usr, "This can only be used on instances of types /client or /datum")
 			return
 
@@ -475,7 +475,7 @@
 
 	else if(href_list["call_proc"])
 		var/datum/D = locate(href_list["call_proc"])
-		if(istype(D) || istype(D, /client)) // can call on clients too, not just datums
+		if(istype(D) || isclient(D)) // can call on clients too, not just datums
 			callproc_targetpicked(1, D)
 
 	else if(href_list["teleport_here"])
@@ -503,7 +503,7 @@
 
 	if(href_list["datumrefresh"])
 		var/datum/DAT = locate(href_list["datumrefresh"])
-		if(istype(DAT, /datum) || istype(DAT, /client))
+		if(isdatum(DAT) || isclient(DAT))
 			debug_variables(DAT)
 
 	if(href_list["addreagent"])

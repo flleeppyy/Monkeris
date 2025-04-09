@@ -459,7 +459,7 @@
 	if(currently_vending.price > cashmoney.worth)
 		// This is not a status display message, since it's something the character
 		// themselves is meant to see BEFORE putting the money in
-		to_chat(usr, "\icon[cashmoney] [span_warning("That is not enough money.")]")
+		to_chat(usr, "[icon2html(cashmoney, usr)] [span_warning("That is not enough money.")]")
 		return 0
 
 	visible_message(span_info("\The [usr] inserts some cash into \the [src]."))
@@ -1517,7 +1517,7 @@
 		else if(is_neotheology_disciple(H))
 			bingo = TRUE
 
-		else if(istype(H.get_active_hand(), /obj/item/clothing/accessory/cross))
+		else if(istype(H.get_active_held_item(), /obj/item/clothing/accessory/cross))
 			bingo = TRUE
 
 		else if(istype(H.wear_mask, /obj/item/clothing/accessory/cross))

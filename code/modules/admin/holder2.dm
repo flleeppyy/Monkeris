@@ -1,5 +1,8 @@
 GLOBAL_LIST_EMPTY(admin_datums)
 
+GLOBAL_VAR_INIT(href_token, GenerateToken())
+GLOBAL_PROTECT(href_token)
+
 /datum/admins
 	var/rank			= "Temporary Admin"
 	var/client/owner	= null
@@ -13,6 +16,8 @@ GLOBAL_LIST_EMPTY(admin_datums)
 	var/datum/feed_channel/admincaster_feed_channel = new /datum/feed_channel
 	var/admincaster_signature	//What you'll sign the newsfeeds as
 
+	var/href_token
+
 	var/given_profiling = FALSE
 
 /datum/admins/proc/marked_datum()
@@ -24,7 +29,7 @@ GLOBAL_LIST_EMPTY(admin_datums)
 		error("Admin datum created without a ckey argument. Datum has been deleted")
 		qdel(src)
 		return
-	admincaster_signature = "[company_name] Officer #[rand(0,9)][rand(0,9)][rand(0,9)]"
+	admincaster_signature = "[GLOB.company_name] Officer #[rand(0,9)][rand(0,9)][rand(0,9)]"
 	rank = initial_rank
 	rights = initial_rights
 	GLOB.admin_datums[ckey] = src
@@ -90,7 +95,7 @@ NOTE: It checks usr by default. Supply the "�" argument if you wish to check f
 		C = M.client
 	if(!C)
 		return FALSE
-	if(!(istype(C, /client))) // If we still didn't find a client, something is wrong.
+	if(!(isclient(C))) // If we still didn't find a client, something is wrong.
 		return FALSE
 	if(!C.holder)
 		if(show_msg)
@@ -118,3 +123,26 @@ NOTE: It checks usr by default. Supply the "�" argument if you wish to check f
 					return 1	//we have all the rights they have and more
 		to_chat(usr, "<font color='red'>Error: Cannot proceed. They have more or equal rights to us.</font>")
 	return 0
+
+
+/proc/GenerateToken()
+	. = ""
+	for(var/I in 1 to 32)
+		. += "[rand(10)]"
+
+/proc/RawHrefToken(forceGlobal = FALSE)
+	var/tok = GLOB.href_token
+	if(!forceGlobal && usr)
+		var/client/C = usr.client
+		if(!C)
+			CRASH("No client for HrefToken()!")
+		var/datum/admins/holder = C.holder
+		if(holder)
+			tok = holder.href_token
+	return tok
+
+/proc/HrefToken(forceGlobal = FALSE)
+	return "admin_token=[RawHrefToken(forceGlobal)]"
+
+/proc/HrefTokenFormField(forceGlobal = FALSE)
+	return "<input type='hidden' name='admin_token' value='[RawHrefToken(forceGlobal)]'>"

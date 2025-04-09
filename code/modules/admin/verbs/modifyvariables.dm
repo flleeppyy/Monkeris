@@ -196,7 +196,7 @@ var/list/VVckey_edit = list("key", "ckey")
 		variable = "\icon[variable]"
 		default = "icon"
 
-	else if(istype(variable,/atom) || istype(variable,/datum))
+	else if(isatom(variable) || isdatum(variable))
 		to_chat(usr, "Variable appears to be <b>TYPE</b>.")
 		default = "type"
 
@@ -204,7 +204,7 @@ var/list/VVckey_edit = list("key", "ckey")
 		to_chat(usr, "Variable appears to be <b>LIST</b>.")
 		default = "list"
 
-	else if(istype(variable,/client))
+	else if(isclient(variable))
 		to_chat(usr, "Variable appears to be <b>CLIENT</b>.")
 		default = "cancel"
 
@@ -401,7 +401,7 @@ var/list/VVckey_edit = list("key", "ckey")
 				var_value = "\icon[var_value]"
 				class = "icon"
 
-			else if(istype(var_value,/atom) || istype(var_value,/datum))
+			else if(isatom(var_value) || isdatum(var_value))
 				to_chat(usr, "Variable appears to be <b>TYPE</b>.")
 				class = "type"
 
@@ -409,7 +409,7 @@ var/list/VVckey_edit = list("key", "ckey")
 				to_chat(usr, "Variable appears to be <b>LIST</b>.")
 				class = "list"
 
-			else if(istype(var_value,/client))
+			else if(isclient(var_value))
 				to_chat(usr, "Variable appears to be <b>CLIENT</b>.")
 				class = "cancel"
 
@@ -461,7 +461,7 @@ var/list/VVckey_edit = list("key", "ckey")
 			var_value = "\icon[var_value]"
 			default = "icon"
 
-		else if(istype(var_value,/atom) || istype(var_value,/datum))
+		else if(isatom(var_value) || isdatum(var_value))
 			to_chat(usr, "Variable appears to be <b>TYPE</b>.")
 			default = "type"
 
@@ -469,7 +469,7 @@ var/list/VVckey_edit = list("key", "ckey")
 			to_chat(usr, "Variable appears to be <b>LIST</b>.")
 			default = "list"
 
-		else if(istype(var_value,/client))
+		else if(isclient(var_value))
 			to_chat(usr, "Variable appears to be <b>CLIENT</b>.")
 			default = "cancel"
 
@@ -513,7 +513,7 @@ var/list/VVckey_edit = list("key", "ckey")
 
 	var/original_name
 
-	if (!istype(O, /atom))
+	if (!isatom(O))
 		original_name = "\ref[O] ([O])"
 	else
 		original_name = O:name

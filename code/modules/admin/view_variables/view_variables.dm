@@ -25,7 +25,7 @@ var/list/view_variables_no_assoc = list("verbs", "contents","screen","images", "
 
 	var/no_icon = FALSE
 
-	if(istype(D, /atom))
+	if(isatom(D))
 		sprite = getFlatIcon(D)
 		if(sprite)
 			hash = md5(sprite)
@@ -133,13 +133,13 @@ var/list/view_variables_no_assoc = list("verbs", "contents","screen","images", "
 		vtext = "[value]"
 	else if(isfile(value))
 		vtext = "'[value]'"
-	else if(istype(value, /datum))
+	else if(isdatum(value))
 		var/datum/DA = value
 		if("[DA]" == "[DA.type]" || !"[DA]")
 			vtext = "<a href='byond://?_src_=vars;Vars=\ref[DA]'>\ref[DA]</a> - [DA.type]"
 		else
 			vtext = "<a href='byond://?_src_=vars;Vars=\ref[DA]'>\ref[DA]</a> - [DA] ([DA.type])"
-	else if(istype(value, /client))
+	else if(isclient(value))
 		var/client/C = value
 		vtext = "<a href='byond://?_src_=vars;Vars=\ref[C]'>\ref[C]</a> - [C] ([C.type])"
 	else if(islist(value))

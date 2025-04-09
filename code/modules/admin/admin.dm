@@ -8,11 +8,11 @@ var/global/floorIsLava = 0
 
 ////////////////////////////////
 /proc/message_admins(msg)
-	msg = "<span class=\"log_message\"><span class=\"prefix\">ADMIN LOG:</span> <span class=\"message\">[msg]</span></span>"
-	log_adminwarn(msg)
-	for(var/client/C in GLOB.admins)
-		if(R_ADMIN & C.holder.rights)
-			to_chat(C, msg)
+	msg = "<span class=\"admin\"><span class=\"prefix\">ADMIN LOG:</span> <span class=\"message\">[msg]</span></span>"
+	to_chat(GLOB.admins,
+		type = MESSAGE_TYPE_ADMINLOG,
+		html = msg,
+		confidential = TRUE)
 
 /proc/msg_admin_attack(text) //Toggleable Attack Messages
 	log_attack(text)
@@ -126,7 +126,7 @@ var/global/floorIsLava = 0
 		body += " \[<A href='byond://?src=\ref[src];revive=\ref[M]'>Heal</A>\] "
 
 	if(M.ckey)
-		body += "<br>\[<A href='byond://?_src_=holder;ppbyckey=[M.ckey];ppbyckeyorigmob=\ref[M]'>Find Updated Panel</A>\]"
+		body += "<br>\[<A href='byond://?_src_=holder;[HrefToken()];ppbyckey=[M.ckey];ppbyckeyorigmob=\ref[M]'>Find Updated Panel</A>\]"
 
 	body += {"
 		<br><br>\[
@@ -140,7 +140,7 @@ var/global/floorIsLava = 0
 		<a href='byond://?src=\ref[src];viewlogs=\ref[M]'>LOGS</a>\] <br>
 		<b>Mob type</b> = [M.type]<br><br>
 		<A href='byond://?src=\ref[src];boot2=\ref[M]'>Kick</A> |
-		<A href='byond://?_src_=holder;warn=[M.ckey]'>Warn</A> |
+		<A href='byond://?_src_=holder;[HrefToken()];warn=[M.ckey]'>Warn</A> |
 		<A href='byond://?src=\ref[src];newban=\ref[M]'>Ban</A> |
 		<A href='byond://?src=\ref[src];jobban2=\ref[M]'>Jobban</A> |
 		<A href='byond://?src=\ref[src];notes=show;mob=\ref[M]'>Notes</A> |
@@ -148,7 +148,7 @@ var/global/floorIsLava = 0
 	"}
 
 	if(M.client)
-		body += "\ <A href='byond://?_src_=holder;sendbacktolobby=\ref[M]'>Send back to Lobby</A> | "
+		body += "\ <A href='byond://?_src_=holder;[HrefToken()];sendbacktolobby=\ref[M]'>Send back to Lobby</A> | "
 		var/muted = M.client.prefs.muted
 		body += {"<br><b>Mute: </b>
 			\[<A href='byond://?src=\ref[src];mute=\ref[M];mute_type=[MUTE_IC]'><font color='[(muted & MUTE_IC)?"red":"blue"]'>IC</font></a> |
@@ -275,7 +275,7 @@ var/global/floorIsLava = 0
 			dat+={"<HR><B>Feed Security functions:</B><BR>
 				<BR><A href='byond://?src=\ref[src];admincaster=menu_wanted'>[(wanted_already) ? ("Manage") : ("Publish")] \"Wanted\" Issue</A>
 				<BR><A href='byond://?src=\ref[src];admincaster=menu_censor_story'>Censor Feed Stories</A>
-				<BR><A href='byond://?src=\ref[src];admincaster=menu_censor_channel'>Mark Feed Channel with [company_name] D-Notice (disables and locks the channel.</A>
+				<BR><A href='byond://?src=\ref[src];admincaster=menu_censor_channel'>Mark Feed Channel with [GLOB.company_name] D-Notice (disables and locks the channel.</A>
 				<BR><HR><A href='byond://?src=\ref[src];admincaster=set_signature'>The newscaster recognises you as:<BR> <FONT COLOR='green'>[src.admincaster_signature]</FONT></A>
 			"}
 		if(1)
@@ -341,7 +341,7 @@ var/global/floorIsLava = 0
 			dat+="<B>[src.admincaster_feed_channel.channel_name]: </B><FONT SIZE=1>\[created by: <FONT COLOR='maroon'>[src.admincaster_feed_channel.author]</FONT>\]</FONT><HR>"
 			if(src.admincaster_feed_channel.censored)
 				dat+={"
-					<FONT COLOR='red'><B>ATTENTION: </B></FONT>This channel has been deemed as threatening to the welfare of the station, and marked with a [company_name] D-Notice.<BR>
+					<FONT COLOR='red'><B>ATTENTION: </B></FONT>This channel has been deemed as threatening to the welfare of the station, and marked with a [GLOB.company_name] D-Notice.<BR>
 					No further feed story additions are allowed while the D-Notice is in effect.<BR><BR>
 				"}
 			else
@@ -362,7 +362,7 @@ var/global/floorIsLava = 0
 			"}
 		if(10)
 			dat+={"
-				<B>[company_name] Feed Censorship Tool</B><BR>
+				<B>[GLOB.company_name] Feed Censorship Tool</B><BR>
 				<FONT SIZE=1>NOTE: Due to the nature of news Feeds, total deletion of a Feed Story is not possible.<BR>
 				Keep in mind that users attempting to view a censored feed will instead see the \[REDACTED\] tag above it.</FONT>
 				<HR>Select Feed channel to get Stories from:<BR>
@@ -375,7 +375,7 @@ var/global/floorIsLava = 0
 			dat+="<BR><A href='byond://?src=\ref[src];admincaster=setScreen;setScreen=[0]'>Cancel</A>"
 		if(11)
 			dat+={"
-				<B>[company_name] D-Notice Handler</B><HR>
+				<B>[GLOB.company_name] D-Notice Handler</B><HR>
 				<FONT SIZE=1>A D-Notice is to be bestowed upon the channel if the handling Authority deems it as harmful for the station's
 				morale, integrity or disciplinary behaviour. A D-Notice will render a channel unable to be updated by anyone, without deleting any feed
 				stories it might contain at the time. You can lift a D-Notice if you have the required access at any time.</FONT><HR>
@@ -408,7 +408,7 @@ var/global/floorIsLava = 0
 			"}
 			if(src.admincaster_feed_channel.censored)
 				dat+={"
-					<FONT COLOR='red'><B>ATTENTION: </B></FONT>This channel has been deemed as threatening to the welfare of the station, and marked with a [company_name] D-Notice.<BR>
+					<FONT COLOR='red'><B>ATTENTION: </B></FONT>This channel has been deemed as threatening to the welfare of the station, and marked with a [GLOB.company_name] D-Notice.<BR>
 					No further feed story additions are allowed while the D-Notice is in effect.<BR><BR>
 				"}
 			else
@@ -1068,7 +1068,7 @@ var/global/floorIsLava = 0
 		return "<b>(*null*)</b>"
 	var/mob/M
 	var/client/C
-	if(istype(whom, /client))
+	if(isclient(whom))
 		C = whom
 		M = C.mob
 	else if(ismob(whom))
@@ -1081,19 +1081,19 @@ var/global/floorIsLava = 0
 			return "<b>[key_name(C, link, name, highlight_special)]</b>"
 
 		if(1)	//Private Messages
-			return "<b>[key_name(C, link, name, highlight_special)](<A href='byond://?_src_=holder;adminmoreinfo=\ref[M]'>?</A>)</b>"
+			return "<b>[key_name(C, link, name, highlight_special)][ADMIN_QUE(M)]</b>"
 
 		if(2)	//Admins
 			var/ref_mob = "\ref[M]"
-			return "<b>[key_name(C, link, name, highlight_special)](<A href='byond://?_src_=holder;adminmoreinfo=[ref_mob]'>?</A>) (<A href='byond://?_src_=holder;adminplayeropts=[ref_mob]'>PP</A>) (<A href='byond://?_src_=vars;Vars=[ref_mob]'>VV</A>) (<A href='byond://?_src_=holder;subtlemessage=[ref_mob]'>SM</A>) ([admin_jump_link(M, UNLINT(src))]) (<A href='byond://?_src_=holder;check_antagonist=1'>CA</A>)</b>"
+			return "<b>[key_name(C, link, name, highlight_special)] [ADMIN_QUE(ref_mob)] [ADMIN_PP(ref_mob)] [ADMIN_VV(ref_mob)] [ADMIN_SM(ref_mob)] ([admin_jump_link(M, UNLINT(src))]) (<A href='byond://?_src_=holder;[HrefToken()];check_antagonist=1'>CA</A>)</b>"
 
 		if(3)	//Devs
 			var/ref_mob = "\ref[M]"
-			return "<b>[key_name(C, link, name, highlight_special)](<A href='byond://?_src_=vars;Vars=[ref_mob]'>VV</A>)([admin_jump_link(M, UNLINT(src))])</b>"
+			return "<b>[key_name(C, link, name, highlight_special)] [ADMIN_VV(ref_mob)] ([admin_jump_link(M, UNLINT(src))])</b>"
 
 		if(4)	//Mentors
 			var/ref_mob = "\ref[M]"
-			return "<b>[key_name(C, link, name, highlight_special)] (<A href='byond://?_src_=holder;adminmoreinfo=\ref[M]'>?</A>) (<A href='byond://?_src_=holder;adminplayeropts=[ref_mob]'>PP</A>) (<A href='byond://?_src_=vars;Vars=[ref_mob]'>VV</A>) (<A href='byond://?_src_=holder;subtlemessage=[ref_mob]'>SM</A>) ([admin_jump_link(M, UNLINT(src))])</b>"
+			return "<b>[key_name(C, link, name, highlight_special)] [ADMIN_QUE(M)] [ADMIN_PP(ref_mob)] [ADMIN_VV(ref_mob)] [ADMIN_SM(ref_mob)] ([admin_jump_link(M, UNLINT(src))])</b>"
 
 
 //

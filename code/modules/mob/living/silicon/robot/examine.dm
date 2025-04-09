@@ -32,7 +32,7 @@
 		extra_description += "It is wielding \icon[module_active] [module_active].\n"
 	extra_description += "*---------*"
 
-	if(print_flavor_text()) extra_description += "\n[print_flavor_text()]\n"
+	if(get_flavor_text()) extra_description += "\n[get_flavor_text()]\n"
 
 	if(pose)
 		if( findtext(pose,".",length(pose)) == 0 && findtext(pose,"!",length(pose)) == 0 && findtext(pose,"?",length(pose)) == 0 )

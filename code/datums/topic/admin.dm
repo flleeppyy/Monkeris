@@ -900,6 +900,16 @@
 		sleep(2)
 	C.jumptomob(M)
 
+/datum/admin_topic/adminplayerobservefollow
+	keyword = "adminplayerobservefollow"
+
+/datum/admin_topic/adminplayerobservefollow/Run(list/input)
+	if(!isghost(usr))
+		return
+	var/mob/target = locate(input["adminplayerobservefollow"])
+
+	var/mob/observer/ghost/ghost = usr
+	ghost.ManualFollow(target)
 
 /datum/admin_topic/adminplayerobservecoodjump
 	keyword = "adminplayerobservecoodjump"
@@ -982,7 +992,7 @@
 	to_chat(source.owner, "Name = <b>[M.name]</b>; Real_name = [M.real_name]; Mind_name = [M.mind?"[M.mind.name]":""]; Key = <b>[M.key]</b>;")
 	to_chat(source.owner, "Location = [location_description];")
 	to_chat(source.owner, "[special_role_description]")
-	to_chat(source.owner, "(<a href='byond://?src=\ref[usr];priv_msg=\ref[M]'>PM</a>) (<A href='byond://?src=\ref[source];adminplayeropts=\ref[M]'>PP</A>) (<A href='byond://?_src_=vars;Vars=\ref[M]'>VV</A>) (<A href='byond://?src=\ref[source];subtlemessage=\ref[M]'>SM</A>) ([admin_jump_link(M, source)]) (<A href='byond://?src=\ref[source];secretsadmin=check_antagonist'>CA</A>)")
+	to_chat(source.owner, "(<a href='byond://?src=\ref[usr];priv_msg=\ref[M]'>PM</a>) [ADMIN_PP(M)] [ADMIN_VV(M)] [ADMIN_SM(M)] ([admin_jump_link(M, source)]) (<A href='byond://?src=\ref[source];secretsadmin=check_antagonist'>CA</A>)")
 
 
 /datum/admin_topic/adminspawncookie

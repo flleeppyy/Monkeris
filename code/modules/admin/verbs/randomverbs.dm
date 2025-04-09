@@ -458,7 +458,7 @@ Contractors and the like can also be revived with the previous role mostly intac
 		if("Yes")
 			command_announcement.Announce(input, customname, msg_sanitized = 1, use_text_to_speech = TRUE)
 		if("No")
-			to_chat(world, "\red New [company_name] Update available at all communication consoles.")
+			to_chat(world, "\red New [GLOB.company_name] Update available at all communication consoles.")
 			world << sound('sound/AI/commandreport.ogg')
 
 	log_admin("[key_name(src)] has created a command report: [input]")
