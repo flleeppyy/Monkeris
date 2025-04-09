@@ -26,7 +26,7 @@ var/const/WIRE_BEACON_RX = 256	// beacon ping recv
 
 /datum/wires/mulebot/UpdatePulsed(var/index)
 	var/listeners = hearers(src)
-	var/htmlicon = icon2html(holder, hearers)
+	var/htmlicon = icon2html(holder, listeners)
 	switch(index)
 		if(WIRE_POWER1, WIRE_POWER2)
 			holder.visible_message(span_notice("[htmlicon] The charge light flickers."))

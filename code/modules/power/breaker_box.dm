@@ -72,7 +72,7 @@
 
 	busy = 1
 	for(var/mob/O in viewers(user))
-		O.show_message(text(span_red("[user] started reprogramming [src]!")), 1)
+		O.show_message(span_red("[user] started reprogramming [src]!"), 1)
 
 	if(do_after(user, 50,src))
 		set_state(!on)

@@ -428,7 +428,7 @@
 
 /obj/machinery/power/supermatter/shard //Small subtype, less efficient and more sensitive, but less boom.
 	name = "Supermatter Shard"
-	desc = "A strangely translucent and iridescent crystal that looks like it used to be part of a larger structure. [span_warning("You get headaches just from looking at it.")]."
+	desc = "A strangely translucent and iridescent crystal that looks like it used to be part of a larger structure."
 	icon_state = "darkmatter_shard"
 	base_icon_state = "darkmatter_shard"
 

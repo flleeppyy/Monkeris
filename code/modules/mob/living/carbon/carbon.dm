@@ -73,7 +73,7 @@
 		M.loc = src.loc
 		for(var/mob/N in viewers(src, null))
 			if(N.client)
-				N.show_message(text(span_red("<B>[M] bursts out of [src]!</B>")), 2)
+				N.show_message(span_red("<B>[M] bursts out of [src]!</B>"), 2)
 	..()
 
 /mob/living/carbon/attack_hand(mob/M as mob)

@@ -231,7 +231,7 @@ Ccomp's first proc.
 	G.has_enabled_antagHUD = 2
 	G.can_reenter_corpse = 1
 	G << 'sound/effects/magic/blind.ogg' //Play this sound to a player whenever their respawn time gets reduced
-	G:show_message(text(span_blue("<B>You may now respawn.  You should roleplay as if you learned nothing about the round during your time with the dead.</B>")), 1)
+	G.show_message(span_blue("<B>You may now respawn.  You should roleplay as if you learned nothing about the round during your time with the dead.</B>"), 1)
 	log_admin("[key_name(usr)] allowed [key_name(G)] to bypass the 30 minute respawn limit")
 	message_admins("Admin [key_name_admin(usr)] allowed [key_name_admin(G)] to bypass the 30 minute respawn limit", 1)
 
@@ -650,7 +650,7 @@ Contractors and the like can also be revived with the previous role mostly intac
 	set category = "Special Verbs"
 	set name = "Attack Log"
 
-	to_chat(usr, text(span_red("<b>Attack Log for []</b>"), mob))
+	to_chat(usr, span_red(text("<b>Attack Log for []</b>", mob)))
 	for(var/t in M.attack_log)
 		to_chat(usr, t)
 

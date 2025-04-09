@@ -47,7 +47,7 @@
 
 	for(var/mob/O in viewers(src, null))
 		if ((O.client && !( O.blinded )))
-			O.show_message(text(span_red("<B>[] [failed ? "tried to tackle" : "has tackled"] down []!</B>"), src, T), 1)
+			O.show_message(span_red(text("<B>[] [failed ? "tried to tackle" : "has tackled"] down []!</B>", src, T)), 1)
 
 /mob/living/carbon/human/proc/leap(mob/living/carbon/human/T)
 	if(last_special > world.time)

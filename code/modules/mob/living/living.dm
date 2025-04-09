@@ -561,7 +561,7 @@ default behaviour is:
 							var/obj/item/grab/G = pick(M.grabbed_by)
 							if (istype(G, /obj/item/grab))
 								for(var/mob/O in viewers(M, null))
-									O.show_message(text(span_red("[] has been pulled from []'s grip by []"), G.affecting, G.assailant, src), 1)
+									O.show_message(span_red(text("[] has been pulled from []'s grip by []", G.affecting, G.assailant, src)), 1)
 								//G = null
 								qdel(G)
 						else

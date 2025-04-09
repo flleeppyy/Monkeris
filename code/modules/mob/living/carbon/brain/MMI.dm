@@ -56,7 +56,7 @@
 				return
 
 		for(var/mob/V in viewers(src, null))
-			V.show_message(text(span_blue("[user] sticks \a [O] into \the [src].")))
+			V.show_message(span_blue("[user] sticks \a [O] into \the [src]."))
 
 		brainmob = B.brainmob
 		brainmob.loc = src

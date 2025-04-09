@@ -193,7 +193,7 @@ var/list/VVckey_edit = list("key", "ckey")
 
 	else if(isicon(variable))
 		to_chat(usr, "Variable appears to be <b>ICON</b>.")
-		variable = "[icon2html(var_value, usr)]"
+		variable = "[icon2html(variable, usr)]"
 		default = "icon"
 
 	else if(isatom(variable) || isdatum(variable))
