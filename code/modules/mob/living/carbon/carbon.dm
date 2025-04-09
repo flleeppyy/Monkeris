@@ -73,7 +73,7 @@
 		M.loc = src.loc
 		for(var/mob/N in viewers(src, null))
 			if(N.client)
-				N.show_message(text("\red <B>[M] bursts out of [src]!</B>"), 2)
+				N.show_message(text(span_red("<B>[M] bursts out of [src]!</B>")), 2)
 	..()
 
 /mob/living/carbon/attack_hand(mob/M as mob)
@@ -83,7 +83,7 @@
 		if (H.hand)
 			temp = H.organs_by_name[BP_L_ARM]
 		if(temp && !temp.is_usable())
-			to_chat(H, "\red You can't use your [temp.name]")
+			to_chat(H, span_red("You can't use your [temp.name]"))
 			return
 
 
@@ -97,17 +97,17 @@
 	playsound(loc, "sparks", 50, 1, -1)
 	if (shock_damage > 15)
 		src.visible_message(
-			"\red [src] was shocked by the [source]!", \
-			"\red <B>You feel a powerful shock course through your body!</B>", \
-			"\red You hear a heavy electrical crack." \
+			span_red("[src] was shocked by the [source]!"), \
+			span_red("<B>You feel a powerful shock course through your body!</B>"), \
+			span_red("You hear a heavy electrical crack.") \
 		)
 		SEND_SIGNAL_OLD(src, COMSIG_CARBON_ELECTROCTE)
 		Weaken(max(min(10,round(shock_damage / 10 )), 2) SECONDS)
 	else
 		src.visible_message(
-			"\red [src] was mildly shocked by the [source].", \
-			"\red You feel a mild shock course through your body.", \
-			"\red You hear a light zapping." \
+			span_red("[src] was mildly shocked by the [source]."), \
+			span_red("You feel a mild shock course through your body."), \
+			span_red("You hear a light zapping.") \
 		)
 
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
@@ -354,7 +354,7 @@
 	set category = "IC"
 
 	if(usr.sleeping)
-		to_chat(usr, "\red You are already sleeping")
+		to_chat(usr, span_red("You are already sleeping"))
 		return
 	if(alert(src,"You sure you want to sleep for a while?","Sleep","Yes","No") == "Yes")
 		usr.sleeping = 20 //Short nap

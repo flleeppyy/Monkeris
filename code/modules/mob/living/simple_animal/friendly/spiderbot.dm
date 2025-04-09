@@ -218,7 +218,7 @@
 		return
 
 	if(!held_item)
-		to_chat(usr, "\red You have nothing to drop!")
+		to_chat(usr, span_red("You have nothing to drop!"))
 		return 0
 
 	if(istype(held_item, /obj/item/grenade))

@@ -209,7 +209,7 @@ var/list/mydirs = list(NORTH, SOUTH, EAST, WEST, SOUTHWEST, NORTHWEST, NORTHEAST
 
 /mob/living/simple_animal/hostile/proc/OpenFire(target_mob)
 	var/target = target_mob
-	visible_message("\red <b>[src]</b> [fire_verb] at [target]!", 1)
+	visible_message(span_danger("<b>[src]</b> [fire_verb] at [target]!"), 1)
 
 	if(rapid)
 		spawn(1)

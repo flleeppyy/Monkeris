@@ -230,7 +230,7 @@
 			delmob = TRUE
 
 	log_admin("[key_name(usr)] has used rudimentary transformation on [key_name(M)]. Transforming to [input["simplemake"]]; deletemob=[delmob]")
-	message_admins("\blue [key_name_admin(usr)] has used rudimentary transformation on [key_name_admin(M)]. Transforming to [input["simplemake"]]; deletemob=[delmob]", 1)
+	message_admins(span_blue("[key_name_admin(usr)] has used rudimentary transformation on [key_name_admin(M)]. Transforming to [input["simplemake"]]; deletemob=[delmob]"), 1)
 
 	switch(input["simplemake"])
 		if("observer")
@@ -331,7 +331,7 @@
 
 	log_admin("[key_name(usr)] edited [banned_key]'s ban. Reason: [reason] Duration: [duration]")
 	ban_unban_log_save("[key_name(usr)] edited [banned_key]'s ban. Reason: [reason] Duration: [duration]")
-	message_admins("\blue [key_name_admin(usr)] edited [banned_key]'s ban. Reason: [reason] Duration: [duration]", 1)
+	message_admins(span_blue("[key_name_admin(usr)] edited [banned_key]'s ban. Reason: [reason] Duration: [duration]"), 1)
 	Banlist.cd = "/base/[banfolder]"
 	Banlist["reason"] << reason
 	Banlist["temp"] << temp
@@ -479,7 +479,7 @@
 			if("Yes")
 
 				if(config.ban_legacy_system)
-					to_chat(usr, "\red Your server is using the legacy banning system, which does not support temporary job bans. Consider upgrading. Aborting ban.")
+					to_chat(usr, span_red("Your server is using the legacy banning system, which does not support temporary job bans. Consider upgrading. Aborting ban."))
 					return
 				var/mins = input(usr,"How long (in minutes)?","Ban time",1440) as num|null
 				if(!mins)
@@ -503,10 +503,10 @@
 						msg = job
 					else
 						msg += ", [job]"
-				message_admins("\blue [key_name_admin(usr)] banned [key_name_admin(M)] from [msg] for [mins] minutes", 1)
-				to_chat(M, "\red<BIG><B>You have been jobbanned by [usr.client.ckey] from: [msg].</B></BIG>")
-				to_chat(M, "\red <B>The reason is: [reason]</B>")
-				to_chat(M, "\red This jobban will be lifted in [mins] minutes.")
+				message_admins(span_blue("[key_name_admin(usr)] banned [key_name_admin(M)] from [msg] for [mins] minutes"), 1)
+				to_chat(M, span_red("<BIG><B>You have been jobbanned by [usr.client.ckey] from: [msg].</B></BIG>"))
+				to_chat(M, span_red("<B>The reason is: [reason]</B>"))
+				to_chat(M, span_red("This jobban will be lifted in [mins] minutes."))
 				input["jobban2"] = TRUE // lets it fall through and refresh
 				return TRUE
 			if("No")
@@ -522,10 +522,10 @@
 						jobban_fullban(M, job, "[reason]; By [usr.ckey] on [time2text(world.realtime)]")
 						if(!msg)	msg = job
 						else		msg += ", [job]"
-					message_admins("\blue [key_name_admin(usr)] banned [key_name_admin(M)] from [msg]", 1)
-					to_chat(M, "\red<BIG><B>You have been jobbanned by [usr.client.ckey] from: [msg].</B></BIG>")
-					to_chat(M, "\red <B>The reason is: [reason]</B>")
-					to_chat(M, "\red Jobban can be lifted only upon request.")
+					message_admins(span_blue("[key_name_admin(usr)] banned [key_name_admin(M)] from [msg]"), 1)
+					to_chat(M, span_red("<BIG><B>You have been jobbanned by [usr.client.ckey] from: [msg].</B></BIG>"))
+					to_chat(M, span_red("<B>The reason is: [reason]</B>"))
+					to_chat(M, span_red("Jobban can be lifted only upon request."))
 					input["jobban2"] = TRUE // lets it fall through and refresh
 					return TRUE
 			if("Cancel")
@@ -555,8 +555,8 @@
 				else
 					continue
 		if(msg)
-			message_admins("\blue [key_name_admin(usr)] unbanned [key_name_admin(M)] from [msg]", 1)
-			to_chat(M, "\red<BIG><B>You have been un-jobbanned by [usr.client.ckey] from [msg].</B></BIG>")
+			message_admins(span_blue("[key_name_admin(usr)] unbanned [key_name_admin(M)] from [msg]"), 1)
+			to_chat(M, span_red("<BIG><B>You have been un-jobbanned by [usr.client.ckey] from [msg].</B></BIG>"))
 			input["jobban2"] = TRUE // lets it fall through and refresh
 		return TRUE
 	return FALSE //we didn't do anything!
@@ -573,11 +573,11 @@
 			return
 		var/reason = sanitize(input("Please enter reason"))
 		if(!reason)
-			to_chat(M, "\red You have been kicked from the server")
+			to_chat(M, span_red("You have been kicked from the server"))
 		else
-			to_chat(M, "\red You have been kicked from the server: [reason]")
+			to_chat(M, span_red("You have been kicked from the server: [reason]"))
 		log_admin("[key_name(usr)] booted [key_name(M)].")
-		message_admins("\blue [key_name_admin(usr)] booted [key_name_admin(M)].", 1)
+		message_admins(span_blue("[key_name_admin(usr)] booted [key_name_admin(M)]."), 1)
 		del(M.client)
 
 
@@ -590,7 +590,7 @@
 	if(t)
 		if((alert("Do you want to unjobban [t]?","Unjobban confirmation", "Yes", "No") == "Yes") && t) //No more misclicks! Unless you do it twice.
 			log_admin("[key_name(usr)] removed [t]")
-			message_admins("\blue [key_name_admin(usr)] removed [t]", 1)
+			message_admins(span_blue("[key_name_admin(usr)] removed [t]"), 1)
 			jobban_remove(t)
 			input["ban"] = TRUE // lets it fall through and refresh
 			var/t_split = splittext(t, " - ")
@@ -632,17 +632,17 @@
 				return
 			AddBan(M.ckey, M.computer_id, reason, usr.ckey, 1, mins, delayed_ban = delayed)
 			ban_unban_log_save("[usr.client.ckey] has banned [M.ckey]. - Reason: [reason] - This will be removed in [mins] minutes.")
-			to_chat(M, "\red<BIG><B>You have been banned by [usr.client.ckey].\nReason: [reason].</B></BIG>")
-			to_chat(M, "\red This is a temporary ban, it will be removed in [mins] minutes.")
+			to_chat(M, span_red("<BIG><B>You have been banned by [usr.client.ckey].\nReason: [reason].</B></BIG>"))
+			to_chat(M, span_red("This is a temporary ban, it will be removed in [mins] minutes."))
 
 			source.DB_ban_record(BANTYPE_TEMP, M, mins, reason, delayed_ban = delayed)
 
 			if(config.banappeals)
-				to_chat(M, "\red To try to resolve this matter head to [config.banappeals]")
+				to_chat(M, span_red("To try to resolve this matter head to [config.banappeals]"))
 			else
-				to_chat(M, "\red No ban appeals URL has been set.")
+				to_chat(M, span_red("No ban appeals URL has been set."))
 			log_admin("[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis will be removed in [mins] minutes.")
-			message_admins("\blue[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis will be removed in [mins] minutes.")
+			message_admins(span_blue("[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis will be removed in [mins] minutes."))
 
 			if(!delayed)
 				del(M.client)
@@ -659,15 +659,15 @@
 				if("No")
 					AddBan(M.ckey, M.computer_id, reason, usr.ckey, 0, 0, delayed_ban = delayed)
 					no_ip = 1
-			to_chat(M, "\red<BIG><B>You have been banned by [usr.client.ckey].\nReason: [reason].</B></BIG>")
-			to_chat(M, "\red This is a permanent ban.")
+			to_chat(M, span_red("<BIG><B>You have been banned by [usr.client.ckey].\nReason: [reason].</B></BIG>"))
+			to_chat(M, span_red("This is a permanent ban."))
 			if(config.banappeals)
-				to_chat(M, "\red To try to resolve this matter head to [config.banappeals]")
+				to_chat(M, span_red("To try to resolve this matter head to [config.banappeals]"))
 			else
-				to_chat(M, "\red No ban appeals URL has been set.")
+				to_chat(M, span_red("No ban appeals URL has been set."))
 			ban_unban_log_save("[usr.client.ckey] has permabanned [M.ckey]. - Reason: [reason] - This is a permanent ban.")
 			log_admin("[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis is a permanent ban.")
-			message_admins("\blue[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis is a permanent ban.")
+			message_admins(span_blue("[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis is a permanent ban."))
 			var/banip = no_ip ? null : -1
 			source.DB_ban_record(BANTYPE_PERMA, M, -1, reason, banip, delayed_ban = delayed)
 
@@ -750,7 +750,7 @@
 	master_storyteller = input["c_mode2"]
 	set_storyteller(master_storyteller) //This does the actual work
 	log_admin("[key_name(usr)] set the storyteller to [master_storyteller].")
-	message_admins("\blue [key_name_admin(usr)] set the storyteller to [master_storyteller].", 1)
+	message_admins(span_blue("[key_name_admin(usr)] set the storyteller to [master_storyteller]."), 1)
 	source.Game() // updates the main game menu
 	world.save_storyteller(master_storyteller)
 	source.Topic(source, list("c_mode"=1))
@@ -770,7 +770,7 @@
 	M.say(speech)
 	speech = sanitize(speech) // Nah, we don't trust them
 	log_admin("[key_name(usr)] forced [key_name(M)] to say: [speech]")
-	message_admins("\blue [key_name_admin(usr)] forced [key_name_admin(M)] to say: [speech]")
+	message_admins(span_blue("[key_name_admin(usr)] forced [key_name_admin(M)] to say: [speech]"))
 
 /datum/admin_topic/forcesanity
 	keyword = "forcesanity"
@@ -825,7 +825,7 @@
 		return
 
 	L.revive()
-	message_admins("\red Admin [key_name_admin(usr)] healed / revived [key_name_admin(L)]!", 1)
+	message_admins(span_red("Admin [key_name_admin(usr)] healed / revived [key_name_admin(L)]!"), 1)
 	log_admin("[key_name(usr)] healed / Revived [key_name(L)]")
 
 
@@ -1013,7 +1013,7 @@
 	log_admin("[key_name(H)] got their cookie, spawned by [key_name(source.owner)]")
 	message_admins("[key_name(H)] got their cookie, spawned by [key_name(source.owner)]")
 
-	to_chat(H, "\blue Your prayers have been answered!! You received the <b>best cookie</b>!")
+	to_chat(H, span_blue("Your prayers have been answered!! You received the <b>best cookie</b>!"))
 
 
 /datum/admin_topic/bluespaceartillery
@@ -1087,7 +1087,7 @@
 
 		usr << browse(HTML_SKELETON_TITLE("Admin fax view", data), "window=[B.name]")
 	else
-		to_chat(usr, "\red The faxed item is not viewable. This is probably a bug, and should be reported on the tracker: [fax.type]")
+		to_chat(usr, span_red("The faxed item is not viewable. This is probably a bug, and should be reported on the tracker: [fax.type]"))
 
 /datum/admin_topic/adminfaxviewpage
 	keyword = "AdminFaxViewPage"

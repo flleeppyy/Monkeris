@@ -178,7 +178,7 @@
 	deadman = 1
 	START_PROCESSING(SSobj, src)
 	log_and_message_admins("is threatening to trigger a signaler deadman's switch")
-	usr.visible_message("\red [usr] moves their finger over [src]'s signal button...")
+	usr.visible_message(span_red("[usr] moves their finger over [src]'s signal button..."))
 
 /obj/item/device/assembly/signaler/Destroy()
 	SSradio.remove_object(src,frequency)

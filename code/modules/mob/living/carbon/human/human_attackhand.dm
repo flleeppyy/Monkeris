@@ -16,7 +16,7 @@
 		if(H.hand)
 			temp = H.organs_by_name[BP_L_ARM]
 		if(!temp || !temp.is_usable())
-			to_chat(H, "\red You can't use your hand.")
+			to_chat(H, span_red("You can't use your hand."))
 			return
 		H.stop_blocking()
 
@@ -33,7 +33,7 @@
 			var/damage = rand(0, 9)
 			if(!damage)
 				playsound(loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
-				visible_message("\red <B>[H] has attempted to punch [src]!</B>")
+				visible_message(span_red("<B>[H] has attempted to punch [src]!</B>"))
 				return 0
 			var/obj/item/organ/external/affecting = get_organ(ran_zone(H.targeted_organ))
 
@@ -42,11 +42,11 @@
 
 			playsound(loc, "punch", 25, 1, -1)
 
-			visible_message("\red <B>[H] has punched [src]!</B>")
+			visible_message(span_red("<B>[H] has punched [src]!</B>"))
 
 			damage_through_armor(damage, HALLOSS, affecting, ARMOR_MELEE)
 			if(damage >= 9)
-				visible_message("\red <B>[H] has weakened [src]!</B>")
+				visible_message(span_red("<B>[H] has weakened [src]!</B>"))
 				apply_effect(4, WEAKEN, getarmor(affecting, ARMOR_MELEE))
 
 			return

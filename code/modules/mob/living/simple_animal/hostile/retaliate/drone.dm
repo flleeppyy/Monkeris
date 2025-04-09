@@ -126,17 +126,17 @@
 		exploding = 0
 		if(!disabled)
 			if(prob(50))
-				src.visible_message("\blue [htmlicon] [src] suddenly shuts down!")
+				src.visible_message(span_blue("[htmlicon] [src] suddenly shuts down!"))
 			else
-				src.visible_message("\blue [htmlicon] [src] suddenly lies still and quiet.")
+				src.visible_message(span_blue("[htmlicon] [src] suddenly lies still and quiet."))
 			disabled = rand(150, 600)
 			walk(src,0)
 
 	if(exploding && prob(20))
 		if(prob(50))
-			src.visible_message("\red [htmlicon] [src] begins to spark and shake violenty!")
+			src.visible_message(span_red("[htmlicon] [src] begins to spark and shake violenty!"))
 		else
-			src.visible_message("\red [htmlicon] [src] sparks and shakes like it's about to explode!")
+			src.visible_message(span_red("[htmlicon] [src] sparks and shakes like it's about to explode!"))
 		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 		s.set_up(3, 1, src)
 		s.start()

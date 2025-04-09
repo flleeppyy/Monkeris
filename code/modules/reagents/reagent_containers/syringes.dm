@@ -160,7 +160,7 @@
 							// I think rig is advanced enough for this, and people will learn what causes this error
 							if(RIG)
 								playsound(src.loc, 'sound/machines/buzz-two.ogg', 30, 1, -3)
-								RIG.visible_message("\icon[RIG]\The [RIG] states \"Attention: User of this suit appears to be synthetic origin\".")
+								RIG.visible_message("[icon2html(RIG, hearers(RIG))]\The [RIG] states \"Attention: User of this suit appears to be synthetic origin\".")
 							return
 					// check without message
 					else if(!H.can_inject(user, FALSE))
@@ -264,7 +264,7 @@
 
 		if (target != user && H.getarmor(target_zone, ARMOR_MELEE) > 5 && prob(50))
 			for(var/mob/O in viewers(world.view, user))
-				O.show_message(text("\red <B>[user] tries to stab [target] in \the [hit_area] with [src.name], but the attack is deflected by armor!</B>"), 1)
+				O.show_message(text(span_red("<B>[user] tries to stab [target] in \the [hit_area] with [src.name], but the attack is deflected by armor!</B>")), 1)
 			user.remove_from_mob(src)
 			qdel(src)
 

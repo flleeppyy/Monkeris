@@ -146,9 +146,9 @@
 	while(locid < MAX_FIELDS)
 		var/istart = 0
 		if(links)
-			istart = findtext(info_links, "<span class=\"paper_field\">", laststart)
+			istart = findtext(info_links, "<span class='paper_field'>", laststart)
 		else
-			istart = findtext(info, "<span class=\"paper_field\">", laststart)
+			istart = findtext(info, "<span class='paper_field'>", laststart)
 
 		if(istart == 0)
 			return // No field found with matching id
@@ -229,7 +229,7 @@
 	//Count the fields
 	var/laststart = 1
 	while(fields < MAX_FIELDS)
-		var/i = findtext(t, "<span class=\"paper_field\">", laststart)	//</span>
+		var/i = findtext(t, "<span class='paper_field'>", laststart)	//</span>
 		if(i == 0)
 			break
 		laststart = i + 1
@@ -259,7 +259,7 @@
 				qdel(src)
 
 			else
-				to_chat(user, "\red You must hold \the [P] steady to burn \the [src].")
+				to_chat(user, span_red("You must hold \the [P] steady to burn \the [src]."))
 
 
 /obj/item/paper/Topic(href, href_list)

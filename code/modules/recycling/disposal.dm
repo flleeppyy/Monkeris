@@ -131,7 +131,7 @@
 
 	if(istype(I, /obj/item/storage/bag))
 		var/obj/item/storage/bag/T = I
-		to_chat(user, "\blue You empty the bag.")
+		to_chat(user, span_blue("You empty the bag."))
 		for(var/obj/item/O in T.contents)
 			T.remove_from_storage(O,src)
 		T.update_icon()
@@ -1201,7 +1201,7 @@
 		if(O.currTag)// Tag set
 			sortType = O.currTag
 			playsound(src.loc, 'sound/machines/twobeep.ogg', 100, 1)
-			to_chat(user, "\blue Changed filter to '[sortType]'.")
+			to_chat(user, span_blue("Changed filter to '[sortType]'."))
 			updatename()
 			updatedesc()
 

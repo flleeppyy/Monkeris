@@ -33,61 +33,61 @@
 
 /mob/get_view_variables_options()
 	return ..() + {"
-		<option value='?_src_=vars;mob_player_panel=\ref[src]'>Show player panel</option>
+		<option value='byond://?_src_=vars;mob_player_panel=\ref[src]'>Show player panel</option>
 		<option>---</option>
-		<option value='?_src_=vars;give_spell=\ref[src]'>Give Spell</option>
-		<option value='?_src_=vars;give_disease2=\ref[src]'>Give Disease</option>
-		<option value='?_src_=vars;give_disease=\ref[src]'>Give TG-style Disease</option>
-		<option value='?_src_=vars;godmode=\ref[src]'>Toggle Godmode</option>
-		<option value='?_src_=vars;build_mode=\ref[src]'>Toggle Build Mode</option>
+		<option value='byond://?_src_=vars;give_spell=\ref[src]'>Give Spell</option>
+		<option value='byond://?_src_=vars;give_disease2=\ref[src]'>Give Disease</option>
+		<option value='byond://?_src_=vars;give_disease=\ref[src]'>Give TG-style Disease</option>
+		<option value='byond://?_src_=vars;godmode=\ref[src]'>Toggle Godmode</option>
+		<option value='byond://?_src_=vars;build_mode=\ref[src]'>Toggle Build Mode</option>
 
-		<option value='?_src_=vars;make_skeleton=\ref[src]'>Make 2spooky</option>
+		<option value='byond://?_src_=vars;make_skeleton=\ref[src]'>Make 2spooky</option>
 
-		<option value='?_src_=vars;direct_control=\ref[src]'>Assume Direct Control</option>
-		<option value='?_src_=vars;drop_everything=\ref[src]'>Drop Everything</option>
+		<option value='byond://?_src_=vars;direct_control=\ref[src]'>Assume Direct Control</option>
+		<option value='byond://?_src_=vars;drop_everything=\ref[src]'>Drop Everything</option>
 
-		<option value='?_src_=vars;regenerateicons=\ref[src]'>Regenerate Icons</option>
-		<option value='?_src_=vars;addlanguage=\ref[src]'>Add Language</option>
-		<option value='?_src_=vars;remlanguage=\ref[src]'>Remove Language</option>
-		<option value='?_src_=vars;addorgan=\ref[src]'>Add Organ</option>
-		<option value='?_src_=vars;remorgan=\ref[src]'>Remove Organ</option>
+		<option value='byond://?_src_=vars;regenerateicons=\ref[src]'>Regenerate Icons</option>
+		<option value='byond://?_src_=vars;addlanguage=\ref[src]'>Add Language</option>
+		<option value='byond://?_src_=vars;remlanguage=\ref[src]'>Remove Language</option>
+		<option value='byond://?_src_=vars;addorgan=\ref[src]'>Add Organ</option>
+		<option value='byond://?_src_=vars;remorgan=\ref[src]'>Remove Organ</option>
 
-		<option value='?_src_=vars;fix_nano=\ref[src]'>Fix NanoUI</option>
+		<option value='byond://?_src_=vars;fix_nano=\ref[src]'>Fix NanoUI</option>
 
-		<option value='?_src_=vars;addverb=\ref[src]'>Add Verb</option>
-		<option value='?_src_=vars;remverb=\ref[src]'>Remove Verb</option>
+		<option value='byond://?_src_=vars;addverb=\ref[src]'>Add Verb</option>
+		<option value='byond://?_src_=vars;remverb=\ref[src]'>Remove Verb</option>
 		<option>---</option>
-		<option value='?_src_=vars;gib=\ref[src]'>Gib</option>
+		<option value='byond://?_src_=vars;gib=\ref[src]'>Gib</option>
 	"}
 
 /mob/living/carbon/human/get_view_variables_options()
 	return ..() + {"
-		<option value='?_src_=vars;setspecies=\ref[src]'>Set Species</option>
-		<option value='?_src_=vars;makeai=\ref[src]'>Make AI</option>
-		<option value='?_src_=vars;makerobot=\ref[src]'>Make cyborg</option>
-		<option value='?_src_=vars;makeslime=\ref[src]'>Make slime</option>
+		<option value='byond://?_src_=vars;setspecies=\ref[src]'>Set Species</option>
+		<option value='byond://?_src_=vars;makeai=\ref[src]'>Make AI</option>
+		<option value='byond://?_src_=vars;makerobot=\ref[src]'>Make cyborg</option>
+		<option value='byond://?_src_=vars;makeslime=\ref[src]'>Make slime</option>
 	"}
 
 /turf/get_view_variables_options()
 	return ..() + {"
-		<option value='?_src_=vars;teleport_to=\ref[src]'>Teleport to</option>
-		<option value='?_src_=vars;explode=\ref[src]'>Trigger explosion</option>
-		<option value='?_src_=vars;emp=\ref[src]'>Trigger EM pulse</option>
+		<option value='byond://?_src_=vars;teleport_to=\ref[src]'>Teleport to</option>
+		<option value='byond://?_src_=vars;explode=\ref[src]'>Trigger explosion</option>
+		<option value='byond://?_src_=vars;emp=\ref[src]'>Trigger EM pulse</option>
 	"}
 
 /atom/get_view_variables_options()
 	. = ..()
 	if(reagents)
-		. += "<option value='?_src_=vars;addreagent=\ref[src]'>Add reagent</option>"
+		. += "<option value='byond://?_src_=vars;addreagent=\ref[src]'>Add reagent</option>"
 
 
 /atom/movable/get_view_variables_options()
 	return ..() + {"
-		<option value='?_src_=vars;teleport_here=\ref[src]'>Teleport here</option>
-		<option value='?_src_=vars;teleport_to=\ref[src]'>Teleport to</option>
-		<option value='?_src_=vars;delall=\ref[src]'>Delete all of type</option>
-		<option value='?_src_=vars;explode=\ref[src]'>Trigger explosion</option>
-		<option value='?_src_=vars;emp=\ref[src]'>Trigger EM pulse</option>
+		<option value='byond://?_src_=vars;teleport_here=\ref[src]'>Teleport here</option>
+		<option value='byond://?_src_=vars;teleport_to=\ref[src]'>Teleport to</option>
+		<option value='byond://?_src_=vars;delall=\ref[src]'>Delete all of type</option>
+		<option value='byond://?_src_=vars;explode=\ref[src]'>Trigger explosion</option>
+		<option value='byond://?_src_=vars;emp=\ref[src]'>Trigger EM pulse</option>
 	"}
 
 // The following vars cannot be viewed by anyone

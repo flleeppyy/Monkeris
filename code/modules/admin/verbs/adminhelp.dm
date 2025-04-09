@@ -4,7 +4,7 @@
 	set name = "Adminhelp"
 
 	if(say_disabled)	//This is here to try to identify lag problems
-		to_chat(usr, "\red Speech is currently admin-disabled.")
+		to_chat(usr, span_red("Speech is currently admin-disabled."))
 		return
 
 	//handle muting and automuting
@@ -34,7 +34,7 @@
 	to_chat(src, "<font color='blue'>PM to-<b>Staff </b>: [msg]</font>", confidential = TRUE)
 
 	// Mentors won't see coloring of names on people with special_roles (Antags, etc.)
-	// var/mentor_msg = "\blue <b><font color=red>Request for Help: </font>[get_options_bar(mob, 4, 1, 1, 0)]:</b> [msg]"
+	// var/mentor_msg = span_blue("<b><font color=red>Request for Help: </font>[get_options_bar(mob, 4, 1, 1, 0)]:</b> [msg]")
 
 	// Send adminhelp message to Discord chat
 	send2adminchat(key_name(src), original_msg)

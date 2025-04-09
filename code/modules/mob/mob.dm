@@ -466,7 +466,7 @@
 	if(client.holder && (client.holder.rights & R_ADMIN))
 		is_admin = 1
 	else if(stat != DEAD || isnewplayer(src))
-		to_chat(usr, "\blue You must be observing to use this!")
+		to_chat(usr, span_blue("You must be observing to use this!"))
 		return
 
 	if(is_admin && stat == DEAD)

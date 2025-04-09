@@ -102,9 +102,9 @@
 
 		shock_damage *= 0.75	//take reduced damage
 		take_overall_damage(0, shock_damage)
-		visible_message("\red [src] was shocked by \the [source]!", \
-			"\red <B>Energy pulse detected, system damaged!</B>", \
-			"\red You hear an electrical crack")
+		visible_message(span_red("[src] was shocked by \the [source]!"), \
+			span_red("<B>Energy pulse detected, system damaged!</B>"), \
+			span_red("You hear an electrical crack"))
 		if(prob(20))
 			Stun(2)
 		return
@@ -254,7 +254,7 @@
 					to_chat(src, "\The [A.alarm_name()].")
 
 		if(alarm_raised)
-			to_chat(src, "<A HREF=?src=\ref[src];showalerts=1>\[Show Alerts\]</A>")
+			to_chat(src, "<A href='byond://?src=\ref[src];showalerts=1'>\[Show Alerts\]</A>")
 
 		for(var/datum/alarm_handler/AH in queued_alarms)
 			var/list/alarms = queued_alarms[AH]

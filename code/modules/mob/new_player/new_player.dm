@@ -167,7 +167,7 @@
 	if(href_list["late_join"])
 
 		if(SSticker.current_state != GAME_STATE_PLAYING)
-			to_chat(usr, "\red The round is either not ready, or has already finished...")
+			to_chat(usr, span_red("The round is either not ready, or has already finished..."))
 			return
 
 		// Warn the player if they are trying to spawn without a brain
@@ -283,7 +283,7 @@
 	if(src != usr)
 		return FALSE
 	if(SSticker.current_state != GAME_STATE_PLAYING)
-		to_chat(usr, "\red The round is either not ready, or has already finished...")
+		to_chat(usr, span_red("The round is either not ready, or has already finished..."))
 		return FALSE
 	if(!config.enter_allowed)
 		to_chat(usr, span_notice("There is an administrative lock on entering the game!"))

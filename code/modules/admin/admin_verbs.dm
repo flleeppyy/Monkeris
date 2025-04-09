@@ -322,11 +322,11 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	if(holder && mob)
 		if(mob.invisibility == INVISIBILITY_OBSERVER)
 			mob.invisibility = initial(mob.invisibility)
-			to_chat(mob, "\red <b>Invisimin off. Invisibility reset.</b>")
+			to_chat(mob, span_red("<b>Invisimin off. Invisibility reset.</b>"))
 			mob.alpha = max(mob.alpha + 100, 255)
 		else
 			mob.invisibility = INVISIBILITY_OBSERVER
-			to_chat(mob, "\blue <b>Invisimin on. You are now as invisible as a ghost.</b>")
+			to_chat(mob, span_blue("<b>Invisimin on. You are now as invisible as a ghost.</b>"))
 			mob.alpha = max(mob.alpha - 100, 0)
 
 /datum/verbs/menu/Admin/verb/playerpanel()
@@ -519,7 +519,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 			var/multiplicative_falloff = input("Multiplicative falloff for this explosion?") as num
 			var/eflags = additive_falloff ? EFLAG_ADDITIVEFALLOFF : 0 | multiplicative_falloff ? EFLAG_EXPONENTIALFALLOFF : 0
 			explosion(epicenter, explosion_power, explosion_falloff, eflags)
-	message_admins("\blue [ckey] created an admin explosion at [epicenter.loc].")
+	message_admins(span_blue("[ckey] created an admin explosion at [epicenter.loc]."))
 
 /client/proc/make_sound(obj/O in range(world.view))
 	set category = "Special Verbs"
@@ -532,7 +532,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 		for (var/mob/V in hearers(O))
 			V.show_message(message, 2)
 		log_admin("[key_name(usr)] made [O] at [O.x], [O.y], [O.z]. make a sound")
-		message_admins("\blue [key_name_admin(usr)] made [O] at [O.x], [O.y], [O.z]. make a sound", 1)
+		message_admins(span_blue("[key_name_admin(usr)] made [O] at [O.x], [O.y], [O.z]. make a sound"), 1)
 
 /client/proc/togglebuildmodeself()
 	set name = "Toggle Build Mode Self"
@@ -578,7 +578,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 
 	var/msg = "[SSair.can_fire ? "Enabled" : "Disabled"] SSair processing."
 	log_admin("[key_name(usr)] used 'kill air'. [msg]")
-	message_admins("\blue [key_name_admin(usr)] used 'kill air'. [msg]", 1)
+	message_admins(span_blue("[key_name_admin(usr)] used 'kill air'. [msg]"), 1)
 
 /client/proc/readmin_self()
 	set name = "Readmin"
@@ -757,7 +757,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	to_chat(T, span_notice("Move on."))
 
 	log_admin("[key_name(usr)] told [key_name(T)] to man up and deal with it.")
-	message_admins("\blue [key_name_admin(usr)] told [key_name(T)] to man up and deal with it.", 1)
+	message_admins(span_blue("[key_name_admin(usr)] told [key_name(T)] to man up and deal with it."), 1)
 
 /client/proc/global_man_up()
 	set category = "Fun"
@@ -769,7 +769,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 		T << 'sound/voice/ManUp1.ogg'
 
 	log_admin("[key_name(usr)] told everyone to man up and deal with it.")
-	message_admins("\blue [key_name_admin(usr)] told everyone to man up and deal with it.", 1)
+	message_admins(span_blue("[key_name_admin(usr)] told everyone to man up and deal with it."), 1)
 
 /client/proc/skill_issue(mob/T as mob in SSmobs.mob_list | SShumans.mob_list)
 	set category = "Fun"
@@ -780,7 +780,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	to_chat(T, span_notice("Git gud."))
 
 	log_admin("[key_name(usr)] told [key_name(T)] that it is a skill issue and to git gud.")
-	message_admins("\blue [key_name_admin(usr)] told [key_name(T)] that it is a skill issue and to git gud.", 1)
+	message_admins(span_blue("[key_name_admin(usr)] told [key_name(T)] that it is a skill issue and to git gud."), 1)
 
 /client/proc/toggleUIDebugMode()
 	set category = "Debug"
@@ -824,7 +824,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	portal_2.set_target(get_turf(portal_1))
 
 	log_admin("[key_name(usr)] created portals from ([x_1],[y_1],[z_1]) to ([x_2],[y_2],[z_2]).")
-	message_admins("\blue [key_name_admin(usr)] created portals from ([x_1],[y_1],[z_1]) to ([x_2],[y_2],[z_2]).", 1)
+	message_admins(span_blue("[key_name_admin(usr)] created portals from ([x_1],[y_1],[z_1]) to ([x_2],[y_2],[z_2])."), 1)
 
 /client/proc/manage_custom_kits()
 	set category = "Fun"

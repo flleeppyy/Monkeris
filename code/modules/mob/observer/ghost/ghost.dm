@@ -233,10 +233,10 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		return
 	if(medHUD)
 		medHUD = 0
-		to_chat(src, "\blue <B>Medical HUD Disabled</B>")
+		to_chat(src, span_blue("<B>Medical HUD Disabled</B>"))
 	else
 		medHUD = 1
-		to_chat(src, "\blue <B>Medical HUD Enabled</B>")
+		to_chat(src, span_blue("<B>Medical HUD Enabled</B>"))
 
 /mob/observer/ghost/verb/toggle_antagHUD()
 	set category = "Ghost"
@@ -247,11 +247,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		return
 	var/mentor = is_mentor(usr.client)
 	if(!config.antag_hud_allowed && (!client.holder || mentor))
-		to_chat(src, "\red Admins have disabled this for this round.")
+		to_chat(src, span_red("Admins have disabled this for this round."))
 		return
 	var/mob/observer/ghost/M = src
 	if(jobban_isbanned(M, "AntagHUD"))
-		to_chat(src, "\red <B>You have been banned from using this feature</B>")
+		to_chat(src, span_red("<B>You have been banned from using this feature</B>"))
 		return
 	if(config.antag_hud_restricted && !M.has_enabled_antagHUD && (!client.holder || mentor))
 		var/response = alert(src, "If you turn this on, you will not be able to take any part in the round.","Are you sure you want to turn this feature on?","Yes","No")
@@ -261,10 +261,10 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		M.has_enabled_antagHUD = 1
 	if(M.antagHUD)
 		M.antagHUD = 0
-		to_chat(src, "\blue <B>AntagHUD Disabled</B>")
+		to_chat(src, span_blue("<B>AntagHUD Disabled</B>"))
 	else
 		M.antagHUD = 1
-		to_chat(src, "\blue <B>AntagHUD Enabled</B>")
+		to_chat(src, span_blue("<B>AntagHUD Enabled</B>"))
 
 /mob/observer/ghost/proc/dead_tele(A in SSmapping.ghostteleportlocs)
 	set category = "Ghost"
@@ -385,11 +385,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 /mob/observer/ghost/memory()
 	set hidden = 1
-	to_chat(src, "\red You are dead! You have no mind to store memory!")
+	to_chat(src, span_red("You are dead! You have no mind to store memory!"))
 
 /mob/observer/ghost/add_memory()
 	set hidden = 1
-	to_chat(src, "\red You are dead! You have no mind to store memory!")
+	to_chat(src, span_red("You are dead! You have no mind to store memory!"))
 
 
 /mob/observer/ghost/verb/analyze_air()
@@ -407,16 +407,16 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	var/pressure = environment.return_pressure()
 	var/total_moles = environment.total_moles
 
-	to_chat(src, "\blue <B>Results:</B>")
+	to_chat(src, span_blue("<B>Results:</B>"))
 	if(abs(pressure - ONE_ATMOSPHERE) < 10)
-		to_chat(src, "\blue Pressure: [round(pressure,0.1)] kPa")
+		to_chat(src, span_blue("Pressure: [round(pressure,0.1)] kPa"))
 	else
-		to_chat(src, "\red Pressure: [round(pressure,0.1)] kPa")
+		to_chat(src, span_red("Pressure: [round(pressure,0.1)] kPa"))
 	if(total_moles)
 		for(var/g in environment.gas)
-			to_chat(src, "\blue [gas_data.name[g]]: [round((environment.gas[g] / total_moles) * 100)]% ([round(environment.gas[g], 0.01)] moles)")
-		to_chat(src, "\blue Temperature: [round(environment.temperature-T0C,0.1)]&deg;C ([round(environment.temperature,0.1)]K)")
-		to_chat(src, "\blue Heat Capacity: [round(environment.heat_capacity(),0.1)]")
+			to_chat(src, span_blue("[gas_data.name[g]]: [round((environment.gas[g] / total_moles) * 100)]% ([round(environment.gas[g], 0.01)] moles)"))
+		to_chat(src, span_blue("Temperature: [round(environment.temperature-T0C,0.1)]&deg;C ([round(environment.temperature,0.1)]K)"))
+		to_chat(src, span_blue("Heat Capacity: [round(environment.heat_capacity(),0.1)]"))
 
 
 /mob/observer/verb/become_mouse()

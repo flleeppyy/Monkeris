@@ -8,7 +8,7 @@ var/global/floorIsLava = 0
 
 ////////////////////////////////
 /proc/message_admins(msg)
-	msg = "<span class=\"admin\"><span class=\"prefix\">ADMIN LOG:</span> <span class=\"message\">[msg]</span></span>"
+	msg = "<span class='admin'><span class='prefix'>ADMIN LOG:</span> <span class='message'>[msg]</span></span>"
 	to_chat(GLOB.admins,
 		type = MESSAGE_TYPE_ADMINLOG,
 		html = msg,
@@ -16,7 +16,7 @@ var/global/floorIsLava = 0
 
 /proc/msg_admin_attack(text) //Toggleable Attack Messages
 	log_attack(text)
-	var/rendered = "<span class=\"log_message\"><span class=\"prefix\">ATTACK:</span> <span class=\"message\">[text]</span></span>"
+	var/rendered = "<span class='log_message'><span class='prefix'>ATTACK:</span> <span class='message'>[text]</span></span>"
 	for(var/client/C in GLOB.admins)
 		if(R_ADMIN & C.holder.rights)
 			if(C.get_preference_value(/datum/client_preference/staff/show_attack_logs) == GLOB.PREF_SHOW)
@@ -708,7 +708,7 @@ var/global/floorIsLava = 0
 	else
 		to_chat(world, "<B>New players may now enter the game.</B>")
 	log_admin("[key_name(usr)] toggled new player game entering.")
-	message_admins("\blue [key_name_admin(usr)] toggled new player game entering.", 1)
+	message_admins(span_blue("[key_name_admin(usr)] toggled new player game entering."), 1)
 	world.update_status()
 
 /datum/admins/proc/toggleAI()
@@ -737,7 +737,7 @@ var/global/floorIsLava = 0
 		to_chat(world, "<B>You may now respawn.</B>")
 	else
 		to_chat(world, "<B>You may no longer respawn :(</B>")
-	message_admins("\blue [key_name_admin(usr)] toggled respawn to [config.abandon_allowed ? "On" : "Off"].", 1)
+	message_admins(span_blue("[key_name_admin(usr)] toggled respawn to [config.abandon_allowed ? "On" : "Off"]."), 1)
 	log_admin("[key_name(usr)] toggled respawn to [config.abandon_allowed ? "On" : "Off"].")
 	world.update_status()
 
@@ -801,7 +801,7 @@ var/global/floorIsLava = 0
 		return
 	if( alert("Reboot server?",,"Yes","No") == "No")
 		return
-	to_chat(world, "\red <b>Rebooting world!</b> \blue Initiated by [usr.client.holder.fakekey ? "Admin" : usr.key]!")
+	to_chat(world, span_red("<b>Rebooting world!</b> \blue Initiated by [usr.client.holder.fakekey ? "Admin" : usr.key]!"))
 	log_admin("[key_name(usr)] initiated an immediate reboot.")
 	world.Reboot()
 
@@ -929,7 +929,7 @@ var/global/floorIsLava = 0
 	else
 		to_chat(world, "<B>Guests may now enter the game.</B>")
 	log_admin("[key_name(usr)] toggled guests game entering [config.guests_allowed?"":"dis"]allowed.")
-	message_admins("\blue [key_name_admin(usr)] toggled guests game entering [config.guests_allowed?"":"dis"]allowed.", 1)
+	message_admins(span_blue("[key_name_admin(usr)] toggled guests game entering [config.guests_allowed?"":"dis"]allowed."), 1)
 
 /datum/admins/proc/toggle_tts()
 	set category = "Server"
@@ -943,7 +943,7 @@ var/global/floorIsLava = 0
 
 	to_chat(world, "<B>The text-to-speech has been globally [config.tts_enabled ? "enabled" : "disabled"]!</B>")
 
-	message_admins("\blue [key_name_admin(usr)] set text-to-speech to [config.tts_enabled ? "On" : "Off"].", 1)
+	message_admins(span_blue("[key_name_admin(usr)] set text-to-speech to [config.tts_enabled ? "On" : "Off"]."), 1)
 	log_admin("[key_name(usr)] set text-to-speech to [config.tts_enabled ? "On" : "Off"].")
 
 /datum/admins/proc/toggle_tts_cache()
@@ -952,7 +952,7 @@ var/global/floorIsLava = 0
 
 	config.tts_cache = !config.tts_cache
 
-	message_admins("\blue [key_name_admin(usr)] set text-to-speech caching to [config.tts_cache ? "On" : "Off"].", 1)
+	message_admins(span_blue("[key_name_admin(usr)] set text-to-speech caching to [config.tts_cache ? "On" : "Off"]."), 1)
 	log_admin("[key_name(usr)] set text-to-speech caching to [config.tts_cache ? "On" : "Off"].")
 
 /datum/admins/proc/check_tts_stat()
@@ -998,7 +998,7 @@ var/global/floorIsLava = 0
 	LIBCALL(RUST_G, "file_write")("[seed_value]", "sound/tts_cache/[seed_name]/seed.txt")
 	LIBCALL(RUST_G, "file_write")("[seed_value]", "sound/tts_scrambled/[seed_name]/seed.txt")
 
-	message_admins("\blue [key_name_admin(usr)] added text-to-speech seed \"[seed_value]\", named \"[seed_name]\".", 1)
+	message_admins(span_blue("[key_name_admin(usr)] added text-to-speech seed \"[seed_value]\", named \"[seed_name]\"."), 1)
 	log_admin("[key_name(usr)] added text-to-speech seed \"[seed_value]\", named \"[seed_name]\".")
 
 /datum/admins/proc/select_tts_seed()

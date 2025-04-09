@@ -163,7 +163,7 @@
 
 	if(is_train_head() && ishuman(load))
 		var/mob/living/carbon/human/D = load
-		to_chat(D, "\red \b You ran over [H]!")
+		to_chat(D, span_red("\b You ran over [H]!"))
 		visible_message("<B>\red \The [src] ran over [H]!</B>")
 		attack_log += text("\[[time_stamp()]\] <font color='red'>ran over [H.name] ([H.ckey]), driven by [D.name] ([D.ckey])</font>")
 		msg_admin_attack("[D.name] ([D.ckey]) ran over [H.name] ([H.ckey]). [ADMIN_JMP(src)]")

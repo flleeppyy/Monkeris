@@ -6,7 +6,7 @@
 	set category = "IC"
 
 	if(say_disabled)	//This is here to try to identify lag problems
-		to_chat(usr, "\red Speech is currently admin-disabled.")
+		to_chat(usr, span_red("Speech is currently admin-disabled."))
 		return
 
 	if(ishuman(src))
@@ -30,7 +30,7 @@
 	set category = "IC"
 
 	if(say_disabled)	//This is here to try to identify lag problems
-		to_chat(usr, "\red Speech is currently admin-disabled.")
+		to_chat(usr, span_red("Speech is currently admin-disabled."))
 		return
 
 	if(ishuman(src))
