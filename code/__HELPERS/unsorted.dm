@@ -1235,13 +1235,6 @@ var/list/FLOORITEMS = list(
 	else
 		return 0
 
-//gives us the stack trace from CRASH() without ending the current proc.
-/proc/stack_trace(msg)
-	CRASH(msg)
-
-/datum/proc/stack_trace(msg)
-	CRASH(msg)
-
 /proc/pass(...)
 	return
 

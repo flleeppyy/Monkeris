@@ -98,7 +98,7 @@
 
 /obj/item/reagent_containers/dropper/update_icon()
 	cut_overlays()
-	if(reagents.total_volume)
+	if(reagents?.total_volume)
 		var/mutable_appearance/filling = mutable_appearance('icons/obj/reagentfillings.dmi', "dropper")
 		filling.color = reagents.get_color()
 		add_overlay(filling)

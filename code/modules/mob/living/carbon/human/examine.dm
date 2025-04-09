@@ -50,7 +50,9 @@
 		if(istype(w_uniform,/obj/item/clothing/under))
 			var/obj/item/clothing/under/U = w_uniform
 			if(U.accessories.len)
-				tie_msg += ". Attached to it is [lowertext(english_list(U.accessories))]"
+				tie_msg += ". Attached to it is:"
+				for (var/obj/accessory in U.accessories)
+					tie_msg += "\n • [icon2html(accessory, user)] \A [accessory]"
 
 		if(w_uniform.blood_DNA)
 			msg += "[span_warning("[T.He] [T.is] wearing [icon2html(w_uniform, user)] [w_uniform.gender==PLURAL?"some":"a"] [(w_uniform.blood_color != "#030303") ? "blood" : "oil"]-stained [w_uniform.name][tie_msg]!")]\n"
@@ -66,10 +68,19 @@
 
 	//suit/armour
 	if(wear_suit)
+		var/tie_msg
+		if(istype(wear_suit, /obj/item/clothing/suit))
+			var/obj/item/clothing/suit/U = wear_suit
+			if(U.accessories.len)
+				tie_msg += ". Attached to it is:"
+				for (var/obj/accessory in U.accessories)
+					tie_msg += "\n • [icon2html(accessory, user)] \A [accessory]"
+
 		if(wear_suit.blood_DNA)
 			msg += "[span_warning("[T.He] [T.is] wearing [icon2html(wear_suit, user)] [wear_suit.gender==PLURAL?"some":"a"] [(wear_suit.blood_color != "#030303") ? "blood" : "oil"]-stained [wear_suit.name]!")]\n"
 		else
-			msg += "[T.He] [T.is] wearing [icon2html(wear_suit, user)] \a [wear_suit].\n"
+			msg += "[T.He] [T.is] wearing [icon2html(wear_suit, user)] \a [wear_suit][tie_msg].\n"
+
 
 		//suit/armour storage
 		if(s_store && !skipsuitstorage)
