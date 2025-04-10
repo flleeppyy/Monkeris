@@ -165,11 +165,11 @@ SUBSYSTEM_DEF(garbage)
 				return
 			continue
 
-		var/GCd_at_time = L[1]
+		var/GCd_at_time = L[GC_QUEUE_ITEM_QUEUE_TIME]
 		if(GCd_at_time > cut_off_time)
 			break // Everything else is newer, skip them
 		count++
-		var/refID = L[2]
+		var/refID = L[GC_QUEUE_ITEM_REF]
 		var/datum/D
 		D = locate(refID)
 
@@ -207,7 +207,9 @@ SUBSYSTEM_DEF(garbage)
 				var/type = D.type
 				var/datum/qdel_item/I = items[type]
 
-				log_world("## TESTING: GC: -- \ref[D] | [type] was unable to be GC'd --")
+				var/message = "## TESTING: GC: -- [text_ref(D)] | [type] was unable to be GC'd --"
+				message = "[message] (ref count of [refcount(D)])"
+				log_world(message)
 				#ifdef TESTING
 				for(var/c in GLOB.admins) //Using testing() here would fill the logs with ADMIN_VV garbage
 					var/client/admin = c
@@ -224,7 +226,8 @@ SUBSYSTEM_DEF(garbage)
 					#endif
 					continue
 			if (GC_QUEUE_HARDDELETE)
-				HardDelete(D)
+				if(!HardDelete(D))
+					D = null
 				if (MC_TICK_CHECK)
 					return
 				continue

@@ -8,13 +8,41 @@ var/total_runtimes_skipped = 0
 
 #ifdef DEBUG
 /world/Error(exception/e, datum/e_src)
-	if(!istype(e)) // Something threw an unusual exception
-		log_to_dd("\[[time_stamp()]] Uncaught exception: [e]")
-		return ..()
-	if(!islist(error_last_seen)) // A runtime is occurring too early in start-up initialization
+	total_runtimes++
+
+	if(!istype(e)) //Something threw an unusual exception
+		log_world("uncaught runtime error: [e]")
 		return ..()
 
-	total_runtimes++
+	//this is snowflake because of a byond bug (ID:2306577), do not attempt to call non-builtin procs in this if
+	if(copytext(e.name, 1, 32) == "Maximum recursion level reached")//32 == length() of that string + 1
+		//log to world while intentionally triggering the byond bug.
+		log_world("runtime error: [e.name]\n[e.desc]")
+		//if we got to here without silently ending, the byond bug has been fixed.
+		log_world("The bug with recursion runtimes has been fixed. Please remove the snowflake check from world/Error in [__FILE__]:[__LINE__]")
+		return //this will never happen.
+
+	else if(copytext(e.name, 1, 18) == "Out of resources!")//18 == length() of that string + 1
+		log_world("BYOND out of memory. Restarting ([e?.file]:[e?.line])")
+		TgsEndProcess()
+		. = ..()
+		Reboot(reason = 1)
+		return
+
+	var/static/regex/stack_workaround = regex("[WORKAROUND_IDENTIFIER](.+?)[WORKAROUND_IDENTIFIER]")
+
+	if(!error_last_seen) // A runtime is occurring too early in start-up initialization
+		return ..()
+
+	if(!islist(error_last_seen))
+		return ..() //how the fuck?
+
+	if(stack_workaround.Find(e.name))
+		var/list/data = json_decode(stack_workaround.group[1])
+		e.file = data[1]
+		e.line = data[2]
+		e.name = stack_workaround.Replace(e.name, "")
+
 	var/erroruid = "[e.file]:[e.line]"
 	var/last_seen = error_last_seen[erroruid]
 	var/cooldown = error_cooldown[erroruid] || 0

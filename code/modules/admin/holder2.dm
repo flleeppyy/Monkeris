@@ -58,9 +58,8 @@ GLOBAL_PROTECT(href_token)
 		owner.add_admin_verbs()
 
 /datum/admins/proc/try_give_devtools(client/C = usr)
-	if(!check_rights(R_DEBUG, C = C) || owner.byond_version < 516)
+	if(!check_rights(R_DEBUG, C = C))
 		return
-	to_chat(C, span_warning("516 notice: Attempting to give you devtools, may or may not work."))
 	winset(C, null, "browser-options=byondstorage,find,refresh,devtools")
 
 /datum/admins/proc/try_give_profiling(client/C = usr)

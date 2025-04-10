@@ -14,18 +14,14 @@
 	var/list/origin_coords = get_hand_pixels()
 
 	if(!origin_coords)
-		stack_trace("NO ORIGIN COORDS")
 		return
 
 	if(QDELETED(target))
-		stack_trace("TARGET DELETED!")
 		return
 
 	var/turf/owner_loc = loc
 	if(!isturf(owner_loc) || (!isturf(target.loc) && !isturf(target)))
-		stack_trace("NO TURF")
 		return
-
 
 	var/obj/effect/abstract/interact/particle = new(null)
 
