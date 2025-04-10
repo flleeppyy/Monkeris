@@ -97,14 +97,9 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 	if (stamp)
 		authmsg += "[stamp]<br>"
 
-	var/all_hearers = list()
-	for (var/obj/machinery/requests_console/Console in allConsoles)
-		all_hearers |= hearers(Console)
 
-	var/our_once_icon
 	for (var/obj/machinery/requests_console/Console in allConsoles)
-		// for efficiency, because icon2html is expensive, we're going to create ONE icon, then give it to everyone.
-		our_once_icon ||= icon2html(Console, all_hearers)
+		var/htmlicon = icon2html(Console, hearers(get_turf(Console)))
 
 		if (ckey(Console.department) == ckey(recipient))
 			if(Console.inoperable())
@@ -117,12 +112,12 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 				if(2)
 					if(!Console.silent)
 						playsound(Console.loc, 'sound/machines/twobeep.ogg', 50, 1)
-						Console.audible_message("[our_once_icon] *The Requests Console beeps: 'PRIORITY Alert in [sender]'")
+						Console.audible_message("[htmlicon] *The Requests Console beeps: 'PRIORITY Alert in [sender]'")
 					Console.message_log += "<B><FONT color='red'>High Priority message from <A href='byond://?src=\ref[Console];write=[sender]'>[sender]</A></FONT></B><BR>[authmsg]"
 				else
 					if(!Console.silent)
 						playsound(Console.loc, 'sound/machines/twobeep.ogg', 50, 1)
-						Console.audible_message("[our_once_icon] *The Requests Console beeps: 'Message from [sender]'")
+						Console.audible_message("[htmlicon] *The Requests Console beeps: 'Message from [sender]'")
 					Console.message_log += "<B>Message from <A href='byond://?src=\ref[Console];write=[sender]'>[sender]</A></B><BR>[authmsg]"
 			Console.set_light(2)
 

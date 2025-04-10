@@ -394,7 +394,7 @@
 		return //don't let you cremate something twice or w/e
 
 	if(contents.len <= 0)
-		for (var/mob/M in viewers(src))
+		for (var/mob/M in viewers(get_turf(src)))
 			M.show_message(span_warning("You hear a hollow crackle."), 1)
 			return
 
@@ -403,7 +403,7 @@
 			to_chat(usr, "You get the feeling that you shouldn't cremate one of the items in the cremator.")
 			return
 
-		for (var/mob/M in viewers(src))
+		for (var/mob/M in viewers(get_turf(src)))
 			M.show_message(span_warning("You hear a roar as the crematorium activates."), 1)
 
 		cremating = 1

@@ -79,6 +79,7 @@
 			continue
 		qdel(timer)
 	SSnano.close_uis(src)
+	SStgui.close_uis(src)
 
 	//BEGIN: ECS SHIT
 	signal_enabled = FALSE

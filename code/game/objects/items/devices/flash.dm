@@ -158,7 +158,7 @@
 			sleep(5)
 			qdel(animation)
 
-	for(var/mob/living/carbon/M in oviewers(3, null))
+	for(var/mob/living/carbon/M in oviewers(3, get_turf(src)))
 		var/safety = M.eyecheck()
 		if(safety < FLASH_PROTECTION_MODERATE)
 			M.flash(0, FALSE, FALSE, TRUE)

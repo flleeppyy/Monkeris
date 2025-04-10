@@ -1061,7 +1061,7 @@ There are 9 wires.
 	else if (secured_wires)
 		lock()
 
-	for (var/mob/O in viewers(src, null))
+	for (var/mob/O in viewers(get_turf(src)))
 		if ((O.client && !( O.blinded )))
 			O.show_message("[name]'s control panel bursts open, sparks spewing out!")
 

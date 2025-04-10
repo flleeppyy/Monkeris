@@ -152,7 +152,7 @@
 	if(has_brain && prob(1))
 		if(prob(1))
 			// If I did my calc right, this should happen once every 2 hours
-			var/our_hearers = hearers(src, null)
+			var/our_hearers = hearers(get_turf(src), null)
 			var/htmlicon = icon2html(src, our_hearers)
 			for(var/mob/O in our_hearers)
 				O.show_message("[htmlicon] <b>\The [src]</b> says, \"You s-s-saved me... w-why?\"", 2)
@@ -207,7 +207,7 @@
 		"...!" = 31
 		))
 
-	var/our_hearers = hearers(src, null)
+	var/our_hearers = hearers(get_turf(src))
 	for(var/mob/O as anything in our_hearers)
 		O.show_message("[icon2html(src, our_hearers)] <b>\The [src]</b> says, \"[message]\"", 2)
 

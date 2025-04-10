@@ -71,7 +71,7 @@
 //self repair systems have a chance to bring the drone back to life
 /mob/living/simple_animal/hostile/retaliate/malf_drone/Life()
 
-	var/htmlicon = icon2html(src, viewers(src))
+	var/htmlicon = icon2html(src, viewers(get_turf(src)))
 	//emps and lots of damage can temporarily shut us down
 	if(disabled > 0)
 		stat = UNCONSCIOUS

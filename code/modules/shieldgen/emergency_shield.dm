@@ -233,7 +233,7 @@
 	if(is_open)
 		to_chat(user, "The panel must be closed before operating this machine.")
 		return
-	var/iconhtml = icon2html(src, hearers(src))
+	var/iconhtml = icon2html(src, hearers(get_turf(src)))
 	if (src.active)
 		user.visible_message(span_blue("[iconhtml] [user] deactivated the shield generator."), \
 			span_blue("[iconhtml] You deactivate the shield generator."), \

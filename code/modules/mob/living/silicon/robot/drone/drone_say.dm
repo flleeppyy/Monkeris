@@ -24,7 +24,7 @@
 		if (stat)
 			return 0
 
-		var/list/listeners = hearers(5,src)
+		var/list/listeners = hearers(5, get_turf(src))
 		listeners |= src
 
 		for(var/mob/living/silicon/D in listeners)

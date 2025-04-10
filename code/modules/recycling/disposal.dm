@@ -200,7 +200,7 @@
 		target.simple_move_animation(src)
 		target.forceMove(src)
 
-		for (var/mob/C in viewers(src))
+		for (var/mob/C in viewers(get_turf(src)))
 			if(C == user)
 				continue
 			C.show_message(msg, 3)
@@ -615,27 +615,16 @@
 
 	// called when player tries to move while in a pipe
 /obj/structure/disposalholder/relaymove(mob/user as mob)
-
-	if(!isliving(user))
+	if(!isliving(user) || user.incapacitated())
 		return
 
-	var/mob/living/U = user
-
-	if (U.stat || U.last_special <= world.time)
-		return
-
-	U.last_special = world.time+100
-
-	if (src.loc)
-		for (var/mob/M in hearers(src.loc.loc))
-			to_chat(M, "<FONT size=[max(0, 5 - get_dist(src, M))]>CLONG, clong!</FONT>")
-
-	playsound(src.loc, 'sound/effects/clang.ogg', 50, 0, 0)
+	for(var/mob/M in range(5, get_turf(src)))
+		M.show_message("<FONT size=[max(0, 5 - get_dist(src, M))]>CLONG, clong!</FONT>", MSG_AUDIBLE)
+	playsound(src.loc, 'sound/effects/clang.ogg', 50, FALSE, FALSE)
 
 	// called to vent all gas in holder to a location
 /obj/structure/disposalholder/proc/vent_gas(var/atom/location)
 	location.assume_air(gas)  // vent all gas to turf
-	return
 
 /obj/structure/disposalholder/Destroy()
 	qdel(gas)

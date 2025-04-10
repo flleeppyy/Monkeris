@@ -71,7 +71,7 @@
 		if(M in src.stomach_contents)
 			src.stomach_contents.Remove(M)
 		M.loc = src.loc
-		for(var/mob/N in viewers(src, null))
+		for(var/mob/N in viewers(get_turf(src)))
 			if(N.client)
 				N.show_message(span_red("<B>[M] bursts out of [src]!</B>"), 2)
 	..()

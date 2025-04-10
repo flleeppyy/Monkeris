@@ -142,7 +142,7 @@
 	pulse(1)
 
 	if(!holder)
-		var/our_hearers = hearers(1, src.loc)
+		var/our_hearers = hearers(1, get_turf(src))
 		var/htmlicon = icon2html(src, our_hearers)
 		for(var/mob/O in our_hearers)
 			O.show_message("[htmlicon] *beep* *beep*", 3, "*beep* *beep*", 2)
@@ -230,9 +230,9 @@
 	var/local_message = ""
 	switch(signal.data["message"])
 		if("DATA_DOOR_OPENED")
-			local_message = "[icon2html(src, hearers(src))] beeps twice."
+			local_message = "[icon2html(src, hearers(get_turf(src)))] beeps twice."
 		if("DATA_DOOR_CLOSED")
-			local_message = "[icon2html(src, hearers(src))] beeps once."
+			local_message = "[icon2html(src, hearers(get_turf(src)))] beeps once."
 		if("CMD_DOOR_OPEN")
 			return
 		if("CMD_DOOR_CLOSE")
@@ -242,7 +242,7 @@
 		if("CMD_DOOR_STATE")
 			return
 		else
-			local_message = "[icon2html(src, hearers(src))] beeps ominously."
+			local_message = "[icon2html(src, hearers(get_turf(src)))] beeps ominously."
 	last_message = world.timeofday + 1 SECONDS
 
 	for(var/mob/O in hearers(1, src.loc))

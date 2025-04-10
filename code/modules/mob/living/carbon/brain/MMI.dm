@@ -55,7 +55,7 @@
 				to_chat(user, span_warning("\The [src] indicates that \the [B] is unresponsive."))
 				return
 
-		for(var/mob/V in viewers(src, null))
+		for(var/mob/V in viewers(get_turf(src)))
 			V.show_message(span_blue("[user] sticks \a [O] into \the [src]."))
 
 		brainmob = B.brainmob

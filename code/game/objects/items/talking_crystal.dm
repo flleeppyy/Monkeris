@@ -115,7 +115,7 @@
 		else
 			msg+="!"
 
-	var/list/listening = hearers(holder_atom)
+	var/list/listening = hearers(get_turf(holder_atom))
 	for(var/mob/M in SSmobs.mob_list)
 		if (!M.client)
 			continue //skip monkeys and leavers

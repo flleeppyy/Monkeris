@@ -131,7 +131,7 @@
 	var/list/eligible_reactions = list()
 
 	var/temperature = chem_temp
-	var/htmlicon = icon2html(my_atom, viewers(src))
+	var/htmlicon = icon2html(my_atom, viewers(get_turf(src)))
 	for(var/thing in reagent_list)
 		var/datum/reagent/R = thing
 		if(R.custom_temperature_effects(temperature))

@@ -176,9 +176,9 @@
 	var/list/range_list = list()
 	var/list/target_list = list()
 	if(in_hear_range)
-		range_list = hearers(range, src)
+		range_list = hearers(range, get_turf(src))
 	else
-		range_list = range(range, src)
+		range_list = range(range, get_turf(src))
 	for(var/atom/movable/M in range_list)
 		var/mob/target = M.get_mob()
 		if(target)

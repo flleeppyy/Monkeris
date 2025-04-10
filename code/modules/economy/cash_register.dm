@@ -118,7 +118,7 @@
 				if(linked_account)
 					if(linked_account.suspended)
 						linked_account = null
-						src.visible_message("[icon2html(src, hearers(src))][span_warning("Account has been suspended.")]")
+						src.visible_message("[icon2html(src, hearers(get_turf(src)))][span_warning("Account has been suspended.")]")
 				else
 					to_chat(usr, "[icon2html(src, usr)][span_warning("Account not found.")]")
 			if("custom_order")
@@ -131,7 +131,7 @@
 				transaction_amount += t_amount
 				price_list += t_amount
 				playsound(src, 'sound/machines/twobeep.ogg', 25)
-				src.visible_message("[icon2html(src, hearers(src))][transaction_purpose]: [t_amount] Credit\s.")
+				src.visible_message("[icon2html(src, hearers(get_turf(src)))][transaction_purpose]: [t_amount] Credit\s.")
 			if("set_amount")
 				var/item_name = locate(href_list["item"])
 				var/n_amount = round(input("Enter amount", "New amount") as num)
@@ -213,7 +213,7 @@
 		return 1
 	else
 		confirm_item = I
-		src.visible_message("[icon2html(src, hearers(src))]<b>Total price:</b> [transaction_amount] Credit\s. Swipe again to confirm.")
+		src.visible_message("[icon2html(src, hearers(get_turf(src)))]<b>Total price:</b> [transaction_amount] Credit\s. Swipe again to confirm.")
 		playsound(src, 'sound/machines/twobeep.ogg', 25)
 		return 0
 
@@ -231,7 +231,7 @@
 		return
 
 	if (!linked_account)
-		usr.visible_message("[icon2html(src, hearers(src))][span_warning("Unable to connect to linked account.")]")
+		usr.visible_message("[icon2html(src, hearers(get_turf(src)))][span_warning("Unable to connect to linked account.")]")
 		return
 
 	// Access account for transaction
@@ -244,13 +244,13 @@
 		D = attempt_account_access(I.associated_account_number, attempt_pin, 2)
 
 		if(!D)
-			src.visible_message("[icon2html(src, hearers(src))][span_warning("Unable to access account. Check security settings and try again.")]")
+			src.visible_message("[icon2html(src, hearers(get_turf(src)))][span_warning("Unable to access account. Check security settings and try again.")]")
 		else
 			if(D.suspended)
-				src.visible_message("[icon2html(src, hearers(src))][span_warning("Your account has been suspended.")]")
+				src.visible_message("[icon2html(src, hearers(get_turf(src)))][span_warning("Your account has been suspended.")]")
 			else
 				if(transaction_amount > D.money)
-					src.visible_message("[icon2html(src, hearers(src))][span_warning("Not enough funds.")]")
+					src.visible_message("[icon2html(src, hearers(get_turf(src)))][span_warning("Not enough funds.")]")
 				else
 					// Transfer the money
 					D.money -= transaction_amount
@@ -292,7 +292,7 @@
 	// Access account for transaction
 	if(check_account())
 		if(transaction_amount > E.worth)
-			src.visible_message("[icon2html(src, hearers(src))][span_warning("Not enough funds.")]")
+			src.visible_message("[icon2html(src, hearers(get_turf(src)))][span_warning("Not enough funds.")]")
 		else
 			// Transfer the money
 			E.worth -= transaction_amount
@@ -322,7 +322,7 @@
 		return
 
 	if(transaction_amount > SC.worth)
-		src.visible_message("[icon2html(src, hearers(src))][span_warning("Not enough money.")]")
+		src.visible_message("[icon2html(src, hearers(get_turf(src)))][span_warning("Not enough money.")]")
 	else
 		// Insert cash into magical slot
 		SC.worth -= transaction_amount
@@ -344,7 +344,7 @@
 /obj/machinery/cash_register/proc/scan_item_price(obj/O)
 	if(!istype(O))	return
 	if(item_list.len > 10)
-		src.visible_message("[icon2html(src, hearers(src))][span_warning("Only up to ten different items allowed per purchase.")]")
+		src.visible_message("[icon2html(src, hearers(get_turf(src)))][span_warning("Only up to ten different items allowed per purchase.")]")
 		return
 	if (cash_open)
 		playsound(src, 'sound/machines/buzz-sigh.ogg', 25)
@@ -354,10 +354,10 @@
 	// First check if item has a valid price
 	var/price = O.get_item_cost()
 	if(isnull(price))
-		src.visible_message("[icon2html(src, hearers(src))][span_warning("Unable to find item in database.")]")
+		src.visible_message("[icon2html(src, hearers(get_turf(src)))][span_warning("Unable to find item in database.")]")
 		return
 	// Call out item cost
-	src.visible_message("[icon2html(src, hearers(src))]\A [O]: [price ? "[price] Credit\s" : "free of charge"].")
+	src.visible_message("[icon2html(src, hearers(get_turf(src)))]\A [O]: [price ? "[price] Credit\s" : "free of charge"].")
 	// Note the transaction purpose for later use
 	if(transaction_purpose)
 		transaction_purpose += "<br>"
@@ -425,11 +425,11 @@
 
 /obj/machinery/cash_register/proc/check_account()
 	if (!linked_account)
-		usr.visible_message("[icon2html(src, hearers(src))][span_warning("Unable to connect to linked account.")]")
+		usr.visible_message("[icon2html(src, hearers(get_turf(src)))][span_warning("Unable to connect to linked account.")]")
 		return 0
 
 	if(linked_account.suspended)
-		src.visible_message("[icon2html(src, hearers(src))][span_warning("Connected account has been suspended.")]")
+		src.visible_message("[icon2html(src, hearers(get_turf(src)))][span_warning("Connected account has been suspended.")]")
 		return 0
 	return 1
 
@@ -437,7 +437,7 @@
 /obj/machinery/cash_register/proc/transaction_complete()
 	/// Visible confirmation
 	playsound(src, 'sound/machines/chime.ogg', 25)
-	src.visible_message("[icon2html(src, hearers(src))][span_notice("Transaction complete.")]")
+	src.visible_message("[icon2html(src, hearers(get_turf(src)))][span_notice("Transaction complete.")]")
 	flick("register_approve", src)
 	reset_memory()
 	updateDialog()

@@ -52,31 +52,35 @@
 /mob/GenerateTag()
 	tag = "mob_[next_mob_id++]"
 
-/mob/proc/show_message(msg, type, alt, alt_type)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
+/mob/proc/show_message(msg, type, alt_msg, alt_type, avoid_highlighting = FALSE)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
 	if(!client)
 		return
 
-	if(type)
-		if(type & 1 && (sdisabilities & BLIND || blinded || paralysis)) //Vision related
-			if(!alt)
-				return
-			else
-				msg = alt
-				type = alt_type
-		if(type & 2 && (sdisabilities & DEAF || ear_deaf)) //Hearing related
-			if(!alt)
-				return
-			else
-				msg = alt
-				type = alt_type
-				if((type & 1 && sdisabilities & BLIND))
-					return
+	msg = copytext_char(msg, 1, MAX_MESSAGE_LEN)
 
-	// Added voice muffling for Issue 41.
-	if(stat == UNCONSCIOUS || sleeping > 0)
-		to_chat(src, "<I>... You can almost hear someone talking ...</I>")
-	else
-		to_chat(src, msg)
+	if(type)
+		if(type & MSG_VISUAL && is_blind())//Vision related
+			if(!alt_msg)
+				return
+			else
+				msg = alt_msg
+				type = alt_type
+
+		if(type & MSG_AUDIBLE && ear_deaf)//Hearing related
+			if(!alt_msg)
+				return
+			else
+				msg = alt_msg
+				type = alt_type
+				if(type & MSG_VISUAL && is_blind())
+					return
+	// voice muffling
+	if(stat == UNCONSCIOUS || stat == HARDCRIT)
+		if(type & MSG_AUDIBLE) //audio
+			to_chat(src, "<I>... You can almost hear something ...</I>")
+		return
+	to_chat(src, msg, avoid_highlighting = avoid_highlighting)
+
 
 // Show a message to all mobs and objects in sight of this one
 // This would be for visible actions by the src mob

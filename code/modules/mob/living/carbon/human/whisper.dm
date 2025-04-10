@@ -112,7 +112,7 @@
 			message = replacetext(message, "u", "�")
 			message = replacetext(message, "b", "�")
 
-	var/list/listening = hearers(message_range, src)
+	var/list/listening = hearers(message_range, get_turf(src))
 	listening |= src
 
 	//ghosts
@@ -134,11 +134,11 @@
 			if (O)
 				O.hear_talk(src, message, verb, speaking, 1)
 
-	var/list/eavesdropping = hearers(eavesdropping_range, src)
+	var/list/eavesdropping = hearers(eavesdropping_range, get_turf(src))
 	eavesdropping -= src
 	eavesdropping -= listening
 
-	var/list/watching  = hearers(watching_range, src)
+	var/list/watching  = hearers(watching_range, get_turf(src))
 	watching  -= src
 	watching  -= listening
 	watching  -= eavesdropping

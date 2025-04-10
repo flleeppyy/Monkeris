@@ -277,7 +277,7 @@
 	gl_uid++
 
 /obj/machinery/proc/state(var/msg)
-	var/listeners = hearers(src, null)
+	var/listeners = hearers(get_turf(src))
 	for(var/mob/O in listeners)
 		O.show_message("[icon2html(src, listeners)] <span class = 'notice'>[msg]</span>", 2)
 

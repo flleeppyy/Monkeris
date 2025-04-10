@@ -174,7 +174,7 @@ var/list/mydirs = list(NORTH, SOUTH, EAST, WEST, SOUTHWEST, NORTHWEST, NORTHEAST
 
 
 /mob/living/simple_animal/hostile/proc/ListTargets(var/dist = 7)
-	var/list/L = hearers(src, dist)
+	var/list/L = hearers(dist, get_turf(src))
 
 	for (var/mob/living/exosuit/M in GLOB.mechas_list)
 		if (M.z == z && get_dist(src, M) <= dist)

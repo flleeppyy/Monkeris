@@ -180,7 +180,7 @@ var/const/NO_EMAG_ACT = -50
 	return dat
 
 /obj/item/card/id/attack_self(mob/user as mob)
-	var/visible_to = viewers(src)
+	var/visible_to = viewers(get_turf(src))
 	user.visible_message("\The [user] shows you: [icon2html(src, visible_to)] [src.name]. The assignment on the card: [src.assignment]",\
 		"You flash your ID card: [icon2html(src, visible_to)] [src.name]. The assignment on the card: [src.assignment]")
 

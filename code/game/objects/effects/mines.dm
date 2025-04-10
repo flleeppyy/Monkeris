@@ -19,7 +19,7 @@
 	if(triggered) return
 
 	if(ishuman(M))
-		var/our_viewers = viewers(world.view, src.loc)
+		var/our_viewers = viewers(get_turf(src))
 		var/htmlicon = icon2html(src, our_viewers)
 		for(var/mob/O in our_viewers)
 			to_chat(O, "<font color='red'>[M] triggered the [htmlicon] [src]</font>")

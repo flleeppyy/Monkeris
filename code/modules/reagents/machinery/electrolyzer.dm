@@ -82,7 +82,7 @@
 	if(on && beaker && beaker.reagents.total_volume)
 		var/state = electrolysis(beaker, separation_beaker, convertion_coefficient)
 		update_icon()
-		var/htmlicon = icon2html(src, hearers(src))
+		var/htmlicon = icon2html(src, hearers(get_turf(src)))
 		if(!state)
 			on = FALSE
 			playsound(src.loc, 'sound/machines/buzz-two.ogg', 50, 1, -3)

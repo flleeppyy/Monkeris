@@ -164,7 +164,7 @@
 			if(prob(15))
 				H.apply_effect((rand(30,80)),IRRADIATE)
 				H.Weaken(5)
-				for (var/mob/V in viewers(src))
+				for (var/mob/V in viewers(get_turf(src)))
 					V.show_message(span_danger("[M] writhes in pain as \his vacuoles boil."), 3, span_warning("You hear the crunching of leaves."), 2)
 			else
 				M.adjustFireLoss(rand(5,15))

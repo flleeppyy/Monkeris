@@ -415,7 +415,7 @@
 	user.clean_blood()
 	if(ishuman(user))
 		user:update_inv_gloves()
-	for(var/mob/V in viewers(src, null))
+	for(var/mob/V in viewers(get_turf(src)))
 		V.show_message(span_notice("[user] washes their hands using \the [src]."))
 
 

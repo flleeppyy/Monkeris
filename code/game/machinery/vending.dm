@@ -843,7 +843,7 @@
 	if(!message)
 		return
 
-	for(var/mob/O in hearers(src, null))
+	for(var/mob/O in hearers(get_turf(src)))
 		O.show_message("<span class='game say'>[span_name("\The [src]")] beeps, \"[message]\"</span>",2)
 	return
 
