@@ -187,7 +187,7 @@
 				return FALSE
 
 		if(!check_rights(R_ADMIN, 0))
-			var/datum/species/S = all_species[client.prefs.species]
+			var/datum/species/S = GLOB.all_species[client.prefs.species]
 			if(!(S.spawn_flags & CAN_JOIN))
 				src << alert("Your current species, [client.prefs.species], is not available for play on the station.")
 				return FALSE
@@ -206,7 +206,7 @@
 			to_chat(usr, span_danger("The station is currently exploding. Joining would go poorly."))
 			return
 
-		var/datum/species/S = all_species[client.prefs.species]
+		var/datum/species/S = GLOB.all_species[client.prefs.species]
 
 		if(!(S.spawn_flags & CAN_JOIN))
 			src << alert("Your current species, [client.prefs.species], is not available for play on the station.")
@@ -378,7 +378,7 @@
 	var/use_species_name
 	var/datum/species/chosen_species
 	if(client.prefs.species)
-		chosen_species = all_species[client.prefs.species]
+		chosen_species = GLOB.all_species[client.prefs.species]
 		use_species_name = chosen_species.get_station_variant() //Only used by pariahs atm.
 
 	if(chosen_species && use_species_name)
@@ -445,7 +445,7 @@
 /mob/new_player/get_species()
 	var/datum/species/chosen_species
 	if(client.prefs.species)
-		chosen_species = all_species[client.prefs.species]
+		chosen_species = GLOB.all_species[client.prefs.species]
 
 	if(!chosen_species)
 		return SPECIES_HUMAN

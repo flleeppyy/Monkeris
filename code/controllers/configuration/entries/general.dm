@@ -274,7 +274,7 @@
 // Forid admins from possessing scringularaitirtiys
 /datum/config_entry/flag/forbid_singulo_possession
 
-/datum/config_entry/flag/n //Defines whether the server uses the legacy admin system with admins.txt or the SQL system
+/datum/config_entry/flag/admin_legacy_system //Defines whether the server uses the legacy admin system with admins.txt or the SQL system
 	protection = CONFIG_ENTRY_LOCKED
 
 /datum/config_entry/flag/ban_legacy_system //Defines whether the server uses the legacy banning system with the files in /data or the SQL system. Config option in config.txt

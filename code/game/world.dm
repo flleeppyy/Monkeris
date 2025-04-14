@@ -168,7 +168,7 @@ GLOBAL_VAR(restart_counter)
 
 	if(config && CONFIG_GET(string/servername) != null && CONFIG_GET(string/server_suffix) && world.port > 0)
 		// dumb and hardcoded but I don't care~
-		CONFIG_SET(string/server_name, CONFIG_GET(string/servername) + " #[(world.port % 1000) / 100]")
+		CONFIG_SET(string/servername, CONFIG_GET(string/servername) + " #[(world.port % 1000) / 100]")
 
 	callHook("startup")
 	//Emergency Fix
