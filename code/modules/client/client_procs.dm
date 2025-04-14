@@ -245,20 +245,20 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	// 	src.preload_rsc = pick(CONFIG_GET(string/resource_urls))
 	// else src.preload_rsc = 1 // If resource_urls is not set, preload like normal.
 	src.preload_rsc = 1
-	to_chat(src, span_red("If the title screen is black, resources are still downloading. Please be patient until the title screen appears."))
-
-
 
 	. = ..() //calls mob.Login()
+
+	to_chat(src, span_red("If the title screen is black, resources are still downloading. Please be patient until the title screen appears."))
+
 	if (byond_version >= 512)
 		if (!byond_build || byond_build < 1386)
 			message_admins(span_adminnotice("[key_name(src)] has been detected as spoofing their byond version. Connection rejected."))
 			// add_system_note("Spoofed-Byond-Version", "Detected as using a spoofed byond version.")
-			// log_suspicious_login("Failed Login: [key] - Spoofed byond version")
+			log_suspicious_login("Failed Login: [key] - Spoofed byond version")
 			qdel(src)
 
 		if (num2text(byond_build) in GLOB.blacklisted_builds)
-			log_access("Failed login: [key] - blacklisted byond version")
+			log_access("Failed login: [key] - blacklisted byond version - [byond_version].[byond_build]")
 			to_chat(src, span_userdanger("Your version of byond is blacklisted."))
 			to_chat(src, span_danger("Byond build [byond_build] ([byond_version].[byond_build]) has been blacklisted for the following reason: [GLOB.blacklisted_builds[num2text(byond_build)]]."))
 			to_chat(src, span_danger("Please download a new version of byond. If [byond_build] is the latest, you can go to <a href=\"https://secure.byond.com/download/build\">BYOND's website</a> to download other versions."))
@@ -267,6 +267,15 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			else
 				qdel(src)
 				return
+
+		var/bad_version = CONFIG_GET(number/minimum_byond_version) && byond_version < CONFIG_GET(number/minimum_byond_version)
+		var/bad_build = CONFIG_GET(number/minimum_byond_build) && byond_build < CONFIG_GET(number/minimum_byond_build)
+		if (bad_build || bad_version)
+			to_chat(src, "You are attempting to connect with a out of date version of BYOND. Please update to the latest version at http://www.byond.com/ before trying again.")
+			log_access("Failed login: [key] - out of date version - [byond_version].[byond_build]")
+			qdel(src)
+			return
+
 
 	src << browse(file('html/statbrowser.html'), "window=statbrowser")
 	// addtimer(CALLBACK(src, PROC_REF(check_panel_loaded)), 30 SECONDS)

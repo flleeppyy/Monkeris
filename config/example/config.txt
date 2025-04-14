@@ -72,6 +72,9 @@ MOD_JOB_TEMPBAN_MAX
 ## disconnect players who did nothing during 10 minutes
 # KICK_INACTIVE
 
+## Uncomment to have the changelog file automatically open when a user connects and hasn't seen the latest changelog
+#AGGRESSIVE_CHANGELOG
+
 ## Use Mentors instead of Moderators.  Mentors are designed with the idea that
 ###they help in pushing new people to be better at roleplay.  If you uncomment
 ###this it will reduce the rights that your mods have.
