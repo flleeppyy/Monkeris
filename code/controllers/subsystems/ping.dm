@@ -1,6 +1,6 @@
 SUBSYSTEM_DEF(ping)
 	name = "Ping"
-	priority = SS_PRIORITY_PING
+	priority = FIRE_PRIORITY_PING
 	wait = 3 SECONDS
 	flags = SS_NO_INIT
 	runlevels = RUNLEVEL_LOBBY | RUNLEVEL_SETUP | RUNLEVEL_GAME | RUNLEVEL_POSTGAME

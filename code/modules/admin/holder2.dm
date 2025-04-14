@@ -4,6 +4,8 @@ GLOBAL_VAR_INIT(href_token, GenerateToken())
 GLOBAL_PROTECT(href_token)
 
 /datum/admins
+	var/target
+	var/name = "nobody's admin datum (no rank)" //Makes for better runtimes
 	var/rank			= "Temporary Admin"
 	var/client/owner	= null
 	var/rights = 0
@@ -25,25 +27,58 @@ GLOBAL_PROTECT(href_token)
 		return marked_datum_weak.resolve()
 
 /datum/admins/New(initial_rank = "Temporary Admin", initial_rights = 0, ckey)
+	if(IsAdminAdvancedProcCall())
+		var/msg = " has tried to elevate permissions!"
+		message_admins("[key_name_admin(usr)][msg]")
+		log_admin("[key_name(usr)][msg]")
+		if (!target) //only del if this is a true creation (and not just a New() proc call), other wise trialmins/coders could abuse this to deadmin other admins
+			QDEL_IN(src, 0)
+			CRASH("Admin proc call creation of admin datum")
+		return
 	if(!ckey)
-		error("Admin datum created without a ckey argument. Datum has been deleted")
+		error("Admin datum created without a ckey argument.")
 		qdel(src)
 		return
 	admincaster_signature = "[GLOB.company_name] Officer #[rand(0,9)][rand(0,9)][rand(0,9)]"
+	href_token = GenerateToken()
+	name = "[ckey]'s admin datum ([rank])"
+	target = ckey
 	rank = initial_rank
 	rights = initial_rights
+	try_give_devtools(owner)
 	GLOB.admin_datums[ckey] = src
 
-/datum/admins/proc/associate(client/C)
-	if(istype(C))
-		owner = C
-		owner.holder = src
-		owner.add_admin_verbs()	//TODO
-		GLOB.admins |= C
-		try_give_devtools(C)
-		try_give_profiling(C)
+/datum/admins/Destroy()
+	if(IsAdminAdvancedProcCall())
+		var/msg = " has tried to elevate permissions! (destroy)"
+		message_admins("[key_name_admin(usr)][msg]")
+		log_admin("[key_name(usr)][msg]")
+		return QDEL_HINT_LETMELIVE
+	. = ..()
+
+/datum/admins/proc/associate(client/client)
+	if(IsAdminAdvancedProcCall())
+		var/msg = " has tried to elevate permissions! (associate)"
+		message_admins("[key_name_admin(usr)][msg]")
+		log_admin("[key_name(usr)][msg]")
+		return
+
+	if(!istype(client))
+		return
+
+	owner = client
+	owner.holder = src
+	owner.add_admin_verbs()	//TODO
+	GLOB.admins |= client
+	try_give_devtools(client)
+	try_give_profiling(client)
 
 /datum/admins/proc/disassociate()
+	if(IsAdminAdvancedProcCall())
+		var/msg = " has tried to elevate permissions! (dissociate)"
+		message_admins("[key_name_admin(usr)][msg]")
+		log_admin("[key_name(usr)][msg]")
+		return
 	if(owner)
 		GLOB.admins -= owner
 		owner.remove_admin_verbs()
@@ -51,29 +86,36 @@ GLOBAL_PROTECT(href_token)
 		owner.holder = null
 
 /datum/admins/proc/reassociate()
+	if(IsAdminAdvancedProcCall())
+		var/msg = " has tried to elevate permissions! (reassociate)"
+		message_admins("[key_name_admin(usr)][msg]")
+		log_admin("[key_name(usr)][msg]")
+		return
+
 	if(owner)
 		GLOB.admins += owner
 		owner.holder = src
 		owner.deadmin_holder = null
 		owner.add_admin_verbs()
 
-/datum/admins/proc/try_give_devtools(client/C = usr)
-	if(!check_rights(R_DEBUG, C = C))
+/datum/admins/proc/try_give_devtools(client/client = usr)
+	if(!check_rights(R_DEBUG, C = client) || client.byond_version < 516)
 		return
-	winset(C, null, "browser-options=byondstorage,find,refresh,devtools")
+	to_chat(client, span_warning("516 notice: Attempting to give you devtools, may or may not work."))
+	winset(client, null, "browser-options=byondstorage,find,refresh,devtools")
 
-/datum/admins/proc/try_give_profiling(client/C = usr)
-	if (config.forbid_admin_profiling)
+/datum/admins/proc/try_give_profiling(client/client = usr)
+	if (CONFIG_GET(flag/forbid_admin_profiling) || CONFIG_GET(flag/forbid_all_profiling))
 		return
 
 	if (given_profiling)
 		return
 
-	if (!check_rights(R_DEBUG, C = C))
+	if (!check_rights(R_DEBUG))
 		return
 
 	given_profiling = TRUE
-	world.SetConfig("APP/admin", owner.ckey, "role=admin")
+	world.SetConfig("APP/admin", owner?.ckey || target, "role=admin")
 
 
 /*

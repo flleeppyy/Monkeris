@@ -22,7 +22,7 @@
 	receivers |= src
 	receivers |= GLOB.admins
 
-	msg = span_blue("[icon2html(cross, receivers)] <b><font color=purple>PRAY: </font>[key_name(src, 1)] (<A href='byond://?_src_=holder;[HrefToken()];adminmoreinfo=\ref[src]'>?</A>) (<A href='byond://?_src_=holder;[HrefToken()];adminplayeropts=\ref[src]'>PP</A>) (<A href='byond://?_src_=vars;Vars=\ref[src]'>VV</A>) (<A href='byond://?_src_=holder;[HrefToken()];subtlemessage=\ref[src]'>SM</A>) ([admin_jump_link(src, src)]) (<A href='byond://?_src_=holder;[HrefToken()];secretsadmin=check_antagonist'>CA</A>) (<A href='byond://?_src_=holder;[HrefToken()];adminspawncookie=\ref[src]'>SC</a>):</b> [msg]")
+	msg = span_blue("[icon2html(cross, receivers)] <b><font color=purple>PRAY: </font> [ADMIN_FULLMONTY(src)]:</b> [msg]")
 
 	for(var/client/C in GLOB.admins)
 		if(R_ADMIN & C.holder.rights)
@@ -30,5 +30,6 @@
 				to_chat(C, msg)
 	to_chat(usr, "Your prayers have been received by the gods.")
 
+	log_prayer("[src.key]/([src.name]): [msg]")
 
 	//log_admin("HELP: [key_name(src)]: [msg]")

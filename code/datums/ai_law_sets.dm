@@ -28,7 +28,7 @@
 	selectable = 0
 
 /datum/ai_laws/eris/malfunction/New()
-	set_zeroth_law(config.law_zero)
+	set_zeroth_law(CONFIG_GET(string/law_zero))
 	..()
 
 /************* Nanotrasen Aggressive *************/

@@ -87,7 +87,7 @@
 	if(src.resting)
 		Weaken(5)
 
-	if(health < HEALTH_THRESHOLD_DEAD && src.stat != 2) //die only once
+	if(health < CONFIG_GET(number/health_threshold_dead) && src.stat != 2) //die only once
 		death()
 
 

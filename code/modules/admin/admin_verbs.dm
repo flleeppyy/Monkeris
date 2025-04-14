@@ -84,6 +84,7 @@ GLOBAL_LIST_INIT(admin_verbs_debug, list(
 	/client/proc/apply_random_map,
 	/client/proc/overlay_random_map,
 	/client/proc/ZASSettings,
+	/client/proc/reload_configuration,
 	/client/proc/enable_debug_verbs,
 	/client/proc/tracy_next_round,
 	/client/proc/start_tracy,
@@ -253,8 +254,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 		if(check_rights(R_PERMISSIONS, FALSE, src))
 			add_verb(src, GLOB.admin_verbs_permissions)
 
-		if(check_rights(config.profiler_permission))
-			control_freak = 0 // enable profiler
+		control_freak = 0 // enable profiler
 
 /client/proc/remove_admin_verbs()
 	for(var/i in list(
@@ -348,7 +348,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	set name = "Unban Panel"
 	set category = "Admin"
 	if(holder)
-		if(config.ban_legacy_system)
+		if(CONFIG_GET(flag/ban_legacy_system))
 			holder.unbanpanel()
 		else
 			holder.DB_ban_panel()
@@ -610,11 +610,11 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	set category = "Server"
 	if(!holder)	return
 	if(config)
-		if(config.log_hrefs)
-			config.log_hrefs = 0
+		if(CONFIG_GET(flag/log_hrefs))
+			CONFIG_SET(flag/log_hrefs, 0)
 			to_chat(src, "<b>Stopped logging hrefs</b>")
 		else
-			config.log_hrefs = 1
+			CONFIG_SET(flag/log_hrefs, 1)
 			to_chat(src, "<b>Started logging hrefs</b>")
 
 //shows AI and borg laws
@@ -739,12 +739,12 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	if(!holder)
 		return
 	if(config)
-		if(config.allow_drone_spawn)
-			config.allow_drone_spawn = 0
+		if(CONFIG_GET(flag/allow_drone_spawn))
+			CONFIG_SET(flag/allow_drone_spawn, 0)
 			to_chat(src, "<b>Disallowed maint drones.</b>")
 			message_admins("Admin [key_name_admin(usr)] has disabled maint drones.", 1)
 		else
-			config.allow_drone_spawn = 1
+			CONFIG_SET(flag/allow_drone_spawn, 1)
 			to_chat(src, "<b>Enabled maint drones.</b>")
 			message_admins("Admin [key_name_admin(usr)] has enabled maint drones.", 1)
 

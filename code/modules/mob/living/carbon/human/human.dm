@@ -932,7 +932,7 @@ var/list/rank_prefix = list(\
 
 /mob/living/carbon/human/proc/set_species(new_species, default_colour)
 	// No more invisible screaming wheelchairs because of set_species() typos.
-	if(!all_species[new_species])
+	if(!GLOB.all_species[new_species])
 		new_species = SPECIES_HUMAN
 
 	if(species)
@@ -947,7 +947,7 @@ var/list/rank_prefix = list(\
 		species.remove_inherent_verbs(src)
 		holder_type = null
 
-	species = all_species[new_species]
+	species = GLOB.all_species[new_species]
 
 	if(species.language)
 		add_language(species.language)
@@ -1483,7 +1483,7 @@ var/list/rank_prefix = list(\
 	if(oxyLoss > 20)
 		setOxyLoss(20)
 
-	if(getBruteLoss() + getFireLoss() >= abs(HEALTH_THRESHOLD_DEAD))
+	if(getBruteLoss() + getFireLoss() >= abs(CONFIG_GET(number/health_threshold_dead)))
 		resuscitate_notify(5)
 		timeofdeath = 0
 		return 0

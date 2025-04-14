@@ -29,7 +29,7 @@ var/command_name
 /proc/set_station_name(new_name)
 	GLOB.station_name = new_name
 
-	var/config_server_name = config.server_name
+	var/config_server_name = CONFIG_GET(string/servername)
 	if(config_server_name)
 		world.name = "[config_server_name][config_server_name == GLOB.station_name ? "" : ": [html_decode(GLOB.station_name)]"]"
 	else
@@ -38,8 +38,8 @@ var/command_name
 /proc/world_name(var/name)
 	GLOB.station_name = name
 
-	if (config && config.server_name)
-		world.name = "[config.server_name]: [name]"
+	if (config && CONFIG_GET(string/servername))
+		world.name = "[CONFIG_GET(string/servername)]: [name]"
 	else
 		world.name = name
 

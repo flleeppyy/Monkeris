@@ -32,7 +32,7 @@
 		if(input)
 			input_dir = get_dir(src, input)
 		else
-			log_misc("a [src] didn't find an input plate.")
+			log_runtime("a [src] didn't find an input plate.")
 
 /obj/machinery/gibber/autogibber/Bumped(var/atom/A)
 	if(!input_dir)

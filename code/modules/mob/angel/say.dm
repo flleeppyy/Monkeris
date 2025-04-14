@@ -19,7 +19,7 @@
 		return
 
 	if(!src.client.holder)
-		if(!config.dsay_allowed)
+		if(!GLOB.dsay_allowed)
 			to_chat(src, span_danger("Deadchat and ANGEL chat are globally muted."))
 			return
 
@@ -58,7 +58,7 @@
 		return
 
 	if(!src.client.holder)
-		if(!config.dsay_allowed)
+		if(!GLOB.dsay_allowed)
 			to_chat(src, span_danger("Deadchat and ANGEL chat are globally muted."))
 			return
 

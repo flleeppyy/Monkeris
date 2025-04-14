@@ -187,7 +187,7 @@
 
 
 /obj/machinery/hivemind_machine/proc/is_attackable(mob/living/target)
-	if(!target.stat || target.health >= (ishuman(target) ? HEALTH_THRESHOLD_CRIT : 0))
+	if(!target.stat || target.health >= (ishuman(target) ? CONFIG_GET(number/health_threshold_crit) : 0))
 		return TRUE
 	return FALSE
 

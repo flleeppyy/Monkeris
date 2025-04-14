@@ -223,13 +223,13 @@ macro "robot"
 		command = ".screenshot"
 	elem
 		name = "F3"
-		command = "Say"
+		command = "asay"
 	elem
 		name = "M"
 		command = "Emote"
 	elem
 		name = "F5"
-		command = "asay"
+		command = "Aghost"
 	elem
 		name = "F6"
 		command = "Player-Panel"
@@ -537,13 +537,13 @@ macro "default"
 		command = ".screenshot"
 	elem
 		name = "F3"
-		command = "Say"
+		command = "Asay"
 	elem
 		name = "M"
 		command = "Emote"
 	elem
 		name = "F5"
-		command = "asay"
+		command = "Aghost"
 	elem
 		name = "F6"
 		command = "Player-Panel"

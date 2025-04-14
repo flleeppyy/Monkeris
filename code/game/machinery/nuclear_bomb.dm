@@ -251,7 +251,7 @@ var/bomb_set
 					lastentered = text("[]", href_list["type"])
 					if (text2num(lastentered) == null)
 						var/turf/LOC = get_turf(usr)
-						message_admins("[key_name_admin(usr)] tried to exploit a nuclear bomb by entering non-numerical codes: <a href='byond://?_src_=vars;Vars=\ref[src]'>[lastentered]</a>! ([LOC ? "[ADMIN_JMP(LOC)]" : "null"])", 0)
+						message_admins("[key_name_admin(usr)] tried to exploit a nuclear bomb by entering non-numerical codes: <a href='byond://?_src_=vars;[HrefToken()];Vars=\ref[src]'>[lastentered]</a>! ([LOC ? "[ADMIN_JMP(LOC)]" : "null"])", 0)
 						log_admin("EXPLOIT: [key_name(usr)] tried to exploit a nuclear bomb by entering non-numerical codes: [lastentered]!")
 					else
 						code += lastentered

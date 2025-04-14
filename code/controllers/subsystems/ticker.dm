@@ -1,7 +1,7 @@
 SUBSYSTEM_DEF(ticker)
 	name = "Ticker"
 	init_order = INIT_ORDER_TICKER
-	priority = SS_PRIORITY_TICKER
+	priority = FIRE_PRIORITY_TICKER
 	flags = SS_KEEP_TIMING
 	runlevels = RUNLEVEL_LOBBY | RUNLEVEL_SETUP | RUNLEVEL_GAME
 
@@ -142,7 +142,7 @@ SUBSYSTEM_DEF(ticker)
 				send_quote_of_the_round()
 				quoted = TRUE
 
-			if(!story_vote_ended && (pregame_timeleft == config.vote_autogamemode_timeleft || !first_start_trying))
+			if(!story_vote_ended && (pregame_timeleft == CONFIG_GET(number/vote_autogamemode_timeleft) || !first_start_trying))
 				if(!SSvote.active_vote)
 					SSvote.autostoryteller()	//Quit calling this over and over and over and over.
 
@@ -186,7 +186,7 @@ SUBSYSTEM_DEF(ticker)
 // will also return TRUE if its currently counting down to server's restart after last player left
 
 /datum/controller/subsystem/ticker/proc/process_empty_server()
-	if(!config.empty_server_restart_time)
+	if(!CONFIG_GET(number/empty_server_restart_time))
 		return TRUE
 	switch(current_state)
 		if(GAME_STATE_PLAYING)
@@ -201,10 +201,9 @@ SUBSYSTEM_DEF(ticker)
 					last_player_left_timestamp = world.time
 					return TRUE
 				// Counting down the world's end
-				else if (world.time >= last_player_left_timestamp + (config.empty_server_restart_time MINUTES))
+				else if (world.time >= last_player_left_timestamp + (CONFIG_GET(number/empty_server_restart_time) MINUTES))
 					last_player_left_timestamp = 0
-					log_game("\[Server\] No players were on a server last [config.empty_server_restart_time] minutes, restarting server...")
-					world.flush_byond_tracy()
+					log_game("\[Server\] No players were on a server last [CONFIG_GET(number/empty_server_restart_time)] minutes, restarting server...")
 					world.Reboot()
 					return FALSE
 		if(GAME_STATE_PREGAME)
@@ -304,7 +303,6 @@ SUBSYSTEM_DEF(ticker)
 
 	round_start_time = world.time //otherwise round_start_time would be 0 for the signals
 
-	INVOKE_ASYNC(world, TYPE_PROC_REF(/world, flush_byond_tracy))
 	return TRUE
 
 //These callbacks will fire after roundstart key transfer
@@ -519,7 +517,6 @@ SUBSYSTEM_DEF(ticker)
 
 
 /datum/controller/subsystem/ticker/proc/declare_completion()
-	INVOKE_ASYNC(world, TYPE_PROC_REF(/world, flush_byond_tracy))
 	to_chat(world, "<br><br><br><H1>A round has ended!</H1>")
 	for(var/mob/Player in GLOB.player_list)
 		if(Player.mind && !isnewplayer(Player))
@@ -602,7 +599,6 @@ SUBSYSTEM_DEF(ticker)
 	return current_state >= GAME_STATE_PLAYING
 
 /datum/controller/subsystem/ticker/proc/standard_reboot()
-	world.flush_byond_tracy()
 	if(ready_for_reboot)
 		if(universe_has_ended)
 			Reboot("Station destroyed", "nuke")
@@ -638,7 +634,7 @@ SUBSYSTEM_DEF(ticker)
 	// var/statspage = CONFIG_GET(string/roundstatsurl)
 	// var/gamelogloc = CONFIG_GET(string/gamelogurl)
 	// if(statspage)
-	// 	to_chat(world, span_info("Round statistics and logs can be viewed <a href=\"[statspage][GLOB.round_id]\">at this website!</a>"))
+	// 	to_chat(world, span_info("Round statistics and logs can be viewed <a href=\"[statspage][GLOB.game_id]\">at this website!</a>"))
 	// else if(gamelogloc)
 	// 	to_chat(world, span_info("Round logs can be located <a href=\"[gamelogloc]\">at this website!</a>"))
 

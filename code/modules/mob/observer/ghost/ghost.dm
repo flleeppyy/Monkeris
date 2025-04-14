@@ -168,7 +168,7 @@ Works together with spawning an observer, noted above.
 		ghost.client = client
 		ghost.client.init_verbs()
 		ghost.initialise_postkey()
-		if(ghost.client && !ghost.client.holder && !config.antag_hud_allowed)		// For new ghosts we remove the verb from even showing up if it's not allowed.
+		if(ghost.client && !ghost.client.holder && !CONFIG_GET(flag/antag_hud_allowed))		// For new ghosts we remove the verb from even showing up if it's not allowed.
 			remove_verb(ghost, /mob/observer/ghost/verb/toggle_antagHUD)
 
 		ghost.client?.create_UI(ghost.type)
@@ -246,14 +246,14 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(!client)
 		return
 	var/mentor = is_mentor(usr.client)
-	if(!config.antag_hud_allowed && (!client.holder || mentor))
+	if(!CONFIG_GET(flag/antag_hud_allowed) && (!client.holder || mentor))
 		to_chat(src, span_red("Admins have disabled this for this round."))
 		return
 	var/mob/observer/ghost/M = src
 	if(jobban_isbanned(M, "AntagHUD"))
 		to_chat(src, span_red("<B>You have been banned from using this feature</B>"))
 		return
-	if(config.antag_hud_restricted && !M.has_enabled_antagHUD && (!client.holder || mentor))
+	if(CONFIG_GET(flag/antag_hud_restricted) && !M.has_enabled_antagHUD && (!client.holder || mentor))
 		var/response = alert(src, "If you turn this on, you will not be able to take any part in the round.","Are you sure you want to turn this feature on?","Yes","No")
 		if(response == "No") return
 		M.can_reenter_corpse = 0
@@ -453,7 +453,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		to_chat(src, span_warning("Unable to find any safe, unwelded vents to spawn mice at. The ship must be quite a mess!  Trying again might work, if you think there's still a safe place. "))
 
 	if(host)
-		if(config.uneducated_mice)
+		if(CONFIG_GET(flag/uneducated_mice))
 			host.universal_understand = 0
 		announce_ghost_joinleave(src, 0, "They are now a mouse.")
 		host.ckey = src.ckey
@@ -561,7 +561,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	return ..()
 
 /mob/observer/ghost/proc/try_possession(var/mob/living/M)
-	if(!config.ghosts_can_possess_animals)
+	if(!CONFIG_GET(flag/ghosts_can_possess_animals))
 		to_chat(usr, span_warning("Ghosts are not permitted to possess animals."))
 		return 0
 	if(!M.can_be_possessed_by(src))
@@ -690,25 +690,25 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/observer/ghost/MayRespawn(var/feedback = 0, var/respawn_type = 0)
 	if(!client)
 		return FALSE
-	if(config.antag_hud_restricted && has_enabled_antagHUD == 1)
+	if(CONFIG_GET(flag/antag_hud_restricted) && has_enabled_antagHUD == 1)
 		if(feedback)
 			to_chat(src, span_warning("antagHUD restrictions prevent you from respawning."))
 		return FALSE
 
-	if(!config.respawn_delay)
+	if(!CONFIG_GET(number/respawn_delay))
 		return TRUE
 
 	var/timedifference = world.time- get_death_time(respawn_type)
 	var/respawn_time = 0
 	if (respawn_type == CREW)
-		respawn_time = config.respawn_delay MINUTES
+		respawn_time = CONFIG_GET(number/respawn_delay) MINUTES
 
 		//Here we factor in bonuses added from cryosleep and similar things
 		timedifference += get_respawn_bonus()
 	else if (respawn_type == ANIMAL)
-		respawn_time = min(ANIMAL_SPAWN_DELAY, config.respawn_delay)
+		respawn_time = min(ANIMAL_SPAWN_DELAY, CONFIG_GET(number/respawn_delay))
 	else if (respawn_type == MINISYNTH)
-		respawn_time = min(DRONE_SPAWN_DELAY, config.respawn_delay)
+		respawn_time = min(DRONE_SPAWN_DELAY, CONFIG_GET(number/respawn_delay))
 
 	timedifference = max(timedifference, 0)
 	if(respawn_time &&  timedifference > respawn_time)
@@ -765,7 +765,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Respawn"
 	set category = "OOC"
 
-	if (!( config.abandon_allowed ))
+	if (!( CONFIG_GET(flag/abandon_allowed) ))
 		to_chat(usr, span_notice("Respawn is disabled."))
 		return
 
@@ -777,7 +777,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		to_chat(usr, span_notice("<B>You must be dead to use this!</B>"))
 		return
 	else if(!MayRespawn(1, CREW))
-		if(!check_rights(0, 0) || alert("Normal players must wait at least [config.respawn_delay] minutes to respawn! Would you like to bypass it?","Warning", "No", "Ok") != "Ok")
+		if(!check_rights(0, 0) || alert("Normal players must wait at least [CONFIG_GET(number/respawn_delay)] minutes to respawn! Would you like to bypass it?","Warning", "No", "Ok") != "Ok")
 			return
 
 	//Wipe any bonuses gained in the previous (after)life

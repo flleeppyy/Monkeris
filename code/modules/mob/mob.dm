@@ -570,7 +570,7 @@
 /mob/proc/pull_damage()
 	if(ishuman(src))
 		var/mob/living/carbon/human/H = src
-		if(H.health - H.halloss <= HEALTH_THRESHOLD_SOFTCRIT)
+		if(H.health - H.halloss <= CONFIG_GET(number/health_threshold_softcrit))
 			for(var/name in H.organs_by_name)
 				var/obj/item/organ/external/e = H.organs_by_name[name]
 				if(e && H.lying)
@@ -1276,6 +1276,12 @@ All Canmove setting in this proc is temporary. This var should not be set from h
 		return
 	var/obj/screen/zone_sel/selector = mob.HUDneed["damage zone"]
 	selector.set_selected_zone(next_list_item(mob.targeted_organ,zones))
+	logger.Log(
+		LOG_CATEGORY_TARGET_ZONE_SWITCH,
+		"[key_name(src)] manually changed selected zone",
+		data = zones
+	)
+
 /mob/proc/set_stat(var/new_stat)
 	. = stat != new_stat
 	stat = new_stat

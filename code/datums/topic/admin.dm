@@ -161,19 +161,19 @@
 				return
 			if("*New Rank*")
 				new_rank = input("Please input a new rank", "New custom rank", null, null) as null|text
-				if(config.admin_legacy_system)
+				if(CONFIG_GET(flag/admin_legacy_system))
 					new_rank = ckeyEx(new_rank)
 				if(!new_rank)
 					to_chat(usr, "<font color='red'>Error: Topic 'editrights': Invalid rank</font>")
 					return
-				if(config.admin_legacy_system)
+				if(CONFIG_GET(flag/admin_legacy_system))
 					if(admin_ranks.len)
 						if(new_rank in admin_ranks)
 							rights = admin_ranks[new_rank]		//we typed a rank which already exists, use its rights
 						else
 							admin_ranks[new_rank] = 0			//add the new rank to admin_ranks
 			else
-				if(config.admin_legacy_system)
+				if(CONFIG_GET(flag/admin_legacy_system))
 					new_rank = ckeyEx(new_rank)
 					rights = admin_ranks[new_rank]				//we input an existing rank, use its rights
 
@@ -405,7 +405,7 @@
 	require_perms = list(R_MOD|R_ADMIN)
 
 /datum/admin_topic/jobban3/Run(list/input)
-	if(check_rights(R_MOD, FALSE) && !check_rights(R_ADMIN, FALSE) && !config.mods_can_job_tempban) // If mod and tempban disabled
+	if(check_rights(R_MOD, FALSE) && !check_rights(R_ADMIN, FALSE) && !CONFIG_GET(flag/mods_can_job_tempban)) // If mod and tempban disabled
 		to_chat(usr, span_warning("Mod jobbanning is disabled!"))
 		return
 
@@ -478,14 +478,14 @@
 		switch(alert("Temporary Ban?",,"Yes","No", "Cancel"))
 			if("Yes")
 
-				if(config.ban_legacy_system)
+				if(CONFIG_GET(flag/ban_legacy_system))
 					to_chat(usr, span_red("Your server is using the legacy banning system, which does not support temporary job bans. Consider upgrading. Aborting ban."))
 					return
 				var/mins = input(usr,"How long (in minutes)?","Ban time",1440) as num|null
 				if(!mins)
 					return
-				if(check_rights(R_MOD, FALSE) && !check_rights(R_ADMIN, FALSE) && mins > config.mod_job_tempban_max)
-					to_chat(usr, span_warning("Moderators can only job tempban up to [config.mod_job_tempban_max] minutes!"))
+				if(check_rights(R_MOD, FALSE) && !check_rights(R_ADMIN, FALSE) && mins > CONFIG_GET(number/mod_job_tempban_max))
+					to_chat(usr, span_warning("Moderators can only job tempban up to [CONFIG_GET(number/mod_job_tempban_max)] minutes!"))
 					return
 				var/reason = sanitize(input(usr,"Reason?","Please State Reason","") as text|null)
 				if(!reason)
@@ -534,7 +534,7 @@
 	//Unbanning joblist
 	//all jobs in joblist are banned already OR we didn't give a reason (implying they shouldn't be banned)
 	if(joblist.len) //at least 1 banned job exists in joblist so we have stuff to unban.
-		if(!config.ban_legacy_system)
+		if(!CONFIG_GET(flag/ban_legacy_system))
 			to_chat(usr, "Unfortunately, database based unbanning cannot be done through this panel")
 			source.DB_ban_panel(M.ckey)
 			return
@@ -604,7 +604,7 @@
 	require_perms = list(R_MOD|R_ADMIN)
 
 /datum/admin_topic/newban/Run(list/input)
-	if(check_rights(R_MOD, FALSE) && !check_rights(R_ADMIN, FALSE) && !config.mods_can_job_tempban) // If mod and tempban disabled
+	if(check_rights(R_MOD, FALSE) && !check_rights(R_ADMIN, FALSE) && !CONFIG_GET(flag/mods_can_tempban)) // If mod and tempban disabled
 		to_chat(usr, span_warning("Mod jobbanning is disabled!"))
 		return
 
@@ -623,8 +623,8 @@
 			if(!mins)
 				return
 
-			if(check_rights(R_MOD, FALSE) && !check_rights(R_ADMIN, FALSE) && mins > config.mod_tempban_max)
-				to_chat(usr, span_warning("Moderators can only job tempban up to [config.mod_tempban_max] minutes!"))
+			if(check_rights(R_MOD, FALSE) && !check_rights(R_ADMIN, FALSE) && mins > CONFIG_GET(number/mod_tempban_max))
+				to_chat(usr, span_warning("Moderators can only job tempban up to [CONFIG_GET(number/mod_tempban_max)] minutes!"))
 				return
 			if(mins >= 525600) mins = 525599
 			var/reason = sanitize(input(usr,"Reason?","reason","Griefer") as text|null)
@@ -637,8 +637,8 @@
 
 			source.DB_ban_record(BANTYPE_TEMP, M, mins, reason, delayed_ban = delayed)
 
-			if(config.banappeals)
-				to_chat(M, span_red("To try to resolve this matter head to [config.banappeals]"))
+			if(CONFIG_GET(string/banappeals))
+				to_chat(M, span_red("To try to resolve this matter head to [CONFIG_GET(string/banappeals)]"))
 			else
 				to_chat(M, span_red("No ban appeals URL has been set."))
 			log_admin("[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis will be removed in [mins] minutes.")
@@ -661,8 +661,8 @@
 					no_ip = 1
 			to_chat(M, span_red("<BIG><B>You have been banned by [usr.client.ckey].\nReason: [reason].</B></BIG>"))
 			to_chat(M, span_red("This is a permanent ban."))
-			if(config.banappeals)
-				to_chat(M, span_red("To try to resolve this matter head to [config.banappeals]"))
+			if(CONFIG_GET(string/banappeals))
+				to_chat(M, span_red("To try to resolve this matter head to [CONFIG_GET(string/banappeals)]"))
 			else
 				to_chat(M, span_red("No ban appeals URL has been set."))
 			ban_unban_log_save("[usr.client.ckey] has permabanned [M.ckey]. - Reason: [reason] - This is a permanent ban.")
@@ -992,7 +992,7 @@
 	to_chat(source.owner, "Name = <b>[M.name]</b>; Real_name = [M.real_name]; Mind_name = [M.mind?"[M.mind.name]":""]; Key = <b>[M.key]</b>;")
 	to_chat(source.owner, "Location = [location_description];")
 	to_chat(source.owner, "[special_role_description]")
-	to_chat(source.owner, "(<a href='byond://?src=\ref[usr];priv_msg=\ref[M]'>PM</a>) [ADMIN_PP(M)] [ADMIN_VV(M)] [ADMIN_SM(M)] ([admin_jump_link(M, source)]) (<A href='byond://?src=\ref[source];secretsadmin=check_antagonist'>CA</A>)")
+	to_chat(source.owner, "(<a href='byond://?src=\ref[usr];[HrefToken()];priv_msg=\ref[M]'>PM</a>) [ADMIN_PP(M)] [ADMIN_VV(M)] [ADMIN_SM(M)] ([ADMIN_JMP(M)]) (<A href='byond://?src=\ref[source];secretsadmin=check_antagonist'>CA</A>)")
 
 
 /datum/admin_topic/adminspawncookie
@@ -1355,7 +1355,7 @@
 		to_chat(usr, "[M] is illegal type, must be /mob!")
 		return
 	var/lang2toggle = input["lang"]
-	var/datum/language/L = all_languages[lang2toggle]
+	var/datum/language/L = GLOB.all_languages[lang2toggle]
 
 	if(L in M.languages)
 		if(!M.remove_language(lang2toggle))

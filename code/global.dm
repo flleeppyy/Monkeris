@@ -8,19 +8,12 @@ var/runtime_diary
 var/diary
 var/world_qdel_log
 var/href_logfile
-var/changelog_hash      = ""
 
 var/master_storyteller       = "shitgenerator"
 
 var/host	//only here until check @ code\modules\ghosttrap\trap.dm:112 is fixed
 
-var/list/bombers       = list()
 var/list/admin_log     = list()
-
-
-var/datum/configuration/config
-
-var/Debug2 = 0
 
 var/gravity_is_on = 1
 

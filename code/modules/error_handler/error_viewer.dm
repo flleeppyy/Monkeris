@@ -8,10 +8,10 @@
 //   right here:
 
 #ifdef DEBUG
-var/global/datum/ErrorViewer/ErrorCache/error_cache = new()
+GLOBAL_DATUM_INIT(error_cache, /datum/ErrorViewer/ErrorCache, new)
 #else
 // If debugging is disabled, there's nothing useful to log, so don't bother.
-var/global/datum/ErrorViewer/ErrorCache/error_cache = null
+GLOBAL_DATUM(error_cache, /datum/ErrorViewer/ErrorCache)
 #endif
 
 // - ErrorSource datums exist for each line (of code) that generates an error,
@@ -80,7 +80,7 @@ var/global/datum/ErrorViewer/ErrorCache/error_cache = null
 
 /datum/ErrorViewer/ErrorCache/showTo(var/user, var/datum/ErrorViewer/back_to, var/linear)
 	var/html = buildHeader(null, linear, refreshable=1)
-	html += "[total_runtimes] runtimes, [total_runtimes_skipped] skipped<br><br>"
+	html += "[GLOB.total_runtimes] runtimes, [GLOB.total_runtimes_skipped] skipped<br><br>"
 	if(!linear)
 		html += "organized | [makeLink("linear", null, 1)]<hr>"
 		var/datum/ErrorViewer/ErrorSource/error_source
@@ -129,7 +129,7 @@ var/global/datum/ErrorViewer/ErrorCache/error_cache = null
 
 /datum/ErrorViewer/ErrorSource/showTo(var/user, var/datum/ErrorViewer/back_to, var/linear)
 	if(!istype(back_to))
-		back_to = error_cache
+		back_to = GLOB.error_cache
 	var/html = buildHeader(back_to, refreshable=1)
 	for(var/datum/ErrorViewer/ErrorEntry/error_entry in errors)
 		html += "<p class='runtime_list'>[error_entry.makeLink(null, src)]<br></p>"
@@ -174,7 +174,7 @@ var/global/datum/ErrorViewer/ErrorCache/error_cache = null
 	var/html = buildHeader(back_to, linear)
 	html += "<div class='runtime'>[html_encode(name)]<br>[desc]</div>"
 	if(srcRef)
-		html += "<br>src: <a href='byond://?_src_=vars;Vars=[srcRef]'>VV</a>"
+		html += "<br>src: <a href='byond://?_src_=vars;[HrefToken()];Vars=[srcRef]'>VV</a>"
 		if(ispath(srcType, /mob))
 			html += " [ADMIN_PP(srcRef)]"
 			html += " [ADMIN_FLW(srcRef)]"
@@ -186,7 +186,7 @@ var/global/datum/ErrorViewer/ErrorCache/error_cache = null
 		html += " [ADMIN_PP(usrRef)]"
 		html += " [ADMIN_FLW(usrRef)]"
 		if(istype(usrLoc))
-			html += "<br>usr.loc: <a href='byond://?_src_=vars;Vars=\ref[usrLoc]'>VV</a>"
+			html += "<br>usr.loc: <a href='byond://?_src_=vars;[HrefToken()];Vars=\ref[usrLoc]'>VV</a>"
 			html += " [ADMIN_JMP(usrLoc)]"
 	browseTo(user, html)
 

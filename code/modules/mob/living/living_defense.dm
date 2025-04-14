@@ -175,7 +175,7 @@
 	if (P.is_hot() >= HEAT_MOBIGNITE_THRESHOLD)
 		IgniteMob()
 
-	if(config.z_level_shooting && P.height) // If the bullet came from above or below, limit what bodyparts can be hit for consistency
+	if(CONFIG_GET(flag/z_level_shooting) && P.height) // If the bullet came from above or below, limit what bodyparts can be hit for consistency
 		if(resting || lying)
 			return PROJECTILE_CONTINUE // Bullet flies overhead
 

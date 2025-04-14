@@ -20,3 +20,5 @@ to function.
 
 - The statment hard_drive.store_file(new/datum/computer_file/program/cook_catalog()) should be
 added to any PDA's install_default_programs() proc if they should have it at round start
+
+- Must add a processing subsystem @ code/controllers/subsystems/processing/cwj.dm

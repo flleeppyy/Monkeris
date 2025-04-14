@@ -140,7 +140,7 @@
 
 /obj/structure/window/bullet_act(var/obj/item/projectile/Proj)
 
-	if(config.z_level_shooting && Proj.height)
+	if(CONFIG_GET(flag/z_level_shooting) && Proj.height)
 		if(Proj.height == HEIGHT_LOW)// Bullet is too low
 			return TRUE
 		else if(Proj.height == HEIGHT_HIGH) // Guaranteed hit

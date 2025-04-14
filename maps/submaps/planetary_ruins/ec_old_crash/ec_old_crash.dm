@@ -73,7 +73,7 @@
 /obj/item/paper/ecrashlog/Initialize()
 	. = ..()
 	var/shipname = "CEV [pick("Magellan", "Gagarin", "Drake", "Horizon", "Aurora")]"
-	var/datum/species/S = all_species[SPECIES_HUMAN]
+	var/datum/species/S = GLOB.all_species[SPECIES_HUMAN]
 	var/new_info = {"
 	I am Lieutenant Hao Ru, captain of [shipname], of the Hansa Trade Union.<br>
 	We are dying. The Ran Mission has failed.<br>

@@ -32,7 +32,7 @@
 
 	msg = keywords_lookup(msg)
 	var/asay_color = prefs.asaycolor
-	var/custom_asay_color = (config.allow_admin_ooccolor && asay_color) ? "<font color=[asay_color]>" : "<font color='[DEFAULT_ASAY_COLOR]'>"
+	var/custom_asay_color = (CONFIG_GET(flag/allow_admin_asaycolor) && asay_color) ? "<font color=[asay_color]>" : "<font color='[DEFAULT_ASAY_COLOR]'>"
 	msg = "[span_adminsay("[span_prefix("ADMIN:")] <EM>[key_name(usr, 1)]</EM> [ADMIN_FLW(mob)]: [custom_asay_color]<span class='message linkify'>[msg]")]</span>[custom_asay_color ? "</font>":null]"
 	to_chat(GLOB.admins,
 		type = MESSAGE_TYPE_ADMINCHAT,

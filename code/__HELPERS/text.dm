@@ -595,3 +595,38 @@ var/icon/text_tag_icons = new('./icons/chattags.dmi')
 	. = ""
 	for(var/i=1, i<=times, i++)
 		. += string
+
+//json decode that will return null on parse error instead of runtiming.
+/proc/safe_json_decode(data)
+	try
+		return json_decode(data)
+	catch
+		return null
+
+/// Converts a semver string into a list of numbers
+/proc/semver_to_list(semver_string)
+	var/static/regex/semver_regex = regex(@"(\d+)\.(\d+)\.(\d+)", "")
+	if(!semver_regex.Find(semver_string))
+		return null
+
+	return list(
+		text2num(semver_regex.group[1]),
+		text2num(semver_regex.group[2]),
+		text2num(semver_regex.group[3]),
+	)
+
+
+/// Returns a message wrapped in a <font> tag, colored based on how close `number` is to `threshold`.
+/// Lower number = green. Approaching threshold = yellow/orange. Exceeding = red.
+/proc/get_colored_thresh_text(msg, number, threshold = 10)
+	if (threshold <= 0)
+		return "<font color='#ffffff'>[msg]</font>" // fallback
+
+	var/ratio = number / threshold
+	if (ratio > 1) ratio = 1
+
+	var/hue = round(120 * (1 - ratio))
+	var/saturation = 90
+	var/lightness = 60
+
+	return "<span style='color: hsl([hue],[saturation]%,[lightness]%);'>[msg]</span>"

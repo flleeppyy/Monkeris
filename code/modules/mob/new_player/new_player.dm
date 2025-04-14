@@ -152,7 +152,7 @@
 				client.prefs.real_name = random_name(client.prefs.gender)
 			observer.real_name = client.prefs.real_name
 			observer.name = observer.real_name
-			if(!client.holder && !config.antag_hud_allowed) // For new ghosts we remove the verb from even showing up if it's not allowed.
+			if(!client.holder && !CONFIG_GET(flag/antag_hud_allowed)) // For new ghosts we remove the verb from even showing up if it's not allowed.
 				remove_verb(observer, /mob/observer/ghost/verb/toggle_antagHUD)
 			//observer.key = key
 			observer.ckey = ckey
@@ -199,7 +199,7 @@
 
 	if(href_list["SelectedJob"])
 
-		if(!config.enter_allowed)
+		if(!CONFIG_GET(flag/enter_allowed))
 			to_chat(usr, span_notice("There is an administrative lock on entering the game!"))
 			return
 		else if(SSticker.nuke_in_progress)
@@ -285,7 +285,7 @@
 	if(SSticker.current_state != GAME_STATE_PLAYING)
 		to_chat(usr, span_red("The round is either not ready, or has already finished..."))
 		return FALSE
-	if(!config.enter_allowed)
+	if(!CONFIG_GET(flag/enter_allowed))
 		to_chat(usr, span_notice("There is an administrative lock on entering the game!"))
 		return FALSE
 	if(!IsJobAvailable(rank))
@@ -299,6 +299,7 @@
 	var/datum/job/job = src.mind.assigned_job
 	var/mob/living/character = create_character()	//creates the human and transfers vars and mind
 
+
 	// AIs don't need a spawnpoint, they must spawn at an empty core
 	if(rank == "AI")
 
@@ -311,6 +312,7 @@
 		character.forceMove(C.loc)
 
 		AnnounceArrival(character, rank, "has been downloaded to the empty core in \the [character.loc.loc]")
+		log_manifest(character.mind.key, character.mind, character, latejoin = TRUE)
 
 		qdel(C)
 		qdel(src)
@@ -332,8 +334,7 @@
 			//Grab some data from the character prefs for use in random news procs.
 
 	AnnounceArrival(character, character.mind.assigned_role, spawnpoint.message)	//will not broadcast if there is no message
-
-
+	log_manifest(character.mind.key, character.mind, character, latejoin = TRUE)
 
 	qdel(src)
 
@@ -389,7 +390,7 @@
 	new_character.lastarea = get_area(NULLSPACE)
 
 	for(var/lang in client.prefs.alternate_languages)
-		var/datum/language/chosen_language = all_languages[lang]
+		var/datum/language/chosen_language = GLOB.all_languages[lang]
 		if(chosen_language)
 			if(!(chosen_language.flags & WHITELISTED) || has_admin_rights() \
 				|| (new_character.species && (chosen_language.name in new_character.species.secondary_langs)))

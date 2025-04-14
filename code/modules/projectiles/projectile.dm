@@ -247,7 +247,7 @@
 				loc = get_turf(H.client.eye)
 				if(!(loc.Adjacent(target)))
 					loc = get_turf(H)
-			if(config.z_level_shooting && H.client.eye == H.shadow && !height) // Player is watching a higher zlevel
+			if(CONFIG_GET(flag/z_level_shooting) && H.client.eye == H.shadow && !height) // Player is watching a higher zlevel
 				var/newTurf = get_turf(H.shadow)
 				if(!(locate(/obj/structure/catwalk) in newTurf)) // Can't shoot through catwalks
 					loc = newTurf
@@ -309,7 +309,7 @@
 
 	var/result = PROJECTILE_CONTINUE
 
-	if(config.z_level_shooting && height == HEIGHT_HIGH)
+	if(CONFIG_GET(flag/z_level_shooting) && height == HEIGHT_HIGH)
 		if(target_mob.resting == TRUE || target_mob.stat == TRUE)
 			return FALSE // Bullet flies overhead
 

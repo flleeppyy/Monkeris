@@ -15,7 +15,7 @@ SUBSYSTEM_DEF(tgui)
 	wait = 9
 	flags = SS_NO_INIT
 	priority = FIRE_PRIORITY_TGUI
-	runlevels = RUNLEVEL_LOBBY | RUNLEVELS_DEFAULT
+	runlevels = RUNLEVEL_INIT | RUNLEVEL_LOBBY | RUNLEVELS_DEFAULT
 
 	/// A list of UIs scheduled to process
 	var/list/current_run = list()

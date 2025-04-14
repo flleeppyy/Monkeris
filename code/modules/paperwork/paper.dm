@@ -268,7 +268,7 @@
 		return
 
 	if(href_list["write"])
-		if(!config.paper_input)
+		if(!CONFIG_GET(flag/paper_input))
 			to_chat(usr, span_warning("No matter how hard you try to write on \the [src], nothing shows up! (Paper input disabled in config.)"))
 			return
 

@@ -51,7 +51,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	// if(href_list["reload_statbrowser"])
 	// 	src << browse(file('html/statbrowser.html'), "window=statbrowser")
 	// Log all hrefs
-	if(config && config.log_hrefs && href_logfile)
+	if(config && CONFIG_GET(flag/log_hrefs) && href_logfile)
 		DIRECT_OUTPUT(href_logfile, "<small>[time2text(world.timeofday,"hh:mm")]</small>[src] (usr:[usr]\[[COORD(usr)]\]) : [hsrc ? "[hsrc] " : ""][href]")
 
 	//byond bug ID:2256651
@@ -159,7 +159,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		return TRUE
 
 
-	if(config.automute_on && !holder && src.last_message == message)
+	if(CONFIG_GET(flag/automute_on) && !holder && src.last_message == message)
 		src.last_message_count++
 		if(src.last_message_count >= SPAM_TRIGGER_AUTOMUTE)
 			to_chat(src, span_danger("You have exceeded the spam filter limit for identical messages. An auto-mute was applied."))
@@ -191,9 +191,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	if(connection != "seeker" && connection != "web")//Invalid connection type.
 		return null
 
-	// TODO: have bans handle this
-	if(!config.guests_allowed && IsGuestKey(key))
-		alert(src,"This server doesn't allow guest accounts to play. Please go to http://www.byond.com/ and register for a key.","Guest","OK")
+	if(!CONFIG_GET(flag/guests_allowed) && IsGuestKey(key))
 		del(src)
 		return
 
@@ -224,11 +222,11 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	// 			to_chat(world, "Autoadmin rank not found")
 	// 		else
 	// 			new /datum/admins(autorank, ckey)
-	// if(CONFIG_GET(flag/enable_localhost_rank) && !connecting_admin)
-	var/localhost_addresses = list("127.0.0.1", "::1")
-	if(isnull(address) || (address in localhost_addresses))
-		var/datum/admins/localhost_rank = new("!localhost!", R_HOST, ckey)
-		localhost_rank.associate(src)
+	if(CONFIG_GET(flag/enable_localhost_rank) && !connecting_admin)
+		var/localhost_addresses = list("127.0.0.1", "::1")
+		if(isnull(address) || (address in localhost_addresses))
+			var/datum/admins/localhost_rank = new("!localhost!", R_HOST, ckey)
+			localhost_rank.associate(src)
 
 	//preferences datum - also holds some persistant data for the client (because we may as well keep these datums to a minimum)
 	prefs = SScharacter_setup.preferences_datums[ckey]
@@ -242,11 +240,11 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	var/full_version = "[byond_version].[byond_build ? byond_build : "xxx"]"
 	log_access("Login: [key_name(src)] from [address ? address : "localhost"]-[computer_id] || BYOND v[full_version]")
 
-	// Change the way they should download resources.
-	if(config.resource_urls)
-		src.preload_rsc = pick(config.resource_urls)
-	else src.preload_rsc = 1 // If config.resource_urls is not set, preload like normal.
-
+	// // Change the way they should download resources.
+	// if(CONFIG_GET(string/resource_urls))
+	// 	src.preload_rsc = pick(CONFIG_GET(string/resource_urls))
+	// else src.preload_rsc = 1 // If resource_urls is not set, preload like normal.
+	src.preload_rsc = 1
 	to_chat(src, span_red("If the title screen is black, resources are still downloading. Please be patient until the title screen appears."))
 
 
@@ -328,9 +326,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			to_chat(src, message)
 		GLOB.clientmessages.Remove(ckey)
 
-	if(prefs.lastchangelog != changelog_hash) //bolds the changelog button on the interface so we know there are updates.
+	if(prefs.lastchangelog != GLOB.changelog_hash) //bolds the changelog button on the interface so we know there are updates.
 		to_chat(src, span_info("You have unread updates in the changelog."))
-		if(config.aggressive_changelog)
+		if(CONFIG_GET(flag/aggressive_changelog))
 			changelog()
 
 	if(!winexists(src, "asset_cache_browser")) // The client is using a custom skin, tell them.
@@ -449,7 +447,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		if(query_datediff.Execute() && query_datediff.NextRow())
 			src.first_seen_days_ago = text2num(query_datediff.item[1])
 
-	if(config.paranoia_logging && isnum(src.first_seen_days_ago) && src.first_seen_days_ago == 0)
+	if(CONFIG_GET(flag/paranoia_logging) && isnum(src.first_seen_days_ago) && src.first_seen_days_ago == 0)
 		log_and_message_admins("PARANOIA: [key_name(src)] has connected here for the first time.")
 	return src.first_seen_days_ago
 
@@ -462,7 +460,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		var/DBQuery/query_datediff = dbcon.NewQuery("SELECT DATEDIFF(Now(),'[dateSQL]')")
 		if(query_datediff.Execute() && query_datediff.NextRow())
 			src.account_age_in_days = text2num(query_datediff.item[1])
-	if(config.paranoia_logging && isnum(src.account_age_in_days) && src.account_age_in_days <= 2)
+	if(CONFIG_GET(flag/paranoia_logging) && isnum(src.account_age_in_days) && src.account_age_in_days <= 2)
 		log_and_message_admins("PARANOIA: [key_name(src)] has a very new Byond account. ([src.account_age_in_days] days old)")
 	return src.account_age_in_days
 
@@ -496,8 +494,8 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 					log_world("Failed to update players table for user with id [src.id]. Error message: [query_update.ErrorMsg()].")
 
 		//Panic bunker - player not in DB, so they get kicked
-		else if(config.panic_bunker && !holder && !deadmin_holder && !(ckey in GLOB.PB_bypass))
-			log_adminwarn("Failed Login: [key] - New account attempting to connect during panic bunker")
+		else if(CONFIG_GET(flag/panic_bunker) && !holder && !deadmin_holder && !(ckey in GLOB.PB_bypass))
+			log_suspicious_login("Failed Login: [key] - New account attempting to connect during panic bunker")
 			message_admins(span_adminnotice("Failed Login: [key] - New account attempting to connect during panic bunker"))
 			to_chat(src, span_warning("Sorry but the server is currently not accepting connections from never before seen players."))
 			del(src) // Hard del the client. This terminates the connection.
@@ -529,28 +527,28 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	src.get_player_age() // Get days since first seen
 
 	// IP Reputation Check
-	if(config.ip_reputation)
-		if(config.ipr_allow_existing && first_seen_days_ago >= config.ipr_minimum_age)
+	if(CONFIG_GET(flag/ip_reputation))
+		if(CONFIG_GET(flag/ipr_allow_existing) && first_seen_days_ago >= CONFIG_GET(number/ipr_minimum_age))
 			log_admin("Skipping IP reputation check on [key] with [address] because of player age")
 		else if(holder)
 			log_admin("Skipping IP reputation check on [key] with [address] because they have a staff rank")
 		else if(VPN_whitelist)
 			log_admin("Skipping IP reputation check on [key] with [address] because they have a VPN whitelist")
 		else if(update_ip_reputation()) //It is set now
-			if(ip_reputation >= config.ipr_bad_score) //It's bad
+			if(ip_reputation >= CONFIG_GET(number/ipr_bad_score)) //It's bad
 
 				//Log it
-				if(config.paranoia_logging) //We don't block, but we want paranoia log messages
+				if(CONFIG_GET(flag/paranoia_logging)) //We don't block, but we want paranoia log messages
 					log_and_message_admins("[key] at [address] has bad IP reputation: [ip_reputation]. Will be kicked if enabled in config.")
 				else //We just log it
 					log_admin("[key] at [address] has bad IP reputation: [ip_reputation]. Will be kicked if enabled in config.")
 
 				//Take action if required
-				if(config.ipr_block_bad_ips && config.ipr_allow_existing) //We allow players of an age, but you don't meet it
-					to_chat(src, "Sorry, we only allow VPN/Proxy/Tor usage for players who have spent at least [config.ipr_minimum_age] days on the server. If you are unable to use the internet without your VPN/Proxy/Tor, please contact an admin out-of-game to let them know so we can accommodate this.")
+				if(CONFIG_GET(flag/ipr_block_bad_ips) && CONFIG_GET(flag/ipr_allow_existing)) //We allow players of an age, but you don't meet it
+					to_chat(src, "Sorry, we only allow VPN/Proxy/Tor usage for players who have spent at least [CONFIG_GET(number/ipr_minimum_age)] days on the server. If you are unable to use the internet without your VPN/Proxy/Tor, please contact an admin out-of-game to let them know so we can accommodate this.")
 					del(src) // Hard del the client. This terminates the connection.
 					return 0
-				else if(config.ipr_block_bad_ips) //We don't allow players of any particular age
+				else if(CONFIG_GET(flag/ipr_block_bad_ips)) //We don't allow players of any particular age
 					to_chat(src, "Sorry, we do not accept connections from users via VPN/Proxy/Tor connections. If you think this is in error, contact an administrator out of game.")
 					del(src) // Hard del the client. This terminates the connection.
 					return 0
@@ -661,7 +659,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 //Uses a couple different services
 /client/proc/update_ip_reputation()
 	var/list/scores = list("GII" = ipr_getipintel())
-	if(config.ipqualityscore_apikey)
+	if(CONFIG_GET(string/ipqualityscore_apikey))
 		scores["IPQS"] = ipr_ipqualityscore()
 	/* Can add other systems if desirable
 	if(config.blah_apikey)
@@ -683,10 +681,10 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 //Service returns a single float in html body
 /client/proc/ipr_getipintel()
-	if(!config.ipr_email)
+	if(!CONFIG_GET(string/ipr_email))
 		return -1
 
-	var/request = "http://check.getipintel.net/check.php?ip=[address]&contact=[config.ipr_email]"
+	var/request = "http://check.getipintel.net/check.php?ip=[address]&contact=[CONFIG_GET(string/ipr_email)]"
 	var/http[] = world.Export(request)
 
 	if(!http || !islist(http)) //If we couldn't check, the service might be down, fail-safe.
@@ -696,7 +694,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	//429 is rate limit exceeded
 	if(text2num(http["STATUS"]) == 429)
 		log_and_message_admins("getipintel.net reports HTTP status 429. IP reputation checking is now disabled. If you see this, let a developer know.")
-		config.ip_reputation = FALSE
+		CONFIG_SET(flag/ip_reputation, FALSE)
 		return -1
 
 	var/content = file2text(http["CONTENT"]) //world.Export actually returns a file object in CONTENT
@@ -727,7 +725,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 		log_and_message_admins(ipr_error)
 		if(fatal)
-			config.ip_reputation = FALSE
+			CONFIG_SET(flag/ip_reputation, FALSE)
 			log_and_message_admins("With this error, IP reputation checking is disabled for this shift. Let a developer know.")
 		return -1
 
@@ -737,10 +735,10 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 //Service returns JSON in html body
 /client/proc/ipr_ipqualityscore()
-	if(!config.ipqualityscore_apikey)
+	if(!CONFIG_GET(string/ipqualityscore_apikey))
 		return -1
 
-	var/request = "http://www.ipqualityscore.com/api/json/ip/[config.ipqualityscore_apikey]/[address]?strictness=1&fast=true&byond_key=[key]"
+	var/request = "http://www.ipqualityscore.com/api/json/ip/[CONFIG_GET(string/ipqualityscore_apikey)]/[address]?strictness=1&fast=true&byond_key=[key]"
 	var/http[] = world.Export(request)
 
 	if(!http || !islist(http)) //If we couldn't check, the service might be down, fail-safe.

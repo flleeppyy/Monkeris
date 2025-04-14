@@ -12,16 +12,19 @@
 
 	if(!holder)	return
 
-	if(!plant_controller || !plant_controller.gene_tag_masks)
+	if(!SSplants || !SSplants.gene_tag_masks)
 		to_chat(usr, "Gene masks not set.")
 		return
 
-	for(var/mask in plant_controller.gene_tag_masks)
-		to_chat(usr, "[mask]: [plant_controller.gene_tag_masks[mask]]")
+	for(var/mask in SSplants.gene_tag_masks)
+		to_chat(usr, "[mask]: [SSplants.gene_tag_masks[mask]]")
 
-var/global/datum/controller/plants/plant_controller // Set in New().
-
-/datum/controller/plants
+SUBSYSTEM_DEF(plants)
+	name = "Plants"
+	priority = FIRE_PRIORITY_PLANTS
+	init_order = INIT_ORDER_PLANTS
+	flags = SS_TICKER
+	wait = PLANT_TICK_TIME
 
 	var/plants_per_tick = PLANTS_PER_TICK
 	var/plant_tick_time = PLANT_TICK_TIME
@@ -32,22 +35,20 @@ var/global/datum/controller/plants/plant_controller // Set in New().
 	var/list/plant_icon_cache = list()      // Stores images of growth, fruits and seeds.
 	var/list/plant_sprites = list()         // List of all harvested product sprites.
 	var/list/plant_product_sprites = list() // List of all growth sprites plus number of growth stages.
-	var/processing = 0                      // Off/on.
 
-/datum/controller/plants/New()
-	if(plant_controller && plant_controller != src)
+	var/processed = 0                      // something something. plants processed counter?
+
+/datum/controller/subsystem/plants/New()
+	if(SSplants && SSplants != src)
 		log_debug("Rebuilding plant controller.")
-		qdel(plant_controller)
-	plant_controller = src
-	setup()
-	Process()
+		qdel(SSplants)
+	SSplants = src
 
 // Predefined/roundstart varieties use a string key to make it
 // easier to grab the new variety when mutating. Post-roundstart
 // and mutant varieties use their uid converted to a string instead.
 // Looks like shit but it's sort of necessary.
-/datum/controller/plants/proc/setup()
-
+/datum/controller/subsystem/plants/Initialize()
 	// Build the icon lists.
 	for(var/icostate in icon_states('icons/obj/hydroponics_growing.dmi'))
 		var/split = findtext(icostate,"-")
@@ -96,12 +97,13 @@ var/global/datum/controller/plants/plant_controller // Set in New().
 		used_masks += gene_mask
 		plant_traits -= gene_tag
 		gene_tag_masks[gene_tag] = gene_mask
+	..()
 
 // Proc for creating a random seed type.
-/datum/controller/plants/proc/create_random_seed(var/survive_on_station)
+/datum/controller/subsystem/plants/proc/create_random_seed(var/survive_on_station)
 	var/datum/seed/seed = new()
 	seed.randomize()
-	seed.uid = plant_controller.seeds.len + 1
+	seed.uid = SSplants.seeds.len + 1
 	seed.name = "[seed.uid]"
 	seeds[seed.name] = seed
 
@@ -120,32 +122,21 @@ var/global/datum/controller/plants/plant_controller // Set in New().
 		seed.set_trait(TRAIT_HIGHKPA_TOLERANCE,200)
 	return seed
 
-/datum/controller/plants/Process()
-	processing = 1
-	spawn(0)
-		set background = 1
-		var/processed = 0
-		while(1)
-			if(!processing)
-				sleep(plant_tick_time)
-			else
-				processed = 0
-				if(plant_queue.len)
-					var/target_to_process = min(plant_queue.len,plants_per_tick)
-					for(var/x=0;x<target_to_process;x++)
-						if(!plant_queue.len)
-							break
-						var/obj/effect/plant/plant = pick(plant_queue)
-						plant_queue -= plant
-						if(!istype(plant))
-							continue
-						plant.Process()
-						processed++
-						sleep(1) // Stagger processing out so previous tick can resolve (overlapping plant segments etc)
-				sleep(max(1,(plant_tick_time-processed)))
+/datum/controller/subsystem/plants/fire()
+	if(plant_queue.len)
+		var/target_to_process = min(plant_queue.len,plants_per_tick)
+		for(var/x=0;x<target_to_process;x++)
+			if(!plant_queue.len)
+				break
+			var/obj/effect/plant/plant = pick(plant_queue)
+			plant_queue -= plant
+			if(!istype(plant))
+				continue
+			plant.Process()
+			processed++
 
-/datum/controller/plants/proc/add_plant(var/obj/effect/plant/plant)
+/datum/controller/subsystem/plants/proc/add_plant(var/obj/effect/plant/plant)
 	plant_queue |= plant
 
-/datum/controller/plants/proc/remove_plant(var/obj/effect/plant/plant)
+/datum/controller/subsystem/plants/proc/remove_plant(var/obj/effect/plant/plant)
 	plant_queue -= plant

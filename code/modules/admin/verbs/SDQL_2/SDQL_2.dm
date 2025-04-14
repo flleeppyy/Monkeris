@@ -699,7 +699,7 @@
 
 /proc/SDQL_print(object, list/text_list)
 	if (is_proper_datum(object))
-		text_list += "<A href='byond://?_src_=vars;Vars=\ref[object]'>\ref[object]</A>"
+		text_list += "<A href='byond://?_src_=vars;[HrefToken()];Vars=\ref[object]'>\ref[object]</A>"
 		if(isatom(object))
 			var/atom/a = object
 

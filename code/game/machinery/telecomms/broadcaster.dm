@@ -322,7 +322,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 		var/voice
 		var/voice_scrambled
 
-		if(config.tts_enabled && use_text_to_speech)
+		if(CONFIG_GET(flag/tts_enabled) && use_text_to_speech)
 			if(M)
 				if(M.tts_seed)
 					seed = M.tts_seed

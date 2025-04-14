@@ -98,7 +98,7 @@
 
 /proc/cmd_admin_mute(mob/M as mob, mute_type, automute = 0)
 	if(automute)
-		if(!config.automute_on)	return
+		if(!CONFIG_GET(flag/automute_on))	return
 	else
 		if(!usr || !usr.client)
 			return
@@ -206,7 +206,7 @@ Ccomp's first proc.
 		return
 
 	var/mob/observer/ghost/G = ghosts[target]
-	if(G.has_enabled_antagHUD && config.antag_hud_restricted)
+	if(G.has_enabled_antagHUD && CONFIG_GET(flag/antag_hud_restricted))
 		var/response = alert(src, "Are you sure you wish to allow this individual to play?","Ghost has used AntagHUD","Yes","No")
 		if(response == "No")
 			return
@@ -243,7 +243,7 @@ Ccomp's first proc.
 	if(!holder)
 		to_chat(src, "Only administrators may use this command.")
 	var/action=""
-	if(config.antag_hud_allowed)
+	if(CONFIG_GET(flag/antag_hud_allowed))
 		for(var/mob/observer/ghost/g in get_ghosts())
 			if(!g.client.holder)						//Remove the verb from non-admin ghosts
 				remove_verb(g, /mob/observer/ghost/verb/toggle_antagHUD)
@@ -251,7 +251,7 @@ Ccomp's first proc.
 				g.antagHUD = 0						// Disable it on those that have it enabled
 				g.has_enabled_antagHUD = 2				// We'll allow them to respawn
 				to_chat(g, span_red("<B>The Administrator has disabled AntagHUD </B>"))
-		config.antag_hud_allowed = 0
+		CONFIG_SET(flag/antag_hud_allowed, 0)
 		to_chat(src, span_red("<B>AntagHUD usage has been disabled</B>"))
 		action = "disabled"
 	else
@@ -259,7 +259,7 @@ Ccomp's first proc.
 			if(!g.client.holder)						// Add the verb back for all non-admin ghosts
 				add_verb(g, /mob/observer/ghost/verb/toggle_antagHUD)
 			to_chat(g, span_blue("<B>The Administrator has enabled AntagHUD </B>")	) // Notify all observers they can now use AntagHUD
-		config.antag_hud_allowed = 1
+		CONFIG_SET(flag/antag_hud_allowed, 1)
 		action = "enabled"
 		to_chat(src, span_blue("<B>AntagHUD usage has been enabled</B>"))
 
@@ -274,11 +274,11 @@ Ccomp's first proc.
 	if(!holder)
 		to_chat(src, "Only administrators may use this command.")
 	var/action=""
-	if(config.antag_hud_restricted)
+	if(CONFIG_GET(flag/antag_hud_restricted))
 		for(var/mob/observer/ghost/g in get_ghosts())
 			to_chat(g, span_blue("<B>The administrator has lifted restrictions on joining the round if you use AntagHUD</B>"))
 		action = "lifted restrictions"
-		config.antag_hud_restricted = 0
+		CONFIG_SET(flag/antag_hud_restricted, 0)
 		to_chat(src, span_blue("<B>AntagHUD restrictions have been lifted</B>"))
 	else
 		for(var/mob/observer/ghost/g in get_ghosts())
@@ -287,7 +287,7 @@ Ccomp's first proc.
 			g.antagHUD = 0
 			g.has_enabled_antagHUD = 0
 		action = "placed restrictions"
-		config.antag_hud_restricted = 1
+		CONFIG_SET(flag/antag_hud_restricted, 1)
 		to_chat(src, span_red("<B>AntagHUD restrictions have been enabled</B>"))
 
 	log_admin("[key_name(usr)] has [action] on joining the round if they use AntagHUD")

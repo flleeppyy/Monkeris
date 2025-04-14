@@ -20,7 +20,7 @@ var/next_station_date_change = 1 DAYS
 
 #define station_adjusted_time(time) time2text(time + station_time_in_ticks, "hh:mm")
 #define worldtime2stationtime(time) time2text(roundstart_hour HOURS + time, "hh:mm")
-#define roundduration2text_in_ticks (SSticker.round_start_time ? world.time - SSticker.round_start_time : 0)
+#define roundduration2text_in_ticks (SSticker?.round_start_time ? world.time - SSticker.round_start_time : 0)
 #define station_time_in_ticks (roundstart_hour HOURS + roundduration2text_in_ticks)
 
 /proc/stationtime2text()
@@ -72,7 +72,7 @@ var/next_duration_update = 0
 var/last_roundduration2text = 0
 
 /proc/roundduration2text()
-	if(!SSticker.round_start_time)
+	if(!SSticker?.round_start_time)
 		return "00:00"
 	if(last_roundduration2text && world.time < next_duration_update)
 		return last_roundduration2text
@@ -91,7 +91,7 @@ var/last_roundduration2text = 0
 
 /proc/gameTimestamp(format = "hh:mm:ss", wtime=null)
 	if(!wtime)
-		wtime = world.time - SSticker.round_start_time
+		wtime = world.time - (SSticker?.round_start_time || 0)
 	var/hour = round(wtime / 36000)
 	var/minute = round(((wtime) - (hour * 36000)) / 600)
 	var/second = round(((wtime) - (hour * 36000) - (minute * 600)) / 10)

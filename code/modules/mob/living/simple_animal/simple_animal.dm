@@ -450,7 +450,7 @@
 			var/mob/living/exosuit/M = _target_mob
 			if(length(M.pilots))
 				return FALSE
-		else if(!L.stat || L.health >= (ishuman(L) ? HEALTH_THRESHOLD_CRIT : 0))
+		else if(!L.stat || L.health >= (ishuman(L) ? CONFIG_GET(number/health_threshold_crit) : 0))
 			return FALSE
 
 	if(istype(_target_mob, /obj/machinery/bot))

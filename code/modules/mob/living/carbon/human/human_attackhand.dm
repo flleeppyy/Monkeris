@@ -55,7 +55,7 @@
 		if(I_HELP)
 			if(can_operate(src, M) == CAN_OPERATE_ALL && do_surgery(src, M, null, TRUE))
 				return 1
-			else if(istype(H) && health < HEALTH_THRESHOLD_CRIT && health > HEALTH_THRESHOLD_DEAD)
+			else if(istype(H) && health < CONFIG_GET(number/health_threshold_crit) && health > CONFIG_GET(number/health_threshold_dead))
 				if(H == src)
 					to_chat(H, span_notice("You can't perform CPR on yourself."))
 					return

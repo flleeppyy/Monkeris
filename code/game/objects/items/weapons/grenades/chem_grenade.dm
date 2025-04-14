@@ -131,11 +131,10 @@
 		if(!isigniter(detonator.left_assembly))
 			detonator.left_assembly.activate()
 			active = TRUE
-			log_and_message_admins("primed via detonator \a [src]")
 		if(!isigniter(detonator.right_assembly))
 			detonator.right_assembly.activate()
 			active = TRUE
-			log_and_message_admins("primed via detonator \a [src]")
+		log_bomber(user, "primed via detonator \a [src]", src)
 	if(active)
 		icon_state = initial(icon_state) + "_active"
 

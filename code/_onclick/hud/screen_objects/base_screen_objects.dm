@@ -235,6 +235,11 @@
 						if(icon_x in 14 to 18)
 							selecting = BP_EYES
 
+	logger.Log(
+		LOG_CATEGORY_TARGET_ZONE_SWITCH,
+		"[key_name(src)] manually changed selected zone (UI)",
+		data = selecting
+	)
 	set_selected_zone(selecting)
 	return TRUE
 

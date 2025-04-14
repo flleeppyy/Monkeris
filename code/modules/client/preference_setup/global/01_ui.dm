@@ -34,7 +34,7 @@
 	pref.UI_style_color	= sanitize_hexcolor(pref.UI_style_color, initial(pref.UI_style_color))
 	pref.UI_style_alpha	= sanitize_integer(pref.UI_style_alpha, 0, 255, initial(pref.UI_style_alpha))
 	pref.ooccolor		= sanitize_hexcolor(pref.ooccolor, GLOB.OOC_COLOR)
-	pref.asaycolor	= sanitize_hexcolor(pref.ooccolor, DEFAULT_ASAY_COLOR)
+	pref.asaycolor		= sanitize_hexcolor(pref.asaycolor, DEFAULT_ASAY_COLOR)
 	//pref.clientfps	    = sanitize_integer(pref.clientfps, CLIENT_MIN_FPS, CLIENT_MAX_FPS, initial(pref.clientfps))
 
 /datum/category_item/player_setup_item/player_global/ui/content(var/mob/user)
@@ -89,7 +89,7 @@
 
 	else if(href_list["select_asay_color"])
 		var/new_asaycolor = input(user, "Choose ASAY color:", "Global Preference") as color|null
-		if(new_asaycolor && can_select_ooc_color(user) && CanUseTopic(user))
+		if(new_asaycolor && can_select_asay_color(user) && CanUseTopic(user))
 			pref.asaycolor = new_asaycolor
 			return TOPIC_REFRESH
 
@@ -125,4 +125,7 @@
 	return ..()
 
 /proc/can_select_ooc_color(var/mob/user)
-	return config.allow_admin_ooccolor && check_rights(R_ADMIN, 0, user)
+	return CONFIG_GET(flag/allow_admin_ooccolor) && check_rights(R_ADMIN, 0, user)
+
+/proc/can_select_asay_color(var/mob/user)
+	return CONFIG_GET(flag/allow_admin_asaycolor) && check_rights(R_ADMIN, 0, user)

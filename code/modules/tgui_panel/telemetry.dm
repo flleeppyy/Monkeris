@@ -89,7 +89,7 @@
 	// 	if (!row || row.len < 3 || (!row["ckey"] || !row["address"] || !row["computer_id"]))
 	// 		return
 
-	// 	if (!isnull(GLOB.round_id))
+	// 	if (!isnull(GLOB.game_id))
 	// 		query_data += list(list(
 	// 			"telemetry_ckey" = row["ckey"],
 	// 			"address" = row["address"],
@@ -111,8 +111,8 @@
 	// 	message_admins(msg)
 	// 	// log_admin_private(msg)
 	// 	log_admin(msg)
-	// 	// log_suspicious_login(msg, access_log_mirror = FALSE)
-	// 	// log_suspicious_login(msg, access_log_mirror = FALSE)
+	// 	log_suspicious_login(msg, access_log_mirror = FALSE)
+	// 	log_suspicious_login(msg, access_log_mirror = FALSE)
 
 	// Only log them all at the end, since it's not as important as reporting an evader
 	// for (var/list/one_query as anything in query_data)
@@ -137,7 +137,7 @@
 	// 		"telemetry_ckey" = one_query["telemetry_ckey"],
 	// 		"address" = one_query["address"],
 	// 		"computer_id" = one_query["computer_id"],
-	// 		"round_id" = GLOB.round_id,
+	// 		"round_id" = GLOB.game_id,
 	// 	))
 	// 	query.Execute()
 	// 	qdel(query)
