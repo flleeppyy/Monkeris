@@ -84,6 +84,7 @@ GLOBAL_LIST_INIT(admin_verbs_debug, list(
 	/client/proc/apply_random_map,
 	/client/proc/overlay_random_map,
 	/client/proc/ZASSettings,
+	/client/proc/reload_configuration,
 	/client/proc/enable_debug_verbs,
 	/client/proc/tracy_next_round,
 	/client/proc/start_tracy,
@@ -155,7 +156,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	/client/proc/admin_memo,
 	/client/proc/admin_ghost,
 	/client/proc/invisimin,
-	/client/proc/player_panel_new,
+	/datum/verbs/menu/Admin/verb/playerpanel, /* It isn't /datum/admin but it fits no less */
 	/client/proc/storyteller_panel,
 	/client/proc/unban_panel,
 	/client/proc/game_panel,
@@ -229,6 +230,10 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	/client/proc/view_chemical_reaction_logs,
 	/client/proc/discord_msg))
 
+/datum/verbs/menu/Admin/Generate_list(client/C)
+	if (C.holder)
+		. = ..()
+
 /client/proc/add_admin_verbs()
 	if(holder)
 
@@ -249,8 +254,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 		if(check_rights(R_PERMISSIONS, FALSE, src))
 			add_verb(src, GLOB.admin_verbs_permissions)
 
-		if(check_rights(config.profiler_permission))
-			control_freak = 0 // enable profiler
+		control_freak = 0 // enable profiler
 
 /client/proc/remove_admin_verbs()
 	for(var/i in list(
@@ -318,19 +322,21 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	if(holder && mob)
 		if(mob.invisibility == INVISIBILITY_OBSERVER)
 			mob.invisibility = initial(mob.invisibility)
-			to_chat(mob, "\red <b>Invisimin off. Invisibility reset.</b>")
+			to_chat(mob, span_red("<b>Invisimin off. Invisibility reset.</b>"))
 			mob.alpha = max(mob.alpha + 100, 255)
 		else
 			mob.invisibility = INVISIBILITY_OBSERVER
-			to_chat(mob, "\blue <b>Invisimin on. You are now as invisible as a ghost.</b>")
+			to_chat(mob, span_blue("<b>Invisimin on. You are now as invisible as a ghost.</b>"))
 			mob.alpha = max(mob.alpha - 100, 0)
 
-//shows an interface for all players, with links to various panels
-/client/proc/player_panel_new()
+/datum/verbs/menu/Admin/verb/playerpanel()
 	set name = "Player Panel"
+	set desc = "Player Panel"
 	set category = "Admin"
-	if(holder)
-		holder.player_panel_new()
+
+	if(usr.client.holder)
+		usr.client.holder.player_panel_new()
+		// SSblackbox.record_feedback("tally", "admin_verb", 1, "Player Panel New") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/storyteller_panel()
 	set name = "Storyteller Panel"
@@ -342,7 +348,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	set name = "Unban Panel"
 	set category = "Admin"
 	if(holder)
-		if(config.ban_legacy_system)
+		if(CONFIG_GET(flag/ban_legacy_system))
 			holder.unbanpanel()
 		else
 			holder.DB_ban_panel()
@@ -396,28 +402,43 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 /client/proc/colorooc()
 	set category = "Fun"
 	set name = "OOC Text Color"
-	if(!holder)	return
+	if(!holder)
+		return
 	var/response = alert(src, "Please choose a distinct color that is easy to read and doesn't mix with all the other chat and radio frequency colors.", "Change own OOC color", "Pick new color", "Reset to default", "Cancel")
 	if(response == "Pick new color")
 		prefs.ooccolor = input(src, "Please select your OOC colour.", "OOC colour") as color
 	else if(response == "Reset to default")
-		prefs.ooccolor = initial(prefs.ooccolor)
+		prefs.ooccolor = GLOB.OOC_COLOR
+	prefs.save_preferences()
+
+//allows us to set a custom colour for everythign we say in asay
+/client/proc/colorasay()
+	set category = "Admin"
+	set name = "ASAY Text Color"
+	if(!holder)
+		return
+	var/response = alert(src, "Please choose a distinct color that is easy to read and doesn't mix with all the other chat and radio frequency colors.", "Change own ASAY color", "Pick new color", "Reset to default", "Cancel")
+	if(response == "Pick new color")
+		prefs.asaycolor = input(src, "Please select your ASAY colour.", "ASAY colour") as color
+	else if(response == "Reset to default")
+		prefs.asaycolor = DEFAULT_ASAY_COLOR
 	prefs.save_preferences()
 
 /client/proc/stealth()
 	set category = "Admin"
 	set name = "Stealth Mode"
-	if(holder)
-		if(holder.fakekey)
-			holder.fakekey = null
-		else
-			var/new_key = ckeyEx(input("Enter your desired display name.", "Fake Key", key) as text|null)
-			if(!new_key)	return
-			if(length(new_key) >= 26)
-				new_key = copytext(new_key, 1, 26)
-			holder.fakekey = new_key
-		log_admin("[key_name(usr)] has turned stealth mode [holder.fakekey ? "ON" : "OFF"]")
-		message_admins("[key_name_admin(usr)] has turned stealth mode [holder.fakekey ? "ON" : "OFF"]", 1)
+	if(!holder)
+		return
+	if(holder.fakekey)
+		holder.fakekey = null
+	else
+		var/new_key = ckeyEx(input("Enter your desired display name.", "Fake Key", key) as text|null)
+		if(!new_key)	return
+		if(length(new_key) >= 26)
+			new_key = copytext(new_key, 1, 26)
+		holder.fakekey = new_key
+	log_admin("[key_name(usr)] has turned stealth mode [holder.fakekey ? "ON" : "OFF"]")
+	message_admins("[key_name_admin(usr)] has turned stealth mode [holder.fakekey ? "ON" : "OFF"]", 1)
 
 /client/proc/hivemind_panel()
 	set category = "Fun"
@@ -498,7 +519,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 			var/multiplicative_falloff = input("Multiplicative falloff for this explosion?") as num
 			var/eflags = additive_falloff ? EFLAG_ADDITIVEFALLOFF : 0 | multiplicative_falloff ? EFLAG_EXPONENTIALFALLOFF : 0
 			explosion(epicenter, explosion_power, explosion_falloff, eflags)
-	message_admins("\blue [ckey] created an admin explosion at [epicenter.loc].")
+	message_admins(span_blue("[ckey] created an admin explosion at [epicenter.loc]."))
 
 /client/proc/make_sound(obj/O in range(world.view))
 	set category = "Special Verbs"
@@ -511,7 +532,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 		for (var/mob/V in hearers(O))
 			V.show_message(message, 2)
 		log_admin("[key_name(usr)] made [O] at [O.x], [O.y], [O.z]. make a sound")
-		message_admins("\blue [key_name_admin(usr)] made [O] at [O.x], [O.y], [O.z]. make a sound", 1)
+		message_admins(span_blue("[key_name_admin(usr)] made [O] at [O.x], [O.y], [O.z]. make a sound"), 1)
 
 /client/proc/togglebuildmodeself()
 	set name = "Toggle Build Mode Self"
@@ -557,7 +578,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 
 	var/msg = "[SSair.can_fire ? "Enabled" : "Disabled"] SSair processing."
 	log_admin("[key_name(usr)] used 'kill air'. [msg]")
-	message_admins("\blue [key_name_admin(usr)] used 'kill air'. [msg]", 1)
+	message_admins(span_blue("[key_name_admin(usr)] used 'kill air'. [msg]"), 1)
 
 /client/proc/readmin_self()
 	set name = "Readmin"
@@ -589,11 +610,11 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	set category = "Server"
 	if(!holder)	return
 	if(config)
-		if(config.log_hrefs)
-			config.log_hrefs = 0
+		if(CONFIG_GET(flag/log_hrefs))
+			CONFIG_SET(flag/log_hrefs, 0)
 			to_chat(src, "<b>Stopped logging hrefs</b>")
 		else
-			config.log_hrefs = 1
+			CONFIG_SET(flag/log_hrefs, 1)
 			to_chat(src, "<b>Started logging hrefs</b>")
 
 //shows AI and borg laws
@@ -718,12 +739,12 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	if(!holder)
 		return
 	if(config)
-		if(config.allow_drone_spawn)
-			config.allow_drone_spawn = 0
+		if(CONFIG_GET(flag/allow_drone_spawn))
+			CONFIG_SET(flag/allow_drone_spawn, 0)
 			to_chat(src, "<b>Disallowed maint drones.</b>")
 			message_admins("Admin [key_name_admin(usr)] has disabled maint drones.", 1)
 		else
-			config.allow_drone_spawn = 1
+			CONFIG_SET(flag/allow_drone_spawn, 1)
 			to_chat(src, "<b>Enabled maint drones.</b>")
 			message_admins("Admin [key_name_admin(usr)] has enabled maint drones.", 1)
 
@@ -736,7 +757,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	to_chat(T, span_notice("Move on."))
 
 	log_admin("[key_name(usr)] told [key_name(T)] to man up and deal with it.")
-	message_admins("\blue [key_name_admin(usr)] told [key_name(T)] to man up and deal with it.", 1)
+	message_admins(span_blue("[key_name_admin(usr)] told [key_name(T)] to man up and deal with it."), 1)
 
 /client/proc/global_man_up()
 	set category = "Fun"
@@ -748,7 +769,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 		T << 'sound/voice/ManUp1.ogg'
 
 	log_admin("[key_name(usr)] told everyone to man up and deal with it.")
-	message_admins("\blue [key_name_admin(usr)] told everyone to man up and deal with it.", 1)
+	message_admins(span_blue("[key_name_admin(usr)] told everyone to man up and deal with it."), 1)
 
 /client/proc/skill_issue(mob/T as mob in SSmobs.mob_list | SShumans.mob_list)
 	set category = "Fun"
@@ -759,7 +780,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	to_chat(T, span_notice("Git gud."))
 
 	log_admin("[key_name(usr)] told [key_name(T)] that it is a skill issue and to git gud.")
-	message_admins("\blue [key_name_admin(usr)] told [key_name(T)] that it is a skill issue and to git gud.", 1)
+	message_admins(span_blue("[key_name_admin(usr)] told [key_name(T)] that it is a skill issue and to git gud."), 1)
 
 /client/proc/toggleUIDebugMode()
 	set category = "Debug"
@@ -803,7 +824,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	portal_2.set_target(get_turf(portal_1))
 
 	log_admin("[key_name(usr)] created portals from ([x_1],[y_1],[z_1]) to ([x_2],[y_2],[z_2]).")
-	message_admins("\blue [key_name_admin(usr)] created portals from ([x_1],[y_1],[z_1]) to ([x_2],[y_2],[z_2]).", 1)
+	message_admins(span_blue("[key_name_admin(usr)] created portals from ([x_1],[y_1],[z_1]) to ([x_2],[y_2],[z_2])."), 1)
 
 /client/proc/manage_custom_kits()
 	set category = "Fun"
