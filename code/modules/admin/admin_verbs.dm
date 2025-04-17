@@ -35,7 +35,6 @@ GLOBAL_LIST_INIT(admin_verbs_server, list(
 	/datum/admins/proc/toggleRespawn,
 	/datum/admins/proc/delay,
 	/datum/admins/proc/delay_round_end,
-	/datum/admins/proc/immreboot,
 	/datum/admins/proc/toggle_tts,
 	/datum/admins/proc/toggle_tts_cache,
 	/datum/admins/proc/check_tts_stat,

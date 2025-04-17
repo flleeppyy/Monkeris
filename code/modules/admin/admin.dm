@@ -832,18 +832,6 @@ var/global/floorIsLava = 0
 	message_admins("[key_name_admin(usr)] delayed the round end for reason: [SSticker.admin_delay_notice]")
 
 
-/datum/admins/proc/immreboot()
-	set category = "Server"
-	set desc="Reboots the server post haste"
-	set name="Immediate Reboot"
-	if(!usr.client.holder)
-		return
-	if( alert("Reboot server?",,"Yes","No") == "No")
-		return
-	to_chat(world, span_red("<b>Rebooting world!</b> \blue Initiated by [usr.client.holder.fakekey ? "Admin" : usr.key]!"))
-	log_admin("[key_name(usr)] initiated an immediate reboot.")
-	world.Reboot()
-
 ////////////////////////////////////////////////////////////////////////////////////////////////ADMIN HELPER PROCS
 
 /proc/is_special_character(mob/M) // returns 1 for special characters
