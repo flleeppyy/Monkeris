@@ -1,6 +1,6 @@
-#ifndef OVERRIDE_BAN_SYSTEM
 //Blocks an attempt to connect before even creating our client datum thing.
 /world/IsBanned(key, address, computer_id, type, real_bans_only=FALSE)
+	debug_world_log("isbanned(): '[args.Join("', '")]'")
 	if (!key || (!real_bans_only && (!address || !computer_id)))
 		if(real_bans_only)
 			return FALSE
@@ -148,4 +148,3 @@
 		if (failedip)
 			message_admins("[key] has logged in with a blank ip in the ban check.")
 		return ..()	//default pager ban stuff
-#endif
