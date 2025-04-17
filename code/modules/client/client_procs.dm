@@ -240,12 +240,6 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	var/full_version = "[byond_version].[byond_build ? byond_build : "xxx"]"
 	log_access("Login: [key_name(src)] from [address ? address : "localhost"]-[computer_id] || BYOND v[full_version]")
 
-	// // Change the way they should download resources.
-	// if(CONFIG_GET(string/resource_urls))
-	// 	src.preload_rsc = pick(CONFIG_GET(string/resource_urls))
-	// else src.preload_rsc = 1 // If resource_urls is not set, preload like normal.
-	src.preload_rsc = 1
-
 	. = ..() //calls mob.Login()
 
 	to_chat(src, span_red("If the title screen is black, resources are still downloading. Please be patient until the title screen appears."))
@@ -317,6 +311,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	if(holder)
 		add_admin_verbs()
 		admin_memo_show()
+		adminGreet()
 
 	if(custom_event_msg && custom_event_msg != "")
 		to_chat(src, "<h1 class='alert'>Custom Event</h1>")
@@ -364,6 +359,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	if(holder)
 		holder.owner = null
 		GLOB.admins -= src
+		handle_admin_logout()
 	QDEL_NULL(tooltips)
 	if(dbcon.IsConnected())
 		var/DBQuery/query = dbcon.NewQuery("UPDATE players SET last_seen = Now() WHERE id = [src.id]")
@@ -586,34 +582,27 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 
 //send resources to the client. It's here in its own proc so we can move it around easiliy if need be
+/// Send resources to the client.
+/// Sends both game resources and browser assets.
 /client/proc/send_resources()
-// #if (PRELOAD_RSC == 0)
-// 	var/static/next_external_rsc = 0
-// 	var/list/external_rsc_urls = CONFIG_GET(keyed_list/external_rsc_urls)
-// 	if(length(external_rsc_urls))
-// 		next_external_rsc = WRAP(next_external_rsc+1, 1, external_rsc_urls.len+1)
-// 		preload_rsc = external_rsc_urls[next_external_rsc]
-// #endif
+#if (PRELOAD_RSC == 0)
+	var/static/next_external_rsc = 0
+	var/list/external_rsc_urls = CONFIG_GET(keyed_list/external_rsc_urls)
+	if(length(external_rsc_urls))
+		next_external_rsc = WRAP(next_external_rsc+1, 1, external_rsc_urls.len+1)
+		preload_rsc = external_rsc_urls[next_external_rsc]
+#endif
 
-	spawn (10) //removing this spawn causes all clients to not get verbs.
+	spawn (10) //removing this spawn causes all clients to not get verbs. (this can't be addtimer because these assets may be needed before the mc inits)
 
 		//load info on what assets the client has
 		src << browse('code/modules/asset_cache/validate_assets.html', "window=asset_cache_browser")
 
 		//Precache the client with all other assets slowly, so as to not block other browse() calls
-		// if (CONFIG_GET(flag/asset_simple_preload))
-		addtimer(CALLBACK(SSassets.transport, TYPE_PROC_REF(/datum/asset_transport, send_assets_slow), src, SSassets.transport.preload), 5 SECONDS)
+		if (CONFIG_GET(flag/asset_simple_preload))
+			addtimer(CALLBACK(SSassets.transport, TYPE_PROC_REF(/datum/asset_transport, send_assets_slow), src, SSassets.transport.preload), 5 SECONDS)
 
-		// #if (PRELOAD_RSC == 0)
-		// for (var/name in GLOB.vox_sounds)
-		// 	var/file = GLOB.vox_sounds[name]
-		// 	Export("##action=load_rsc", file)
-		// 	stoplag()
-		// #endif
-
-		// ???
 		send_all_cursor_icons(src)
-
 
 //Hook, override it to run code when dir changes
 //Like for /atoms, but clients are their own snowflake FUCK
@@ -839,3 +828,32 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	winset(usr, "mainwindow", "menu=menu")
 	winset(usr, "mainwindow", "is-maximized=false")
 	fit_viewport()
+
+/// Handles any "fluff" or supplementary procedures related to an admin logout event. Should not have anything critically related cleaning up an admin's logout.
+/client/proc/handle_admin_logout()
+	adminGreet(logout = TRUE)
+	if(length(GLOB.admins) > 0 || !SSticker.IsRoundInProgress()) // We only want to report this stuff if we are currently playing.
+		return
+
+	var/list/message_to_send = list()
+	var/static/list/cheesy_messages = null
+
+	cheesy_messages ||= list(
+		"Forever alone :(",
+		"I have no admins online!",
+		"I need a hug :(",
+		"I need someone on me :(",
+		"I want a man :(",
+		"I'm all alone :(",
+		"I'm feeling lonely :(",
+		"I'm so lonely :(",
+		"Someone come hold me :(",
+		"What happened? Where has everyone gone?",
+		"Where has everyone gone?",
+		"Why does nobody love me? :(",
+	)
+
+	message_to_send += pick(cheesy_messages)
+	message_to_send += "(No admins online)"
+
+	send2adminchat("Server", jointext(message_to_send, " "))

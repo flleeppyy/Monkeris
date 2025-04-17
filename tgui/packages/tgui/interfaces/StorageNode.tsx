@@ -1,5 +1,6 @@
 import { BooleanLike } from 'tgui-core/react';
-import { useBackend, sendAct, useLocalState } from 'tgui/backend';
+import { useState } from 'react';
+import { useBackend, sendAct } from 'tgui/backend';
 import {
   Button,
   Box,
@@ -35,12 +36,11 @@ interface StorageNodeInterface {
 
 const exchange = (props, context) => {
   const { matnames, matnums, matvalues, dosh, maticons } = props;
-  const [selection, setSelection] = useLocalState(
-    context,
+  const [selection, setSelection] = useState(
     'storageexchangeSelection',
     -1,
   );
-  const [amt, setAmt] = useLocalState(context, 'storageexchangeAmt', 0);
+  const [amt, setAmt] = useState('storageexchangeAmt', 0);
   const act = sendAct;
   return (
     <>
@@ -94,7 +94,7 @@ const sale = (props, context) => {
     portmaticons,
     portmatvalues,
   } = props;
-  const [selection, setSelection] = useLocalState(context, 'saleSelection', -1);
+  const [selection, setSelection] = useState('saleSelection', -1);
   return (
     <>
       <LabeledList.Item label="Budget">{budget}</LabeledList.Item>
@@ -195,17 +195,12 @@ const administration = (props, context) => {
     IDcodereq,
   } = props;
   const act = sendAct;
-  const [newbudget, setBudget] = useLocalState(context, 'amebudget', budget);
-  const [newthreshold, setThreshold] = useLocalState(
-    context,
+  const [newbudget, setBudget] = useState('amebudget', budget);
+  const [newthreshold, setThreshold] = useState(
     'amethreshold',
     sellthreshold,
   );
-  const [newaccount, setAccount] = useLocalState(
-    context,
-    'ameaccount',
-    accountnum,
-  );
+  const [newaccount, setAccount] = useState('ameaccount', accountnum,);
   return (
     <>
       <LabeledList.Item label="Current Budget">{budget}</LabeledList.Item>
@@ -293,8 +288,7 @@ export const StorageNode = (props, context) => {
     IDcodereq,
     otherprimeloc,
   } = data;
-  const [menu, setMenu] = useLocalState(
-    context,
+  const [menu, setMenu] = useState(
     'StoragetNodeMenu',
     portmatnames !== null
       ? 'sale'

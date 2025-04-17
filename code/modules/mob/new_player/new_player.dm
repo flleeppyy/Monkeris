@@ -166,7 +166,7 @@
 
 	if(href_list["late_join"])
 
-		if(SSticker.current_state != GAME_STATE_PLAYING)
+		if(!SSticker.IsRoundInProgress())
 			to_chat(usr, span_red("The round is either not ready, or has already finished..."))
 			return
 
@@ -199,7 +199,7 @@
 
 	if(href_list["SelectedJob"])
 
-		if(!CONFIG_GET(flag/enter_allowed))
+		if(!GLOB.enter_allowed)
 			to_chat(usr, span_notice("There is an administrative lock on entering the game!"))
 			return
 		else if(SSticker.nuke_in_progress)
@@ -282,10 +282,10 @@
 /mob/new_player/proc/AttemptLateSpawn(rank, var/spawning_at)
 	if(src != usr)
 		return FALSE
-	if(SSticker.current_state != GAME_STATE_PLAYING)
+	if(!SSticker.IsRoundInProgress())
 		to_chat(usr, span_red("The round is either not ready, or has already finished..."))
 		return FALSE
-	if(!CONFIG_GET(flag/enter_allowed))
+	if(!GLOB.enter_allowed)
 		to_chat(usr, span_notice("There is an administrative lock on entering the game!"))
 		return FALSE
 	if(!IsJobAvailable(rank))

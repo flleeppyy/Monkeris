@@ -702,13 +702,14 @@ var/global/floorIsLava = 0
 	set category = "Server"
 	set desc="People can't enter"
 	set name="Toggle Entering"
-	CONFIG_SET(flag/enter_allowed, !CONFIG_GET(flag/enter_allowed))
-	if (!CONFIG_GET(flag/enter_allowed))
+
+	GLOB.enter_allowed = !GLOB.enter_allowed
+	if (!GLOB.enter_allowed)
 		to_chat(world, "<B>New players may no longer enter the game.</B>")
 	else
 		to_chat(world, "<B>New players may now enter the game.</B>")
-	log_admin("[key_name(usr)] toggled new player game entering.")
-	message_admins(span_blue("[key_name_admin(usr)] toggled new player game entering."), 1)
+	log_admin("[key_name(usr)] toggled new player game entering. ([GLOB.enter_allowed ? "Allowed" : "Disabled"])")
+	message_admins(span_blue("[key_name_admin(usr)] toggled new player game entering.  ([GLOB.enter_allowed ? "Allowed" : "Disabled"])"), 1)
 	world.update_status()
 
 /datum/admins/proc/toggleAI()
@@ -1194,3 +1195,18 @@ var/global/floorIsLava = 0
 	else
 		to_chat(world, "<B>Shooting between z-levels has been globally disabled!</B>")
 	log_and_message_admins("toggled z_level_shooting.")
+
+/// Sends a message to adminchat when anyone with a holder logs in or logs out.
+/// TODO: Add player/admin prefs for this.
+/client/proc/adminGreet(logout = FALSE)
+	if(!SSticker.HasRoundStarted())
+		return
+
+	if(logout)
+		message_admins("Admin logout: [key_name(src)]")
+		return
+
+	if(!logout)
+		message_admins("Admin login: [key_name(src)]")
+		return
+

@@ -1,3 +1,4 @@
+# Remove the _template from the filename for this file to take effect
 Vagabond=0
 Captain=0
 First Officer=0

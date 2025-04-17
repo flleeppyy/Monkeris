@@ -4,7 +4,9 @@
  * @license MIT
  */
 
-import { useSelector } from 'tgui/backend';
+import { useSelector } from '../backend';
 import { selectDebug } from './selectors';
 
-export const useDebug = () => useSelector(selectDebug);
+export function useDebug() {
+  return useSelector(selectDebug);
+}
