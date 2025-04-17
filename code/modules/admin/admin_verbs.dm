@@ -500,9 +500,9 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	set name = "Drop Bomb"
 	set desc = "Cause an explosion of varying strength at your location."
 
-	var/turf/epicenter = mob.loc
+	var/turf/epicenter = get_turf(mob)
 	var/list/choices = list("Small Bomb", "Medium Bomb", "Big Bomb", "Custom Bomb")
-	var/choice = input("What size explosion would you like to produce?") in choices
+	var/choice = tgui_input_list(usr, "What size explosion would you like to produce?", "Drop Bomb", choices)
 	switch(choice)
 		if(null)
 			return 0
@@ -519,7 +519,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 			var/multiplicative_falloff = input("Multiplicative falloff for this explosion?") as num
 			var/eflags = additive_falloff ? EFLAG_ADDITIVEFALLOFF : 0 | multiplicative_falloff ? EFLAG_EXPONENTIALFALLOFF : 0
 			explosion(epicenter, explosion_power, explosion_falloff, eflags)
-	message_admins(span_blue("[ckey] created an admin explosion at [epicenter.loc]."))
+	message_admins(span_blue("[key_name_admin(usr)] created an admin explosion at [epicenter.loc]. [ADMIN_JMP(epicenter)]"))
 
 /client/proc/make_sound(obj/O in range(world.view))
 	set category = "Special Verbs"
