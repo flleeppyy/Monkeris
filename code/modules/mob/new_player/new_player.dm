@@ -45,15 +45,6 @@
 
 	output += "<p><a href='byond://?src=[REF(src)];observe=1'>Observe</A></p>"
 
-	if (src.client.holder)
-		output += "<hr>"
-		output += "<div align='center'>[span_bold("Admin Quick Verbs")]"
-		if (SSticker.state <= GAME_STATE_PREGAME)
-			output += "<p>\[<a href='byond://?src=[REF(src)];[HrefToken()];startnow=1'>Start Now</a>\]</p>"
-		else
-			output += "<p>\[<a href='byond://?src=[REF(src)];[HrefToken()];endround=1'>End Round</a>\]</p>"
-		output += "<p>\[<a href='byond://?src=[REF(src)];[HrefToken()];restart=1'>Restart</a>\]</p>"
-		output += "<p>\[<a href='byond://?src=[REF(src)];[HrefToken()];runtimes=1'>View Runtimes</a>\]</p>"
 
 	if(!IsGuestKey(src.key))
 		establish_db_connection()
@@ -70,9 +61,20 @@
 				break
 
 			if(newpoll)
-				output += "<p><b><a href='byond://?src=[REF(src)];showpoll=1'>Show Player Polls</A> (NEW!)</b></p>"
+				output += "<p><b>\[<a href='byond://?src=[REF(src)];showpoll=1'>Show Player Polls</A>\] (NEW!)</b></p>"
 			else
-				output += "<p><a href='byond://?src=[REF(src)];showpoll=1'>Show Player Polls</A></p>"
+				output += "<p>\[<a href='byond://?src=[REF(src)];showpoll=1'>Show Player Polls</A>\]</p>"
+
+	if (src.client.holder)
+		output += "<hr>"
+		output += "<div align='center'>[span_bold("Admin Quick Verbs")]"
+		if (SSticker.state <= GAME_STATE_PREGAME)
+			output += "<p>\[<a href='byond://?src=[REF(src)];[HrefToken()];startnow=1'>Start Now</a>\]</p>"
+		else
+			output += "<p>\[<a href='byond://?src=[REF(src)];[HrefToken()];endround=1'>End Round</a>\]</p>"
+		output += "<p>\[<a href='byond://?src=[REF(src)];[HrefToken()];restart=1'>Restart</a>\]</p>"
+		output += "<p>\[<a href='byond://?src=[REF(src)];[HrefToken()];runtimes=1'>View Runtimes</a>\]</p>"
+
 
 	output += "</div>"
 

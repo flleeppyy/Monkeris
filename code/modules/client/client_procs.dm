@@ -801,27 +801,36 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 	init_verbs()
 
+// /client/verb/enable_fullscreen()
+// 	set hidden = TRUE
+// 	winset(usr, "mainwindow", "titlebar=false")
+// 	winset(usr, "mainwindow", "menu=")
+// 	winset(usr, "mainwindow", "is-maximized=false")
+// 	winset(usr, "mainwindow", "is-maximized=true")
+// 	fit_viewport()
 
-/client/verb/toggle_fullscreen() // F11 hotkey
+// /client/verb/disable_fullscreen()
+// 	set hidden = TRUE
+// 	winset(usr, "mainwindow", "titlebar=true")
+// 	winset(usr, "mainwindow", "menu=menu")
+// 	winset(usr, "mainwindow", "is-maximized=false")
+// 	fit_viewport()
+
+/client/verb/toggle_fullscreen()
 	set name = "Toogle Fullscreen"
 	set category = "OOC"
 
-	src << output("", "browseroutput:fullscreen_check")
+	fullscreen = !fullscreen
 
-
-/client/verb/enable_fullscreen()
-	set hidden = TRUE
-	winset(usr, "mainwindow", "titlebar=false")
-	winset(usr, "mainwindow", "menu=")
-	winset(usr, "mainwindow", "is-maximized=false")
-	winset(usr, "mainwindow", "is-maximized=true")
-	fit_viewport()
-
-/client/verb/disable_fullscreen()
-	set hidden = TRUE
-	winset(usr, "mainwindow", "titlebar=true")
-	winset(usr, "mainwindow", "menu=menu")
-	winset(usr, "mainwindow", "is-maximized=false")
+	if(fullscreen)
+		winset(usr, "mainwindow", "titlebar=false")
+		winset(usr, "mainwindow", "menu=")
+		winset(usr, "mainwindow", "is-maximized=false")
+		winset(usr, "mainwindow", "is-maximized=true")
+	else
+		winset(usr, "mainwindow", "titlebar=true")
+		winset(usr, "mainwindow", "menu=menu")
+		winset(usr, "mainwindow", "is-maximized=false")
 	fit_viewport()
 
 /// Handles any "fluff" or supplementary procedures related to an admin logout event. Should not have anything critically related cleaning up an admin's logout.
