@@ -36,7 +36,33 @@ interface StorageNodeInterface {
   otherprimeloc: string;
 }
 
-const exchange = (props) => {
+const DisplayFourStats = (props) => {
+  const { name, number, value, icon } = props;
+  return (
+    <Box inline>
+      {icon && <GameIcon html={icon} className="game-icon" />}
+      <Divider hidden />
+      {name}
+      {' available: '}
+      {number}
+      <Divider hidden />
+      {'price per unit '}
+      {/* context doesn't exist anymore so i dont know what to do with this - Chen */}
+      {/* {context ? value * 0.9 : value * 1.1} */}
+      {value}
+    </Box>
+  );
+};
+
+interface ExchangeProps {
+  matnames: string[];
+  matnums: number[];
+  matvalues: number[];
+  dosh: number;
+  maticons: string[];
+}
+
+const Exchange = (props: ExchangeProps) => {
   const { matnames, matnums, matvalues, dosh, maticons } = props;
   const [selection, setSelection] = useState(-1);
   const [amt, setAmt] = useState<number>(0);
@@ -44,11 +70,14 @@ const exchange = (props) => {
   return (
     <>
       {maticons.map((mapped, count: number) => {
-        return displayfourstats(
-          matnames[count],
-          matnums[count],
-          matvalues[count],
-          maticons[count],
+        return (
+          <DisplayFourStats
+            key={mapped}
+            name={matnames[count]}
+            number={matnums[count]}
+            value={matvalues[count]}
+            icon={mapped}
+          />
         );
       })}
       <Dropdown
@@ -86,7 +115,16 @@ const exchange = (props) => {
   );
 };
 
-const sale = (props) => {
+interface SaleProps {
+  budget: number;
+  dosh: number;
+  portmatnames: string[] | null;
+  portmatamounts: number[];
+  portmaticons: string[];
+  portmatvalues: number[];
+}
+
+const Sale = (props: SaleProps) => {
   const act = sendAct;
   const {
     budget,
@@ -132,11 +170,14 @@ const sale = (props) => {
 
           {portmaticons &&
             portmaticons.map((mapped, count: number) => {
-              return displayfourstats(
-                portmatnames[count],
-                portmatamounts[count],
-                portmatvalues[count],
-                portmaticons[count],
+              return (
+                <DisplayFourStats
+                  key={mapped}
+                  name={portmatnames![count]}
+                  number={portmatamounts[count]}
+                  value={portmatvalues[count]}
+                  icon={mapped}
+                />
               );
             })}
 
@@ -166,32 +207,24 @@ const sale = (props) => {
       <Box>
         {dosh && 'Card:'}
         {dosh}
-        {dosh !== null && (
-          <Button content="Logout" onClick={() => act('logout')} />
-        )}
+        {dosh !== null && <Button onClick={() => act('logout')}>Logout</Button>}
       </Box>
     </>
   );
 };
 
-const displayfourstats = (name, _number, value, icon) => {
-  return (
-    <Box inline>
-      {icon && <GameIcon html={icon} className="game-icon" />}
-      <Divider hidden />
-      {name}
-      {' available: '}
-      {_number}
-      <Divider hidden />
-      {'price per unit '}
-      {/* context doesn't exist anymore so i dont know what to do with this - Chen */}
-      {/* {context ? value * 0.9 : value * 1.1} */}
-      {value}
-    </Box>
-  );
-};
+interface AdministrationProps {
+  budget: number;
+  authorization: BooleanLike;
+  sellthreshold: number;
+  accountname: string;
+  accountnum: number;
+  idnums: number[];
+  iddescs: string[];
+  IDcodereq: number;
+}
 
-const administration = (props) => {
+const Administration = (props: AdministrationProps) => {
   const {
     budget,
     authorization,
@@ -341,29 +374,38 @@ export const StorageNode = (props) => {
               Exchange
             </Button>
             <Divider />
-            {menu === 'administration' &&
-              authorization &&
-              administration({
-                budget,
-                authorization,
-                sellthreshold,
-                accountname,
-                accountnum,
-                idnums,
-                iddescs,
-                IDcodereq,
-              })}
-            {menu === 'sale' &&
-              sale({
-                budget,
-                dosh,
-                portmatnames,
-                portmatamounts,
-                portmaticons,
-                portmatvalues,
-              })}
-            {menu === 'materialexchange' &&
-              exchange({ matnames, matnums, matvalues, dosh, maticons })}
+            {menu === 'administration' && authorization && (
+              <Administration
+                budget={budget}
+                authorization={authorization}
+                sellthreshold={sellthreshold}
+                accountname={accountname}
+                accountnum={accountnum}
+                idnums={idnums}
+                iddescs={iddescs}
+                IDcodereq={IDcodereq}
+              />
+            )}
+
+            {menu === 'sale' && (
+              <Sale
+                budget={budget}
+                dosh={dosh}
+                portmatnames={portmatnames}
+                portmatamounts={portmatamounts}
+                portmaticons={portmaticons}
+                portmatvalues={portmatvalues}
+              />
+            )}
+            {menu === 'materialexchange' && (
+              <Exchange
+                matnames={matnames}
+                matnums={matnums}
+                matvalues={matvalues}
+                dosh={dosh}
+                maticons={maticons}
+              />
+            )}
           </>
         )}
       </Window.Content>

@@ -29,7 +29,7 @@
 	return ..()
 
 /datum/breakdown/proc/can_occur()
-	return !!name
+	return !!name && !!holder
 
 /datum/breakdown/proc/update()
 	if (!holder.owner)
