@@ -106,7 +106,9 @@
 	\tr = throw
 	\tt = say
 	\ty = radio
-	\t5 = emote
+	\tm = emote
+	\tu = LOOC
+	\to = OOC
 	\tx = swap-hand
 	\tz = activate held object
 	\tl = toogle flashlight
@@ -130,6 +132,10 @@
 	\tw = up
 	\tq = unequip active module
 	\tt = say
+	\ty = radio
+	\tm = emote
+	\tu = LOOC
+	\to = OOC
 	\tx = cycle active modules
 	\tz = activate held object
 	\tf = cycle-intents-left
@@ -138,7 +144,6 @@
 	\t2 = activate module 2
 	\t3 = activate module 3
 	\t4 = toggle intents
-	\t5 = emote
 	\tCtrl = drag
 	\tShift = examine
 	\tF11 = toggle fullscreen
