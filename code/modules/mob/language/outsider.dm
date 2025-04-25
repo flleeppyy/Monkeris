@@ -26,6 +26,7 @@
 /datum/language/cultcommon
 	name = LANGUAGE_CULT
 	desc = "The chants of the occult, the incomprehensible."
+	icon_state = "cult"
 	speech_verb = list("intones")
 	ask_verb = list("intones")
 	exclaim_verb = list("chants")
@@ -45,6 +46,7 @@
 /datum/language/cult
 	name = LANGUAGE_OCCULT
 	desc = "The initiated can share their thoughts by means defying all reason."
+	icon_state = "cult"
 	speech_verb = list("intones")
 	ask_verb = list("intones")
 	exclaim_verb = list("chants")

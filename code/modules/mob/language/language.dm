@@ -21,13 +21,28 @@
 	var/machine_understands = 1 		  		// Whether machines can parse and understand this language
 	var/shorthand = "CO"						// Shorthand that shows up in chat for this language.
 
+	var/icon = 'icons/misc/language.dmi'
+	var/icon_state = "popcorn"
+
 	//Random name lists
 	var/name_lists = FALSE
 	var/first_names_male = list()
 	var/first_names_female = list()
 	var/last_names = list()
 
-/datum/language/proc/get_random_name(var/gender, name_count=2, syllable_count=4, syllable_divisor=2)
+/datum/language/proc/display_icon(atom/movable/hearer)
+	var/understands = hearer
+	if(flags & LANGUAGE_HIDE_ICON_IF_UNDERSTOOD && understands)
+		return FALSE
+	if(flags & LANGUAGE_HIDE_ICON_IF_NOT_UNDERSTOOD && !understands)
+		return FALSE
+	return TRUE
+
+/datum/language/proc/get_icon()
+	var/datum/asset/spritesheet/sheet = get_asset_datum(/datum/asset/spritesheet_batched/chat)
+	return sheet.icon_tag("language-[icon_state]")
+
+/datum/language/proc/get_random_name(gender, name_count=2, syllable_count=4, syllable_divisor=2)
 	//This language has its own name lists
 	if (name_lists)
 		if(gender==FEMALE)
@@ -204,7 +219,7 @@
 	return pick(speech_verb)
 
 // Language handling.
-/mob/proc/add_language(var/language)
+/atom/movable/proc/add_language(var/language)
 
 	var/datum/language/new_language = GLOB.all_languages[language]
 
@@ -214,19 +229,12 @@
 	languages.Add(new_language)
 	return 1
 
-/mob/proc/remove_language(var/rem_language)
+/atom/movable/proc/remove_language(var/rem_language)
 	var/datum/language/L = GLOB.all_languages[rem_language]
 	. = (L in languages)
-	languages.Remove(L)
-
-/mob/living/remove_language(rem_language)
-	var/datum/language/L = GLOB.all_languages[rem_language]
 	if(default_language == L)
 		default_language = null
-	return ..()
-
-
-
+	languages.Remove(L)
 
 // Can we speak this language, as opposed to just understanding it?
 /mob/proc/can_speak(datum/language/speaking)

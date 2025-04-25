@@ -128,6 +128,8 @@ SUBSYSTEM_DEF(ticker)
 			totalPlayersReady = 0
 			total_admins_ready = 0
 			for(var/mob/new_player/player as anything in GLOB.player_list)
+				if(!isnewplayer(player))
+					continue
 				if(player.ready)
 					++totalPlayersReady
 					if(player.client?.holder)

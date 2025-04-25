@@ -70,9 +70,6 @@ var/list/channel_to_radio_key = new
 		if(dongle.translate_binary)
 			return TRUE
 
-/mob/living/proc/get_default_language()
-	return default_language
-
 /mob/living/proc/is_muzzled()
 	return 0
 
@@ -140,10 +137,6 @@ var/list/channel_to_radio_key = new
 			to_chat(src, span_red("You cannot speak in IC (Muted)."))
 			return
 
-	if(stat)
-		if(stat == DEAD)
-			return say_dead(message)
-		return
 
 	if(GLOB.in_character_filter.len)
 		if(findtext(message, config.ic_filter_regex))
@@ -161,7 +154,19 @@ var/list/channel_to_radio_key = new
 
 			warning_message = trim(warning_message)
 			to_chat(src, span_warning("[warning_message]&quot;"))
-			//log_and_message_admins("[src] just tried to say cringe: [cringe]", src) //Uncomment this if you want to keep tabs on who's saying cringe words.
+			log_and_message_admins("[src] just tried to say cringe: [cringe]", src) //Uncomment this if you want to keep tabs on who's saying cringe words.
+			return
+
+	switch(stat)
+		// if(CRIT)
+		// 	message_mods[WHISPER_MODE] = MODE_WHISPER
+		if(UNCONSCIOUS)
+			return
+		// if(HARDCRIT)
+		// 	if(!message_mods[WHISPER_MODE])
+		// 		return
+		if(DEAD)
+			say_dead(message)
 			return
 
 //	if(HUSK in mutations)
@@ -176,6 +181,8 @@ var/list/channel_to_radio_key = new
 		return emote(copytext(message,2))
 	if(prefix == get_prefix_key(/decl/prefix/visible_emote))
 		return custom_emote(1, copytext(message,2))
+	if(prefix == get_prefix_key(/decl/prefix/whisper))
+		return whisper(copytext(message,2))
 
 	//parse the radio code and consume it
 	var/message_mode = parse_message_mode(message, "headset")
@@ -184,6 +191,16 @@ var/list/channel_to_radio_key = new
 			message = copytext(message,2)//parse ;
 		else
 			message = copytext_char(message,3)//parse :s
+
+	// if(message_mods == MODE_SING)
+	// 	var/randomnote = pick("\u2669", "\u266A", "\u266B")
+	// 	message = "[randomnote] [message] [randomnote]"
+	// 	spans |= SPAN_SINGING
+
+	// if(message_mode[WHISPER_MODE])
+		// radios don't pick up whispers very well
+		// radio_message = stars(radio_message)
+		// spans |= SPAN_ITALICS
 
 	message = trim_left(message)
 
@@ -268,6 +285,18 @@ var/list/channel_to_radio_key = new
 		var/falloff = (message_range + round(3 * (chem_effects[CE_SPEECH_VOLUME] ? chem_effects[CE_SPEECH_VOLUME] : 1))) //A wider radius where you're heard, but only quietly. This means you can hear people offscreen.
 		//DO NOT FUCKING CHANGE THIS TO GET_OBJ_OR_MOB_AND_BULLSHIT() -- Hugs and Kisses ~Ccomp
 
+		if(speaking && ishuman(src) && !(speaking.flags & NONVERBAL || speaking.flags & SIGNLANG))
+			var/sound/speak_sound
+			var/ending = copytext_char(message, -1)
+			if(ending == "?")
+				speak_sound = voice_type2sound[voice_type]["?"]
+			else if(ending == "!")
+				speak_sound = voice_type2sound[voice_type]["!"]
+			else
+				speak_sound = voice_type2sound[voice_type][voice_type]
+
+			playsound(src, speak_sound, 400, TRUE, extrarange = world.view, falloff = 0, use_pressure = FALSE, ignore_walls = FALSE, is_ambiance = FALSE /*mixer_channel = CHANNEL_MOB_SOUNDS*/)
+
 		for(var/mob/M as anything in getMobsInRangeChunked(T, max(message_range, falloff), FALSE, TRUE) | GLOB.player_ghost_list)
 			if(M.stat == DEAD && M.get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH)
 				listening |= M
@@ -297,7 +326,7 @@ var/list/channel_to_radio_key = new
 		M.hear_say(message, verb, speaking, alt_name, italics, src, speech_sound, sound_vol, 1)
 
 	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(animate_speechbubble), speech_bubble, speech_bubble_recipients, 30)
-	INVOKE_ASYNC(src, TYPE_PROC_REF(/atom/movable, animate_chat), message, speaking, italics, speech_bubble_recipients, 40, verb)
+	// INVOKE_ASYNC(src, TYPE_PROC_REF(/atom/movable, animate_chat), message, speaking, italics, speech_bubble_recipients, 40, verb)
 	if(CONFIG_GET(flag/tts_enabled) && !message_mode && (!client || !BITTEST(client.prefs.muted, MUTE_TTS)) && (tts_seed || ishuman(src)))
 		//TO DO: Remove need for that damn copypasta
 		var/seed = tts_seed
@@ -346,7 +375,7 @@ var/list/channel_to_radio_key = new
 /obj/effect/speech_bubble
 	var/mob/parent
 
-/mob/living/proc/GetVoice()
+/mob/living/GetVoice()
 	return name
 
 /mob/living/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = FALSE,\

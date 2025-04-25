@@ -52,6 +52,7 @@ var/global/list/default_medbay_channels = list(
 	var/syndie = FALSE//Holder to see if it's a syndicate encrypted radio
 	var/merc = FALSE  //Holder to see if it's a mercenary encrypted radio
 	var/pirate = FALSE  //Holder to see if it's a pirate encrypted radio
+	var/anonymize = FALSE
 	var/const/FREQ_LISTENING = 1
 	var/list/internal_channels
 

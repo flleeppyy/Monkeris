@@ -2,8 +2,9 @@
 	name = LANGUAGE_COMMON
 	desc = "Most popular language in Canis Majoris constellation, thanks to many USA colonial ships arrived there in distant past."
 	key = "0"
-	flags = RESTRICTED
+	flags = RESTRICTED | LANGUAGE_HIDE_ICON_IF_UNDERSTOOD
 	shorthand = "CO"
+	icon_state = "common"
 
 
 	//syllables are at the bottom of the file

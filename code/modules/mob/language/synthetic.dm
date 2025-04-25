@@ -1,6 +1,9 @@
 /datum/language/binary
 	name = LANGUAGE_ROBOT
 	desc = "Most human stations support free-use communications protocols and routing hubs for synthetic use."
+	icon = 'icons/misc/language.dmi'
+	icon_state = "eal"
+
 	colour = "say_quote"
 	speech_verb = list("states")
 	ask_verb = list("queries")
@@ -54,6 +57,7 @@
 /datum/language/binary/drone
 	name = LANGUAGE_DRONE
 	desc = "A heavily encoded damage control coordination stream."
+	icon_state = "drone"
 	speech_verb = list("transmits")
 	ask_verb = list("transmits")
 	exclaim_verb = list("transmits")

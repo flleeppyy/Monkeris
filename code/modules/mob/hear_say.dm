@@ -18,8 +18,11 @@
 		if((get_dist(src, H) < 2) || stats?.getPerk(PERK_EAR_OF_QUICKSILVER))
 			speaker_name = H.rank_prefix_name(H.GetVoice(FALSE))
 
+	var/original_message = message
+
 	if(speech_volume)
 		message = "<FONT size='[speech_volume]'>[message]</FONT>"
+
 	if(italics)
 		message = "<i>[message]</i>"
 
@@ -51,6 +54,12 @@
 			on_hear_say("<span class='game say'>[span_name("[speaker_name]")][alt_name] [track][language.format_message(message, nverb)]</span>")
 	else
 		on_hear_say("<span class='game say'>[span_name("[speaker_name]")][alt_name] [track][verb], [span_message("<span class='body'>\"[message]\"")]</span></span>")
+	// Create map text prior to modifying message for goonchat
+	if (client?.prefs.RC_enabled && !(stat == UNCONSCIOUS || stat == HARDCRIT) && (ismob(speaker) || client.prefs.RC_see_chat_non_mob) && !(disabilities & DEAF || ear_deaf))
+		if (italics)
+			create_chat_message(speaker, language, original_message, list(SPAN_ITALICS))
+		else
+			create_chat_message(speaker, language, original_message)
 	if(speech_sound && (get_dist(speaker, src) <= world.view && src.z == speaker.z))
 		var/turf/source = speaker ? get_turf(speaker) : get_turf(src)
 		src.playsound_local(source, speech_sound, sound_vol, 1)
