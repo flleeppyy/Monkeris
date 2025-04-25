@@ -697,7 +697,12 @@ its easier to just keep the beam vertical.
 	var/list/hearers = hearers(vision_distance, src) //caches the hearers and then removes ignored mobs.
 	hearers -= ignored_mobs
 
-	if(self_message)
+	if(istext(self_message))
+		// Putting this here because there's a lot of visible_message calls
+		// and it would be pain to go through them all so ill just do this to make note of for the future
+		// stack_trace("ATOM/VISIBLE_MESSAGE_ALERT: [src] passed a string self_message on proc visible_message, when self_message should be a boolean! fix this!")
+		blind_message = self_message
+	else
 		hearers -= src
 
 	var/raw_msg = message

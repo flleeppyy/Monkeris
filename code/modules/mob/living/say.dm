@@ -97,9 +97,9 @@ var/list/channel_to_radio_key = new
 		if(BS)
 			message = BS.screw_up_the_text(message)
 
-	returns[1] = message
-	returns[2] = verb
-	returns[3] = speech_problem_flag
+	returns[SPEECHPROBLEM_R_MESSAGE] = message
+	returns[SPEECHPROBLEM_R_VERB] = verb
+	returns[SPEECHPROBLEM_R_FLAG] = speech_problem_flag
 	return returns
 
 /mob/living/proc/handle_message_mode(message_mode, message, verb, speaking, used_radios, alt_name, speech_volume)
@@ -117,9 +117,9 @@ var/list/channel_to_radio_key = new
 
 /mob/living/proc/get_speech_ending(verb, var/ending)
 	if(ending=="!")
-		return pick("exclaims", "shouts", "yells")
+		return pick(verb_exclaim, verb_yell)
 	else if(ending=="?")
-		return "asks"
+		return verb_ask
 
 	return verb
 
@@ -131,7 +131,7 @@ var/list/channel_to_radio_key = new
 		volume ++
 	return volume
 
-/mob/living/say(var/message, var/datum/language/speaking = null, var/verb="says", var/alt_name="")
+/mob/living/say(var/message, var/datum/language/speaking = null, var/verb = src.verb_say, var/alt_name="")
 	if(client)
 		if(client.prefs.muted&MUTE_IC)
 			to_chat(src, span_red("You cannot speak in IC (Muted)."))
@@ -226,8 +226,8 @@ var/list/channel_to_radio_key = new
 	if(!(speaking && speaking.flags&NO_STUTTER))
 
 		var/list/handle_s = handle_speech_problems(message, verb)
-		message = handle_s[1]
-		verb = handle_s[2]
+		message = handle_s[SPEECHPROBLEM_R_MESSAGE]
+		verb = handle_s[SPEECHPROBLEM_R_VERB]
 
 	if(!message)
 		return 0
@@ -265,7 +265,8 @@ var/list/channel_to_radio_key = new
 	if(speaking)
 		if(speaking.flags&(NONVERBAL|SIGNLANG))
 			if(prob(30))
-				src.custom_emote(1, "[pick(speaking.signlang_verb)].")
+				// TODO: Remove and update with the componentization of sign language
+				src.custom_emote(1, "[pick("gestures", "signs", "signals", "motions")].")
 
 	var/list/listening = list()
 	var/list/listening_obj = list()

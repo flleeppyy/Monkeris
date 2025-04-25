@@ -1,8 +1,9 @@
 // At minimum every mob has a hear_say proc.
 
-/mob/proc/hear_say(var/message, var/verb = "says", var/datum/language/language = null, var/alt_name = "", var/italics = 0, var/mob/speaker = null, var/sound/speech_sound, var/sound_vol, var/speech_volume)
+/mob/proc/hear_say(var/message, var/verb = src.verb_say, var/datum/language/language = null, var/alt_name = "", var/italics = 0, var/mob/speaker = null, var/sound/speech_sound, var/sound_vol, var/speech_volume)
 	if(!client)
 		return
+
 
 	if(isghost(src) || stats.getPerk(PERK_CODESPEAK_COP))
 		message = cop_codes.find_message(message) ? "[message] ([cop_codes.find_message(message)])" : message
@@ -51,7 +52,7 @@
 					nverb = "[verb] ([language.shorthand])"
 				if(GLOB.PREF_OFF)//Regular output
 					nverb = verb
-			on_hear_say("<span class='game say'>[span_name("[speaker_name]")][alt_name] [track][language.format_message(message, nverb)]</span>")
+			on_hear_say("<span class='game say'>[language.display_icon(src) ? language.get_icon() : ""][span_name("[speaker_name]")][alt_name] [track][language.format_message(message, nverb)]</span>")
 	else
 		on_hear_say("<span class='game say'>[span_name("[speaker_name]")][alt_name] [track][verb], [span_message("<span class='body'>\"[message]\"")]</span></span>")
 	// Create map text prior to modifying message for goonchat
@@ -71,7 +72,7 @@
 	var/time = say_timestamp()
 	to_chat(src,"[time] [message]")
 
-/mob/proc/hear_radio(var/message, var/verb="says", var/datum/language/language,\
+/mob/proc/hear_radio(var/message, var/verb = src.verb_say, var/datum/language/language,\
 		var/part_a, var/part_b, var/mob/speaker = null, var/hard_to_hear = 0, var/voice_name ="")
 
 	if(!client)
@@ -195,7 +196,7 @@
 	to_chat(src,"[time][part_a][speaker_name][part_b][message]")
 
 
-/mob/proc/hear_signlang(var/message, var/verb = "gestures", var/datum/language/language, var/mob/speaker = null)
+/mob/proc/hear_signlang(var/message, var/verb = "signs", var/datum/language/language, var/mob/speaker = null)
 	if(!client)
 		return
 

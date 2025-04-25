@@ -7,11 +7,11 @@
 /datum/language
 	var/name = "an unknown language"  			// Fluff name of language if any.
 	var/desc = "A language."          			// Short description for 'Check Languages'.
-	var/list/speech_verb = list("says")	   		// 'says', 'hisses', 'farts'.
-	var/list/ask_verb = list("asks")       		// Used when sentence ends in a ?
-	var/list/exclaim_verb = list("exclaims")	// Used when sentence ends in a !
-	var/list/whisper_verb = list("whispers")	// Optional. When not specified speech_verb + quietly/softly is used instead.
-	var/list/signlang_verb = list("signs") 		// list of emotes that might be displayed if this language has NONVERBAL or SIGNLANG flags
+	// var/list/speech_verb = list("says")	   		// 'says', 'hisses', 'farts'.
+	// var/list/ask_verb = list("asks")       		// Used when sentence ends in a ?
+	// var/list/exclaim_verb = list("exclaims")	// Used when sentence ends in a !
+	// var/list/whisper_verb = list("whispers")	// Optional. When not specified speech_verb + quietly/softly is used instead.
+	// var/list/signlang_verb = list("signs") 		// list of emotes that might be displayed if this language has NONVERBAL or SIGNLANG flags
 	var/colour = "body"               			// CSS style to use for strings in this language.
 	var/key = "x"                     			// Character used to speak in language eg. :o for Unathi.
 	var/flags = 0                     			// Various language flags.
@@ -31,7 +31,7 @@
 	var/last_names = list()
 
 /datum/language/proc/display_icon(atom/movable/hearer)
-	var/understands = hearer
+	var/understands = (src in hearer.languages)
 	if(flags & LANGUAGE_HIDE_ICON_IF_UNDERSTOOD && understands)
 		return FALSE
 	if(flags & LANGUAGE_HIDE_ICON_IF_NOT_UNDERSTOOD && !understands)
@@ -187,7 +187,7 @@
 	log_say("[key_name(speaker)] : ([name]) [message]")
 
 	if(!speaker_mask) speaker_mask = speaker.name
-	message = format_message(message, get_spoken_verb(message))
+	message = format_message(message, speaker.get_spoken_verb(message))
 
 	for(var/mob/player in GLOB.player_list)
 		player.hear_broadcast(src, speaker, speaker_mask, message)
@@ -209,14 +209,14 @@
 /datum/language/proc/check_special_condition(var/mob/other)
 	return 1
 
-/datum/language/proc/get_spoken_verb(var/msg_end)
+/atom/movable/proc/get_spoken_verb(var/msg_end)
 	switch(msg_end)
 		if("!")
-			return pick(exclaim_verb)
+			return pick(verb_exclaim, verb_yell)
 		if("?")
-			return pick(ask_verb)
+			return pick(verb_ask)
 
-	return pick(speech_verb)
+	return verb_say
 
 // Language handling.
 /atom/movable/proc/add_language(var/language)

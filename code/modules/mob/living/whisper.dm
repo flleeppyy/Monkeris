@@ -38,30 +38,22 @@
 	var/italics = 1
 
 	var/not_heard //the message displayed to people who could not hear the whispering
-	if (speaking)
-		if (speaking.whisper_verb)
-			verb = safepick(speaking.whisper_verb)
-			not_heard = "[verb] something"
-		if(!verb)
-			var/adverb = pick("quietly", "softly")
-			verb = "[safepick(speaking.speech_verb)] [adverb]"
-			not_heard = "[verb] something [adverb]"
-	else
-		not_heard = "[verb] something" //TODO get rid of the null language and just prevent speech if language is null
+	var/adverb = pick("quietly", "softly")
+	not_heard = "[verb] something [adverb]"
+	verb = "[verb_whisper] [adverb]"
 
 	message = trim(message)
 
 	if(speech_problem_flag)
 		var/list/handle_r = handle_speech_problems(message)
-		message = handle_r[1]
-		verb = handle_r[2]
+		message = handle_r[SPEECHPROBLEM_R_MESSAGE]
+		verb = handle_r[SPEECHPROBLEM_R_VERB]
 		if(verb == "yells loudly")
 			verb = "slurs emphatically"
 		else
-			var/adverb = pick("quietly", "softly")
 			verb = "[verb] [adverb]"
 
-		speech_problem_flag = handle_r[3]
+		speech_problem_flag = handle_r[SPEECHPROBLEM_R_FLAG]
 
 	if(!message || message=="")
 		return

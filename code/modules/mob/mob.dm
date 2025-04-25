@@ -94,7 +94,7 @@
 	to_chat(src, msg, avoid_highlighting = avoid_highlighting)
 
 
-///Adds the functionality to self_message.
+// Show a message to all mobs and objects in sight of this one
 /mob/visible_message(message, self_message, blind_message, vision_distance = DEFAULT_MESSAGE_RANGE, list/ignored_mobs, visible_message_flags = NONE, atom/push_appearance, no_text_limit = FALSE)
 	. = ..()
 	if(self_message)

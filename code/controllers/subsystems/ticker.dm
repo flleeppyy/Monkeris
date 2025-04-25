@@ -472,6 +472,8 @@ SUBSYSTEM_DEF(ticker)
 /datum/controller/subsystem/ticker/proc/excel_check()
 
 	for(var/datum/antag_contract/excel/targeted/overthrow/M in GLOB.excel_antag_contracts)
+		if (isnull(M))
+			GLOB.excel_antag_contracts -= M
 		var/mob/living/carbon/human/H = M.target_mind.current
 		if (H.stat == DEAD || is_excelsior(H))
 			M.complete()

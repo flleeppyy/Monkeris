@@ -181,7 +181,7 @@
 		target.chat_color_name = chat_color_name_to_use
 
 	// Append language icon if the language uses one
-	var/datum/language/language_instance = GLOB.all_languages[language]
+	var/datum/language/language_instance = GLOB.all_languages[language?.name]
 	if (language_instance?.display_icon(owner))
 		var/icon/language_icon = LAZYACCESS(language_icons, language)
 		if (isnull(language_icon))
