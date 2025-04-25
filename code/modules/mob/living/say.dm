@@ -265,7 +265,6 @@ var/list/channel_to_radio_key = new
 	if(speaking)
 		if(speaking.flags&(NONVERBAL|SIGNLANG))
 			if(prob(30))
-				// TODO: Remove and update with the componentization of sign language
 				src.custom_emote(1, "[pick("gestures", "signs", "signals", "motions")].")
 
 	var/list/listening = list()
