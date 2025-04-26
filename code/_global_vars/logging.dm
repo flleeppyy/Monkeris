@@ -1,3 +1,8 @@
+// Number for the database
+GLOBAL_VAR(round_id)
+GLOBAL_PROTECT(round_id)
+
+// General game ID for the round
 GLOBAL_VAR(game_id)
 GLOBAL_PROTECT(game_id)
 

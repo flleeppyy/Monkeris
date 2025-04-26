@@ -36,10 +36,10 @@ The answer was five and a half years -ZeroBits
 	else
 		var/list/all_entries[0]
 		establish_db_connection()
-		if(!dbcon.IsConnected())
+		if(!SSdbcore.IsConnected())
 			error_message = "Unable to contact External Archive. Please contact your system administrator for assistance."
 		else
-			var/DBQuery/query = dbcon.NewQuery("SELECT id, author, title, category FROM library ORDER BY "+sanitizeSQL(sort_by))
+			var/datum/db_query/query = SSdbcore.NewQuery("SELECT id, author, title, category FROM library ORDER BY "+sanitizeSQL(sort_by))
 			query.Execute()
 
 			while(query.NextRow())
@@ -109,7 +109,7 @@ The answer was five and a half years -ZeroBits
 		var/choice = input(usr, "Upload [B.name] by [B.author] to the External Archive?") in list("Yes", "No")
 		if(choice == "Yes")
 			establish_db_connection()
-			if(!dbcon.IsConnected())
+			if(!SSdbcore.IsConnected())
 				error_message = "Network Error: Connection to the Archive has been severed."
 				return 1
 
@@ -119,7 +119,7 @@ The answer was five and a half years -ZeroBits
 			var/sqlauthor = sanitizeSQL(B.author)
 			var/sqlcontent = sanitizeSQL(B.dat)
 			var/sqlcategory = sanitizeSQL(upload_category)
-			var/DBQuery/query = dbcon.NewQuery("INSERT INTO library (author, title, content, category) VALUES ('[sqlauthor]', '[sqltitle]', '[sqlcontent]', '[sqlcategory]')")
+			var/datum/db_query/query = SSdbcore.NewQuery("INSERT INTO library (author, title, content, category) VALUES ('[sqlauthor]', '[sqltitle]', '[sqlcontent]', '[sqlcategory]')")
 			if(!query.Execute())
 				to_chat(usr, query.ErrorMsg())
 				error_message = "Network Error: Unable to upload to the Archive. Contact your system Administrator for assistance."
@@ -173,11 +173,11 @@ The answer was five and a half years -ZeroBits
 
 	var/sqlid = sanitizeSQL(id)
 	establish_db_connection()
-	if(!dbcon.IsConnected())
+	if(!SSdbcore.IsConnected())
 		error_message = "Network Error: Connection to the Archive has been severed."
 		return 1
 
-	var/DBQuery/query = dbcon.NewQuery("SELECT * FROM library WHERE id=[sqlid]")
+	var/datum/db_query/query = SSdbcore.NewQuery("SELECT * FROM library WHERE id=[sqlid]")
 	query.Execute()
 
 	while(query.NextRow())

@@ -78,7 +78,7 @@
 			return
 
 		var/id
-		var/DBQuery/get_id = dbcon.NewQuery("SELECT id FROM players WHERE ckey='[ckey]'")
+		var/datum/db_query/get_id = SSdbcore.NewQuery("SELECT id FROM players WHERE ckey = :ckey", list("ckey" = ckey))
 		get_id.Execute()
 		if(get_id.NextRow())
 			id = get_id.item[1]
@@ -96,7 +96,7 @@
 			failedcid = 0
 			cidquery = " OR cid = '[computer_id]' "
 
-		var/DBQuery/query = dbcon.NewQuery(" \
+		var/datum/db_query/query = SSdbcore.NewQuery(" \
 		SELECT target_id, banned_by_id, reason, expiration_time, duration, time, type \
 		FROM bans WHERE \
 		(\
@@ -124,13 +124,13 @@
 			var/bantype = query.item[7]
 
 			var/banned_ckey
-			var/DBQuery/get_banned_ckey = dbcon.NewQuery("SELECT ckey FROM players WHERE id=[target_id]")
+			var/datum/db_query/get_banned_ckey = SSdbcore.NewQuery("SELECT ckey FROM players WHERE id=[target_id]")
 			get_banned_ckey.Execute()
 			if(get_banned_ckey.NextRow())
 				banned_ckey = get_banned_ckey.item[1]
 
 			var/banned_by_ckey
-			var/DBQuery/get_banned_by_ckey = dbcon.NewQuery("SELECT ckey FROM players WHERE id=[banned_by_id]")
+			var/datum/db_query/get_banned_by_ckey = SSdbcore.NewQuery("SELECT ckey FROM players WHERE id=[banned_by_id]")
 			get_banned_by_ckey.Execute()
 			if(get_banned_by_ckey.NextRow())
 				banned_by_ckey = get_banned_by_ckey.item[1]

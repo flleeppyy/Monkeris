@@ -44,7 +44,7 @@
 			<A href='byond://?src=\ref[src];search=1'>\[Start Search\]</A><BR>"}
 		if(1)
 			establish_db_connection()
-			if(!dbcon.IsConnected())
+			if(!SSdbcore.IsConnected())
 				dat += "<font color=red><b>ERROR</b>: Unable to contact External Archive. Please contact your system administrator for assistance.</font><BR>"
 			else if(!SQLquery)
 				dat += "<font color=red><b>ERROR</b>: Malformed search request. Please contact your system administrator for assistance.</font><BR>"
@@ -52,7 +52,7 @@
 				dat += {"<table>
 				<tr><td>AUTHOR</td><td>TITLE</td><td>CATEGORY</td><td>SS<sup>13</sup>BN</td></tr>"}
 
-				var/DBQuery/query = dbcon.NewQuery(SQLquery)
+				var/datum/db_query/query = SSdbcore.NewQuery(SQLquery)
 				query.Execute()
 
 				while(query.NextRow())
@@ -184,13 +184,13 @@
 		if(4)
 			dat += "<h3>External Archive</h3>"
 			establish_db_connection()
-			if(!dbcon.IsConnected())
+			if(!SSdbcore.IsConnected())
 				dat += "<font color=red><b>ERROR</b>: Unable to contact External Archive. Please contact your system administrator for assistance.</font>"
 			else
 				dat += {"<A href='byond://?src=\ref[src];orderbyid=1'>(Order book by SS<sup>13</sup>BN)</A><BR><BR>
 				<table>
 				<tr><td><A href='byond://?src=\ref[src];sort=author>AUTHOR</A></td><td><A href='byond://?src=\ref[src];sort=title>TITLE</A></td><td><A href='byond://?src=\ref[src];sort=category>CATEGORY</A></td><td></td></tr>"}
-				var/DBQuery/query = dbcon.NewQuery("SELECT id, author, title, category FROM library ORDER BY [sortby]")
+				var/datum/db_query/query = SSdbcore.NewQuery("SELECT id, author, title, category FROM library ORDER BY [sortby]")
 				query.Execute()
 
 				while(query.NextRow())
@@ -320,14 +320,14 @@
 						alert("This book has been rejected from the database. Aborting!")
 					else
 						establish_db_connection()
-						if(!dbcon.IsConnected())
+						if(!SSdbcore.IsConnected())
 							alert("Connection to Archive has been severed. Aborting.")
 						else
 							/*
-							var/sqltitle = dbcon.Quote(scanner.cache.name)
-							var/sqlauthor = dbcon.Quote(scanner.cache.author)
-							var/sqlcontent = dbcon.Quote(scanner.cache.dat)
-							var/sqlcategory = dbcon.Quote(upload_category)
+							var/sqltitle = SSdbcore.Quote(scanner.cache.name)
+							var/sqlauthor = SSdbcore.Quote(scanner.cache.author)
+							var/sqlcontent = SSdbcore.Quote(scanner.cache.dat)
+							var/sqlcategory = SSdbcore.Quote(upload_category)
 							*/
 							var/sqltitle = sanitizeSQL(scanner.cache.name)
 							var/sqlauthor = sanitizeSQL(scanner.cache.author)
@@ -335,12 +335,12 @@
 							var/sqlcategory = sanitizeSQL(upload_category)
 
 							var/author_id = null
-							var/DBQuery/get_author_id = dbcon.NewQuery("SELECT id FROM players WHERE ckey='[usr.ckey]'")
+							var/datum/db_query/get_author_id = SSdbcore.NewQuery("SELECT id FROM players WHERE ckey='[usr.ckey]'")
 							get_author_id.Execute()
 							if(get_author_id.NextRow())
 								author_id = get_author_id.item[1]
 
-							var/DBQuery/query = dbcon.NewQuery("INSERT INTO library (author, title, content, category, author_id) VALUES ('[sqlauthor]', '[sqltitle]', '[sqlcontent]', '[sqlcategory]', [author_id])")
+							var/datum/db_query/query = SSdbcore.NewQuery("INSERT INTO library (author, title, content, category, author_id) VALUES ('[sqlauthor]', '[sqltitle]', '[sqlcontent]', '[sqlcategory]', [author_id])")
 							if(!query.Execute())
 								to_chat(usr, query.ErrorMsg())
 							else
@@ -351,7 +351,7 @@
 	if(href_list["targetid"])
 		var/sqlid = sanitizeSQL(href_list["targetid"])
 		establish_db_connection()
-		if(!dbcon.IsConnected())
+		if(!SSdbcore.IsConnected())
 			alert("Connection to Archive has been severed. Aborting.")
 		if(bibledelay)
 			for (var/mob/V in hearers(get_turf(src)))
@@ -360,7 +360,7 @@
 			bibledelay = 1
 			spawn(60)
 				bibledelay = 0
-			var/DBQuery/query = dbcon.NewQuery("SELECT * FROM library WHERE id=[sqlid]")
+			var/datum/db_query/query = SSdbcore.NewQuery("SELECT * FROM library WHERE id=[sqlid]")
 			query.Execute()
 
 			while(query.NextRow())

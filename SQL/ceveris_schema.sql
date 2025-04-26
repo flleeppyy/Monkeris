@@ -1,9 +1,3 @@
--- MySQL dump 10.13  Distrib 5.7.16, for Linux (x86_64)
---
--- Host: localhost    Database: development
--- ------------------------------------------------------
--- Server version	5.7.16-0ubuntu0.16.10.1
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -86,6 +80,7 @@ CREATE TABLE `books` (
   CONSTRAINT `fk_rails_53d51ce16a` FOREIGN KEY (`author_id`) REFERENCES `players` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
 
 --
 -- Table structure for table `players`
@@ -211,16 +206,43 @@ CREATE TABLE `populations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `schema_migrations`
+-- Table structure for table `round`
 --
-
-DROP TABLE IF EXISTS `schema_migrations`;
+DROP TABLE IF EXISTS `round`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `schema_migrations` (
-  `version` varchar(255) NOT NULL,
-  PRIMARY KEY (`version`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `round` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `initialize_datetime` DATETIME NOT NULL,
+  `start_datetime` DATETIME NULL,
+  `shutdown_datetime` DATETIME NULL,
+  `end_datetime` DATETIME NULL,
+  `server_ip` INT(10) UNSIGNED NOT NULL,
+  `server_port` SMALLINT(5) UNSIGNED NOT NULL,
+  `commit_hash` CHAR(40) NULL,
+  `game_mode` VARCHAR(32) NULL,
+  `game_mode_result` VARCHAR(64) NULL,
+  `end_state` VARCHAR(64) NULL,
+  `shuttle_name` VARCHAR(64) NULL,
+  `map_name` VARCHAR(32) NULL,
+  `station_name` VARCHAR(80) NULL,
+  `log_directory` VARCHAR(255) NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+--
+-- Table structure for table `schema_revision`
+--
+DROP TABLE IF EXISTS `schema_revision`;
+CREATE TABLE `schema_revision` (
+  `major` TINYINT(3) unsigned NOT NULL,
+  `minor` TINYINT(3) unsigned NOT NULL,
+  `date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`major`, `minor`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -231,5 +253,3 @@ CREATE TABLE `schema_migrations` (
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2017-01-21 10:28:19
