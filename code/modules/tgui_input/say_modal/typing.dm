@@ -60,13 +60,8 @@
 	if(hud_typing || typing || stat != CONSCIOUS)
 		return FALSE
 	set_typing_indicator(TRUE)
-	// active_thinking_indicator = mutable_appearance('icons/mob/effects/talk.dmi', "[bubble_icon]3", TYPING_LAYER)
-	// add_overlay(active_thinking_indicator)
-	// play_fov_effect(src, 6, "talk", ignore_self = TRUE)
 
 /mob/living/remove_typing_indicator()
-	if(!hud_typing)
-		return FALSE
 	set_typing_indicator(FALSE)
 
 /mob/living/remove_all_indicators()
