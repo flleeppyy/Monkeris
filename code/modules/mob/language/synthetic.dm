@@ -69,6 +69,7 @@
 /datum/language/binary/blitz
 	name = LANGUAGE_BLITZ
 	desc = "An encrypted binary-stream language used for agent co-ordination."
+	icon_state = "blitz"
 	// speech_verb = list("transmits")
 	// ask_verb = list("transmits")
 	// exclaim_verb = list("transmits")

@@ -84,6 +84,7 @@
 	name = LANGUAGE_CYRILLIC
 	desc = "Ancient language of Russian colonists, rusted with time and bastardized with technical terms in everyday use."
 	colour = "russian"
+	icon_state = "cyrillic"
 	key = "r"
 	space_chance = 80
 	syllables = list("zhena", "reb", "kot", "tvoy", "vodka", "blyad", "verbovka", "ponimat", "zhit", "kley", "sto", "yat", "si", "det", \

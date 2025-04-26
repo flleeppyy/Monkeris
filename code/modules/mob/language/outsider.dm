@@ -4,6 +4,7 @@
 	// speech_verb = list("sings")
 	// ask_verb = list("sings")
 	// exclaim_verb = list("sings")
+	icon_state = "cortical"
 	colour = "alien"
 	key = "x"
 	flags = RESTRICTED | HIVEMIND
