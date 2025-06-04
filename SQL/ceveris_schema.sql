@@ -10,53 +10,115 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `ar_internal_metadata`
+-- Table structure for table `admin`
 --
 
-DROP TABLE IF EXISTS `ar_internal_metadata`;
+DROP TABLE IF EXISTS `admin`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ar_internal_metadata` (
-  `key` varchar(255) NOT NULL,
-  `value` varchar(255) DEFAULT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `admin` (
+  `ckey` varchar(32) NOT NULL,
+  `rank` varchar(32) NOT NULL,
+  `feedback` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ckey`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `bans`
+-- Table structure for table `ban`
 --
 
-DROP TABLE IF EXISTS `bans`;
+DROP TABLE IF EXISTS `ban`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `bans` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `server` varchar(255) NOT NULL,
-  `type` varchar(255) NOT NULL,
-  `ip` varchar(255) DEFAULT NULL,
-  `cid` varchar(255) DEFAULT NULL,
-  `reason` text NOT NULL,
-  `job` varchar(255) DEFAULT NULL,
-  `duration` int(11) NOT NULL,
-  `time` datetime NOT NULL,
-  `target_id` int(11) NOT NULL,
-  `banned_by_id` int(11) NOT NULL,
-  `expiration_time` datetime NOT NULL,
-
-  `unbanned` tinyint(1) DEFAULT NULL,
-  `unbanned_time` datetime DEFAULT NULL,
-  `unbanned_by_id` int(11) DEFAULT NULL,
+CREATE TABLE `ban` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `bantime` DATETIME NOT NULL,
+  `server_ip` INT(10) UNSIGNED NOT NULL,
+  `server_port` SMALLINT(5) UNSIGNED NOT NULL,
+  `round_id` INT(11) UNSIGNED NULL,
+  `role` VARCHAR(32) NULL DEFAULT NULL,
+  `expiration_time` DATETIME NULL DEFAULT NULL,
+  `applies_to_admins` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+  `reason` VARCHAR(2048) NOT NULL,
+  `ckey` VARCHAR(32) NULL DEFAULT NULL,
+  `ip` INT(10) UNSIGNED NULL DEFAULT NULL,
+  `computerid` VARCHAR(32) NULL DEFAULT NULL,
+  `a_ckey` VARCHAR(32) NOT NULL,
+  `a_ip` INT(10) UNSIGNED NOT NULL,
+  `a_computerid` VARCHAR(32) NOT NULL,
+  `who` VARCHAR(2048) NOT NULL,
+  `adminwho` VARCHAR(2048) NOT NULL,
+  `edits` TEXT NULL DEFAULT NULL,
+  `unbanned_datetime` DATETIME NULL DEFAULT NULL,
+  `unbanned_ckey` VARCHAR(32) NULL DEFAULT NULL,
+  `unbanned_ip` INT(10) UNSIGNED NULL DEFAULT NULL,
+  `unbanned_computerid` VARCHAR(32) NULL DEFAULT NULL,
+  `unbanned_round_id` INT(11) UNSIGNED NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `index_bans_on_banned_by_id` (`banned_by_id`) USING BTREE,
-  KEY `index_bans_on_target_id` (`target_id`) USING BTREE,
-  KEY `index_bans_on_unbanned_by_id` (`unbanned_by_id`) USING BTREE,
-  CONSTRAINT `fk_rails_20d480679b` FOREIGN KEY (`banned_by_id`) REFERENCES `players` (`id`),
-  CONSTRAINT `fk_rails_62ac37e1e1` FOREIGN KEY (`target_id`) REFERENCES `players` (`id`),
-  CONSTRAINT `fk_rails_a305c9e562` FOREIGN KEY (`unbanned_by_id`) REFERENCES `players` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `idx_ban_isbanned` (`ckey`,`role`,`unbanned_datetime`,`expiration_time`),
+  KEY `idx_ban_isbanned_details` (`ckey`,`ip`,`computerid`,`role`,`unbanned_datetime`,`expiration_time`),
+  KEY `idx_ban_count` (`bantime`,`a_ckey`,`applies_to_admins`,`unbanned_datetime`,`expiration_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `connection_log`
+--
+
+DROP TABLE IF EXISTS `connection_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `connection_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `datetime` datetime DEFAULT NULL,
+  `server_ip` int(10) unsigned NOT NULL,
+  `server_port` smallint(5) unsigned NOT NULL,
+  `round_id` int(11) unsigned DEFAULT NULL,
+  `ckey` varchar(45) DEFAULT NULL,
+  `ip` int(10) unsigned NOT NULL,
+  `computerid` varchar(45) DEFAULT NULL,
+  `byond_version` varchar(8) DEFAULT NULL,
+  `byond_build` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `death`
+--
+
+DROP TABLE IF EXISTS `death`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `death` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pod` varchar(50) NOT NULL,
+  `x_coord` smallint(5) unsigned NOT NULL,
+  `y_coord` smallint(5) unsigned NOT NULL,
+  `z_coord` smallint(5) unsigned NOT NULL,
+  `mapname` varchar(32) NOT NULL,
+  `server_ip` int(10) unsigned NOT NULL,
+  `server_port` smallint(5) unsigned NOT NULL,
+  `round_id` int(11) unsigned NULL,
+  `tod` datetime NOT NULL COMMENT 'Time of death',
+  `job` varchar(32) NOT NULL,
+  `special` varchar(32) DEFAULT NULL,
+  `name` varchar(96) NOT NULL,
+  `byondkey` varchar(32) NOT NULL,
+  `laname` varchar(96) DEFAULT NULL,
+  `lakey` varchar(32) DEFAULT NULL,
+  `bruteloss` smallint(5) unsigned NOT NULL,
+  `brainloss` smallint(5) unsigned NOT NULL,
+  `fireloss` smallint(5) unsigned NOT NULL,
+  `oxyloss` smallint(5) unsigned NOT NULL,
+  `toxloss` smallint(5) unsigned NOT NULL,
+  `cloneloss` smallint(5) unsigned NOT NULL,
+  `staminaloss` smallint(5) unsigned NOT NULL,
+  `last_words` varchar(255) DEFAULT NULL,
+  `suicide` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -75,10 +137,11 @@ CREATE TABLE `books` (
   `author_id` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
+  `deleted` tinyint(1) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_books_on_author_id` (`author_id`),
   CONSTRAINT `fk_rails_53d51ce16a` FOREIGN KEY (`author_id`) REFERENCES `players` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -90,22 +153,21 @@ DROP TABLE IF EXISTS `players`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `players` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ckey` varchar(255) NOT NULL,
-  `registered` date DEFAULT NULL,
-  `first_seen` datetime NOT NULL,
-  `last_seen` datetime NOT NULL,
-  `ip` varchar(255) NOT NULL,
-  `cid` varchar(255) NOT NULL,
-  `rank` varchar(255) NOT NULL DEFAULT 'player',
+  `ckey` varchar(32) NOT NULL,
+  `byond_key` varchar(32) DEFAULT NULL,
+  `firstseen` datetime NOT NULL,
+  `firstseen_round_id` int(11) unsigned NULL,
+  `lastseen` datetime NOT NULL,
+  `lastseen_round_id` int(11) unsigned NULL,
+  `ip` int(10) NOT NULL,
+  `computerid` varchar(32) NOT NULL,
+  `lastadminrank` varchar(32) NOT NULL DEFAULT 'Player',
+  `accountjoindate` DATE DEFAULT NULL,
   `flags` int(11) NOT NULL DEFAULT '0',
-  `byond_version` varchar(255) NOT NULL,
   `country` varchar(255) NOT NULL,
-  `VPN_check_white` tinyint(4) NOT NULL DEFAULT '0',
-  `ip_related_ids` tinytext,
-  `cid_related_ids` tinytext,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `VPN_check_white` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ckey`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -124,7 +186,7 @@ CREATE TABLE `poll_options` (
   PRIMARY KEY (`id`),
   KEY `index_poll_options_on_poll_id` (`poll_id`),
   CONSTRAINT `fk_rails_aa85becb42` FOREIGN KEY (`poll_id`) REFERENCES `polls` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -145,7 +207,7 @@ CREATE TABLE `poll_text_replies` (
   KEY `index_poll_text_replies_on_player_id` (`player_id`),
   CONSTRAINT `fk_rails_0833f4df0b` FOREIGN KEY (`poll_id`) REFERENCES `polls` (`id`),
   CONSTRAINT `fk_rails_ffc8df499f` FOREIGN KEY (`player_id`) REFERENCES `players` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -168,7 +230,7 @@ CREATE TABLE `poll_votes` (
   CONSTRAINT `fk_rails_826ebfbbb3` FOREIGN KEY (`option_id`) REFERENCES `poll_options` (`id`),
   CONSTRAINT `fk_rails_a3e5a3aede` FOREIGN KEY (`player_id`) REFERENCES `players` (`id`),
   CONSTRAINT `fk_rails_a6e6974b7e` FOREIGN KEY (`poll_id`) REFERENCES `polls` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -185,7 +247,7 @@ CREATE TABLE `polls` (
   `end` datetime NOT NULL,
   `question` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -197,12 +259,14 @@ DROP TABLE IF EXISTS `populations`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `populations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `player_count` int(11) NOT NULL,
-  `admin_count` int(11) NOT NULL,
+  `playercount` int(11) DEFAULT NULL,
+  `admincount` int(11) DEFAULT NULL,
   `time` datetime NOT NULL,
-  `server` varchar(255) NOT NULL,
+  `server_ip` int(10) unsigned NOT NULL,
+  `server_port` smallint(5) unsigned NOT NULL,
+  `round_id` int(11) unsigned NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -231,6 +295,83 @@ CREATE TABLE `round` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+--
+-- Table structure for table `admin_connections`
+--
+DROP TABLE IF EXISTS `admin_connections`;
+CREATE TABLE `admin_connections` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `ckey` VARCHAR(32) NOT NULL,
+  `ip` INT(11) UNSIGNED NOT NULL,
+  `cid` VARCHAR(32) NOT NULL,
+  `verification_time` DATETIME NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `unique_constraints` (`ckey`, `ip`, `cid`)
+) ENGINE=InnoDB;
+
+--
+-- Table structure for table `known_alts`
+--
+DROP TABLE IF EXISTS `known_alts`;
+CREATE TABLE `known_alts` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `ckey1` VARCHAR(32) NOT NULL,
+    `ckey2` VARCHAR(32) NOT NULL,
+    `admin_ckey` VARCHAR(32) NOT NULL DEFAULT '*no key*',
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `unique_contraints` (`ckey1` , `ckey2`)
+);
+
+--
+-- Table structure for table `telemetry_connections`
+--
+DROP TABLE IF EXISTS `telemetry_connections`;
+CREATE TABLE `telemetry_connections` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `ckey` VARCHAR(32) NOT NULL,
+    `telemetry_ckey` VARCHAR(32) NOT NULL,
+    `address` INT(10) UNSIGNED NOT NULL,
+    `computer_id` VARCHAR(32) NOT NULL,
+    `first_round_id` INT(11) UNSIGNED NULL,
+    `latest_round_id` INT(11) UNSIGNED NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `unique_constraints` (`ckey` , `telemetry_ckey` , `address` , `computer_id`)
+);
+
+--
+-- Table structure for table `overwatch_asn_ban`
+--
+DROP TABLE IF EXISTS `overwatch_asn_ban`;
+CREATE TABLE `overwatch_asn_ban` (
+	`ip` varchar(21) NOT NULL,
+	`asn` varchar(100) NOT NULL,
+	`a_ckey` varchar(30) NOT NULL,
+	`timestamp` datetime NOT NULL,
+	PRIMARY KEY (`asn`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+--
+-- Table structure for table `overwatch_ip_cache`
+--
+DROP TABLE IF EXISTS `overwatch_ip_cache`;
+CREATE TABLE `overwatch_ip_cache` (
+	`ip` varchar(50) NOT NULL DEFAULT '',
+	`response` longtext NOT NULL,
+	PRIMARY KEY (`ip`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+--
+-- Table structure for table `overwatch_whitelist`
+--
+DROP TABLE IF EXISTS `overwatch_whitelist`;
+CREATE TABLE `overwatch_whitelist` (
+	`ckey` varchar(30) NOT NULL,
+	`a_ckey` varchar(30) NOT NULL,
+	`timestamp` datetime NOT NULL,
+	PRIMARY KEY (`ckey`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
 
 --
 -- Table structure for table `schema_revision`

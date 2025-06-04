@@ -43,13 +43,12 @@
 
 
 	if(!IsGuestKey(src.key))
-		establish_db_connection()
-		if(SSdbcore.IsConnected())
+		if(SSdbcore.Connect())
 			var/isadmin = FALSE
 			if(src.client && src.client.holder)
 				isadmin = TRUE
 			// TODO: reimplement database interaction
-			var/datum/db_query/query = SSdbcore.NewQuery("SELECT id FROM erro_poll_question WHERE [(isadmin ? "" : "adminonly = false AND")] Now() BETWEEN starttime AND endtime AND id NOT IN (SELECT pollid FROM erro_poll_vote WHERE ckey = \"[ckey]\") AND id NOT IN (SELECT pollid FROM erro_poll_textreply WHERE ckey = \"[ckey]\")")
+			var/datum/db_query/query = SSdbcore.NewQuery("SELECT id FROM [format_table_name("poll_question")] WHERE [(isadmin ? "" : "adminonly = false AND")] Now() BETWEEN starttime AND endtime AND id NOT IN (SELECT pollid FROM [format_table_name("poll_vote")] WHERE ckey = \"[ckey]\") AND id NOT IN (SELECT pollid FROM [format_table_name("poll_textreply")] WHERE ckey = \"[ckey]\")")
 			query.Execute()
 			var/newpoll = FALSE
 			while(query.NextRow())
@@ -273,7 +272,7 @@
 		return FALSE
 	if(!SSjob.ckey_to_job_to_can_play[client.ckey][job.title])
 		return FALSE
-	if(jobban_isbanned(src,rank))
+	if(jobban_isbanned(src.ckey,rank))
 		return FALSE
 	return TRUE
 

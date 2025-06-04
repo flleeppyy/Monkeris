@@ -46,7 +46,7 @@ var/global/floorIsLava = 0
  */
 /proc/message_mentorTicket(msg, important = FALSE)
 	for(var/client/C in GLOB.admins)
-		if(check_rights(R_ADMIN | R_MENTOR | R_MOD, 0, C.mob))
+		if(check_rights(R_ADMIN | R_MENTOR, 0, C.mob))
 			to_chat(C, msg)
 			if(important || (C.get_preference_value(/datum/client_preference/staff/play_adminhelp_ping) == GLOB.PREF_HEAR))
 				sound_to(C, 'sound/effects/adminhelp.ogg')
@@ -141,11 +141,13 @@ var/global/floorIsLava = 0
 		<b>Mob type</b> = [M.type]<br><br>
 		<A href='byond://?src=\ref[src];[HrefToken()];boot2=\ref[M]'>Kick</A> |
 		<A href='byond://?_src_=holder;[HrefToken()];warn=[M.ckey]'>Warn</A> |
-		<A href='byond://?src=\ref[src];[HrefToken()];newban=\ref[M]'>Ban</A> |
-		<A href='byond://?src=\ref[src];[HrefToken()];jobban2=\ref[M]'>Jobban</A> |
 		<A href='byond://?src=\ref[src];[HrefToken()];notes=show;mob=\ref[M]'>Notes</A> |
-
 	"}
+
+	if(M.client)
+		body += "<A href='byond://?_src_=holder;[HrefToken()];newbankey=[M.key];newbanip=[M.client.address];newbancid=[M.client.computer_id]'>Ban</A> | "
+	else
+		body += "<A href='byond://?_src_=holder;[HrefToken()];newbankey=[M.key]'>Ban</A> | "
 
 	if(M.client)
 		body += "\ <A href='byond://?_src_=holder;[HrefToken()];sendbacktolobby=\ref[M]'>Send back to Lobby</A> | "
@@ -164,7 +166,7 @@ var/global/floorIsLava = 0
 		<A href='byond://?src=\ref[src];[HrefToken()];jumpto=\ref[M]'><b>Jump to</b></A> |
 		<A href='byond://?src=\ref[src];[HrefToken()];getmob=\ref[M]'>Get</A>
 		<br><br>
-		[check_rights(R_ADMIN|R_MOD,0) ? "<A href='byond://?src=\ref[src];[HrefToken()];contractor=\ref[M]'>Contractor panel</A> | " : "" ]
+		[check_rights(R_ADMIN,0) ? "<A href='byond://?src=\ref[src];[HrefToken()];contractor=\ref[M]'>Contractor panel</A> | " : "" ]
 		<A href='byond://?src=\ref[src];[HrefToken()];narrateto=\ref[M]'>Narrate to</A> |
 		<A href='byond://?src=\ref[src];[HrefToken()];subtlemessage=\ref[M]'>Subtle message</A>
 	"}
@@ -487,7 +489,7 @@ var/global/floorIsLava = 0
 
 
 /datum/admins/proc/Jobbans()
-	if(!check_rights(R_MOD) && !check_rights(R_ADMIN))
+	if(!check_rights(R_BAN))
 		return
 
 	var/dat = "<B>Job Bans!</B><HR><table>"

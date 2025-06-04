@@ -78,12 +78,12 @@ GLOBAL_LIST_EMPTY(PB_bypass) //Handles ckey
 		to_chat(usr,"The database is not connected!")
 		return
 
-	var/datum/db_query/query = SSdbcore.NewQuery("SELECT id FROM players WHERE ckey = :ckey", list("ckey" = ckey))
+	var/datum/db_query/query = SSdbcore.NewQuery("SELECT id FROM [format_table_name("players")] WHERE ckey = :ckey", list("ckey" = ckey))
 	query.Execute()
 	if(query.NextRow())
 		var/temp_id = query.item[1]
 		log_and_message_admins("[key_name(usr)] has toggled VPN checks for [ckey].")
-		query = SSdbcore.NewQuery("UPDATE players SET VPN_check_white = !VPN_check_white WHERE id = :temp_id", list("temp_id" = temp_id))
+		query = SSdbcore.NewQuery("UPDATE [format_table_name("players")] SET VPN_check_white = !VPN_check_white WHERE id = :temp_id", list("temp_id" = temp_id))
 		query.Execute()
 	else
 		to_chat(usr,"Player [ckey] not found!")

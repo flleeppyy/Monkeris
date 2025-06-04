@@ -101,6 +101,11 @@
 	var/list/related_ip = list()
 	var/list/related_cid = list()
 
+	///Used to cache this client's bans to save on DB queries
+	var/ban_cache = null
+	///If we are currently building this client's ban cache, this var stores the timeofday we started at
+	var/ban_cache_start = 0
+
 	preload_rsc = PRELOAD_RSC
 
 		////////////////

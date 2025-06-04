@@ -147,7 +147,7 @@ SUBSYSTEM_DEF(dbcore)
 		return FALSE
 	if(QDELETED(query))
 		return FALSE
-	if(query.process((TICKS2DS(wait)) / 10))
+	if(query.Process((TICKS2DS(wait)) / 10))
 		queries_active -= query
 		return FALSE
 	return TRUE
@@ -156,7 +156,7 @@ SUBSYSTEM_DEF(dbcore)
 	if(IsAdminAdvancedProcCall())
 		return
 	run_query(query)
-	UNTIL(query.process())
+	UNTIL(query.Process())
 	return query
 
 /datum/controller/subsystem/dbcore/proc/run_query(datum/db_query/query)
@@ -198,7 +198,7 @@ SUBSYSTEM_DEF(dbcore)
 
 		//wait for them all to finish
 		for(var/datum/db_query/query in queries_to_check)
-			UNTIL(query.process() || REALTIMEOFDAY > endtime)
+			UNTIL(query.Process() || REALTIMEOFDAY > endtime)
 
 		//log shutdown to the db
 		var/datum/db_query/query_round_shutdown = SSdbcore.NewQuery(
@@ -216,33 +216,33 @@ SUBSYSTEM_DEF(dbcore)
 		Disconnect()
 	stop_db_daemon()
 
-//nu
-/datum/controller/subsystem/dbcore/can_vv_get(var_name)
-	if(var_name == NAMEOF(src, connection))
-		return FALSE
-	if(var_name == NAMEOF(src, all_queries))
-		return FALSE
-	if(var_name == NAMEOF(src, queries_active))
-		return FALSE
-	if(var_name == NAMEOF(src, queries_standby))
-		return FALSE
-	if(var_name == NAMEOF(src, processing_queries))
-		return FALSE
+// TODO: REENABLE WHEN NEW VV IS IMPLEMENTED
+// /datum/controller/subsystem/dbcore/can_vv_get(var_name)
+// 	if(var_name == NAMEOF(src, connection))
+// 		return FALSE
+// 	if(var_name == NAMEOF(src, all_queries))
+// 		return FALSE
+// 	if(var_name == NAMEOF(src, queries_active))
+// 		return FALSE
+// 	if(var_name == NAMEOF(src, queries_standby))
+// 		return FALSE
+// 	if(var_name == NAMEOF(src, processing_queries))
+// 		return FALSE
 
-	return ..()
+// 	return ..()
 
-/datum/controller/subsystem/dbcore/vv_edit_var(var_name, var_value)
-	if(var_name == NAMEOF(src, connection))
-		return FALSE
-	if(var_name == NAMEOF(src, all_queries))
-		return FALSE
-	if(var_name == NAMEOF(src, queries_active))
-		return FALSE
-	if(var_name == NAMEOF(src, queries_standby))
-		return FALSE
-	if(var_name == NAMEOF(src, processing_queries))
-		return FALSE
-	return ..()
+// /datum/controller/subsystem/dbcore/vv_edit_var(var_name, var_value)
+// 	if(var_name == NAMEOF(src, connection))
+// 		return FALSE
+// 	if(var_name == NAMEOF(src, all_queries))
+// 		return FALSE
+// 	if(var_name == NAMEOF(src, queries_active))
+// 		return FALSE
+// 	if(var_name == NAMEOF(src, queries_standby))
+// 		return FALSE
+// 	if(var_name == NAMEOF(src, processing_queries))
+// 		return FALSE
+// 	return ..()
 
 /datum/controller/subsystem/dbcore/proc/Connect()
 	if(IsConnected())
@@ -643,7 +643,7 @@ Ignore_errors instructes mysql to continue inserting rows if some of them have e
 	while(status < DB_QUERY_FINISHED)
 		stoplag()
 
-/datum/db_query/process(seconds_per_tick)
+/datum/db_query/Process(seconds_per_tick)
 	if(status >= DB_QUERY_FINISHED)
 		return TRUE // we are done processing after all
 

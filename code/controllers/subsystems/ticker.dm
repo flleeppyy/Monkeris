@@ -32,6 +32,7 @@ SUBSYSTEM_DEF(ticker)
 	var/start_at
 	var/last_player_left_timestamp = 0
 
+	var/end_state = "undefined"
 
 	/// Num of players, used for pregame stats on statpanel
 	var/totalPlayers = 0

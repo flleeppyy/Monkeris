@@ -78,6 +78,10 @@
 
 #define ROLE_BLITZ "blitzshell"
 
+#define ROLE_PAI "pai"
+#define ROLE_DRONE "drone"
+#define ROLE_POSIBRAIN "posibrain"
+
 #define FACTION_EXCELSIOR "excelsior"
 #define FACTION_BORERS "borers"
 #define FACTION_SERBS	"serbians"

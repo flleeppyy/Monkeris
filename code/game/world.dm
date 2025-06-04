@@ -166,9 +166,6 @@ GLOBAL_VAR(restart_counter)
 		CONFIG_SET(string/servername, CONFIG_GET(string/servername) + " #[(world.port % 1000) / 100]")
 
 	callHook("startup")
-	//Emergency Fix
-	load_mods()
-	//end-emergency fix
 
 	generate_body_modification_lists()
 
@@ -381,32 +378,6 @@ var/world_topic_spam_protect_time = world.timeofday
 	var/F = file("data/mode.txt")
 	fdel(F)
 	F << the_mode
-
-/hook/startup/proc/loadMods()
-	world.load_mods()
-	world.load_mentors() // no need to write another hook.
-	return 1
-
-/world/proc/load_mods()
-	if(CONFIG_GET(flag/admin_legacy_system))
-		var/text = file2text("config/moderators.txt")
-		if (!text)
-			error("Failed to load config/mods.txt")
-		else
-			var/list/lines = splittext(text, "\n")
-			for(var/line in lines)
-				if (!line)
-					continue
-
-				if (copytext(line, 1, 2) == ";")
-					continue
-
-				var/title = "Moderator"
-				var/rights = admin_ranks[title]
-
-				var/ckey = copytext(line, 1, length(line)+1)
-				var/datum/admins/D = new /datum/admins(title, rights, ckey)
-				D.associate(GLOB.directory[ckey])
 
 /world/proc/load_mentors()
 	if(CONFIG_GET(flag/admin_legacy_system))

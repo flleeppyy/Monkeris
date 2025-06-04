@@ -9,17 +9,17 @@
 
 	var/list/ip_related_ckeys = list()
 	var/list/cid_related_ckeys = list()
-	var/datum/db_query/search_query = SSdbcore.NewQuery("SELECT ip_related_ids, cid_related_ids FROM players WHERE ckey = '[sanitizeSQL(ckey)]'")
+	var/datum/db_query/search_query = SSdbcore.NewQuery("SELECT ip_related_ids, cid_related_ids FROM [format_table_name("players")] WHERE ckey = :ckey", list(ckey = ckey))
 	search_query.Execute()
 	if(search_query.NextRow())
 		ip_related_ckeys = splittext(search_query.item[1], ",")
 		cid_related_ckeys = splittext(search_query.item[2], ",")
-		search_query = SSdbcore.NewQuery("SELECT ckey FROM players WHERE id IN ([jointext(ip_related_ckeys, ",")])")
+		search_query = SSdbcore.NewQuery("SELECT ckey FROM [format_table_name("players")] WHERE id IN ([jointext(ip_related_ckeys, ",")])")
 		search_query.Execute()
 		ip_related_ckeys = list()
 		while(search_query.NextRow())
 			ip_related_ckeys += search_query.item[1]
-		search_query = SSdbcore.NewQuery("SELECT ckey FROM players WHERE id IN ([jointext(cid_related_ckeys, ",")])")
+		search_query = SSdbcore.NewQuery("SELECT ckey FROM [format_table_name("players")] WHERE id IN ([jointext(cid_related_ckeys, ",")])")
 		search_query.Execute()
 		cid_related_ckeys = list()
 		while(search_query.NextRow())
@@ -40,12 +40,8 @@
 	set desc = "Search players in the DB"
 	db_search.DB_players_search()
 
-
-
 /datum/DB_search/proc/DB_players_search()
-
-	establish_db_connection()
-	if(!SSdbcore.IsConnected())
+	if(!SSdbcore.Connect())
 		to_chat(usr, span_red("Failed to establish database connection"))
 		return
 
@@ -113,7 +109,10 @@
 		hsrc.empty = 1
 	if(dbsearchckey_search || dbsearchip_search || dbsearchcid_search)
 		hsrc.empty = 0
-		var/datum/db_query/search_query = SSdbcore.NewQuery("SELECT ckey, ip, cid, last_seen FROM players WHERE ckey = '[sanitizeSQL(dbsearchckey_search)]' OR ip = '[sanitizeSQL(dbsearchip_search)]' OR cid = '[sanitizeSQL(dbsearchcid_search)]'")
+		var/datum/db_query/search_query = SSdbcore.NewQuery(
+			"SELECT ckey, ip, cid, last_seen FROM [format_table_name("players")] WHERE ckey = :ckey OR ip = :ip OR cid = :cid",
+			list(ckey = dbsearchckey_search, ip = dbsearchip_search, cid = dbsearchcid_search)
+		)
 		search_query.Execute()
 		while(search_query.NextRow())
 			output = "<tr><th>[search_query.item[1]]</th><th>[search_query.item[2]]</th><th>[search_query.item[3]]</th><th>[search_query.item[4]]</th></tr>"

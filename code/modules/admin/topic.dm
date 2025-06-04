@@ -45,7 +45,7 @@
 				return
 			SStickets.showDetailUI(usr, ticketID)
 		else
-			if(!check_rights(R_MENTOR|R_MOD|R_ADMIN))
+			if(!check_rights(R_MENTOR|R_ADMIN))
 				return
 			SSmentor_tickets.showDetailUI(usr, ticketID)
 

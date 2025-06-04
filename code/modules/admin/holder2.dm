@@ -11,6 +11,8 @@ GLOBAL_PROTECT(href_token)
 	var/rights = 0
 	var/fakekey			= null
 
+	var/deadmined
+
 	var/datum/weakref/marked_datum_weak
 
 	var/admincaster_screen = 0	//See newscaster.dm under machinery for a full description
@@ -69,6 +71,7 @@ GLOBAL_PROTECT(href_token)
 	owner = client
 	owner.holder = src
 	owner.add_admin_verbs()	//TODO
+	GLOB.deadmins -= target
 	GLOB.admins |= client
 	try_give_devtools(client)
 	try_give_profiling(client)
@@ -81,6 +84,7 @@ GLOBAL_PROTECT(href_token)
 		return
 	if(owner)
 		GLOB.admins -= owner
+		GLOB.deadmins += target
 		owner.remove_admin_verbs()
 		owner.deadmin_holder = owner.holder
 		owner.holder = null
@@ -94,6 +98,8 @@ GLOBAL_PROTECT(href_token)
 
 	if(owner)
 		GLOB.admins += owner
+		GLOB.deadmins -= target
+
 		owner.holder = src
 		owner.deadmin_holder = null
 		owner.add_admin_verbs()
@@ -117,6 +123,15 @@ GLOBAL_PROTECT(href_token)
 	given_profiling = TRUE
 	world.SetConfig("APP/admin", owner?.ckey || target, "role=admin")
 
+
+/// Get the permissions this admin is allowed to edit on other ranks
+/datum/admins/proc/can_edit_rights_flags()
+	var/combined_flags = NONE
+
+	for (var/datum/admin_rank/rank as anything in ranks)
+		combined_flags |= rank.can_edit_rights
+
+	return combined_flags
 
 /*
 checks if usr is an admin with at least ONE of the flags in rights_required. (Note, they don't need all the flags)

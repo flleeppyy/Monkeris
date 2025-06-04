@@ -43,6 +43,7 @@ GLOBAL_LIST_INIT(admin_verbs_server, list(
 	/client/proc/ToRban,
 	/client/proc/reload_admins,
 	/client/proc/reload_mentors,
+	/client/proc/reestablish_db_connection, /*reattempt a connection to the database*/
 	/client/proc/toggle_random_events))
 
 GLOBAL_LIST_INIT(admin_verbs_debug, list(
@@ -158,6 +159,9 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	/datum/verbs/menu/Admin/verb/playerpanel, /* It isn't /datum/admin but it fits no less */
 	/client/proc/storyteller_panel,
 	/client/proc/unban_panel,
+	/client/proc/stickybanpanel,
+	/client/proc/ban_panel,
+	/client/proc/unban_panel,
 	/client/proc/game_panel,
 	/client/proc/secrets,
 	/client/proc/fix_air,
@@ -239,7 +243,6 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 		add_verb(src, GLOB.admin_verbs_default)
 		if(check_rights(R_ADMIN, FALSE, src)) // Admin includes all moderator verbs
 			add_verb(src, GLOB.admin_verbs_admin)
-		else if(check_rights(R_MOD, FALSE, src)) // Moderator includes all mentor verbs
 			add_verb(src, GLOB.admin_verbs_mod)
 		else if(check_rights(R_MENTOR, FALSE, src))
 			add_verb(src, GLOB.admin_verbs_mentor)
@@ -343,14 +346,21 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	if(holder)
 		holder.storyteller_panel()
 
-/client/proc/unban_panel()
-	set name = "Unban Panel"
+/client/proc/ban_panel()
+	set name = "Banning Panel"
 	set category = "Admin"
-	if(holder)
-		if(CONFIG_GET(flag/ban_legacy_system))
-			holder.unbanpanel()
-		else
-			holder.DB_ban_panel()
+	if(!check_rights(R_BAN))
+		return
+	holder.ban_panel()
+	// SSblackbox.record_feedback("tally", "admin_verb", 1, "Banning Panel") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
+/client/proc/unban_panel()
+	set name = "Unbanning Panel"
+	set category = "Admin"
+	if(!check_rights(R_BAN))
+		return
+	holder.unban_panel()
+	// SSblackbox.record_feedback("tally", "admin_verb", 1, "Unbanning Panel") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 //game panel, allows to change game-mode etc
 /client/proc/game_panel()

@@ -12,6 +12,7 @@ SUBSYSTEM_DEF(job)
 
 	var/list/occupations = list()			//List of all jobs
 	var/list/occupations_by_name = list()	//Dict of all jobs, keys are titles
+	// var/list/datum/department/joinable_departments = list()
 	var/list/unassigned = list()			//Players who need jobs
 	var/list/job_debug = list()				//Debug info
 	var/list/job_mannequins = list()				//Cache of icons for job info window
@@ -263,7 +264,7 @@ SUBSYSTEM_DEF(job)
 			return FALSE
 		if(job.minimum_character_age && (player.client.prefs.age < job.minimum_character_age))
 			return FALSE
-		if(jobban_isbanned(player, rank))
+		if(jobban_isbanned(player.ckey, rank))
 			return FALSE
 
 		var/position_limit = job.total_positions
@@ -293,7 +294,7 @@ SUBSYSTEM_DEF(job)
 		if(!CanHaveJob(player.client.ckey, job.title))
 			Debug("FOC playtime failed, Player:[player]")
 			continue
-		if(jobban_isbanned(player, job.title))
+		if(jobban_isbanned(player.ckey, job.title))
 			Debug("FOC isbanned failed, Player: [player]")
 			continue
 		if(job.minimum_character_age && (player.client.prefs.age < job.minimum_character_age))
@@ -329,7 +330,7 @@ SUBSYSTEM_DEF(job)
 		if(job.is_restricted(player.client.prefs))
 			continue
 
-		if(jobban_isbanned(player, job.title))
+		if(jobban_isbanned(player.ckey, job.title))
 			Debug("GRJ isbanned failed, Player: [player], Job: [job.title]")
 			continue
 
@@ -473,7 +474,7 @@ SUBSYSTEM_DEF(job)
 				/*if(!job || SSticker.mode.disabled_jobs.Find(job.title) )
 					continue
 				*/
-				if(jobban_isbanned(player, job.title))
+				if(jobban_isbanned(player.ckey, job.title))
 					Debug("DO isbanned failed, Player: [player], Job:[job.title]")
 					continue
 
@@ -711,7 +712,7 @@ SUBSYSTEM_DEF(job)
 		for(var/mob/new_player/player in GLOB.player_list)
 			if(!(player.ready && player.mind && !player.mind.assigned_role))
 				continue //This player is not ready
-			if(jobban_isbanned(player, job.title))
+			if(jobban_isbanned(player.ckey, job.title))
 				level5++
 				continue
 			if(player.client.prefs.CorrectLevel(job,1))

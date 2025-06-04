@@ -1,6 +1,7 @@
 GLOBAL_LIST_EMPTY(clients)	//list of all clients
 GLOBAL_LIST_EMPTY(admins)	//list of all clients whom are admins
 GLOBAL_LIST_EMPTY(directory)	//list of all ckeys with associated client
+GLOBAL_LIST_EMPTY(deadmins) //all ckeys who have used the de-admin verb.
 
 //Since it didn't really belong in any other category, I'm putting this here
 //This is for procs to replace all the goddamn 'in world's that are chilling around the code
@@ -352,7 +353,7 @@ var/global/list/admin_permissions = list(
 	"debug" = 0x4,
 	"permissions" = 0x8,
 	"mentor" = 0x10,
-	"moderator" = 0x20,
+	"ban" = 0x20,
 	"admin" = 0x40,
 	"host" = 0x80
 	)

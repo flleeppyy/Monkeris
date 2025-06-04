@@ -1,12 +1,11 @@
 //Either pass the mob you wish to ban in the 'banned_mob' attribute, or the banckey, banip and bancid variables. If both are passed, the mob takes priority! If a mob is not passed, banckey is the minimum that needs to be passed! banip and bancid are optional.
 /datum/admins/proc/DB_ban_record(var/bantype, var/mob/banned_mob, var/duration = -1, var/reason, var/job = "", var/banckey = null, var/banip = null, var/bancid = null, var/delayed_ban = 0)
 
-	if(!check_rights(R_MOD,0) && !check_rights(R_ADMIN))
+	if(!check_rights(R_BAN,0))
 		return
 
 
-	establish_db_connection()
-	if(!SSdbcore.IsConnected())
+	if(!SSdbcore.Connect())
 		if(banned_mob.ckey)
 			error("[key_name_admin(usr)] attempted to ban [banned_mob.ckey], but somehow server could not establish a database connection.")
 		else
@@ -59,7 +58,7 @@
 		ip = banip
 
 	if(!target_id)
-		query = SSdbcore.NewQuery("SELECT id FROM players WHERE ckey = :ckey", list("ckey" = ckey))
+		query = SSdbcore.NewQuery("SELECT id FROM [format_table_name("players")] WHERE ckey = :ckey", list("ckey" = ckey))
 		query.Execute()
 		if(!query.NextRow())
 			if(!banned_mob || (banned_mob && !IsGuestKey(banned_mob.key)))
@@ -70,7 +69,7 @@
 
 	banned_by_id = usr.client.id
 	if(!banned_by_id)
-		query = SSdbcore.NewQuery("SELECT id FROM players WHERE ckey = '[usr.ckey]'")
+		query = SSdbcore.NewQuery("SELECT id FROM [format_table_name("players")] WHERE ckey = '[usr.ckey]'")
 		query.Execute()
 		if(!query.NextRow())
 			error("[key_name_admin(usr)] attempted to ban [ckey], but somehow [key_name_admin(usr)] record does not exist in database.")
@@ -80,7 +79,7 @@
 	reason = sql_sanitize_text(reason)
 
 	if(!computerid)
-		var/datum/db_query/get_cid = SSdbcore.NewQuery("SELECT cid FROM players WHERE id = '[target_id]'")
+		var/datum/db_query/get_cid = SSdbcore.NewQuery("SELECT cid FROM [format_table_name("players")] WHERE id = '[target_id]'")
 		get_cid.Execute()
 		if(get_cid.NextRow())
 			computerid = get_cid.item[1]
@@ -104,11 +103,10 @@
 
 /datum/admins/proc/DB_ban_unban(var/ckey, var/bantype, var/job = "")
 
-	if(!check_rights(R_MOD) && !check_rights(R_ADMIN))
+	if(!check_rights(R_BAN))
 		return
 
-	establish_db_connection()
-	if(!SSdbcore.IsConnected())
+	if(!SSdbcore.Connect())
 		error("[key_name_admin(usr)] attempted to unban [ckey], but somehow server could not establish a database connection.")
 		return
 
@@ -139,14 +137,14 @@
 	else
 		bantype_sql = "type = '[bantype_str]'"
 
-	var/datum/db_query/query = SSdbcore.NewQuery("SELECT id FROM players WHERE ckey = :ckey", list("ckey" = ckey))
+	var/datum/db_query/query = SSdbcore.NewQuery("SELECT id FROM [format_table_name("players")] WHERE ckey = :ckey", list("ckey" = ckey))
 	query.Execute()
 	if(!query.NextRow())
 		error("[key_name_admin(usr)] attempted to unban [ckey], but [ckey] has not been seen yet.")
 		return
 	var/target_id = query.item[1]
 
-	var/sql = "SELECT id FROM bans WHERE target_id = [target_id] AND [bantype_sql] AND (unbanned is null OR unbanned = false)"
+	var/sql = "SELECT id FROM [format_table_name("bans")] WHERE target_id = [target_id] AND [bantype_sql] AND (unbanned is null OR unbanned = false)"
 	if(job)
 		sql += " AND job = '[job]'"
 
@@ -179,11 +177,10 @@
 
 /datum/admins/proc/DB_ban_edit(var/banid = null, var/param = null)
 
-	if(!check_rights(R_MOD) && !check_rights(R_ADMIN))
+	if(!check_rights(R_BAN))
 		return
 
-	establish_db_connection()
-	if(!SSdbcore.IsConnected())
+	if(!SSdbcore.Connect())
 		error("[key_name_admin(usr)] attempted to edit ban record with id [banid], but somehow server could not establish a database connection.")
 		return
 
@@ -196,7 +193,7 @@
 	var/duration
 	var/reason
 
-	var/datum/db_query/query = SSdbcore.NewQuery("SELECT target_id, duration, reason FROM bans WHERE id = [banid]")
+	var/datum/db_query/query = SSdbcore.NewQuery("SELECT target_id, duration, reason FROM [format_table_name("bans")] WHERE id = [banid]")
 	query.Execute()
 	if(query.NextRow())
 		target_id = query.item[1]
@@ -206,7 +203,7 @@
 		error("[key_name_admin(usr)] attempted to edit ban record with id [banid], but matching record does not exist in database.")
 		return
 
-	query = SSdbcore.NewQuery("SELECT ckey FROM players WHERE id = [target_id]")
+	query = SSdbcore.NewQuery("SELECT ckey FROM [format_table_name("players")] WHERE id = [target_id]")
 	query.Execute()
 	if(!query.NextRow())
 		error("[key_name_admin(usr)] attempted to edit [ckey]'s ban, but [ckey] has not been seen yet.")
@@ -224,7 +221,7 @@
 				if(!value)
 					to_chat(usr, "Cancelled")
 					return
-			var/datum/db_query/update_query = SSdbcore.NewQuery("UPDATE bans SET reason = '[value]', WHERE id = [banid]")
+			var/datum/db_query/update_query = SSdbcore.NewQuery("UPDATE [format_table_name("bans")] SET reason = '[value]', WHERE id = [banid]")
 			if(!update_query.Execute())
 				log_world("[key_name_admin(usr)] tried to edit ban for [ckey] but got error: [update_query.ErrorMsg()].")
 				return
@@ -236,7 +233,7 @@
 				if(!isnum(value) || !value)
 					to_chat(usr, "Cancelled")
 					return
-			var/datum/db_query/update_query = SSdbcore.NewQuery("UPDATE bans SET duration = [value], expiration_time = DATE_ADD(time, INTERVAL '[value]' MINUTE) WHERE id = [banid]")
+			var/datum/db_query/update_query = SSdbcore.NewQuery("UPDATE [format_table_name("bans")] SET duration = [value], expiration_time = DATE_ADD(time, INTERVAL '[value]' MINUTE) WHERE id = [banid]")
 			if(!update_query.Execute())
 				log_world("[key_name_admin(usr)] tried to edit a ban duration for [ckey] but got error: [update_query.ErrorMsg()].")
 				return
@@ -255,17 +252,16 @@
 
 /datum/admins/proc/DB_ban_unban_by_id(var/id)
 
-	if(!check_rights(R_MOD) && !check_rights(R_ADMIN))
+	if(!check_rights(R_BAN))
 		return
 
-	establish_db_connection()
-	if(!SSdbcore.IsConnected())
+	if(!SSdbcore.Connect())
 		error("[key_name_admin(usr)] attempted to remove ban record with id [id], but somehow server could not establish a database connection.")
 		return
 
 	var/ckey
 
-	var/datum/db_query/query = SSdbcore.NewQuery("SELECT target_id FROM bans WHERE id = [id]")
+	var/datum/db_query/query = SSdbcore.NewQuery("SELECT target_id FROM [format_table_name("bans")] WHERE id = [id]")
 	query.Execute()
 	if(query.NextRow())
 		ckey = query.item[1]
@@ -276,14 +272,14 @@
 	if(!src.owner || !istype(src.owner, /client))
 		return
 
-	query = SSdbcore.NewQuery("SELECT id FROM players WHERE ckey = '[usr.ckey]'")
+	query = SSdbcore.NewQuery("SELECT id FROM [format_table_name("players")] WHERE ckey = '[usr.ckey]'")
 	query.Execute()
 	if(!query.NextRow())
 		error("[key_name_admin(usr)] attempted to remove ban record with id [id], but admin database record does not exist.")
 		return
 	var/admin_id = query.item[1]
 
-	var/sql_update = "UPDATE bans SET unbanned = 1, unbanned_time = Now(), unbanned_by_id = [admin_id] WHERE id = [id]"
+	var/sql_update = "UPDATE [format_table_name("bans")] SET unbanned = 1, unbanned_time = Now(), unbanned_by_id = [admin_id] WHERE id = [id]"
 
 	var/datum/db_query/query_update = SSdbcore.NewQuery(sql_update)
 	if(!query_update.Execute())
@@ -307,11 +303,10 @@
 	if(!usr.client)
 		return
 
-	if(!check_rights(R_MOD) && !check_rights(R_ADMIN))
+	if(!check_rights(R_BAN))
 		return
 
-	establish_db_connection()
-	if(!SSdbcore.IsConnected())
+	if(!SSdbcore.Connect())
 		to_chat(usr, span_red("Failed to establish database connection"))
 		return
 
@@ -402,13 +397,13 @@
 			output += "</tr>"
 
 			var/player_id
-			var/datum/db_query/query = SSdbcore.NewQuery("SELECT id FROM players WHERE ckey='[playerckey]'")
+			var/datum/db_query/query = SSdbcore.NewQuery("SELECT id FROM [format_table_name("players")] WHERE ckey='[playerckey]'")
 			query.Execute()
 			if(query.NextRow())
 				player_id = query.item[1]
 
 			var/admin_id
-			query = SSdbcore.NewQuery("SELECT id FROM players WHERE ckey='[adminckey]'")
+			query = SSdbcore.NewQuery("SELECT id FROM [format_table_name("players")] WHERE ckey='[adminckey]'")
 			query.Execute()
 			if(query.NextRow())
 				admin_id = query.item[1]
@@ -452,7 +447,7 @@
 						bantypesearch += "'PERMABAN' "
 
 
-			var/datum/db_query/select_query = SSdbcore.NewQuery("SELECT id, time, type, reason, job, duration, expiration_time, target_id, banned_by_id, unbanned, unbanned_by_id, unbanned_time, ip, cid FROM bans WHERE 1 [playersearch] [adminsearch] [ipsearch] [cidsearch] [bantypesearch] ORDER BY time DESC LIMIT 100")
+			var/datum/db_query/select_query = SSdbcore.NewQuery("SELECT id, time, type, reason, job, duration, expiration_time, target_id, banned_by_id, unbanned, unbanned_by_id, unbanned_time, ip, cid FROM [format_table_name("bans")] WHERE 1 [playersearch] [adminsearch] [ipsearch] [cidsearch] [bantypesearch] ORDER BY time DESC LIMIT 100")
 			select_query.Execute()
 
 			var/now = time2text(world.realtime, "YYYY-MM-DD hh:mm:ss") // MUST BE the same format as SQL gives us the dates in, and MUST be least to most specific (i.e. year, month, day not day, month, year)
@@ -476,17 +471,17 @@
 				var/banned_by_ckey
 				var/unbanned_by_ckey
 
-				query = SSdbcore.NewQuery("SELECT ckey FROM players WHERE id = [target_id]")
+				query = SSdbcore.NewQuery("SELECT ckey FROM [format_table_name("players")] WHERE id = [target_id]")
 				query.Execute()
 				if(query.NextRow())
 					target_ckey = query.item[1]
 
-				query = SSdbcore.NewQuery("SELECT ckey FROM players WHERE id = [banned_by_id]")
+				query = SSdbcore.NewQuery("SELECT ckey FROM [format_table_name("players")] WHERE id = [banned_by_id]")
 				query.Execute()
 				if(query.NextRow())
 					banned_by_ckey = query.item[1]
 
-				query = SSdbcore.NewQuery("SELECT ckey FROM players WHERE id = [unbanned_by_id]")
+				query = SSdbcore.NewQuery("SELECT ckey FROM [format_table_name("players")] WHERE id = [unbanned_by_id]")
 				query.Execute()
 				if(query.NextRow())
 					unbanned_by_ckey = query.item[1]
