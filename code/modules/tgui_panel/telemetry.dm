@@ -116,7 +116,7 @@
 
 	// Only log them all at the end, since it's not as important as reporting an evader
 	for (var/list/one_query as anything in query_data)
-		var/datum/datum/db_query/query = SSdbcore.NewQuery({"
+		var/datum/db_query/query = SSdbcore.NewQuery({"
 			INSERT INTO [format_table_name("telemetry_connections")] (
 				ckey,
 				telemetry_ckey,

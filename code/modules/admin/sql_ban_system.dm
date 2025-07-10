@@ -3,6 +3,8 @@
 
 #define MAX_REASON_LENGTH 600
 
+
+
 //checks client ban cache or DB ban table if ckey is banned from one or more roles
 //doesn't return any details, use only for if statements
 /proc/is_banned_from(player_ckey, list/roles)
@@ -51,6 +53,24 @@
 			qdel(query_check_ban)
 			return TRUE
 		qdel(query_check_ban)
+
+// compatibility with old jobban system, basically jsut a wrapper for the above function
+/proc/jobban_isbanned(input, rank)
+	if(!input || !rank)
+		if (!rank)
+			stack_trace("jobban_isbanned called with no rank")
+		return FALSE
+
+	if(istext(input))
+		return is_banned_from(input, rank)
+	if(istype(input, /mob))
+		var/mob/M = input
+		return is_banned_from(M.ckey, rank)
+	if(istype(input, /client))
+		var/client/C = input
+		if(!C.ckey)
+			return FALSE
+		return is_banned_from(C.ckey, rank)
 
 //checks DB ban table if a ckey, ip and/or cid is banned from a specific role
 //returns an associative nested list of each matching row's ban id, bantime, ban round id, expiration time, ban duration, applies to admins, reason, key, ip, cid and banning admin's key in that order
@@ -287,30 +307,30 @@
 		var/break_counter = 0
 		output += "<div class='row'>"
 
-		for(var/datum/job_department/department as anything in SSjob.joinable_departments)
-			var/label_class = department.label_class
-			var/department_name = department.department_name
-			output += "<div class='column'><label class='rolegroup [label_class]'>[tgui_fancy ? "<input type='checkbox' name='[label_class]' class='hidden' onClick='header_click_all_checkboxes(this)'>" : ""] \
+		for(var/datum/department/department as anything in SSjob.departments)
+			var/label_class = department.id
+			var/department_name = department.name
+			output += "<div class='column'><label class='rolegroup [lowertext(label_class)]'>[tgui_fancy ? "<input type='checkbox' name='[label_class]' class='hidden' onClick='header_click_all_checkboxes(this)'>" : ""] \
 			[department_name]</label><div class='content'>"
-			for(var/datum/job/job_datum as anything in department.department_jobs)
+			for(var/datum/job/job_datum as anything in department.jobs)
 				if(break_counter > 0 && (break_counter % 3 == 0))
 					output += "<br>"
 				break_counter++
 				var/job_name = job_datum.title
-				if(length(job_datum.departments_list) > 1) //This job is in multiple departments, so we need to check all the boxes.
-					// Clicking this will also toggle all the other boxes, minus this one.
-					var/department_index = job_datum.departments_list.Find(department.type)
-					if(!department_index)
-						stack_trace("Failed to find a department index for [department.type] in the departments_list of [job_datum.type]")
-					output += {"<label class='inputlabel checkbox'>[job_name]
-						<input type='checkbox' id='[job_name]_[department_index]' name='[job_name]' class='[label_class]' value='1'[tgui_fancy ? " onClick='toggle_other_checkboxes(this, \"[length(job_datum.departments_list)]\", \"[department_index]\")'" : ""]>
+				// if(length(job_datum.departments_list) > 1) //This job is in multiple departments, so we need to check all the boxes.
+				// 	// Clicking this will also toggle all the other boxes, minus this one.
+				// 	var/department_index = job_datum.departments_list.Find(department.type)
+				// 	if(!department_index)
+				// 		stack_trace("Failed to find a department index for [department.type] in the departments_list of [job_datum.type]")
+				// 	output += {"<label class='inputlabel checkbox'>[job_name]
+				// 		<input type='checkbox' id='[job_name]_[department_index]' name='[job_name]' class='[label_class]' value='1'[tgui_fancy ? " onClick='toggle_other_checkboxes(this, \"[length(job_datum.departments_list)]\", \"[department_index]\")'" : ""]>
+				// 		<div class='inputbox[(job_name in banned_from) ? " banned" : ""]'></div></label>
+				// 		"}
+				// else
+				output += {"<label class='inputlabel checkbox'>[job_name]
+						<input type='checkbox' name='[job_name]' class='[label_class]' value='1'>
 						<div class='inputbox[(job_name in banned_from) ? " banned" : ""]'></div></label>
 						"}
-				else
-					output += {"<label class='inputlabel checkbox'>[job_name]
-							<input type='checkbox' name='[job_name]' class='[label_class]' value='1'>
-							<div class='inputbox[(job_name in banned_from) ? " banned" : ""]'></div></label>
-							"}
 			output += "</div></div>"
 			break_counter = 0
 
@@ -332,7 +352,7 @@
 		var/list/long_job_lists = list(
 			"Ghost and Other Roles" = list(
 				ROLE_PAI,
-				ROLE_BOT,
+				// ROLE_BOT,
 				ROLE_DRONE,
 				ROLE_POSIBRAIN,
 				ROLE_BLITZ,
@@ -340,7 +360,7 @@
 			"Antagonist Positions" = list(
 				ROLE_BANTYPE_BORER,
 				ROLE_BANTYPE_MALFUNCTION,
-				ROLE_BANTYPE_TRAITOR,
+				// ROLE_BANTYPE_TRAITOR,
 				ROLE_BANTYPE_INQUISITOR,
 				ROLE_COMMANDO,
 				ROLE_DEATHSQUAD,

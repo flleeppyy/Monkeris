@@ -228,7 +228,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	if(CONFIG_GET(flag/enable_localhost_rank) && !connecting_admin)
 		var/localhost_addresses = list("127.0.0.1", "::1")
 		if(isnull(address) || (address in localhost_addresses))
-			var/datum/admins/localhost_rank = new("!localhost!", R_HOST, ckey)
+			var/datum/admins/localhost_rank = new("!localhost!", R_EVERYTHING, ckey)
 			localhost_rank.associate(src)
 
 	//preferences datum - also holds some persistant data for the client (because we may as well keep these datums to a minimum)
@@ -319,6 +319,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		to_chat(src, "<br>")
 
 	log_client_to_db()
+	validate_key_in_db()
 
 	send_resources()
 
@@ -361,7 +362,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		handle_admin_logout()
 	QDEL_NULL(tooltips)
 	if(SSdbcore.IsConnected())
-		var/datum/db_query/query = SSdbcore.NewQuery("UPDATE [format_table_name("players")] SET last_seen = Now() WHERE id = [src.id]")
+		var/datum/db_query/query = SSdbcore.NewQuery("UPDATE [format_table_name("players")] SET lastseen = Now() WHERE id = [src.id]")
 		if(!query.Execute())
 			log_world("Failed to update players table for user with id [src.id]. Error message: [query.ErrorMsg()].")
 	Master.UpdateTickRate()
@@ -380,6 +381,37 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			. = R.group[1]
 		else
 			CRASH("Age check regex failed for [src.ckey]")
+
+/client/proc/validate_key_in_db()
+	var/sql_key
+	var/datum/db_query/query_check_byond_key = SSdbcore.NewQuery(
+		"SELECT byond_key FROM [format_table_name("player")] WHERE ckey = :ckey",
+		list("ckey" = ckey)
+	)
+	if(!query_check_byond_key.Execute())
+		qdel(query_check_byond_key)
+		return
+	if(query_check_byond_key.NextRow())
+		sql_key = query_check_byond_key.item[1]
+	qdel(query_check_byond_key)
+	if(key != sql_key)
+		var/list/http = world.Export("http://byond.com/members/[ckey]?format=text")
+		if(!http)
+			log_world("Failed to connect to byond member page to get changed key for [ckey]")
+			return
+		var/F = file2text(http["CONTENT"])
+		if(F)
+			var/regex/R = regex("\\tkey = \"(.+)\"")
+			if(R.Find(F))
+				var/web_key = R.group[1]
+				var/datum/db_query/query_update_byond_key = SSdbcore.NewQuery(
+					"UPDATE [format_table_name("player")] SET byond_key = :byond_key WHERE ckey = :ckey",
+					list("byond_key" = web_key, "ckey" = ckey)
+				)
+				query_update_byond_key.Execute()
+				qdel(query_update_byond_key)
+			else
+				CRASH("Key check regex failed for [ckey]")
 
 /client/proc/get_country()
 	// Return data:
@@ -430,18 +462,30 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	registration_date = src.get_registration_date()
 	src.get_country()
 	src.get_byond_age() // Get days since byond join
-
-	var/datum/db_query/query_insert = SSdbcore.NewQuery("INSERT INTO players (ckey, first_seen, last_seen, registered, ip, cid, rank, byond_version, country) VALUES ('[src.ckey]', Now(), Now(), '[registration_date]', '[sql_sanitize_text(src.address)]', '[sql_sanitize_text(src.computer_id)]', 'player', [src.byond_version], '[src.country_code]')")
+	var/admin_rank = holder?.rank || "player"
+	var/datum/db_query/query_insert = SSdbcore.NewQuery(
+		"INSERT INTO [format_table_name("players")] (ckey, byond_key, firstseen, firstseen_round_id, lastseen, lastseen_round_id, accountjoindate, ip, computerid, lastadminrank, country) VALUES (:ckey, :byond_key, Now(), :firstseen_round_id, Now(), :lastseen_round_id, :accountjoindate, INET_ATON(:ip), :computerid, :lastadminrank, :country)",
+		list(
+			"ckey" = src.ckey,
+			"byond_key" = src.key,
+			"firstseen_round_id" = GLOB.round_id,
+			"lastseen_round_id" = GLOB.round_id,
+			"accountjoindate" = registration_date,
+			"ip" = src.address,
+			"computerid" = src.computer_id,
+			"lastadminrank" = admin_rank,
+			"country" = src.country_code
+		)
+	)
 	if(!query_insert.Execute())
 		log_world("##CRITICAL: Failed to create player record for user [ckey]. Error message: [query_insert.ErrorMsg()].")
 		return
 
 	else
-		var/datum/db_query/get_player_id = SSdbcore.NewQuery("SELECT id, first_seen FROM [format_table_name("players")] WHERE ckey = '[src.ckey]'")
+		var/datum/db_query/get_player_id = SSdbcore.NewQuery("SELECT firstseen FROM [format_table_name("players")] WHERE ckey = :ckey", list("ckey" = src.ckey))
 		get_player_id.Execute()
 		if(get_player_id.NextRow())
-			src.id = get_player_id.item[1]
-			src.first_seen = get_player_id.item[2]
+			src.first_seen = get_player_id.item[1]
 
 //Not actually age, but rather time since first seen in days
 /client/proc/get_player_age()
@@ -474,20 +518,19 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 	if(SSdbcore.IsConnected())
 		// Get existing player from DB
-		var/datum/db_query/query = SSdbcore.NewQuery("SELECT id from [format_table_name("[format_table_name("players")]")] WHERE ckey = '[src.ckey]'")
+		var/datum/db_query/query = SSdbcore.NewQuery("SELECT ckey from [format_table_name("[format_table_name("players")]")] WHERE ckey = :ckey", list("ckey" = src.ckey))
 		if(!query.Execute())
 			log_world("Failed to get player record for user with ckey '[src.ckey]'. Error message: [query.ErrorMsg()].")
 
 		// Not their first time here
 		else if(query.NextRow())
-			// client already registered so we fetch all needed data
-			query = SSdbcore.NewQuery("SELECT id, registered, first_seen, VPN_check_white FROM [format_table_name("players")] WHERE id = [query.item[1]]")
+			// client already accountjoindate so we fetch all needed data
+			query = SSdbcore.NewQuery("SELECT accountjoindate, firstseen, VPN_check_white FROM [format_table_name("players")] WHERE ckey = :ckey", list("ckey" = src.ckey))
 			query.Execute()
 			if(query.NextRow())
-				src.id = query.item[1]
-				src.registration_date = query.item[2]
-				src.first_seen = query.item[3]
-				src.VPN_whitelist = query.item[4]
+				src.registration_date = query.item[1]
+				src.first_seen = query.item[2]
+				src.VPN_whitelist = query.item[3]
 				src.get_country()
 
 				//Player already identified previously, we need to just update the 'lastseen', 'ip' and 'computer_id' variables
@@ -503,12 +546,15 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			to_chat(src, span_warning("Sorry but the server is currently not accepting connections from never before seen players."))
 			del(src) // Hard del the client. This terminates the connection.
 			return 0
-		query = SSdbcore.NewQuery("SELECT ip_related_ids, cid_related_ids FROM [format_table_name("players")] WHERE id = '[src.id]'")
+		query = SSdbcore.NewQuery("SELECT ip_related_ids, cid_related_ids FROM [format_table_name("players")] WHERE ckey = :ckey", list("ckey" = src.ckey))
 		query.Execute()
 		if(query.NextRow())
 			related_ip = splittext(query.item[1], ",")
 			related_cid = splittext(query.item[2], ",")
-		query = SSdbcore.NewQuery("SELECT id, ip, cid FROM [format_table_name("players")] WHERE (ip = '[address]' OR cid = '[computer_id]') AND id <> '[src.id]'")
+		query = SSdbcore.NewQuery(
+			"SELECT id, ip, computerid FROM [format_table_name("players")] WHERE (ip = :address OR computerid = :computer_id) AND ckey != :ckey",
+			list("ckey" = src.ckey, "address" = address, "computer_id" = computer_id)
+		)
 		query.Execute()
 		var/changed = 0
 		while(query.NextRow())
@@ -522,7 +568,8 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 				changed = 1
 				related_cid |= temp_id
 		if(changed)
-			query = SSdbcore.NewQuery("UPDATE [format_table_name("players")] SET cid_related_ids = '[jointext(related_cid, ",")]', ip_related_ids = '[jointext(related_ip, ",")]' WHERE id = '[src.id]'")
+			query = SSdbcore.NewQuery("UPDATE [format_table_name("players")] SET cid_related_ids = :cid_related_ids, ip_related_ids = :ip_related_ids WHERE ckey = :ckey",
+				list("cid_related_ids" = jointext(related_cid, ","), "ip_related_ids" = jointext(related_ip, ","), "ckey" = src.ckey))
 			query.Execute()
 
 

@@ -401,7 +401,7 @@
 	require_perms = list(R_BAN)
 
 /datum/admin_topic/stickyban/Run(list/input)
-	stickyban(input["stickyban"],input)
+	usr.client.holder.stickyban(input["stickyban"],input)
 
 /proc/sticky_banned_ckeys()
 	if (SSdbcore.Connect() || length(SSstickyban.dbcache))

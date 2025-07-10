@@ -345,9 +345,19 @@ SUBSYSTEM_DEF(dbcore)
 /datum/controller/subsystem/dbcore/proc/SetRoundEnd()
 	if(!Connect())
 		return
+	var/mode_result
+	// we dont actually have custom mode results yet afaik?? idk
+
+	if (SSticker.ship_was_nuked)
+		mode_result = "Nuked"
+	else if (universe_has_ended)
+		mode_result = "Universe Ended"
+	else
+		mode_result = "Unknown"
+
 	var/datum/db_query/query_round_end = SSdbcore.NewQuery(
 		"UPDATE [format_table_name("round")] SET end_datetime = Now(), game_mode_result = :game_mode_result, station_name = :station_name WHERE id = :round_id",
-		list("game_mode_result" = SSticker.mode_result, "station_name" = station_name(), "round_id" = GLOB.round_id)
+		list("game_mode_result" = mode_result, "station_name" = station_name(), "round_id" = GLOB.round_id)
 	)
 	query_round_end.Execute()
 	qdel(query_round_end)

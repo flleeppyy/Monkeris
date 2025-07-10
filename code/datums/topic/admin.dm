@@ -20,94 +20,189 @@
 	CRASH("Run() not implemented for [type]!")
 
 
-/datum/admin_topic/dbsearchckey
-	keyword = "dbsearchckey"
+// /datum/admin_topic/dbsearchckey
+// 	keyword = "dbsearchckey"
 
-/datum/admin_topic/dbsearchckey/dbsearchadmin //inherits the behaviour of dbsearchckey, but with a different keyword.
-	keyword = "dbsearchadmin"
+// /datum/admin_topic/dbsearchckey/dbsearchadmin //inherits the behaviour of dbsearchckey, but with a different keyword.
+// 	keyword = "dbsearchadmin"
 
-/datum/admin_topic/dbsearchckey/Run(list/input)
-	var/adminckey = input["dbsearchadmin"]
-	var/playerckey = input["dbsearchckey"]
-	var/playerip = input["dbsearchip"]
-	var/playercid = input["dbsearchcid"]
-	var/dbbantype = text2num(input["dbsearchbantype"])
-	var/match = FALSE
+// /datum/admin_topic/dbsearchckey/Run(list/input)
+// 	var/adminckey = input["dbsearchadmin"]
+// 	var/playerckey = input["dbsearchckey"]
+// 	var/playerip = input["dbsearchip"]
+// 	var/playercid = input["dbsearchcid"]
+// 	var/dbbantype = text2num(input["dbsearchbantype"])
+// 	var/match = FALSE
 
-	if("dbmatch" in input)
-		match = TRUE
+// 	if("dbmatch" in input)
+// 		match = TRUE
 
-	source.DB_ban_panel(playerckey, adminckey, playerip, playercid, dbbantype, match)
-
-
-/datum/admin_topic/dbbanedit
-	keyword = "dbbanedit"
-
-/datum/admin_topic/dbbanedit/Run(list/input)
-	var/banedit = input["dbbanedit"]
-	var/banid = text2num(input["dbbanid"])
-	if(!banedit || !banid)
-		return
-
-	source.DB_ban_edit(banid, banedit)
+// 	source.DB_ban_panel(playerckey, adminckey, playerip, playercid, dbbantype, match)
 
 
-/datum/admin_topic/dbbanaddtype
-	keyword = "dbbanaddtype"
+// /datum/admin_topic/dbbanedit
+// 	keyword = "dbbanedit"
 
-/datum/admin_topic/dbbanaddtype/Run(list/input)
-	var/bantype = text2num(input["dbbanaddtype"])
-	var/banckey = input["dbbanaddckey"]
-	var/banip = input["dbbanaddip"]
-	var/bancid = input["dbbanaddcid"]
-	var/banduration = text2num(input["dbbaddduration"])
-	var/banjob = input["dbbanaddjob"]
-	var/banreason = input["dbbanreason"]
+// /datum/admin_topic/dbbanedit/Run(list/input)
+// 	var/banedit = input["dbbanedit"]
+// 	var/banid = text2num(input["dbbanid"])
+// 	if(!banedit || !banid)
+// 		return
 
-	banckey = ckey(banckey)
-
-	switch(bantype)
-		if(BANTYPE_PERMA)
-			if(!banckey || !banreason)
-				to_chat(usr, "Not enough parameters (Requires ckey and reason)")
-				return
-			banduration = null
-			banjob = null
-		if(BANTYPE_TEMP)
-			if(!banckey || !banreason || !banduration)
-				to_chat(usr, "Not enough parameters (Requires ckey, reason and duration)")
-				return
-			banjob = null
-		if(BANTYPE_JOB_PERMA)
-			if(!banckey || !banreason || !banjob)
-				to_chat(usr, "Not enough parameters (Requires ckey, reason and job)")
-				return
-			banduration = null
-		if(BANTYPE_JOB_TEMP)
-			if(!banckey || !banreason || !banjob || !banduration)
-				to_chat(usr, "Not enough parameters (Requires ckey, reason and job)")
-				return
-
-	var/mob/playermob
-
-	for(var/mob/M in GLOB.player_list)
-		if(M.ckey == banckey)
-			playermob = M
-			break
+// 	source.DB_ban_edit(banid, banedit)
 
 
-	banreason = "(MANUAL BAN) "+banreason
+// /datum/admin_topic/dbbanaddtype
+// 	keyword = "dbbanaddtype"
 
-	if(!playermob)
-		if(banip)
-			banreason = "[banreason] (CUSTOM IP)"
-		if(bancid)
-			banreason = "[banreason] (CUSTOM CID)"
+// /datum/admin_topic/dbbanaddtype/Run(list/input)
+// 	var/bantype = text2num(input["dbbanaddtype"])
+// 	var/banckey = input["dbbanaddckey"]
+// 	var/banip = input["dbbanaddip"]
+// 	var/bancid = input["dbbanaddcid"]
+// 	var/banduration = text2num(input["dbbaddduration"])
+// 	var/banjob = input["dbbanaddjob"]
+// 	var/banreason = input["dbbanreason"]
+
+// 	banckey = ckey(banckey)
+
+// 	switch(bantype)
+// 		if(BANTYPE_PERMA)
+// 			if(!banckey || !banreason)
+// 				to_chat(usr, "Not enough parameters (Requires ckey and reason)")
+// 				return
+// 			banduration = null
+// 			banjob = null
+// 		if(BANTYPE_TEMP)
+// 			if(!banckey || !banreason || !banduration)
+// 				to_chat(usr, "Not enough parameters (Requires ckey, reason and duration)")
+// 				return
+// 			banjob = null
+// 		if(BANTYPE_JOB_PERMA)
+// 			if(!banckey || !banreason || !banjob)
+// 				to_chat(usr, "Not enough parameters (Requires ckey, reason and job)")
+// 				return
+// 			banduration = null
+// 		if(BANTYPE_JOB_TEMP)
+// 			if(!banckey || !banreason || !banjob || !banduration)
+// 				to_chat(usr, "Not enough parameters (Requires ckey, reason and job)")
+// 				return
+
+// 	var/mob/playermob
+
+// 	for(var/mob/M in GLOB.player_list)
+// 		if(M.ckey == banckey)
+// 			playermob = M
+// 			break
+
+
+// 	banreason = "(MANUAL BAN) "+banreason
+
+// 	if(!playermob)
+// 		if(banip)
+// 			banreason = "[banreason] (CUSTOM IP)"
+// 		if(bancid)
+// 			banreason = "[banreason] (CUSTOM CID)"
+// 	else
+// 		message_admins("Ban process: A mob matching [playermob.ckey] was found at location [playermob.x], [playermob.y], [playermob.z]. Custom ip and computer id fields replaced with the ip and computer id from the located mob")
+
+// 	source.DB_ban_record(bantype, playermob, banduration, banreason, banjob, banckey, banip, bancid )
+
+/datum/admin_topic/newbankey
+	keyword = "newbankey"
+	require_perms = list(R_BAN)
+
+/datum/admin_topic/newbankey/Run(list/input)
+	var/player_key = input["newbankey"]
+	var/player_ip = input["newbanip"]
+	var/player_cid = input["newbancid"]
+	usr.client.holder.ban_panel(player_key, player_ip, player_cid)
+
+/datum/admin_topic/banparsehref
+	keyword = "intervaltype"
+
+/datum/admin_topic/banparsehref/Run(list/input)
+	if(input["roleban_delimiter"])
+		usr.client.holder.ban_parse_href(input)
 	else
-		message_admins("Ban process: A mob matching [playermob.ckey] was found at location [playermob.x], [playermob.y], [playermob.z]. Custom ip and computer id fields replaced with the ip and computer id from the located mob")
+		usr.client.holder.ban_parse_href(input, TRUE)
 
-	source.DB_ban_record(bantype, playermob, banduration, banreason, banjob, banckey, banip, bancid )
+/datum/admin_topic/banpanel/searchunbankey
+	keyword = "searchunbankey"
 
+/datum/admin_topic/banpanel/searchunbanadminkey
+	keyword = "searchunbanadminkey"
+
+/datum/admin_topic/banpanel/searchunbanip
+	keyword = "searchunbanip"
+
+/datum/admin_topic/banpanel/searchunbancid
+	keyword = "searchunbancid"
+
+/datum/admin_topic/banpanel
+	keyword = "banpanel"
+	require_perms = list(R_BAN)
+
+/datum/admin_topic/banpanel/Run(list/input)
+	var/player_key = input["searchunbankey"]
+	var/admin_key = input["searchunbanadminkey"]
+	var/player_ip = input["searchunbanip"]
+	var/player_cid = input["searchunbancid"]
+	usr.client.holder.unban_panel(player_key, admin_key, player_ip, player_cid)
+
+/datum/admin_topic/editban
+	keyword = "editbanid"
+	require_perms = list(R_BAN)
+
+/datum/admin_topic/editban/Run(list/input)
+	var/edit_id = input["editbanid"]
+	var/player_key = input["editbankey"]
+	var/player_ip = input["editbanip"]
+	var/player_cid = input["editbancid"]
+	var/role = input["editbanrole"]
+	var/duration = input["editbanduration"]
+	var/applies_to_admins = text2num(input["editbanadmins"])
+	var/reason = url_decode(input["editbanreason"])
+	var/page = input["editbanpage"]
+	var/admin_key = input["editbanadminkey"]
+	usr.client.holder.ban_panel(player_key, player_ip, player_cid, role, duration, applies_to_admins, reason, edit_id, page, admin_key)
+
+/datum/admin_topic/unbanid
+	keyword = "unbanid"
+	require_perms = list(R_BAN)
+
+/datum/admin_topic/unbanid/Run(list/input)
+	var/ban_id = input["unbanid"]
+	var/player_key = input["unbankey"]
+	var/player_ip = input["unbanip"]
+	var/player_cid = input["unbancid"]
+	var/role = input["unbanrole"]
+	var/page = input["unbanpage"]
+	var/admin_key = input["unbanadminkey"]
+	usr.client.holder.unban(ban_id, player_key, player_ip, player_cid, role, page, admin_key)
+
+/datum/admin_topic/rebanid
+	keyword = "rebanid"
+	require_perms = list(R_BAN)
+
+/datum/admin_topic/rebanid/Run(list/input)
+	var/ban_id = input["rebanid"]
+	var/player_key = input["rebankey"]
+	var/player_ip = input["rebanip"]
+	var/player_cid = input["rebancid"]
+	var/role = input["rebanrole"]
+	var/page = input["rebanpage"]
+	var/admin_key = input["rebanadminkey"]
+	var/applies_to_admins = input["applies_to_admins"]
+	usr.client.holder.reban(ban_id, applies_to_admins, player_key, player_ip, player_cid, role, page, admin_key)
+
+/datum/admin_topic/unbanlog
+	keyword = "unbanlog"
+	require_perms = list(R_BAN)
+
+/datum/admin_topic/unbanlog/Run(list/input)
+	var/ban_id = input["unbanlog"]
+	usr.client.holder.ban_log(ban_id)
 
 /datum/admin_topic/editrights
 	keyword = "editrights"
@@ -266,7 +361,8 @@
 	keyword = "warn"
 
 /datum/admin_topic/warn/Run(list/input)
-	usr.client.warn(input["warn"])
+	to_chat(usr, span_notice("this doesnt work by the way."))
+	// usr.client.warn(input["warn"])
 
 /datum/admin_topic/boot2
 	keyword = "boot2"
@@ -287,22 +383,22 @@
 		del(M.client)
 
 
-/datum/admin_topic/removejobban
-	keyword = "removejobban"
-	require_perms = list(R_BAN)
+// /datum/admin_topic/removejobban
+// 	keyword = "removejobban"
+// 	require_perms = list(R_BAN)
 
-/datum/admin_topic/removejobban/Run(list/input)
-	var/t = input["removejobban"]
-	if(t)
-		if((alert("Do you want to unjobban [t]?","Unjobban confirmation", "Yes", "No") == "Yes") && t) //No more misclicks! Unless you do it twice.
-			log_admin("[key_name(usr)] removed [t]")
-			message_admins(span_blue("[key_name_admin(usr)] removed [t]"), 1)
-			jobban_remove(t)
-			input["ban"] = TRUE // lets it fall through and refresh
-			var/t_split = splittext(t, " - ")
-			var/key = t_split[1]
-			var/job = t_split[2]
-			source.DB_ban_unban(ckey(key), BANTYPE_JOB_PERMA, job)
+// /datum/admin_topic/removejobban/Run(list/input)
+// 	var/t = input["removejobban"]
+// 	if(t)
+// 		if((alert("Do you want to unjobban [t]?","Unjobban confirmation", "Yes", "No") == "Yes") && t) //No more misclicks! Unless you do it twice.
+// 			log_admin("[key_name(usr)] removed [t]")
+// 			message_admins(span_blue("[key_name_admin(usr)] removed [t]"), 1)
+// 			jobban_remove(t)
+// 			input["ban"] = TRUE // lets it fall through and refresh
+// 			var/t_split = splittext(t, " - ")
+// 			var/key = t_split[1]
+// 			var/job = t_split[2]
+// 			source.DB_ban_unban(ckey(key), BANTYPE_JOB_PERMA, job)
 
 /datum/admin_topic/sendbacktolobby
 	keyword = "sendbacktolobby"

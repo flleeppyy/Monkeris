@@ -61,7 +61,7 @@
     background-color: #708090;
 }
 
-.service {
+.service, .civilian {
     background-color: #6eaa2c;
 }
 
@@ -73,6 +73,6 @@
     background-color: #6d3f40;
 }
 
-.undefineddepartment {
+.undefineddepartment, .unspecifieddepartment {
     background-color: #111cf7;
 }

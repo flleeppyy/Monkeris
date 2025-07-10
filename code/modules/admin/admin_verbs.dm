@@ -108,8 +108,8 @@ GLOBAL_LIST_INIT(admin_verbs_debug_extra, list(
 	/client/proc/cmd_admin_areatest,
 	/client/proc/cmd_admin_rejuvenate,
 	/datum/admins/proc/show_contractor_panel,
-	/client/proc/print_jobban_old,
-	/client/proc/print_jobban_old_filter,
+	// /client/proc/print_jobban_old,
+	// /client/proc/print_jobban_old_filter,
 	/client/proc/break_all_air_groups,
 	/client/proc/regroup_all_air_groups,
 	/client/proc/kill_pipe_processing,
@@ -461,9 +461,11 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	set name = "Debug Stat Panel"
 	src << output("", "statbrowser:create_debug")
 
+/*
 #define MAX_WARNS 3
 #define AUTOBANTIME 10
 
+// TODO: fix this when a programatic ban proc is implemented
 /client/proc/warn(warned_ckey)
 	if(!check_rights(R_ADMIN))
 		return
@@ -491,7 +493,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 			del(C)
 		else
 			message_admins("[key_name_admin(src)] has warned [warned_ckey] resulting in a [AUTOBANTIME] minute ban.")
-		AddBan(warned_ckey, D.last_id, "Autobanning due to too many formal warnings", ckey, 1, AUTOBANTIME)
+		// AddBan(warned_ckey, D.last_id, "Autobanning due to too many formal warnings", ckey, 1, AUTOBANTIME)
 
 	else
 		var/warns_remain = MAX_WARNS - D.warns
@@ -503,6 +505,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 
 #undef MAX_WARNS
 #undef AUTOBANTIME
+*/
 
 /client/proc/drop_bomb() // Some admin dickery that can probably be done better -- TLE
 	set category = "Special Verbs"

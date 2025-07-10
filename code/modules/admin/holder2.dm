@@ -128,8 +128,10 @@ GLOBAL_PROTECT(href_token)
 /datum/admins/proc/can_edit_rights_flags()
 	var/combined_flags = NONE
 
-	for (var/datum/admin_rank/rank as anything in ranks)
-		combined_flags |= rank.can_edit_rights
+	// for (var/datum/admin_rank/rank as anything in ranks)
+	// 	combined_flags |= rank.can_edit_rights
+	for (var/rankrights as anything in admin_ranks)
+		combined_flags |= rankrights
 
 	return combined_flags
 
@@ -141,9 +143,9 @@ generally it would be used like so:
 
 /proc/admin_proc()
 	if(!check_rights(R_ADMIN)) return
-	to_chat(world, "you have enough rights!")
+	to_chat(world, "Hi, I’m Saul Goodman. Did you know that you have rights?")
 
-NOTE: It checks usr by default. Supply the "�" argument if you wish to check for a specific client/mob.
+NOTE: It checks usr by default. Supply the "C" argument if you wish to check for a specific client/mob.
 */
 /proc/check_rights(rights_required, show_msg=1, client/C = usr)
 	if(ismob(C))

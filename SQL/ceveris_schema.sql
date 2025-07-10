@@ -122,30 +122,6 @@ CREATE TABLE `death` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `books`
---
-
-DROP TABLE IF EXISTS `books`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `books` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `author` varchar(255) DEFAULT NULL,
-  `title` varchar(255) DEFAULT NULL,
-  `content` varchar(255) DEFAULT NULL,
-  `category` varchar(255) DEFAULT NULL,
-  `author_id` int(11) DEFAULT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  `deleted` tinyint(1) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `index_books_on_author_id` (`author_id`),
-  CONSTRAINT `fk_rails_53d51ce16a` FOREIGN KEY (`author_id`) REFERENCES `players` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-
---
 -- Table structure for table `players`
 --
 
@@ -167,7 +143,49 @@ CREATE TABLE `players` (
   `country` varchar(255) NOT NULL,
   `VPN_check_white` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ckey`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Table structure for table `books`
+--
+
+DROP TABLE IF EXISTS `books`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `books` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `author` varchar(255) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `content` varchar(255) DEFAULT NULL,
+  `category` varchar(255) DEFAULT NULL,
+  `author_id` varchar(32) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted` tinyint(1) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_books_on_author_id` (`author_id`),
+  CONSTRAINT `fk_rails_53d51ce16a` FOREIGN KEY (`author_id`) REFERENCES `players` (`ckey`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Table structure for table `polls`
+--
+
+DROP TABLE IF EXISTS `polls`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `polls` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(16) NOT NULL,
+  `start` datetime NOT NULL,
+  `end` datetime NOT NULL,
+  `question` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -186,7 +204,7 @@ CREATE TABLE `poll_options` (
   PRIMARY KEY (`id`),
   KEY `index_poll_options_on_poll_id` (`poll_id`),
   CONSTRAINT `fk_rails_aa85becb42` FOREIGN KEY (`poll_id`) REFERENCES `polls` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -200,14 +218,14 @@ CREATE TABLE `poll_text_replies` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `time` datetime DEFAULT NULL,
   `poll_id` int(11) DEFAULT NULL,
-  `player_id` int(11) DEFAULT NULL,
+  `player_id` varchar(32) DEFAULT NULL,
   `text` text,
   PRIMARY KEY (`id`),
   KEY `index_poll_text_replies_on_poll_id` (`poll_id`),
   KEY `index_poll_text_replies_on_player_id` (`player_id`),
   CONSTRAINT `fk_rails_0833f4df0b` FOREIGN KEY (`poll_id`) REFERENCES `polls` (`id`),
-  CONSTRAINT `fk_rails_ffc8df499f` FOREIGN KEY (`player_id`) REFERENCES `players` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8mb4_general_ci;
+  CONSTRAINT `fk_rails_ffc8df499f` FOREIGN KEY (`player_id`) REFERENCES `players` (`ckey`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -221,33 +239,16 @@ CREATE TABLE `poll_votes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `time` datetime NOT NULL,
   `poll_id` int(11) NOT NULL,
-  `player_id` int(11) NOT NULL,
+  `player_id` varchar(32) NOT NULL,
   `option_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `index_poll_votes_on_poll_id` (`poll_id`),
   KEY `index_poll_votes_on_player_id` (`player_id`),
   KEY `index_poll_votes_on_option_id` (`option_id`),
   CONSTRAINT `fk_rails_826ebfbbb3` FOREIGN KEY (`option_id`) REFERENCES `poll_options` (`id`),
-  CONSTRAINT `fk_rails_a3e5a3aede` FOREIGN KEY (`player_id`) REFERENCES `players` (`id`),
+  CONSTRAINT `fk_rails_a3e5a3aede` FOREIGN KEY (`player_id`) REFERENCES `players` (`ckey`),
   CONSTRAINT `fk_rails_a6e6974b7e` FOREIGN KEY (`poll_id`) REFERENCES `polls` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `polls`
---
-
-DROP TABLE IF EXISTS `polls`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `polls` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `type` varchar(16) NOT NULL,
-  `start` datetime NOT NULL,
-  `end` datetime NOT NULL,
-  `question` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -266,7 +267,7 @@ CREATE TABLE `populations` (
   `server_port` smallint(5) unsigned NOT NULL,
   `round_id` int(11) unsigned NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -308,7 +309,7 @@ CREATE TABLE `admin_connections` (
   `verification_time` DATETIME NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `unique_constraints` (`ckey`, `ip`, `cid`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Table structure for table `known_alts`
@@ -321,7 +322,7 @@ CREATE TABLE `known_alts` (
     `admin_ckey` VARCHAR(32) NOT NULL DEFAULT '*no key*',
     PRIMARY KEY (`id`),
     UNIQUE INDEX `unique_contraints` (`ckey1` , `ckey2`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Table structure for table `telemetry_connections`
@@ -337,41 +338,7 @@ CREATE TABLE `telemetry_connections` (
     `latest_round_id` INT(11) UNSIGNED NULL,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `unique_constraints` (`ckey` , `telemetry_ckey` , `address` , `computer_id`)
-);
-
---
--- Table structure for table `overwatch_asn_ban`
---
-DROP TABLE IF EXISTS `overwatch_asn_ban`;
-CREATE TABLE `overwatch_asn_ban` (
-	`ip` varchar(21) NOT NULL,
-	`asn` varchar(100) NOT NULL,
-	`a_ckey` varchar(30) NOT NULL,
-	`timestamp` datetime NOT NULL,
-	PRIMARY KEY (`asn`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
-
---
--- Table structure for table `overwatch_ip_cache`
---
-DROP TABLE IF EXISTS `overwatch_ip_cache`;
-CREATE TABLE `overwatch_ip_cache` (
-	`ip` varchar(50) NOT NULL DEFAULT '',
-	`response` longtext NOT NULL,
-	PRIMARY KEY (`ip`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
-
---
--- Table structure for table `overwatch_whitelist`
---
-DROP TABLE IF EXISTS `overwatch_whitelist`;
-CREATE TABLE `overwatch_whitelist` (
-	`ckey` varchar(30) NOT NULL,
-	`a_ckey` varchar(30) NOT NULL,
-	`timestamp` datetime NOT NULL,
-	PRIMARY KEY (`ckey`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
-
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Table structure for table `schema_revision`

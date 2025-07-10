@@ -38,7 +38,8 @@
 #define R_ADMIN         (1<<5)
 #define R_BAN           (1<<6)
 
-#define R_HOST 127 // All of the permissions above
+#define R_EVERYTHING (1<<7)-1 //the sum of all other rank permissions, used for +EVERYTHING
+
 
 #define ADMIN_QUE(user) "(<a href='byond://?_src_=holder;[HrefToken(forceGlobal = TRUE)];adminmoreinfo=[REF(user)]'>?</a>)"
 #define ADMIN_FLW(user) "(<a href='byond://?_src_=holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservefollow=[REF(user)]'>FLW</a>)"

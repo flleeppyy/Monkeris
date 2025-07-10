@@ -101,7 +101,7 @@
 			author = null
 		// author = sanitizeSQL(author)
 	if(href_list["search"])
-		SQLquery = "SELECT author, title, category, id FROM [format_table_name("library")] WHERE "
+		SQLquery = "SELECT author, title, category, id FROM [format_table_name("books")] WHERE "
 		if(category == "Any")
 			SQLquery += "author LIKE '%[author]%' AND title LIKE '%[title]%'"
 		else
@@ -196,7 +196,7 @@
 				dat += {"<A href='byond://?src=\ref[src];orderbyid=1'>(Order book by SS<sup>13</sup>BN)</A><BR><BR>
 				<table>
 				<tr><td><A href='byond://?src=\ref[src];sort=author>AUTHOR</A></td><td><A href='byond://?src=\ref[src];sort=title>TITLE</A></td><td><A href='byond://?src=\ref[src];sort=category>CATEGORY</A></td><td></td></tr>"}
-				var/datum/db_query/query = SSdbcore.NewQuery("SELECT id, author, title, category FROM library ORDER BY :sortby", list("sortby" = sortby))
+				var/datum/db_query/query = SSdbcore.NewQuery("SELECT id, author, title, category FROM [format_table_name("books")] ORDER BY :sortby", list("sortby" = sortby))
 				query.Execute()
 
 				while(query.NextRow())
@@ -346,7 +346,7 @@
 								author_id = get_author_id.item[1]
 
 							var/datum/db_query/query = SSdbcore.NewQuery(
-								"INSERT INTO library (author, title, content, category, author_id) VALUES ('[sqlauthor]', '[sqltitle]', '[sqlcontent]', '[sqlcategory]', [author_id])",
+								"INSERT INTO [format_table_name("books")] (author, title, content, category, author_id) VALUES ('[sqlauthor]', '[sqltitle]', '[sqlcontent]', '[sqlcategory]', [author_id])",
 								list("sqlauthor" = sqlauthor, "sqltitle" = sqltitle, "sqlcontent" = sqlcontent, "sqlcategory" = sqlcategory,"author_id" = author_id)
 							)
 							if(!query.Execute())
@@ -367,7 +367,7 @@
 			bibledelay = 1
 			spawn(60)
 				bibledelay = 0
-			var/datum/db_query/query = SSdbcore.NewQuery("SELECT * FROM [format_table_name("library")] WHERE id=:sqlid", list("sqlid" = sqlid))
+			var/datum/db_query/query = SSdbcore.NewQuery("SELECT * FROM [format_table_name("books")] WHERE id=:sqlid", list("sqlid" = sqlid))
 			query.Execute()
 
 			while(query.NextRow())

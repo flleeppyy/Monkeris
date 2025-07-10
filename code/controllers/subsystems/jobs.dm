@@ -12,6 +12,8 @@ SUBSYSTEM_DEF(job)
 
 	var/list/occupations = list()			//List of all jobs
 	var/list/occupations_by_name = list()	//Dict of all jobs, keys are titles
+	var/list/departments = list()			//List of all departments
+	var/list/departments_by_name = list()	//Dict of all departments, keys are names
 	// var/list/datum/department/joinable_departments = list()
 	var/list/unassigned = list()			//Players who need jobs
 	var/list/job_debug = list()				//Debug info
@@ -234,6 +236,13 @@ SUBSYSTEM_DEF(job)
 /datum/controller/subsystem/job/proc/SetupOccupations(faction = "CEV Eris")
 	occupations.Cut()
 	occupations_by_name.Cut()
+
+	for(var/D in subtypesof(/datum/department))
+		var/datum/department/department = new D()
+
+		departments += department
+		departments_by_name[department.id] = department
+
 	for(var/J in subtypesof(/datum/job))
 		var/datum/job/job = new J()
 		if(job.faction != faction)
@@ -241,10 +250,18 @@ SUBSYSTEM_DEF(job)
 		occupations += job
 		occupations_by_name[job.title] = job
 
+		var/datum/department/department = departments_by_name[job.department]
+		if(!department)
+			to_chat(world, span_warning("No department found for job [job.title]!!"))
+			continue
+
+		if(!department.jobs)
+			department.jobs = list()
+		department.jobs += job
+
 	if(!occupations.len)
 		to_chat(world, span_warning("Error setting up jobs, no job datums found!"))
 		return FALSE
-
 	return TRUE
 
 /datum/controller/subsystem/job/proc/Debug(text)
@@ -294,7 +311,7 @@ SUBSYSTEM_DEF(job)
 		if(!CanHaveJob(player.client.ckey, job.title))
 			Debug("FOC playtime failed, Player:[player]")
 			continue
-		if(jobban_isbanned(player.ckey, job.title))
+		if(jobban_isbanned(player, job.title))
 			Debug("FOC isbanned failed, Player: [player]")
 			continue
 		if(job.minimum_character_age && (player.client.prefs.age < job.minimum_character_age))
