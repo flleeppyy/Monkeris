@@ -19,6 +19,7 @@ SUBSYSTEM_DEF(chat)
 
 /datum/controller/subsystem/chat/Initialize()
 	. = ..()
+	world.log << "erm..."
 	initialize_text_to_speech()
 
 

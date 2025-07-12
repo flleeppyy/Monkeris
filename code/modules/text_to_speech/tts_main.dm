@@ -15,15 +15,22 @@ GLOBAL_VAR_INIT(tts_error_raw, "")
 var/list/tts_seeds = list()
 
 /proc/initialize_text_to_speech()
+	world.log << "what..."
+
 	if(!CONFIG_GET(string/tts_key))
 		return
+	world.log << "the..."
 
 	GLOB.tts_bearer = "Bearer [CONFIG_GET(string/tts_key)]"
+	world.log << "hecc..."
 
 	if(!fexists("config/tts_seeds.txt"))
 		return
+	world.log << "waaaaa..."
 
 	for(var/i in file2list("config/tts_seeds.txt"))
+		world.log << "MR KRABS [i]..."
+
 		if(!LAZYLEN(i) || (copytext(i, 1, 2) == "#"))
 			continue
 
@@ -39,8 +46,11 @@ var/list/tts_seeds = list()
 		tts_seeds += seed_name
 		tts_seeds[seed_name] = list("value" = seed_value, "category" = seed_category, "gender" = seed_gender_restriction)
 
+		world.log << "maybe i die here..."
+
 		LIBCALL(RUST_G, "file_write")("[seed_value]", "sound/tts_cache/[seed_name]/seed.txt")
 		LIBCALL(RUST_G, "file_write")("[seed_value]", "sound/tts_scrambled/[seed_name]/seed.txt")
+		world.log << "or not?..."
 
 
 /proc/get_tts(message, seed = TTS_SEED_DEFAULT_MALE)
