@@ -249,6 +249,8 @@ SUBSYSTEM_DEF(job)
 /datum/controller/subsystem/job/proc/SetupOccupations(faction = "CEV Eris")
 	occupations.Cut()
 	occupations_by_name.Cut()
+	departments.Cut()
+	departments_by_name.Cut()
 
 	for(var/D in subtypesof(/datum/department))
 		var/datum/department/department = new D()
