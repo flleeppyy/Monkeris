@@ -28,6 +28,7 @@ GLOBAL_LIST_EMPTY(human_mob_list)				//List of all human mobs and sub-types, inc
 GLOBAL_LIST_EMPTY(silicon_mob_list)			//List of all silicon mobs, including clientless
 GLOBAL_LIST_EMPTY(living_mob_list)			//List of all alive mobs, including clientless. Excludes /mob/new_player
 GLOBAL_LIST_EMPTY(dead_mob_list)				//List of all dead mobs, including clientless. Excludes /mob/new_player
+GLOBAL_LIST_EMPTY(joined_player_list)		//all ckeys of client's that have joined the game at round-start or as a latejoin.
 GLOBAL_LIST_EMPTY(current_antags)
 GLOBAL_LIST_EMPTY(current_factions)
 GLOBAL_LIST_EMPTY(superior_animal_list)		//A list of all superior animals; for targeting each other

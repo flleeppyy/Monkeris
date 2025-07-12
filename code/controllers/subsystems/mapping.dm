@@ -53,6 +53,7 @@ SUBSYSTEM_DEF(mapping)
 
 	sortAssoc(teleportlocs)
 
+
 	// And the same for ghost teleport locs
 
 

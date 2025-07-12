@@ -329,7 +329,7 @@
 	set desc = "For when you just gotta know"
 
 	switch(input("Which list?") in list("Players","Admins","Mobs","Living Mobs","Dead Mobs", "Clients"))
-		if("Players")
+		if("player")
 			to_chat(usr, jointext(GLOB.player_list,","))
 		if("Admins")
 			to_chat(usr, jointext(GLOB.admins,","))

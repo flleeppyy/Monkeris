@@ -63,6 +63,56 @@ CREATE TABLE `ban` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `stickyban`
+--
+DROP TABLE IF EXISTS `stickyban`;
+CREATE TABLE `stickyban` (
+	`ckey` VARCHAR(32) NOT NULL,
+	`reason` VARCHAR(2048) NOT NULL,
+	`banning_admin` VARCHAR(32) NOT NULL,
+	`datetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`ckey`)
+) ENGINE=InnoDB;
+
+--
+-- Table structure for table `stickyban_matched_ckey`
+--
+DROP TABLE IF EXISTS `stickyban_matched_ckey`;
+CREATE TABLE `stickyban_matched_ckey` (
+	`stickyban` VARCHAR(32) NOT NULL,
+	`matched_ckey` VARCHAR(32) NOT NULL,
+	`first_matched` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`last_matched` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`exempt` TINYINT(1) NOT NULL DEFAULT '0',
+	PRIMARY KEY (`stickyban`, `matched_ckey`)
+) ENGINE=InnoDB;
+
+--
+-- Table structure for table `stickyban_matched_ip`
+--
+DROP TABLE IF EXISTS `stickyban_matched_ip`;
+CREATE TABLE `stickyban_matched_ip` (
+	`stickyban` VARCHAR(32) NOT NULL,
+	`matched_ip` INT UNSIGNED NOT NULL,
+	`first_matched` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`last_matched` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`stickyban`, `matched_ip`)
+) ENGINE=InnoDB;
+
+--
+-- Table structure for table `stickyban_matched_cid`
+--
+DROP TABLE IF EXISTS `stickyban_matched_cid`;
+CREATE TABLE `stickyban_matched_cid` (
+	`stickyban` VARCHAR(32) NOT NULL,
+	`matched_cid` VARCHAR(32) NOT NULL,
+	`first_matched` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`last_matched` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`stickyban`, `matched_cid`)
+) ENGINE=InnoDB;
+
+--
+--
 -- Table structure for table `connection_log`
 --
 
@@ -122,13 +172,13 @@ CREATE TABLE `death` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `players`
+-- Table structure for table `player`
 --
 
-DROP TABLE IF EXISTS `players`;
+DROP TABLE IF EXISTS `player`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `players` (
+CREATE TABLE `player` (
   `ckey` varchar(32) NOT NULL,
   `byond_key` varchar(32) DEFAULT NULL,
   `firstseen` datetime NOT NULL,
@@ -148,13 +198,13 @@ CREATE TABLE `players` (
 
 
 --
--- Table structure for table `books`
+-- Table structure for table `library`
 --
 
-DROP TABLE IF EXISTS `books`;
+DROP TABLE IF EXISTS `library`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `books` (
+CREATE TABLE `library` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `author` varchar(255) DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
@@ -165,8 +215,8 @@ CREATE TABLE `books` (
   `updated_at` datetime NOT NULL,
   `deleted` tinyint(1) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `index_books_on_author_id` (`author_id`),
-  CONSTRAINT `fk_rails_53d51ce16a` FOREIGN KEY (`author_id`) REFERENCES `players` (`ckey`)
+  KEY `index_library_on_author_id` (`author_id`),
+  CONSTRAINT `fk_rails_53d51ce16a` FOREIGN KEY (`author_id`) REFERENCES `player` (`ckey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -189,6 +239,36 @@ CREATE TABLE `polls` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `poll_question`
+--
+
+DROP TABLE IF EXISTS `poll_question`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `poll_question` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `polltype` enum('OPTION','TEXT','NUMVAL','MULTICHOICE','IRV') NOT NULL,
+  `created_datetime` datetime NOT NULL,
+  `starttime` datetime NOT NULL,
+  `endtime` datetime NOT NULL,
+  `question` varchar(255) NOT NULL,
+  `subtitle` varchar(255) DEFAULT NULL,
+  `adminonly` tinyint(1) unsigned NOT NULL,
+  `multiplechoiceoptions` int(2) DEFAULT NULL,
+  `createdby_ckey` varchar(32) NOT NULL,
+  `createdby_ip` int(10) unsigned NOT NULL,
+  `dontshow` tinyint(1) unsigned NOT NULL,
+  `allow_revoting` tinyint(1) unsigned NOT NULL,
+  `deleted` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `idx_pquest_question_time_ckey` (`question`,`starttime`,`endtime`,`createdby_ckey`,`createdby_ip`),
+  KEY `idx_pquest_time_deleted_id` (`starttime`,`endtime`, `deleted`, `id`),
+  KEY `idx_pquest_id_time_type_admin` (`id`,`starttime`,`endtime`,`polltype`,`adminonly`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
 -- Table structure for table `poll_options`
 --
 
@@ -208,23 +288,23 @@ CREATE TABLE `poll_options` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `poll_text_replies`
+-- Table structure for table `poll_textreply`
 --
 
-DROP TABLE IF EXISTS `poll_text_replies`;
+DROP TABLE IF EXISTS `poll_textreply`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `poll_text_replies` (
+CREATE TABLE `poll_textreply` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `time` datetime DEFAULT NULL,
   `poll_id` int(11) DEFAULT NULL,
-  `player_id` varchar(32) DEFAULT NULL,
+  `ckey` varchar(32) DEFAULT NULL,
   `text` text,
   PRIMARY KEY (`id`),
-  KEY `index_poll_text_replies_on_poll_id` (`poll_id`),
-  KEY `index_poll_text_replies_on_player_id` (`player_id`),
+  KEY `index_poll_textreply_on_poll_id` (`poll_id`),
+  KEY `index_poll_textreply_on_ckey` (`ckey`),
   CONSTRAINT `fk_rails_0833f4df0b` FOREIGN KEY (`poll_id`) REFERENCES `polls` (`id`),
-  CONSTRAINT `fk_rails_ffc8df499f` FOREIGN KEY (`player_id`) REFERENCES `players` (`ckey`)
+  CONSTRAINT `fk_rails_ffc8df499f` FOREIGN KEY (`ckey`) REFERENCES `player` (`ckey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -239,14 +319,14 @@ CREATE TABLE `poll_votes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `time` datetime NOT NULL,
   `poll_id` int(11) NOT NULL,
-  `player_id` varchar(32) NOT NULL,
+  `ckey` varchar(32) NOT NULL,
   `option_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `index_poll_votes_on_poll_id` (`poll_id`),
-  KEY `index_poll_votes_on_player_id` (`player_id`),
+  KEY `index_poll_votes_on_ckey` (`ckey`),
   KEY `index_poll_votes_on_option_id` (`option_id`),
   CONSTRAINT `fk_rails_826ebfbbb3` FOREIGN KEY (`option_id`) REFERENCES `poll_options` (`id`),
-  CONSTRAINT `fk_rails_a3e5a3aede` FOREIGN KEY (`player_id`) REFERENCES `players` (`ckey`),
+  CONSTRAINT `fk_rails_a3e5a3aede` FOREIGN KEY (`ckey`) REFERENCES `player` (`ckey`),
   CONSTRAINT `fk_rails_a6e6974b7e` FOREIGN KEY (`poll_id`) REFERENCES `polls` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;

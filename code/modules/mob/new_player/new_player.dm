@@ -48,7 +48,7 @@
 			if(src.client && src.client.holder)
 				isadmin = TRUE
 			// TODO: reimplement database interaction
-			var/datum/db_query/query = SSdbcore.NewQuery("SELECT id FROM [format_table_name("poll_question")] WHERE [(isadmin ? "" : "adminonly = false AND")] Now() BETWEEN starttime AND endtime AND id NOT IN (SELECT pollid FROM [format_table_name("poll_vote")] WHERE ckey = \"[ckey]\") AND id NOT IN (SELECT pollid FROM [format_table_name("poll_textreply")] WHERE ckey = \"[ckey]\")")
+			var/datum/db_query/query = SSdbcore.NewQuery("SELECT id FROM [format_table_name("poll_question")] WHERE [(isadmin ? "" : "adminonly = false AND")] Now() BETWEEN starttime AND endtime AND id NOT IN (SELECT poll_id FROM [format_table_name("poll_votes")] WHERE ckey = :ckey) AND id NOT IN (SELECT poll_id FROM [format_table_name("poll_textreply")] WHERE ckey = :ckey)", list("ckey" = ckey))
 			query.Execute()
 			var/newpoll = FALSE
 			while(query.NextRow())
@@ -296,6 +296,7 @@
 	var/datum/job/job = src.mind.assigned_job
 	var/mob/living/character = create_character()	//creates the human and transfers vars and mind
 
+	GLOB.joined_player_list += character.ckey
 
 	// AIs don't need a spawnpoint, they must spawn at an empty core
 	if(rank == "AI")

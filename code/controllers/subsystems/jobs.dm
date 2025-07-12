@@ -154,7 +154,20 @@ SUBSYSTEM_DEF(job)
 	else
 		return FALSE
 
+/datum/controller/subsystem/job/proc/GetTotalPlaytimeMinutesCkey(ckey)
+	if(!ckey)
+		return 0
+	if(!ckey_to_total_playtime[ckey])
+		LoadPlaytimes(ckey)
+	if(!ckey_to_total_playtime[ckey])
+		return 0
+	return round(ckey_to_total_playtime[ckey] / 600)
+
 /datum/controller/subsystem/job/proc/LoadPlaytimeRequirements(folderPath)
+	if (!rustg_file_exists(folderPath))
+		to_chat(world, span_warning("Job playtime requirements file not found at [folderPath]."))
+		log_world("Job playtime requirements file not found at [folderPath].")
+		return FALSE
 	var/list/le_playtimes = file2list(folderPath)
 	for(var/playtime in le_playtimes)
 		if(!playtime)

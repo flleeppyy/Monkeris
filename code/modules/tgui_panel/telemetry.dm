@@ -89,7 +89,7 @@
 		if (!row || row.len < 3 || (!row["ckey"] || !row["address"] || !row["computer_id"]))
 			return
 
-		if (!isnull(GLOB.game_id))
+		if (!isnull(GLOB.round_id))
 			query_data += list(list(
 				"telemetry_ckey" = row["ckey"],
 				"address" = row["address"],
@@ -137,7 +137,7 @@
 			"telemetry_ckey" = one_query["telemetry_ckey"],
 			"address" = one_query["address"],
 			"computer_id" = one_query["computer_id"],
-			"round_id" = GLOB.game_id,
+			"round_id" = GLOB.round_id,
 		))
 		query.Execute()
 		qdel(query)

@@ -118,7 +118,7 @@ The answer was five and a half years -ZeroBits
 			var/sqlcontent = B.dat
 			var/sqlcategory = upload_category
 			var/datum/db_query/query = SSdbcore.NewQuery(
-				"INSERT INTO [format_table_name("books")] (author, title, content, category) VALUES  (:sqlauthor, :sqltitle, :sqlcontent, :sqlcategory)",
+				"INSERT INTO [format_table_name("library")] (author, title, content, category) VALUES  (:sqlauthor, :sqltitle, :sqlcontent, :sqlcategory)",
 				list("sqlauthor" = sqlauthor, "sqltitle" = sqltitle, "sqlcontent" = sqlcontent, "sqlcategory" = sqlcategory)
 			)
 			if(!query.Execute())

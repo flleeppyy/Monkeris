@@ -105,9 +105,8 @@ GLOBAL_PROTECT(href_token)
 		owner.add_admin_verbs()
 
 /datum/admins/proc/try_give_devtools(client/client = usr)
-	if(!check_rights(R_DEBUG, C = client) || client.byond_version < 516)
+	if(!check_rights(R_DEBUG, C = client))
 		return
-	to_chat(client, span_warning("516 notice: Attempting to give you devtools, may or may not work."))
 	winset(client, null, "browser-options=byondstorage,find,refresh,devtools")
 
 /datum/admins/proc/try_give_profiling(client/client = usr)
@@ -130,7 +129,7 @@ GLOBAL_PROTECT(href_token)
 
 	// for (var/datum/admin_rank/rank as anything in ranks)
 	// 	combined_flags |= rank.can_edit_rights
-	for (var/rankrights as anything in admin_ranks)
+	for (var/rankrights as anything in GLOB.admin_ranks)
 		combined_flags |= rankrights
 
 	return combined_flags

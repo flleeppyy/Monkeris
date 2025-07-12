@@ -243,8 +243,8 @@
 
 	else if(task == "rank")
 		var/new_rank
-		if(admin_ranks.len)
-			new_rank = input("Please select a rank", "New rank", null, null) as null|anything in (admin_ranks|"*New Rank*")
+		if(GLOB.admin_ranks.len)
+			new_rank = input("Please select a rank", "New rank", null, null) as null|anything in (GLOB.admin_ranks|"*New Rank*")
 		else
 			new_rank = input("Please select a rank", "New rank", null, null) as null|anything in list("Game Master","Game Admin", "Trial Admin", "Admin Observer","*New Rank*")
 
@@ -262,20 +262,20 @@
 					to_chat(usr, "<font color='red'>Error: Topic 'editrights': Invalid rank</font>")
 					return
 				if(CONFIG_GET(flag/admin_legacy_system))
-					if(admin_ranks.len)
-						if(new_rank in admin_ranks)
-							rights = admin_ranks[new_rank]		//we typed a rank which already exists, use its rights
+					if(GLOB.admin_ranks.len)
+						if(new_rank in GLOB.admin_ranks)
+							rights = GLOB.admin_ranks[new_rank]		//we typed a rank which already exists, use its rights
 						else
-							admin_ranks[new_rank] = 0			//add the new rank to admin_ranks
+							GLOB.admin_ranks[new_rank] = 0			//add the new rank to GLOB.admin_ranks
 			else
 				if(CONFIG_GET(flag/admin_legacy_system))
 					new_rank = ckeyEx(new_rank)
-					rights = admin_ranks[new_rank]				//we input an existing rank, use its rights
+					rights = GLOB.admin_ranks[new_rank]				//we input an existing rank, use its rights
 
 		if(D)
 			D.disassociate()								//remove adminverbs and unlink from client
 			D.rank = new_rank								//update the rank
-			D.rights = rights								//update the rights based on admin_ranks (default: 0)
+			D.rights = rights								//update the rights based on GLOB.admin_ranks (default: 0)
 		else
 			D = new /datum/admins(new_rank, rights, adm_ckey)
 

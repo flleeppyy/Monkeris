@@ -2,10 +2,6 @@
 GLOBAL_VAR(round_id)
 GLOBAL_PROTECT(round_id)
 
-// General game ID for the round
-GLOBAL_VAR(game_id)
-GLOBAL_PROTECT(game_id)
-
 /// The directory in which ALL log files should be stored
 GLOBAL_VAR(log_directory)
 GLOBAL_PROTECT(log_directory)

@@ -67,7 +67,7 @@ DEBUG
 // 		while(perma_query.NextRow())
 // 			var/id = perma_query.item[1]
 // 			var/job = perma_query.item[2]
-// 			var/datum/db_query/get_ckey = SSdbcore.NewQuery("SELECT ckey from [format_table_name("players")] WHERE id = '[id]'")
+// 			var/datum/db_query/get_ckey = SSdbcore.NewQuery("SELECT ckey from [format_table_name("player")] WHERE id = '[id]'")
 // 			get_ckey.Execute()
 // 			if(get_ckey.NextRow())
 // 				var/ckey = get_ckey.item[1]
@@ -82,7 +82,7 @@ DEBUG
 // 		while(query.NextRow())
 // 			var/id = query.item[1]
 // 			var/job = query.item[2]
-// 			var/datum/db_query/get_ckey = SSdbcore.NewQuery("SELECT ckey from [format_table_name("players")] WHERE id = '[id]'")
+// 			var/datum/db_query/get_ckey = SSdbcore.NewQuery("SELECT ckey from [format_table_name("player")] WHERE id = '[id]'")
 // 			get_ckey.Execute()
 // 			if(get_ckey.NextRow())
 // 				var/ckey = get_ckey.item[1]

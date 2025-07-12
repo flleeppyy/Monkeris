@@ -252,6 +252,12 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 
 
 
+/// Returns a mob's real name between brackets. Useful when you want to display a mob's name alongside their real name
+/mob/proc/get_realname_string()
+	if(real_name && real_name != name)
+		return " \[[real_name]\]"
+	return ""
+
 /proc/findname(msg)
 	for(var/mob/M in SSmobs.mob_list | SShumans.mob_list)
 		if (M.real_name == text("[msg]"))
@@ -284,7 +290,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 			if(2)			return I_GRAB
 			else			return I_HURT
 
-//change a mob's act-intent. Input the intent as a string such as "help" or use "right"/"left
+/// change a mob's act-intent. Input the intent as a string such as "help" or use "right"/"left
 /mob/verb/a_intent_change(input as text)
 	set name = "a-intent"
 	set hidden = 1

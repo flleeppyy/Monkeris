@@ -21,6 +21,10 @@
     display: inline-block;
 }
 
+.row > :not(:has(> label.long)) {
+	max-width: 430px;
+}
+
 .long {
     width: 860px;
 }
@@ -49,8 +53,12 @@
     background-color: #993399;
 }
 
-.supply {
-    background-color: #a8732b;
+.church {
+	background-color: #fcc44a;
+}
+
+.supply, .guild {
+    background-color: #b17a2e;
 }
 
 .silicon {

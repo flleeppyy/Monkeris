@@ -86,10 +86,10 @@
 			TIMESTAMPDIFF(MINUTE, bantime, expiration_time),
 			applies_to_admins,
 			reason,
-			IFNULL((SELECT byond_key FROM [format_table_name("players")] WHERE [format_table_name("players")].ckey = [format_table_name("ban")].ckey), ckey),
+			IFNULL((SELECT byond_key FROM [format_table_name("player")] WHERE [format_table_name("player")].ckey = [format_table_name("ban")].ckey), ckey),
 			INET_NTOA(ip),
 			computerid,
-			IFNULL((SELECT byond_key FROM [format_table_name("players")] WHERE [format_table_name("players")].ckey = [format_table_name("ban")].a_ckey), a_ckey)
+			IFNULL((SELECT byond_key FROM [format_table_name("player")] WHERE [format_table_name("player")].ckey = [format_table_name("ban")].a_ckey), a_ckey)
 		FROM [format_table_name("ban")]
 		WHERE role = :role
 			AND (ckey = :ckey OR ip = INET_ATON(:ip) OR computerid = :computerid)
@@ -177,7 +177,7 @@
 	var/panel_height = 620
 	if(edit_id)
 		panel_height = 240
-	var/datum/browser/panel = new(usr, "banpanel", "Banning Panel", 910, panel_height)
+	var/datum/browser/panel = new(usr, "banpanel", "Banning Panel", 950, panel_height)
 	panel.add_stylesheet("admin_panelscss", 'html/admin/admin_panels.css')
 	panel.add_stylesheet("banpanelcss", 'html/admin/banpanel.css')
 	var/tgui_fancy = usr.client.get_preference_value(/datum/client_preference/tgui_fancy)
@@ -310,6 +310,8 @@
 		for(var/datum/department/department as anything in SSjob.departments)
 			var/label_class = department.id
 			var/department_name = department.name
+			if(!length(department.jobs))
+				continue //no jobs in this department, skip it
 			output += "<div class='column'><label class='rolegroup [lowertext(label_class)]'>[tgui_fancy ? "<input type='checkbox' name='[label_class]' class='hidden' onClick='header_click_all_checkboxes(this)'>" : ""] \
 			[department_name]</label><div class='content'>"
 			for(var/datum/job/job_datum as anything in department.jobs)
@@ -362,8 +364,8 @@
 				ROLE_BANTYPE_MALFUNCTION,
 				// ROLE_BANTYPE_TRAITOR,
 				ROLE_BANTYPE_INQUISITOR,
-				ROLE_COMMANDO,
-				ROLE_DEATHSQUAD,
+				// ROLE_COMMANDO,
+				// ROLE_DEATHSQUAD,
 				ROLE_BANTYPE_EXCELSIOR,
 				ROLE_BANTYPE_CARRION,
 				ROLE_BANTYPE_CREW_SIDED,
@@ -521,7 +523,7 @@
 	var/player_ckey = ckey(player_key)
 	if(player_ckey)
 		var/datum/db_query/query_create_ban_get_player = SSdbcore.NewQuery({"
-			SELECT byond_key, INET_NTOA(ip), computerid FROM [format_table_name("players")] WHERE ckey = :player_ckey
+			SELECT byond_key, INET_NTOA(ip), computerid FROM [format_table_name("player")] WHERE ckey = :player_ckey
 		"}, list("player_ckey" = player_ckey))
 		if(!query_create_ban_get_player.warn_execute())
 			qdel(query_create_ban_get_player)
@@ -640,7 +642,7 @@
 	if(!SSdbcore.Connect())
 		to_chat(usr, span_danger("Failed to establish database connection."), confidential = TRUE)
 		return
-	var/datum/browser/unban_panel = new(usr, "unbanpanel", "Unbanning Panel", 850, 600)
+	var/datum/browser/unban_panel = new(usr, "unbanpanel", "Unbanning Panel", 950, 600)
 	unban_panel.add_stylesheet("unbanpanelcss", 'html/admin/unbanpanel.css')
 	var/list/output = list("<div class='searchbar'>")
 	output += {"<form method='get' action='byond://?src=[REF(src)]'>[HrefTokenFormField()]
@@ -700,22 +702,22 @@
 				reason,
 				IFNULL((
 					SELECT byond_key
-					FROM [format_table_name("players")]
-					WHERE [format_table_name("players")].ckey = [format_table_name("ban")].ckey
+					FROM [format_table_name("player")]
+					WHERE [format_table_name("player")].ckey = [format_table_name("ban")].ckey
 				), ckey),
 				INET_NTOA(ip),
 				computerid,
 				IFNULL((
 					SELECT byond_key
-					FROM [format_table_name("players")]
-					WHERE [format_table_name("players")].ckey = [format_table_name("ban")].a_ckey
+					FROM [format_table_name("player")]
+					WHERE [format_table_name("player")].ckey = [format_table_name("ban")].a_ckey
 				), a_ckey),
 				IF(edits IS NOT NULL, 1, NULL),
 				unbanned_datetime,
 				IFNULL((
 					SELECT byond_key
-					FROM [format_table_name("players")]
-					WHERE [format_table_name("players")].ckey = [format_table_name("ban")].unbanned_ckey
+					FROM [format_table_name("player")]
+					WHERE [format_table_name("player")].ckey = [format_table_name("ban")].unbanned_ckey
 				), unbanned_ckey),
 				unbanned_round_id
 			FROM [format_table_name("ban")]
@@ -879,7 +881,7 @@
 				(SELECT bantime FROM [format_table_name("ban")] WHERE id = :ban_id),
 				ip,
 				computerid
-			FROM [format_table_name("players")]
+			FROM [format_table_name("player")]
 			WHERE ckey = :player_ckey
 		"}, list("player_ckey" = player_ckey, "ban_id" = ban_id))
 		if(!query_edit_ban_get_player.warn_execute())
