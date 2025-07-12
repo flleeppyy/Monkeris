@@ -1187,7 +1187,12 @@ var/global/floorIsLava = 0
 	return result
 
 //This proc checks whether subject has at least ONE of the rights specified in rights_required.
-/proc/check_rights_for(client/subject, rights_required)
+/proc/check_rights_for(_subject, rights_required)
+	var/client/subject
+	if (ismob(_subject))
+		var/mob/M = _subject
+		subject = M?.client
+
 	if(subject && subject.holder)
 		if(rights_required && !(rights_required & subject.holder.rights))
 			return FALSE
