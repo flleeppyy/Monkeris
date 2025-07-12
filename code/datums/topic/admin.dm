@@ -19,95 +19,6 @@
 /datum/admin_topic/proc/Run(list/input) //use the source arg to access the admin datum.
 	CRASH("Run() not implemented for [type]!")
 
-
-// /datum/admin_topic/dbsearchckey
-// 	keyword = "dbsearchckey"
-
-// /datum/admin_topic/dbsearchckey/dbsearchadmin //inherits the behaviour of dbsearchckey, but with a different keyword.
-// 	keyword = "dbsearchadmin"
-
-// /datum/admin_topic/dbsearchckey/Run(list/input)
-// 	var/adminckey = input["dbsearchadmin"]
-// 	var/playerckey = input["dbsearchckey"]
-// 	var/playerip = input["dbsearchip"]
-// 	var/playercid = input["dbsearchcid"]
-// 	var/dbbantype = text2num(input["dbsearchbantype"])
-// 	var/match = FALSE
-
-// 	if("dbmatch" in input)
-// 		match = TRUE
-
-// 	source.DB_ban_panel(playerckey, adminckey, playerip, playercid, dbbantype, match)
-
-
-// /datum/admin_topic/dbbanedit
-// 	keyword = "dbbanedit"
-
-// /datum/admin_topic/dbbanedit/Run(list/input)
-// 	var/banedit = input["dbbanedit"]
-// 	var/banid = text2num(input["dbbanid"])
-// 	if(!banedit || !banid)
-// 		return
-
-// 	source.DB_ban_edit(banid, banedit)
-
-
-// /datum/admin_topic/dbbanaddtype
-// 	keyword = "dbbanaddtype"
-
-// /datum/admin_topic/dbbanaddtype/Run(list/input)
-// 	var/bantype = text2num(input["dbbanaddtype"])
-// 	var/banckey = input["dbbanaddckey"]
-// 	var/banip = input["dbbanaddip"]
-// 	var/bancid = input["dbbanaddcid"]
-// 	var/banduration = text2num(input["dbbaddduration"])
-// 	var/banjob = input["dbbanaddjob"]
-// 	var/banreason = input["dbbanreason"]
-
-// 	banckey = ckey(banckey)
-
-// 	switch(bantype)
-// 		if(BANTYPE_PERMA)
-// 			if(!banckey || !banreason)
-// 				to_chat(usr, "Not enough parameters (Requires ckey and reason)")
-// 				return
-// 			banduration = null
-// 			banjob = null
-// 		if(BANTYPE_TEMP)
-// 			if(!banckey || !banreason || !banduration)
-// 				to_chat(usr, "Not enough parameters (Requires ckey, reason and duration)")
-// 				return
-// 			banjob = null
-// 		if(BANTYPE_JOB_PERMA)
-// 			if(!banckey || !banreason || !banjob)
-// 				to_chat(usr, "Not enough parameters (Requires ckey, reason and job)")
-// 				return
-// 			banduration = null
-// 		if(BANTYPE_JOB_TEMP)
-// 			if(!banckey || !banreason || !banjob || !banduration)
-// 				to_chat(usr, "Not enough parameters (Requires ckey, reason and job)")
-// 				return
-
-// 	var/mob/playermob
-
-// 	for(var/mob/M in GLOB.player_list)
-// 		if(M.ckey == banckey)
-// 			playermob = M
-// 			break
-
-
-// 	banreason = "(MANUAL BAN) "+banreason
-
-// 	if(!playermob)
-// 		if(banip)
-// 			banreason = "[banreason] (CUSTOM IP)"
-// 		if(bancid)
-// 			banreason = "[banreason] (CUSTOM CID)"
-// 	else
-// 		message_admins("Ban process: A mob matching [playermob.ckey] was found at location [playermob.x], [playermob.y], [playermob.z]. Custom ip and computer id fields replaced with the ip and computer id from the located mob")
-
-// 	source.DB_ban_record(bantype, playermob, banduration, banreason, banjob, banckey, banip, bancid )
-
 /datum/admin_topic/newbankey
 	keyword = "newbankey"
 	require_perms = list(R_BAN)
@@ -357,13 +268,6 @@
 		if("polyparrot")
 			M.change_mob_type( /mob/living/simple_animal/parrot/Poly , null, null, delmob )
 
-/datum/admin_topic/warn
-	keyword = "warn"
-
-/datum/admin_topic/warn/Run(list/input)
-	to_chat(usr, span_notice("this doesnt work by the way."))
-	// usr.client.warn(input["warn"])
-
 /datum/admin_topic/boot2
 	keyword = "boot2"
 	require_perms = list(R_ADMIN)
@@ -381,24 +285,6 @@
 		log_admin("[key_name(usr)] booted [key_name(M)].")
 		message_admins(span_blue("[key_name_admin(usr)] booted [key_name_admin(M)]."), 1)
 		del(M.client)
-
-
-// /datum/admin_topic/removejobban
-// 	keyword = "removejobban"
-// 	require_perms = list(R_BAN)
-
-// /datum/admin_topic/removejobban/Run(list/input)
-// 	var/t = input["removejobban"]
-// 	if(t)
-// 		if((alert("Do you want to unjobban [t]?","Unjobban confirmation", "Yes", "No") == "Yes") && t) //No more misclicks! Unless you do it twice.
-// 			log_admin("[key_name(usr)] removed [t]")
-// 			message_admins(span_blue("[key_name_admin(usr)] removed [t]"), 1)
-// 			jobban_remove(t)
-// 			input["ban"] = TRUE // lets it fall through and refresh
-// 			var/t_split = splittext(t, " - ")
-// 			var/key = t_split[1]
-// 			var/job = t_split[2]
-// 			source.DB_ban_unban(ckey(key), BANTYPE_JOB_PERMA, job)
 
 /datum/admin_topic/sendbacktolobby
 	keyword = "sendbacktolobby"
