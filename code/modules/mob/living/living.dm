@@ -635,8 +635,15 @@ default behaviour is:
 
 	if(resting)
 		is_busy = TRUE
+		var/groinmult = 1
+		if(H)
+			var/obj/item/organ/external/groin = H.get_organ(BP_GROIN)
+			if(groin.limb_efficiency <= 0)
+				to_chat(src, span_warning("You are too damaged to be able to get up."))
+				return FALSE
+			groinmult =  100 / groin.limb_efficiency // smaller mult the bigger the efficiency
 
-		if(do_after(src, (stats.getPerk(PERK_PARKOUR) ? 0.2 SECONDS : 0.4 SECONDS), null, 0, 1, INCAPACITATION_DEFAULT, immobile = 0))
+		if(do_after(src, min((stats.getPerk(PERK_PARKOUR) ? 0.2 SECONDS : 0.4 SECONDS) * groinmult, 2 SECONDS), null, 0, 1, INCAPACITATION_DEFAULT, immobile = 0))
 			resting = FALSE
 			to_chat(src, span_notice("You are now getting up."))
 			update_lying_buckled_and_verb_status()
@@ -649,6 +656,7 @@ default behaviour is:
 	else
 		resting = TRUE
 		to_chat(src, span_notice("You are now resting."))
+		playsound(loc, 'goon/sound/body_thud.ogg', ishuman(src) ? 40 : 15, 1, 0.3)
 		update_lying_buckled_and_verb_status()
 
 
@@ -682,6 +690,7 @@ default behaviour is:
 		if(momentum_speed > 4)
 			range++
 		throw_at(get_edge_target_turf(src, _dir), range, 1, src, PASSTABLE) // If you dive over a table, your momentum is set to 0. If you dive over space, you are thrown 1 tile further.
+		playsound(loc, 'goon/sound/body_thud.ogg', ishuman(src) ? 40 : 15, 1, 0.3)
 		update_lying_buckled_and_verb_status()
 		allow_spin = TRUE
 
@@ -869,6 +878,8 @@ default behaviour is:
 	var/turf/T = get_turf(src)
 	if(T)
 		update_z(T.z)
+
+	voice_type = pick(voice_type2sound)
 
 /mob/living/Destroy()
 	if(registered_z)

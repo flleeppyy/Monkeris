@@ -1,7 +1,7 @@
 // DEADCHAT MESSAGE TYPES //
 /// Deadchat notification for important round events (RED_ALERT, shuttle EVAC, communication announcements, etc.)
 #define DEADCHAT_ANNOUNCEMENT "announcement"
-/// Deadchat notification for new players who join the round at arrivals
+/// Deadchat notification for new players who join midround
 #define DEADCHAT_ARRIVALRATTLE "arrivalrattle"
 /// Deadchat notification for players who die during the round
 #define DEADCHAT_DEATHRATTLE "deathrattle"

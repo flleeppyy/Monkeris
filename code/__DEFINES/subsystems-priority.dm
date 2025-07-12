@@ -14,13 +14,14 @@ var/list/bitflags = list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096
 #define FIRE_PRIORITY_DELAYED_VERBS 	950
 #define FIRE_PRIORITY_TIMER 			700
 #define FIRE_PRIORITY_TICKER			200	// Gameticker processing.
-#define FIRE_PRIORITY_TGUI 				110
-#define FIRE_PRIORITY_ASSETS 			108
+#define FIRE_PRIORITY_TGUI 				140
+#define FIRE_PRIORITY_ASSETS 			115
+#define FIRE_PRIORITY_EXPLOSIONS 		111 // Explosions!
 #define FIRE_PRIORITY_DATABASE 			107
-#define FIRE_PRIORITY_EXPLOSIONS 		105 // Explosions!
-#define FIRE_PRIORITY_THROWING 			106 // Throwing! after explosions since they influence throw direction
-#define FIRE_PRIORITY_HUMAN				101	// Human Life().
-#define FIRE_PRIORITY_MOB				100	// Non-human Mob Life().
+#define FIRE_PRIORITY_THROWING 			110 // Throwing! after explosions since they influence throw direction
+#define FIRE_PRIORITY_HUMAN				106	// Human Life().
+#define FIRE_PRIORITY_MOB				105	// Non-human Mob Life().
+#define FIRE_PRIORITY_RUNECHAT			100
 #define FIRE_PRIORITY_CHAT				99 // Chat subsystem.
 #define FIRE_PRIORITY_STATPANEL			95 // Statpanel subsystem.
 #define FIRE_PRIORITY_MACHINERY			92	// Machinery + powernet ticks.
@@ -35,6 +36,7 @@ var/list/bitflags = list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096
 #define FIRE_PRIORITY_SUPPLY			10	// Supply point accumulation.
 #define FIRE_PRIORITY_PING				10	// Client ping.
 #define FIRE_PRIORITY_TICKETS			10
+
 
 // SS_BACKGROUND
 #define FIRE_PRIORITY_OBJECTS       40	// processing_objects processing.
