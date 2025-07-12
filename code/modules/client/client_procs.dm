@@ -522,6 +522,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		var/datum/db_query/query = SSdbcore.NewQuery("UPDATE [format_table_name("player")] SET lastseen = Now() WHERE ckey = :ckey", list("ckey" = ckey))
 		if(!query.Execute())
 			log_world("Failed to update players table for ckey [ckey]. Error message: [query.ErrorMsg()].")
+		qdel(query)
 	Master.UpdateTickRate()
 	..() //Even though we're going to be hard deleted there are still some things that want to know the destroy is happening
 	return QDEL_HINT_HARDDEL_NOW
