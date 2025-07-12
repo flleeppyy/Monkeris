@@ -207,7 +207,7 @@ GLOBAL_REAL(Master, /datum/controller/master)
 	init_stage_completed = 0
 	var/mc_started = FALSE
 
-	var/msg = "Pre-Initializing subsystems..."
+	var/msg = "Sorting subsystems to init..."
 	to_chat(world, span_boldannounce(msg))
 	log_world(msg)
 
@@ -218,10 +218,7 @@ GLOBAL_REAL(Master, /datum/controller/master)
 	// Sort subsystems by init_order, so they initialize in the correct order.
 	sortTim(subsystems, /proc/cmp_subsystem_init)
 
-	log_world("Finally initializing subsystems...")
 	for (var/datum/controller/subsystem/subsystem as anything in subsystems)
-		log_world("Initializing [subsystem.name] subsystem...")
-		to_chat(world, span_boldannounce("Initializing [subsystem.name] subsystem..."))
 		var/subsystem_init_stage = subsystem.init_stage
 		if (!isnum(subsystem_init_stage) || subsystem_init_stage < 1 || subsystem_init_stage > INITSTAGE_MAX || round(subsystem_init_stage) != subsystem_init_stage)
 			stack_trace("ERROR: MC: subsystem `[subsystem.type]` has invalid init_stage: `[subsystem_init_stage]`. Setting to `[INITSTAGE_MAX]`")
@@ -231,6 +228,7 @@ GLOBAL_REAL(Master, /datum/controller/master)
 	// Sort subsystems by display setting for easy access.
 	sortTim(subsystems, /proc/cmp_subsystem_display)
 	var/start_timeofday = REALTIMEOFDAY
+	log_world("Finally initializing subsystems...")
 	for (var/current_init_stage in 1 to INITSTAGE_MAX)
 
 		// Initialize subsystems.
@@ -240,6 +238,8 @@ GLOBAL_REAL(Master, /datum/controller/master)
 			current_initializing_subsystem = subsystem
 
 			rustg_time_reset(SS_INIT_TIMER_KEY)
+			log_world("Initializing [subsystem.name] subsystem...")
+			to_chat(world, span_boldannounce("Initializing [subsystem.name] subsystem..."))
 			subsystem.Initialize()
 
 			CHECK_TICK
