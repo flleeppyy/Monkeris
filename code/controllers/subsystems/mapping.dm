@@ -53,9 +53,7 @@ SUBSYSTEM_DEF(mapping)
 
 	sortAssoc(teleportlocs)
 
-
 	// And the same for ghost teleport locs
-
 
 	for(var/area/AR in world)
 		if(ghostteleportlocs.Find(AR.name)) continue
