@@ -190,7 +190,7 @@ CREATE TABLE `player` (
   `lastadminrank` varchar(32) NOT NULL DEFAULT 'Player',
   `accountjoindate` DATE DEFAULT NULL,
   `flags` int(11) NOT NULL DEFAULT '0',
-  `country` varchar(255) NOT NULL,
+  `country` varchar(255),
   `VPN_check_white` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ckey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
