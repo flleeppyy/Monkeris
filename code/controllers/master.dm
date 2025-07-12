@@ -219,6 +219,8 @@ GLOBAL_REAL(Master, /datum/controller/master)
 	sortTim(subsystems, /proc/cmp_subsystem_init)
 
 	for (var/datum/controller/subsystem/subsystem as anything in subsystems)
+		log_world("Initializing [subsystem.name] subsystem...")
+		to_chat(world, span_boldannounce("Initializing [subsystem.name] subsystem..."))
 		var/subsystem_init_stage = subsystem.init_stage
 		if (!isnum(subsystem_init_stage) || subsystem_init_stage < 1 || subsystem_init_stage > INITSTAGE_MAX || round(subsystem_init_stage) != subsystem_init_stage)
 			stack_trace("ERROR: MC: subsystem `[subsystem.type]` has invalid init_stage: `[subsystem_init_stage]`. Setting to `[INITSTAGE_MAX]`")
