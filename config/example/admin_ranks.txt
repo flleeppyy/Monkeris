@@ -34,4 +34,4 @@ Retired Admin	+ADMIN
 Host			+EVERYTHING
 
 Developer		+DEBUG +SERVER
-Dev Mod			+@ +MOD
+Dev Mod			+@

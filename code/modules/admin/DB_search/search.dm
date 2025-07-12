@@ -33,6 +33,7 @@
 	else
 		to_chat(usr,"No player with ckey = [ckey] found.")
 
+	qdel(search_query)
 
 /datum/DB_search/verb/new_search()
 	set category = "Admin"
