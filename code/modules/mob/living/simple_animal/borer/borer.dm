@@ -297,7 +297,7 @@
 	if((borer_exp >= BORER_EXP_LEVEL_1) && (borer_level < 1))
 		var/level = 1
 		var/added_reagents = list("inaprovaline", "tricordrazine", "synaptizine", "imidazoline", "hyronalin")
-		var/abilities_IH = list(/mob/living/simple_animal/borer/proc/say_host, /mob/living/simple_animal/borer/proc/whispeR_EVERYTHING, /mob/living/simple_animal/borer/proc/commune)
+		var/abilities_IH = list(/mob/living/simple_animal/borer/proc/say_host, /mob/living/simple_animal/borer/proc/whisper_host, /mob/living/simple_animal/borer/proc/commune)
 		var/abilities_SL = list(/mob/living/simple_animal/borer/proc/commune)
 
 		level_up(level, added_reagents, abilities_IH, abilities_SL)

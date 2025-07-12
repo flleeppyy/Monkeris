@@ -73,26 +73,3 @@
 
 	message_admins("[usr] manually reloaded Mentors")
 	world.load_mentors()
-
-// /client/proc/print_jobban_old()
-// 	set name = "Print Jobban Log"
-// 	set desc = "This spams all the active jobban entries for the current round to standard output."
-// 	set category = "Debug"
-
-// 	to_chat(usr, "<b>Jobbans active in this round.</b>")
-// 	for(var/t in jobban_keylist)
-// 		to_chat(usr, "[t]")
-
-// /client/proc/print_jobban_old_filter()
-// 	set name = "Search Jobban Log"
-// 	set desc = "This searches all the active jobban entries for the current round and outputs the results to standard output."
-// 	set category = "Debug"
-
-// 	var/filter = input("Contains what?","Filter") as text|null
-// 	if(!filter)
-// 		return
-
-// 	to_chat(usr, "<b>Jobbans active in this round.</b>")
-// 	for(var/t in jobban_keylist)
-// 		if(findtext(t, filter))
-// 			to_chat(usr, "[t]")

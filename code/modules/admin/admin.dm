@@ -486,21 +486,6 @@ var/global/floorIsLava = 0
 	usr << browse(HTML_SKELETON_TITLE("Admincaster", dat), "window=admincaster_main;size=400x600")
 	onclose(usr, "admincaster_main")
 
-
-
-// /datum/admins/proc/Jobbans()
-// 	if(!check_rights(R_BAN))
-// 		return
-
-// 	var/dat = "<B>Job Bans!</B><HR><table>"
-// 	for(var/t in jobban_keylist)
-// 		var/r = t
-// 		if( findtext(r,"##") )
-// 			r = copytext( r, 1, findtext(r,"##") )//removes the description
-// 		dat += text("<tr><td>[t] (<A href='byond://?src=\ref[src];[HrefToken()];removejobban=[r]'>unban</A>)</td></tr>")
-// 	dat += "</table>"
-// 	usr << browse(HTML_SKELETON_TITLE("Job Bans", dat), "window=ban;size=400x400")
-
 /datum/admins/proc/Game()
 	if(!check_rights(0))
 		return

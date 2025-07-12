@@ -513,7 +513,7 @@
 	var/message = input("", "say (text)") as text
 	host.say(message)
 
-/mob/living/simple_animal/borer/proc/whispeR_EVERYTHING()
+/mob/living/simple_animal/borer/proc/whisper_host()
 	set category = "Abilities"
 	set name = "Whisper as Host"
 	set desc = "Whisper something as host."

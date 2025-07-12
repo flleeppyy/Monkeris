@@ -153,7 +153,6 @@ GLOBAL_VAR(restart_counter)
 		// dumb and hardcoded but I don't care~
 		CONFIG_SET(string/servername, CONFIG_GET(string/servername) + " #[(world.port % 1000) / 100]")
 
-	// Try to set round ID
 	load_admins()
 
 	callHook("startup")
