@@ -207,7 +207,7 @@ GLOBAL_REAL(Master, /datum/controller/master)
 	init_stage_completed = 0
 	var/mc_started = FALSE
 
-	var/msg = "Initializing subsystems..."
+	var/msg = "Pre-Initializing subsystems..."
 	to_chat(world, span_boldannounce(msg))
 	log_world(msg)
 
@@ -218,6 +218,7 @@ GLOBAL_REAL(Master, /datum/controller/master)
 	// Sort subsystems by init_order, so they initialize in the correct order.
 	sortTim(subsystems, /proc/cmp_subsystem_init)
 
+	log_world("Finally initializing subsystems...")
 	for (var/datum/controller/subsystem/subsystem as anything in subsystems)
 		log_world("Initializing [subsystem.name] subsystem...")
 		to_chat(world, span_boldannounce("Initializing [subsystem.name] subsystem..."))
