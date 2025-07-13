@@ -228,7 +228,7 @@ GLOBAL_REAL(Master, /datum/controller/master)
 	// Sort subsystems by display setting for easy access.
 	sortTim(subsystems, /proc/cmp_subsystem_display)
 	var/start_timeofday = REALTIMEOFDAY
-	log_world("Finally initializing subsystems...")
+	log_world("Initializing subsystems...")
 	for (var/current_init_stage in 1 to INITSTAGE_MAX)
 
 		// Initialize subsystems.
