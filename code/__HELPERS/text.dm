@@ -648,3 +648,13 @@ var/icon/text_tag_icons = new('./icons/chattags.dmi')
 	var/lightness = 60
 
 	return "<span style='color: hsl([hue],[saturation]%,[lightness]%);'>[msg]</span>"
+
+/// Returns TRUE if the input_text ends with the ending
+/proc/endsWith(input_text, ending)
+	var/input_length = LAZYLEN(ending)
+	return !!findtext(input_text, ending, -input_length)
+
+/// Returns TRUE if the input_text starts with the beginning
+/proc/startsWith(input_text, beginning)
+	var/input_length = LAZYLEN(beginning)
+	return !!findtext(input_text, beginning, 1, input_length + 1)

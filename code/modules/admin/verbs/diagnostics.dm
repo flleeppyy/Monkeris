@@ -56,7 +56,7 @@
 
 /client/proc/reload_admins()
 	set name = "Reload Admins"
-	set category = "Debug"
+	set category = "Admin"
 
 	if(!check_rights(R_SERVER))
 		return
@@ -66,10 +66,21 @@
 
 /client/proc/reload_mentors()
 	set name = "Reload Mentors"
-	set category = "Debug"
+	set category = "Admin"
 
 	if(!check_rights(R_SERVER))
 		return
 
 	message_admins("[usr] manually reloaded Mentors")
 	world.load_mentors()
+
+/client/proc/reload_whitelist()
+	set name = "Reload Whitelist"
+	set category = "Admin"
+
+	if(!check_rights(R_SERVER))
+		return
+
+	load_whitelist()
+	var/count = GLOB.whitelist.len
+	message_admins("[usr] manually reloaded the whitelist (loaded [count] entries)")
