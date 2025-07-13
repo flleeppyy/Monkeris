@@ -70,8 +70,8 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			var/mob/M = C
 			C = M.client
 		// its a fucking ckey
-		if(istext(C))
-			C = GLOB.directory[C]
+		if(istext(C) || istext(href_list["priv_msg"]))
+			C = GLOB.directory[trim(href_list["priv_msg"])]
 
 		cmd_admin_pm(C,null)
 		return

@@ -4,7 +4,7 @@ GLOBAL_LIST_INIT(whitelist, list())
 
 /proc/load_whitelist()
 	GLOB.whitelist.Cut()
-	if(!file_exists(WHITELISTFILE))
+	if(!rustg_file_exists(WHITELISTFILE))
 		log_world("Whitelist file not found: [WHITELISTFILE]")
 		message_admins("Whitelist file not found: [WHITELISTFILE]")
 		return
