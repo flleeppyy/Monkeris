@@ -239,7 +239,6 @@ GLOBAL_REAL(Master, /datum/controller/master)
 
 			rustg_time_reset(SS_INIT_TIMER_KEY)
 			log_world("Initializing [subsystem.name] subsystem...")
-			to_chat(world, span_boldannounce("Initializing [subsystem.name] subsystem..."))
 			subsystem.Initialize()
 
 			CHECK_TICK

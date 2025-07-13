@@ -326,9 +326,6 @@
 /datum/config_entry/flag/admin_legacy_system //Defines whether the server uses the legacy admin system with admins.txt or the SQL system
 	protection = CONFIG_ENTRY_LOCKED
 
-/datum/config_entry/flag/ban_legacy_system //Defines whether the server uses the legacy banning system with the files in /data or the SQL system. Config option in config.txt
-	protection = CONFIG_ENTRY_LOCKED
-
 /datum/config_entry/flag/enable_localhost_rank //Gives the !localhost! rank to any client connecting from 127.0.0.1 or ::1
 	protection = CONFIG_ENTRY_LOCKED
 
