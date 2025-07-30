@@ -232,11 +232,11 @@
 	return jointext(returnable_strings, "")
 
 /// Proc that just dispatches the announcement to our applicable audience. Only the announcement is a mandatory arg.
-/proc/dispatch_announcement_to_players(announcement, list/players = GLOB.player_list, sound_override = null, should_play_sound = TRUE)
+/proc/dispatch_announcement_to_players(announcement, list/mob/players = GLOB.player_list, sound_override = null, should_play_sound = TRUE)
 	var/sound_to_play = !isnull(sound_override) ? sound_override : 'sound/misc/notice2.ogg'
 
 	for(var/mob/target in players)
-		if(isnewplayer(target))
+		if (players == GLOB.player_list && isnewplayer(target))
 			continue
 
 		to_chat(target, announcement)

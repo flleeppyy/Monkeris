@@ -438,32 +438,6 @@ Contractors and the like can also be revived with the previous role mostly intac
 	log_admin("[key_name(usr)] healed / revived [key_name(M)]")
 	message_admins(span_red("Admin [key_name_admin(usr)] healed / revived [key_name_admin(M)]!"), 1)
 
-/client/proc/cmd_admin_create_centcom_report()
-	set category = "Special Verbs"
-	set name = "Create Command Report"
-	if(!holder)
-		to_chat(src, "Only administrators may use this command.")
-		return
-	var/input = sanitize(input(usr, "Please enter anything you want. Anything. Serious.", "What?", "") as message|null, extra = 0)
-	var/customname = sanitizeSafe(input(usr, "Pick a title for the report.", "Title") as text|null)
-	if(!input)
-		return
-	if(!customname)
-		customname = "[command_name()] Update"
-
-	//New message handling
-	post_comm_message(customname, replacetext(input, "\n", "<br/>"))
-
-	switch(alert("Should this be announced to the general population?",,"Yes","No"))
-		if("Yes")
-			priority_announce(input, customname, use_text_to_speech = TRUE)
-		if("No")
-			to_chat(world, span_red("New [GLOB.company_name] Update available at all communication consoles."))
-			world << sound('sound/AI/commandreport.ogg')
-
-	log_admin("[key_name(src)] has created a command report: [input]")
-	message_admins("[key_name_admin(src)] has created a command report", 1)
-
 //delete an instance/object/mob/etc
 /client/proc/cmd_admin_delete(atom/O as obj|mob|turf in range(world.view))
 	set category = "Admin"
