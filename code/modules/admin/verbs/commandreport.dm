@@ -175,17 +175,18 @@
 				played_sound = DEFAULT_ALERT1
 				return
 
-	if(announce_to_all_mobs)
-		var/chosen_color = announcement_color
-		if(chosen_color == "default")
-			if(command_name == command_name())
-				chosen_color = "orange"
-		if (preview)
-			to_chat(ui_user, "The following is a preview of what the command report will look like for other players.")
-			priority_announce(command_report_content, subheader == ""? null : subheader, report_sound, has_important_message = TRUE, sender_override = command_name, color_override = chosen_color, append_update = append_update_name, encode_title = sanitize_content, encode_text = sanitize_content, players = list(ui_user))
-		else
-			var/players = (announce_to_all_mobs ? GLOB.mob_list : GLOB.player_list)
-			priority_announce(command_report_content, subheader == ""? null : subheader, report_sound, has_important_message = TRUE, sender_override = command_name, color_override = chosen_color, append_update = append_update_name, encode_title = sanitize_content, encode_text = sanitize_content, players = players)
+	var/chosen_color = announcement_color
+	if(chosen_color == "default")
+		if(command_name == command_name())
+			chosen_color = "orange"
+
+	if (preview)
+		to_chat(ui_user, "The following is a preview of what the command report will look like for other players.")
+		priority_announce(command_report_content, subheader == ""? null : subheader, report_sound, has_important_message = TRUE, sender_override = command_name, color_override = chosen_color, append_update = append_update_name, encode_title = sanitize_content, encode_text = sanitize_content, players = list(ui_user))
+		return
+
+	var/players = (announce_to_all_mobs ? GLOB.mob_list : GLOB.player_list)
+	priority_announce(command_report_content, subheader == ""? null : subheader, report_sound, has_important_message = TRUE, sender_override = command_name, color_override = chosen_color, append_update = append_update_name, encode_title = sanitize_content, encode_text = sanitize_content, players = players)
 
 	if (!preview)
 		log_admin("[key_name(ui_user)] has created a command report: \"[command_report_content]\", sent from \"[command_name]\" with the sound \"[played_sound]\".")

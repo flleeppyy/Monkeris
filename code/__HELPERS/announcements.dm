@@ -224,7 +224,7 @@
 	if(isnull(sender_override))
 		returnable_strings += MAJOR_ANNOUNCEMENT_TITLE("[station_name()][append_update ? " Update" : ""]")
 	else
-		returnable_strings += MAJOR_ANNOUNCEMENT_TITLE(sender_override)
+		returnable_strings += MAJOR_ANNOUNCEMENT_TITLE("[sender_override][append_update ? " Update" : ""]")
 
 	if(length(title) > 0)
 		returnable_strings += SUBHEADER_ANNOUNCEMENT_TITLE(title)
