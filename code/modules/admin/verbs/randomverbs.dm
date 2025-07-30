@@ -158,7 +158,7 @@
 
 		var/show_log = alert(src, "Show ion message?", "Message", "Yes", "No")
 		if(show_log == "Yes")
-			command_announcement.Announce("Ion storm detected near the ship. Please check all AI-controlled equipment for errors.", "Anomaly Alert", new_sound = 'sound/AI/ionstorm.ogg')
+			priority_announce("Ion storm detected near the ship. Please check all AI-controlled equipment for errors.", "Anomaly Alert", sound = 'sound/AI/ionstorm.ogg')
 
 		IonStorm()
 
@@ -419,7 +419,7 @@ Contractors and the like can also be revived with the previous role mostly intac
 
 	var/show_log = alert(src, "Show ion message?", "Message", "Yes", "No")
 	if(show_log == "Yes")
-		command_announcement.Announce("Ion storm detected near the ship. Please check all AI-controlled equipment for errors.", "Anomaly Alert", new_sound = 'sound/AI/ionstorm.ogg')
+		priority_announce("Ion storm detected near the ship. Please check all AI-controlled equipment for errors.", "Anomaly Alert", sound = 'sound/AI/ionstorm.ogg')
 
 /client/proc/cmd_admin_rejuvenate(mob/living/M as mob in SSmobs.mob_list | SShumans.mob_list)
 	set category = "Special Verbs"
@@ -456,7 +456,7 @@ Contractors and the like can also be revived with the previous role mostly intac
 
 	switch(alert("Should this be announced to the general population?",,"Yes","No"))
 		if("Yes")
-			command_announcement.Announce(input, customname, msg_sanitized = 1, use_text_to_speech = TRUE)
+			priority_announce(input, customname, use_text_to_speech = TRUE)
 		if("No")
 			to_chat(world, span_red("New [GLOB.company_name] Update available at all communication consoles."))
 			world << sound('sound/AI/commandreport.ogg')
