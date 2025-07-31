@@ -41,6 +41,10 @@ var/next_station_date_change = 1 DAYS
 /proc/time_stamp()
 	return time2text(world.timeofday, "hh:mm:ss")
 
+/proc/time_stamp_metric()
+	var/date_portion = time2text(world.timeofday, "YYYY-MM-DD")
+	var/time_portion = time2text(world.timeofday, "hh:mm:ss")
+	return "[date_portion]T[time_portion]"
 
 //Returns the world time in english
 /proc/worldtime2text(time = world.time, timeshift = 1)

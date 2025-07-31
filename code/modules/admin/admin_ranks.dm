@@ -2,12 +2,17 @@ GLOBAL_LIST_EMPTY(admin_ranks) //list of all admin_rank datums
 GLOBAL_PROTECT(admin_ranks)
 
 
+#define ADMINS_TXT_PATH "config/admins.txt"
 // This proc is using only without database connection
 /proc/load_admins_legacy()
 	load_admin_ranks_legacy()
 
+	if (!rustg_file_exists(ADMINS_TXT_PATH))
+		warning("[ADMINS_TXT_PATH] not present! No admins will be loaded this round!")
+		return
+
 	//load text from file
-	var/list/Lines = file2list("config/admins.txt")
+	var/list/Lines = file2list(ADMINS_TXT_PATH)
 
 	//process each line seperately
 	for(var/line in Lines)
@@ -172,3 +177,5 @@ GLOBAL_PROTECT(admin_ranks)
 			flag |= admin_permissions[key]
 
 	return flag
+
+#undef ADMINS_TXT_PATH
