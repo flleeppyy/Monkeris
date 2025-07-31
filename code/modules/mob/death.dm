@@ -114,11 +114,13 @@
 		mind.store_memory("Time of death: [stationtime2text()]", 0)
 	switch_from_living_to_dead_mob_list()
 	updateicon()
-	to_chat(src,span_deadsay("[show_dead_message]"))
+	var/death_block = ""
+	death_block += span_danger("<center><span style='font-size: 32px'>You have died!</font></center>")
+	death_block += "<hr>"
+	death_block += span_danger("Barring complete bodyloss, you can (in some cases) be revived by other players. \
+		[span_bold(span_red("You do not remember the details of circumstances leading up to your death, including who killed you!"))]")
+	to_chat(src, span_death_message(death_block))
 	return 1
-
-
-
 
 //This proc retrieves the relevant time of death from
 /mob/proc/get_death_time(which)
