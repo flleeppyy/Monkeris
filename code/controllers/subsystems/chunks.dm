@@ -23,7 +23,7 @@ SUBSYSTEM_DEF(chunks)
 	chunk_list_by_zlevel = new/list(world.maxz)
 	for(var/i = 1, i <= world.maxz,i++)
 		chunk_list_by_zlevel[i] = new/list(CHUNKSPERLEVEL(world.maxx, world.maxy))
-		for(var/j = 1, j <= CHUNKSPERLEVEL(world.maxx, world.maxy), j++)
+		for(var/j = 1; j <= CHUNKSPERLEVEL(world.maxx, world.maxy); j++)
 			chunk_list_by_zlevel[i][j] = new /datum/chunk(src)
 	RegisterSignal(SSdcs, COMSIG_MOB_INITIALIZED, PROC_REF(onMobNew))
 	RegisterSignal(SSdcs, COMSIG_WORLD_MAXZ_INCREMENTING, PROC_REF(beforeLevelIncrement))
@@ -36,7 +36,7 @@ SUBSYSTEM_DEF(chunks)
 		temp_list[i] = chunk_list_by_zlevel[i]
 
 	temp_list[world.maxz + 1] = new/list(CHUNKSPERLEVEL(world.maxx, world.maxy))
-	for(var/j = 1, j <= CHUNKSPERLEVEL(world.maxx, world.maxy), j++)
+	for(var/j = 1; j <= CHUNKSPERLEVEL(world.maxx, world.maxy); j++)
 		temp_list[world.maxz + 1][j] = new /datum/chunk(src)
 	chunk_list_by_zlevel = temp_list
 
@@ -66,8 +66,8 @@ SUBSYSTEM_DEF(chunks)
 	var/turf/containerTurf = get_turf(container)
 	if(containerTurf == null)
 		return returnValue
-	for(var/chunkX = coordinates[1], chunkX <= coordinates[3], chunkX += CHUNK_SIZE)
-		for(var/chunkY = coordinates[2], chunkY <= coordinates[4], chunkY += CHUNK_SIZE)
+	for(var/chunkX = coordinates[1]; chunkX <= coordinates[3]; chunkX += CHUNK_SIZE)
+		for(var/chunkY = coordinates[2]; chunkY <= coordinates[4]; chunkY += CHUNK_SIZE)
 			chunkReference = SSchunks.chunk_list_by_zlevel[container.z][CHUNKID(chunkX, chunkY)]
 			for(var/mob/mobToCheck as anything in chunkReference.mobs)
 				var/turf/mobTurf = get_turf(mobToCheck)
@@ -103,8 +103,8 @@ SUBSYSTEM_DEF(chunks)
 	var/turf/containerTurf = get_turf(container)
 	if(containerTurf == null)
 		return returnValue
-	for(var/chunkX = coordinates[1], chunkX <= coordinates[3], chunkX += CHUNK_SIZE)
-		for(var/chunkY = coordinates[2], chunkY <= coordinates[4], chunkY += CHUNK_SIZE)
+	for(var/chunkX = coordinates[1]; chunkX <= coordinates[3]; chunkX += CHUNK_SIZE)
+		for(var/chunkY = coordinates[2]; chunkY <= coordinates[4]; chunkY += CHUNK_SIZE)
 			chunkReference = SSchunks.chunk_list_by_zlevel[container.z][CHUNKID(chunkX, chunkY)]
 			for(var/obj/hearerToCheck as anything in chunkReference.hearers)
 				var/turf/hearerTurf = get_turf(hearerToCheck)
