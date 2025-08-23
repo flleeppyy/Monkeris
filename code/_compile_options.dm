@@ -63,10 +63,13 @@
 //Update this whenever you need to take advantage of more recent byond features
 #define MIN_COMPILER_VERSION 516
 #define MIN_COMPILER_BUILD 1666
-#if(DM_VERSION < MIN_COMPILER_VERSION || DM_BUILD < MIN_COMPILER_BUILD) && !defined(SPACEMAN_DMM)
+#if (!defined(OPENDREAM)) && (DM_VERSION < MIN_COMPILER_VERSION || DM_BUILD < MIN_COMPILER_BUILD) && !defined(SPACEMAN_DMM)
 //Don't forget to update this part
 #error Your version of BYOND is too out-of-date to compile this project. Go to secure.byond.com/download and update.
 #error You need version 516.1651 or higher
+#endif
+#if defined(OPENDREAM) && (DM_VERSION < MIN_COMPILER_VERSION || DM_BUILD < MIN_COMPILER_BUILD)
+#warn This version of OpenDream is below the minimum required for this project. Some linter errors may be incorrect.
 #endif
 
 //Additional code for the above flags.
