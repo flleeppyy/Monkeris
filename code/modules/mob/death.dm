@@ -119,7 +119,7 @@
 	death_block += "<hr>"
 	death_block += span_danger("Barring complete bodyloss, you can (in some cases) be revived by other players. This may not be the end. The respawn timer is 30 minutes unless your body is cremated, \
 		placed in the morgue, given burial in space, or melted down to biomatter. These methods will shorten the respawn timer. If you have a cruciform, it can be used to clone you. If you were a Full Body Prosthetic, this is the end. \
-		If you're just a regular human with an organic heart and brain, you might be resuscitated within the resus timer.")
+		If you're human with an organic heart and brain, you might be resuscitated if the body is recovered within 10 minutes.")
 	to_chat(src, span_death_message(death_block))
 	return 1
 
