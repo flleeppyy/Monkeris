@@ -145,47 +145,40 @@
 
 /datum/pai_software/med_records/on_ui_interact(mob/living/silicon/pai/user, datum/nanoui/ui=null, force_open=1)
 	var/data[0]
-
-		var/records[0]
-		for(var/datum/computer_file/report/crew_record/general in GLOB.all_crew_records)
-			var/record[0]
-			record["name"] = general.get_name()
-			record["ref"] = "\ref[general]"
-			records[++records.len] = record
+	var/records[0]
+	for(var/datum/computer_file/report/crew_record/general in GLOB.all_crew_records)
+		var/record[0]
+		record["name"] = general.get_name()
+		record["ref"] = "\ref[general]"
+		records[++records.len] = record
 
 	data["records"] = records
 
-		var/datum/computer_file/report/crew_record/G = user.securityActive
-		var/datum/report_field/arrayclump/M = G?.get_linkage_medRecord()
-		data["general"] = G ? list("name" = G.get_name(), "sex" = G.get_sex(), "species" = G.get_species(), "age" = G.get_age(), \
-	"job" = G.get_job(), "fingerprint" = G.get_fingerprint(), "status" = G.get_status(), "bloodtype" = G.get_bloodtype()) : null
-		data["prosthetics"] = M ? M.value["prosthetics"] : null
-		data["wounds"] = M ? M.value["wounds"] : null
-		data["Body state"] = M ? M.value["body state"] : null
-		data["chemhistory"] = M ? M.value["chemhistory"] : null
-		data["psychological"] = M ? M.value["psychological"] : null
-		data["could_not_find"] = user.medical_cannotfind
+	var/datum/computer_file/report/crew_record/G = user.securityActive
+	var/datum/report_field/arrayclump/M = G?.get_linkage_medRecord()
+	data["general"] = G ? list("name" = G.get_name(), "sex" = G.get_sex(), "species" = G.get_species(), "age" = G.get_age(), \
+"job" = G.get_job(), "fingerprint" = G.get_fingerprint(), "status" = G.get_status(), "bloodtype" = G.get_bloodtype()) : null
+	data["prosthetics"] = M ? M.value["prosthetics"] : null
+	data["wounds"] = M ? M.value["wounds"] : null
+	data["Body state"] = M ? M.value["body state"] : null
+	data["chemhistory"] = M ? M.value["chemhistory"] : null
+	data["psychological"] = M ? M.value["psychological"] : null
+	data["could_not_find"] = user.medical_cannotfind
 
 	ui = SSnano.try_update_ui(user, user, id, ui, data, force_open)
-	if(!ui)
-		// Don't copy-paste this unless you're making a pAI software module!
-		ui = new(user, user, id, "pai_medrecords.tmpl", "Medical Records", 450, 600)
-		ui.set_initial_data(data)
-		ui.open()
-		ui.set_auto_update(1)
 
 /datum/pai_software/med_records/Topic(href, href_list)
-		var/mob/living/silicon/pai/P = usr
-		if(!istype(P)) return
+	var/mob/living/silicon/pai/P = usr
+	if(!istype(P)) return
 
-		if(href_list["select"])
-			var/datum/computer_file/report/crew_record/record = locate(href_list["select"])
-			if(istype(record))
-				P.medical_cannotfind = 0
-				P.medicalActive = record
-			else
-				P.medical_cannotfind = 1
-			return TRUE
+	if(href_list["select"])
+		var/datum/computer_file/report/crew_record/record = locate(href_list["select"])
+		if(istype(record))
+			P.medical_cannotfind = 0
+			P.medicalActive = record
+		else
+			P.medical_cannotfind = 1
+		return TRUE
 
 /* Security records */
 /datum/pai_software/sec_records
@@ -196,7 +189,6 @@
 
 /datum/pai_software/sec_records/on_ui_interact(mob/living/silicon/pai/user, datum/nanoui/ui=null, force_open=1)
 	var/data[0]
-
 	var/records[0]
 	for(var/datum/computer_file/report/crew_record/general in GLOB.all_crew_records)
 		var/record[0]
@@ -206,11 +198,11 @@
 
 	data["records"] = records
 
-		var/datum/computer_file/report/crew_record/G = user.securityActive
-		data["general"] = G ? list("name" = G.get_name(), "sex" = G.get_sex(), "species" = G.get_species(), "age" = G.get_age(), \
-		"job" = G.get_job(), "fingerprint" = G.get_fingerprint(), "status" = G.get_status(), "criminalStatus" = G.get_criminalStatus(), \
-		"secNotes" = G.get_linkage_secNotes()) : null
-		data["could_not_find"] = user.security_cannotfind
+	var/datum/computer_file/report/crew_record/G = user.securityActive
+	data["general"] = G ? list("name" = G.get_name(), "sex" = G.get_sex(), "species" = G.get_species(), "age" = G.get_age(), \
+	"job" = G.get_job(), "fingerprint" = G.get_fingerprint(), "status" = G.get_status(), "criminalStatus" = G.get_criminalStatus(), \
+	"secNotes" = G.get_linkage_secNotes()) : null
+	data["could_not_find"] = user.security_cannotfind
 
 	ui = SSnano.try_update_ui(user, user, id, ui, data, force_open)
 	if(!ui)
