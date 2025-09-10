@@ -7,6 +7,15 @@
 	var/datum/mind/mind
 	var/static/next_mob_id = 0
 
+	/// The current client inhabiting this mob. Managed by login/logout
+	/// This exists so we can do cleanup in logout for occasions where a client was transfere rather then destroyed
+	/// We need to do this because the mob on logout never actually has a reference to client
+	/// We also need to clear this var/do other cleanup in client/Destroy, since that happens before logout
+	/// HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+	var/client/canon_client
+	/// It's like a client, but persists! Persistent clients will stick to a mob until the client in question is logged into a different mob.
+	var/datum/persistent_client/persistent_client
+
 	movement_handlers = list(
 	/datum/movement_handler/mob/relayed_movement,
 	/datum/movement_handler/mob/death,
@@ -24,6 +33,8 @@
 
 	var/lastKnownIP
 	var/computer_id
+
+	var/list/logging = list()
 
 	var/stat = 0 //Whether a mob is alive or dead. TODO: Move this to living - Nodrak
 
@@ -202,8 +213,10 @@ While it would be entirely possible to check the mob's move handlers list for th
 
 	var/mob_classification = 0 //Bitfield. Uses TYPE_XXXX defines in defines/mobs.dm.
 
-	var/can_be_fed = 1 //Can be feeded by reagent_container or other things
+	var/can_be_fed = TRUE //Can be feeded by reagent_container or other things
 
+	// Did they suicide?
+	var/suicided = FALSE
 	///The z level this mob is currently registered in
 	var/registered_z
 

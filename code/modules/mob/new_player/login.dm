@@ -12,9 +12,9 @@
 		mind.active = TRUE
 		mind.current = src
 
-	// . = ..()
-	// if(!. || !client)
-	// 	return FALSE
+	. = ..()
+	if(!. || !client)
+		return FALSE
 
 	if(join_motd)
 		to_chat(src, "<div class='motd'>[join_motd]</div>")
@@ -27,5 +27,7 @@
 
 	new_player_panel()
 
-	GLOB.lobbyScreen.play_music(client)
+	if (SSticker.current_state == GAME_STATE_PREGAME)
+		GLOB.lobbyScreen.play_music(client)
+
 	GLOB.lobbyScreen.show_titlescreen(client)

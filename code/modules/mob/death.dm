@@ -115,20 +115,21 @@
 	switch_from_living_to_dead_mob_list()
 	updateicon()
 	to_chat(src,span_deadsay("[show_dead_message]"))
-	return 1
+	SSblackbox.ReportDeath(src)
 
-
-
+	return TRUE
 
 //This proc retrieves the relevant time of death from
 /mob/proc/get_death_time(which)
+	var/p_client_tod = persistent_client?.time_of_death
 	var/datum/preferences/P = get_preferences(src)
 	if (!P)
-		return FALSE
+		return p_client_tod || FALSE
 
-	return P.time_of_death[which]
+	return P.time_of_death[which] || p_client_tod
 
 /mob/proc/set_death_time(which, value)
+	persistent_client?.time_of_death = value
 	var/datum/preferences/P = get_preferences(src)
 	if (!P)
 		return FALSE
