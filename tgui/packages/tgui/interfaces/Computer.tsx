@@ -1,6 +1,6 @@
-import { BooleanLike } from 'common/react';
-import { Button, Box, Table } from '../components';
-import { TableCell, TableRow } from '../components/Table';
+import { Box, Button, Table } from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
+
 import { sendAct } from '../backend';
 
 export interface ComputerInterface {
@@ -26,7 +26,7 @@ type Programheader = {
   icon: string;
 };
 
-export const ProgramShell = (props, context) => {
+export const ProgramShell = (props: ComputerInterface) => {
   const {
     PC_batteryicon,
     PC_batterypercent,
@@ -48,56 +48,58 @@ export const ProgramShell = (props, context) => {
   const act = sendAct;
   return (
     <>
-      <Box id="uiHeaderContent" unselectable="on">
+      <Box id="uiHeaderContent">
         {
           // Add a template with the key "headerContent" to have it rendered here -->
         }
         {PC_hasheader}
-        <Box class="uiModularHeader">
+        <Box className="uiModularHeader">
           <Box left>
             <Box p="0px">
               <Table>
-                <TableRow>
+                <Table.Row>
                   {PC_batteryicon && PC_showbatteryicon && (
-                    <TableCell>
-                      <Box as="img" src={PC_batteryicon} />
-                    </TableCell>
+                    <Table.Cell>
+                      <img src={PC_batteryicon} />
+                    </Table.Cell>
                   )}
                   {PC_batterypercent && PC_showbatteryicon && (
-                    <TableCell>
+                    <Table.Cell>
                       <Box bold>{PC_batterypercent}</Box>
-                    </TableCell>
+                    </Table.Cell>
                   )}
                   {PC_ntneticon && (
-                    <TableCell>
-                      <Box as="img" src={PC_ntneticon} />
-                    </TableCell>
+                    <Table.Cell>
+                      <img src={PC_ntneticon} />
+                    </Table.Cell>
                   )}
                   {PC_apclinkicon && (
-                    <TableCell>
-                      <Box as="img" src={PC_apclinkicon} />
-                    </TableCell>
+                    <Table.Cell>
+                      <img src={PC_apclinkicon} />
+                    </Table.Cell>
                   )}
                   {PC_stationtime && (
-                    <TableCell>
+                    <Table.Cell>
                       <Box bold>{PC_stationtime}</Box>
-                    </TableCell>
+                    </Table.Cell>
                   )}
                   {PC_programheaders &&
-                    PC_programheaders.map((mapped) => (
-                      <TableCell key={mapped}>
-                        <Box as="img" src={mapped.icon} />
-                      </TableCell>
+                    PC_programheaders.map((mapped, i) => (
+                      <Table.Cell key={i}>
+                        <img src={mapped.icon} />
+                      </Table.Cell>
                     ))}
-                </TableRow>
+                </Table.Row>
               </Table>
             </Box>
           </Box>
-          <Box float="right" left="5px">
+          <Box style={{
+              float: "right",
+            }} left="5px">
             <Table>
-              <TableRow>
+              <Table.Row>
                 {PC_light_name && (
-                  <TableCell>
+                  <Table.Cell>
                     <Button
                       onClick={() =>
                         act('PC_toggle_component', {
@@ -105,18 +107,20 @@ export const ProgramShell = (props, context) => {
                         })
                       }
                     />
-                  </TableCell>
+                  </Table.Cell>
                 )}
-                <TableCell>
+                <Table.Cell>
                   <Button
                     content="Shutdown"
                     onClick={() => act('PC_shutdown')}
                   />
-                </TableCell>
-              </TableRow>
+                </Table.Cell>
+              </Table.Row>
             </Table>
           </Box>
-          <Box clear="both" />
+          <Box style={{
+            clear: "both",
+          }} />
           {has_gps && (
             <Box
               border-top-width="3px"
@@ -125,43 +129,43 @@ export const ProgramShell = (props, context) => {
               p="0px"
             >
               <Table>
-                <TableRow>
-                  <TableCell>
-                    <Box as="img" src={gps_icon} />
-                  </TableCell>
-                  <TableCell>{gps_data}</TableCell>
-                </TableRow>
+                <Table.Row>
+                  <Table.Cell>
+                    <img src={gps_icon} />
+                  </Table.Cell>
+                  <Table.Cell>{gps_data}</Table.Cell>
+                </Table.Row>
               </Table>
             </Box>
           )}
         </Box>
       </Box>
-      <Box id="uiTitleWrapper" unselectable="on">
-        <Box id="uiStatusIcon" class="icon24 uiStatusGood" unselectable="on" />
+      <Box id="uiTitleWrapper">
+        <Box id="uiStatusIcon" className="icon24 uiStatusGood" />
 
         {PC_showexitprogram && (
           <Box id="uiTitleButtons">
             <Table>
-              <TableRow>
-                <TableCell>
+              <Table.Row>
+                <Table.Cell>
                   <Button
                     content="Exit Program"
                     onClick={() => act('PC_exit')}
                   />
-                </TableCell>
-                <TableCell>
+                </Table.Cell>
+                <Table.Cell>
                   <Button
                     content="Minimize Program"
                     onClick={() => act('PC_minimize')}
                   />
-                </TableCell>
-              </TableRow>
+                </Table.Cell>
+              </Table.Row>
             </Table>
           </Box>
         )}
-        {PC_showexitprogram || <Box id="uiTitleFluff" unselectable="on" />}
+        {PC_showexitprogram || <Box id="uiTitleFluff" />}
       </Box>
-      <Box id="uiContent" unselectable="on">
+      <Box id="uiContent">
         <Box id="uiLoadingNotice">Initiating...</Box>
       </Box>
     </>

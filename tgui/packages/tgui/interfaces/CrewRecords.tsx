@@ -1,10 +1,11 @@
-import { BooleanLike } from 'common/react';
-import { useBackend, sendAct } from '../backend';
-import { Button, Box, Divider, Table } from '../components';
+import { Box, Button, Divider, Table } from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
+import { classes } from 'tgui-core/react';
+
+import { sendAct, useBackend } from '../backend';
 import { GameIcon } from '../components/GameIcon';
 import { Window } from '../layouts';
 import { ComputerInterface, ProgramShell } from './Computer';
-import { classes } from 'common/react';
 
 interface CrewRecordsInterface extends RecordConcrete, ComputerInterface {
   message: string;
@@ -45,8 +46,8 @@ type RecordAbstract = {
   id: number;
 };
 
-export const CrewRecords = (props, context) => {
-  const { act, data } = useBackend<CrewRecordsInterface>(context);
+export const CrewRecords = (props: ComputerInterface) => {
+  const { act, data } = useBackend<CrewRecordsInterface>();
   const {
     message,
     uid,
@@ -60,16 +61,15 @@ export const CrewRecords = (props, context) => {
     fingersearch,
   } = data;
   return (
-    <Window resizable>
+    <Window>
       <Window.Content scrollable>
-        {ProgramShell(props, context)}
+        {ProgramShell(props)}
         {message && <Button content="X" onClick={() => act('clear_message')} />}
         {message}
         <Divider hidden />
         {uid &&
-          currentrecord(
-            { uid, fields, front_pic, side_pic, pic_edit },
-            context,
+          CurrentRecord(
+            { uid, fields, front_pic, side_pic, pic_edit }
           )}
         {Boolean(uid) || (
           <>
@@ -119,7 +119,7 @@ export const CrewRecords = (props, context) => {
               {all_records.map((mapped) => {
                 return (
                   <>
-                    <Table.Row class="candystripe">
+                    <Table.Row className="candystripe">
                       <Table.Cell>
                         <Button
                           content={mapped.name + ''}
@@ -141,7 +141,15 @@ export const CrewRecords = (props, context) => {
   );
 };
 
-const currentrecord = (props, context) => {
+interface CurrentRecordProps {
+  uid: number;
+  fields: RecordField[];
+  front_pic: string;
+  side_pic: string;
+  pic_edit: BooleanLike;
+}
+
+const CurrentRecord = (props: CurrentRecordProps) => {
   const act = sendAct;
   const { uid, fields, front_pic, side_pic, pic_edit } = props;
   return (
@@ -171,12 +179,13 @@ const currentrecord = (props, context) => {
       )}
       {fields &&
         fields.map((mapped) => {
-          return displayfield(mapped, context);
+          return DisplayField(mapped);
         })}
     </>
   );
 };
-const displayfield = (props, context) => {
+
+const DisplayField = (props: RecordField) => {
   const act = sendAct;
   const {
     access,
@@ -204,7 +213,11 @@ const displayfield = (props, context) => {
       {access && (Boolean(access_edit) || name)}
       {access && (
         <Box inline={Boolean(needs_big_box)}>
-          {value}
+          {typeof value === 'string' || typeof value === 'number'
+            ? value
+            : value !== null && value !== undefined
+              ? JSON.stringify(value)
+              : ''}
           {list_value &&
             (Object.values(list_value).length
               ? list_value.join(', ')
@@ -218,7 +231,6 @@ const displayfield = (props, context) => {
                       {': '}
                       {returnlist(
                         { origin: list_clumps, whichlist: count },
-                        context,
                       )}
                       <Divider hidden />
                     </>
@@ -231,7 +243,7 @@ const displayfield = (props, context) => {
   );
 };
 
-const returnlist = (props, context) => {
+const returnlist = (props) => {
   const { origin, whichlist } = props;
   let toreturn: any;
   if (
@@ -295,7 +307,7 @@ const returnlist = (props, context) => {
 								{{if value.links}}
 									{{for 1 to value.links.len}}
 										{{for value.links}}
-											
+
 								{{/if}}
 							{{/if}}
 						{{/if}}
