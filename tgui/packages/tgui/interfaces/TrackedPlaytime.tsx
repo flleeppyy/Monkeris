@@ -15,7 +15,8 @@ import { Window } from '../layouts';
 const JOB_REPORT_MENU_FAIL_REASON_TRACKING_DISABLED = 1;
 const JOB_REPORT_MENU_FAIL_REASON_NO_RECORDS = 2;
 
-const sortByPlaytime = (array: [string, number][]) => sortBy(array, ([_, playtime]) => -playtime);
+const sortByPlaytime = (array: [string, number][]) =>
+  sortBy(array, ([_, playtime]) => -playtime);
 
 type PlaytimeSectionProps = {
   playtimes: Record<string, number>;
@@ -56,9 +57,11 @@ const PlaytimeSection: React.FC<PlaytimeSectionProps> = ({ playtimes }) => {
                 <Stack>
                   <Stack.Item width={`${ratio * 100}%`} />
                   <Tooltip content={totalHours >= 24 && `${totalHours} hours`}>
-                    <Stack.Item style={{
-                      whiteSpace: "nowrap",
-                    }}>
+                    <Stack.Item
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
                       {days > 0 && `${days}d `}
                       {hours > 0 && `${hours}h `}
                       {minutes > 0 && `${minutes}m`}
@@ -107,36 +110,36 @@ export const TrackedPlaytime = (props) => {
             (failReason === JOB_REPORT_MENU_FAIL_REASON_NO_RECORDS && (
               <Box>You have no records.</Box>
             )))) || (
-            <Box>
-              <Section title="Total">
-                <PlaytimeSection
-                  playtimes={{
-                    Ghost: ghostTime,
-                    Living: livingTime,
-                    Admin: adminTime,
-                  }}
-                />
-              </Section>
-              <Section
-                title="Jobs"
-                buttons={
-                  !!isAdmin && (
-                    <Button.Checkbox
-                      checked={!!exemptStatus}
-                      onClick={() => act('toggle_exempt')}
-                    >
-                      Job Playtime Exempt
-                    </Button.Checkbox>
-                  )
-                }
-              >
-                <PlaytimeSection playtimes={jobPlaytimes} />
-              </Section>
-              <Section title="Special">
-                <PlaytimeSection playtimes={specialPlaytimes} />
-              </Section>
-            </Box>
-          )}
+          <Box>
+            <Section title="Total">
+              <PlaytimeSection
+                playtimes={{
+                  Ghost: ghostTime,
+                  Living: livingTime,
+                  Admin: adminTime,
+                }}
+              />
+            </Section>
+            <Section
+              title="Jobs"
+              buttons={
+                !!isAdmin && (
+                  <Button.Checkbox
+                    checked={!!exemptStatus}
+                    onClick={() => act('toggle_exempt')}
+                  >
+                    Job Playtime Exempt
+                  </Button.Checkbox>
+                )
+              }
+            >
+              <PlaytimeSection playtimes={jobPlaytimes} />
+            </Section>
+            <Section title="Special">
+              <PlaytimeSection playtimes={specialPlaytimes} />
+            </Section>
+          </Box>
+        )}
       </Window.Content>
     </Window>
   );
