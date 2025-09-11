@@ -121,7 +121,7 @@
 		placed in the morgue, given burial in space, or melted down to biomatter. These methods will shorten the respawn timer. If you have a cruciform, it can be used to clone you. If you were a Full Body Prosthetic, this is the end. \
 		If you're human with an organic heart and brain, you might be resuscitated if the body is recovered within 10 minutes.")
 	to_chat(src, span_death_message(death_block))
-  SSblackbox.ReportDeath(src)
+	SSblackbox.ReportDeath(src)
 	return TRUE
 
 //This proc retrieves the relevant time of death from
