@@ -1,14 +1,12 @@
-import { useDispatch, useSelector } from "tgui/backend";
-import { LabeledList, Section, Slider, Stack } from "tgui-core/components";
-import { toFixed } from "tgui-core/math";
+import { useDispatch, useSelector } from 'tgui/backend';
+import { LabeledList, Section, Slider, Stack } from 'tgui-core/components';
+import { toFixed } from 'tgui-core/math';
 
-import { updateSettings } from "./actions";
-import { selectSettings } from "./selectors";
+import { updateSettings } from './actions';
+import { selectSettings } from './selectors';
 
 export function ExperimentalSettings(props) {
-  const { scrollTrackingTolerance } = useSelector(
-    selectSettings
-  );
+  const { scrollTrackingTolerance } = useSelector(selectSettings);
   const dispatch = useDispatch();
 
   return (
@@ -16,7 +14,10 @@ export function ExperimentalSettings(props) {
       <Stack vertical>
         <Stack.Item>
           <LabeledList>
-            <LabeledList.Item label="ScrollTT" tooltip='Scroll Tracking Tolerance: The smallest possible scroll offset that is still trackable'>
+            <LabeledList.Item
+              label="ScrollTT"
+              tooltip="Scroll Tracking Tolerance: The smallest possible scroll offset that is still trackable"
+            >
               <Slider
                 width="100%"
                 step={1}

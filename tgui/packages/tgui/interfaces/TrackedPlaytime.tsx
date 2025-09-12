@@ -110,42 +110,43 @@ export const TrackedPlaytime = (props) => {
             (failReason === JOB_REPORT_MENU_FAIL_REASON_NO_RECORDS && (
               <Box>You have no records.</Box>
             )))) || (
-            <Box>
-              <Section title="Total" buttons={
+          <Box>
+            <Section
+              title="Total"
+              buttons={
                 <Tooltip content="Hover over the playtime to get a pure hour count">
-                  <Button
-                    icon="question"
-                  />
+                  <Button icon="question" />
                 </Tooltip>
-              }>
-                <PlaytimeSection
-                  playtimes={{
-                    Ghost: ghostTime,
-                    Living: livingTime,
-                    Admin: adminTime,
-                  }}
-                />
-              </Section>
-              <Section
-                title="Jobs"
-                buttons={
-                  !!isAdmin && (
-                    <Button.Checkbox
-                      checked={!!exemptStatus}
-                      onClick={() => act('toggle_exempt')}
-                    >
-                      Job Playtime Exempt
-                    </Button.Checkbox>
-                  )
-                }
-              >
-                <PlaytimeSection playtimes={jobPlaytimes} />
-              </Section>
-              <Section title="Special">
-                <PlaytimeSection playtimes={specialPlaytimes} />
-              </Section>
-            </Box>
-          )}
+              }
+            >
+              <PlaytimeSection
+                playtimes={{
+                  Ghost: ghostTime,
+                  Living: livingTime,
+                  Admin: adminTime,
+                }}
+              />
+            </Section>
+            <Section
+              title="Jobs"
+              buttons={
+                !!isAdmin && (
+                  <Button.Checkbox
+                    checked={!!exemptStatus}
+                    onClick={() => act('toggle_exempt')}
+                  >
+                    Job Playtime Exempt
+                  </Button.Checkbox>
+                )
+              }
+            >
+              <PlaytimeSection playtimes={jobPlaytimes} />
+            </Section>
+            <Section title="Special">
+              <PlaytimeSection playtimes={specialPlaytimes} />
+            </Section>
+          </Box>
+        )}
       </Window.Content>
     </Window>
   );
