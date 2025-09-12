@@ -7,9 +7,6 @@
  */
 
 
-/// Fallback time if none of the config entries are set for USE_LOW_LIVING_HOUR_INTERN
-#define INTERN_THRESHOLD_FALLBACK_HOURS 15
-
 /*
  * DATA CARDS - Used for the teleporter
  */
@@ -130,6 +127,7 @@ var/const/NO_EMAG_ACT = -50
 
 	/// Boolean value. If TRUE, the [Intern] tag gets prepended to this ID card when the label is updated.
 	var/is_intern = FALSE
+
 /obj/item/card/id/Initialize(mapload)
 	. = ..()
 	RegisterSignal(src, COMSIG_CLOTH_EQUIPPED, PROC_REF(update_intern_status))
@@ -164,7 +162,53 @@ var/const/NO_EMAG_ACT = -50
 	return
 
 /obj/item/card/id/proc/update_name()
-	name = "[src.registered_name]'s ID Card ([src.assignment])"
+	var/name_string = registered_name ? "[registered_name]'s ID Card" : initial(name)
+	var/assignment_string
+
+	if(is_intern)
+		if(assignment)
+			assignment_string = intern_alt_name || "Intern [assignment]"
+		else
+			assignment_string = "Intern"
+	else
+		assignment_string = assignment
+
+	name = "[name_string] ([assignment_string])"
+
+/obj/item/card/id/proc/update_intern_status(mob/user)
+	SIGNAL_HANDLER
+
+	if(!user?.client)
+		return
+	if(!CONFIG_GET(flag/use_exp_tracking))
+		return
+	if(!CONFIG_GET(flag/use_low_living_hour_intern))
+		return
+	if(!SSdbcore.Connect())
+		return
+
+	var/intern_threshold = (CONFIG_GET(number/use_low_living_hour_intern_hours) * 60) || (CONFIG_GET(number/use_exp_restrictions_heads_hours) * 60) || INTERN_THRESHOLD_FALLBACK_HOURS * 60
+	var/playtime = user.client.get_exp_living(pure_numeric = TRUE)
+
+	if((intern_threshold >= playtime) && (user.mind?.assigned_role in intern_possible_jobs))
+		is_intern = TRUE
+		update_name()
+		return
+
+	if(!is_intern)
+		return
+
+	is_intern = FALSE
+	update_name()
+
+/obj/item/card/id/proc/remove_intern_status(datum/source, mob/user)
+	SIGNAL_HANDLER
+
+	if(!is_intern)
+		return
+
+	is_intern = FALSE
+	update_name()
 
 /obj/item/card/id/proc/set_id_photo(mob/M)
 	front = getFlatIcon(M, SOUTH)
@@ -205,56 +249,6 @@ var/const/NO_EMAG_ACT = -50
 
 	src.add_fingerprint(user)
 	return
-
-/obj/item/card/id/proc/update_intern_status(datum/source, mob/user, slot)
-	SIGNAL_HANDLER
-
-	if(!user?.client)
-		return
-	if(!CONFIG_GET(flag/use_exp_tracking))
-		return
-	if(!CONFIG_GET(flag/use_low_living_hour_intern))
-		return
-	if(!SSdbcore.Connect())
-		return
-
-	var/intern_threshold = (CONFIG_GET(number/use_low_living_hour_intern_hours) * 60) || (CONFIG_GET(number/use_exp_restrictions_heads_hours) * 60) || INTERN_THRESHOLD_FALLBACK_HOURS * 60
-	var/playtime = user.client.get_exp_living(pure_numeric = TRUE)
-
-	if((intern_threshold >= playtime) && (user.mind?.assigned_role in intern_possible_jobs))
-		is_intern = TRUE
-		update_label()
-		return
-
-	if(!is_intern)
-		return
-
-	is_intern = FALSE
-	update_label()
-
-/obj/item/card/id/proc/remove_intern_status(datum/source, mob/user)
-	SIGNAL_HANDLER
-
-	if(!is_intern)
-		return
-
-	is_intern = FALSE
-	update_label()
-
-/// Updates the name based on the card's vars and state.
-/obj/item/card/id/proc/update_label()
-	var/name_string = registered_name ? "[registered_name]'s ID Card" : initial(name)
-	var/assignment_string
-
-	if(is_intern)
-		if(assignment)
-			assignment_string = intern_alt_name || "Intern [assignment]"
-		else
-			assignment_string = "Intern"
-	else
-		assignment_string = assignment
-
-	name = "[name_string] ([assignment_string])"
 
 /obj/item/card/id/GetAccess()
 	return access
@@ -415,5 +409,3 @@ var/const/NO_EMAG_ACT = -50
 	fingerprint_hash = md5("A"+registered_name)
 	blood_type = pick(GLOB.blood_types)
 	update_name()
-
-#undef INTERN_THRESHOLD_FALLBACK_HOURS

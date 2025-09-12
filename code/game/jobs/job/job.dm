@@ -208,6 +208,7 @@
 		if(!option)
 			continue
 		if(type in option.restricted_jobs)
+			log_job_debug("[usr.ckey] restricted from job [type] as it is in [category]'s option '[option.name]'s restricted jobs. ", option.restricted_jobs)
 			return TRUE
 		if(type in option.allowed_jobs)
 			. = FALSE
