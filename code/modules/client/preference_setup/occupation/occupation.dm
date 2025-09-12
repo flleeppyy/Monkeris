@@ -126,7 +126,8 @@
 		else if(IsGuestKey(user.key) && job.exp_requirements)
 			bad_message = "<b> \[ACCOUNT REQUIRED] </b>"
 		else if(required_playtime_remaining)
-			bad_message = "\[PLAYTIME REQUIRED : [required_playtime_remaining] Minutes as [job.get_exp_req_type()]]"
+			#warn FIX THIS! THIS IS NOT SHOWING THE RIGHT THINGG!!!
+			bad_message = "\[PLAYTIME REQUIRED : [required_playtime_remaining] Minutes as [job.get_exp_req_type() || "Any Department"]]"
 		else if(!job.player_old_enough(user.client))
 			var/available_in_days = job.available_in_days(user.client)
 			bad_message = "\[IN [(available_in_days)] DAYS]"

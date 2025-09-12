@@ -168,8 +168,7 @@ GLOBAL_PROTECT(exp_to_update)
 	else
 		return
 
-	if(holder && !holder.deadmined && check_rights(R_BAN, FALSE))
-		#warn TODO: figure out why admin playtimes arent being tracked properly
+	if(holder && !holder.deadmined && check_rights(R_BAN, TRUE, src))
 		play_records[EXP_TYPE_ADMIN] = minutes
 
 	for(var/jtype in play_records)
