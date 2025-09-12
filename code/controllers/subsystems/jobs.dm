@@ -65,84 +65,6 @@ SUBSYSTEM_DEF(job)
 		if(queries_by_key[key] > 3)
 			queries_by_key[key] -= 3
 
-// /client/verb/whitelistPlayerForJobs()
-// 	set category = "Admin"
-// 	set name = "Allow client to bypass all job requirement playtimes"
-
-// 	if(!holder)	return
-
-// 	var/client/the_chosen_one = input(usr, "Select player to whitelist for jobs", "THE CHOSEN ONE!", null) in GLOB.clients
-// 	if(!the_chosen_one)
-// 		to_chat(usr, span_danger("No client selected to whitelist"))
-// 		return
-// 	SSjob.WhitelistPlayer(the_chosen_one.ckey)
-
-// /client/verb/unwhitelistPlayerForJobs()
-// 	set category = "Admin"
-// 	set name = "Unwhitelist a client from all job requirement playtimes"
-
-// 	if(!holder)	return
-
-// 	var/client/the_disavowed_one = input(usr, "Select player to unwhitelist from jobs", "THE DISAVOWED ONE!", null) in GLOB.clients
-// 	if(!the_disavowed_one)
-// 		to_chat(usr, span_danger("No client selected to unwhitelist"))
-// 		return
-// 	SSjob.UnwhitelistPlayer(the_disavowed_one.ckey)
-
-// /datum/controller/subsystem/job/proc/WhitelistPlayer(ckey)
-// 	var/savefile/save_data = new("data/player_saves/[copytext(ckey, 1, 2)]/[ckey]/playtimes.sav")
-// 	to_file(save_data["whitelisted"], TRUE)
-
-// /datum/controller/subsystem/job/proc/UnwhitelistPlayer(ckey)
-// 	var/savefile/save_data = new("data/player_saves/[copytext(ckey, 1, 2)]/[ckey]/playtimes.sav")
-// 	to_file(save_data["whitelisted"], FALSE)
-
-// /datum/controller/subsystem/job/proc/CanHaveJob(ckey, job_title)
-// 	if(!occupations_by_name[job_title])
-// 		return FALSE
-// 	if(!ckey)
-// 		return FALSE
-// 	if(job_to_playtime_requirement[job_title] == 0)
-// 		return TRUE
-
-// 	var/datum/job/wanted_job = occupations_by_name[job_title]
-// 	var/datum/job/checking_job
-// 	if(!wanted_job)
-// 		return FALSE
-// 	var/total_playtime
-// 	if(ckey_to_job_to_playtime[ckey])
-// 		if(ckey_to_job_to_playtime[ckey][job_title])
-// 			total_playtime += ckey_to_job_to_playtime[ckey][job_title]
-// 	for(var/job_name in ckey_to_job_to_playtime[ckey])
-// 		checking_job = occupations_by_name[job_name]
-// 		if(!checking_job)
-// 			continue
-// 		if(checking_job.department_flag & wanted_job.department_flag)
-// 			total_playtime += ckey_to_job_to_playtime[ckey][job_name]
-// 	if(length(SSinactivity_and_job_tracking))
-// 		if(length(SSinactivity_and_job_tracking[ckey]))
-// 			/// Blame linters!!!!
-// 			var/iter_ref = SSinactivity_and_job_tracking[ckey]
-// 			for(var/played_job in iter_ref)
-// 				checking_job = occupations_by_name[played_job]
-// 				if(!checking_job)
-// 					continue
-// 				if(checking_job.department_flag & wanted_job.department_flag)
-// 					total_playtime += round(SSinactivity_and_job_tracking[ckey][played_job])
-// 	if(total_playtime + ckey_to_total_playtime[ckey] >= job_to_playtime_requirement[job_title])
-// 		return TRUE
-// 	else
-// 		return FALSE
-
-// /datum/controller/subsystem/job/proc/GetTotalPlaytimeMinutesCkey(ckey)
-// 	if(!ckey)
-// 		return 0
-// 	if(!ckey_to_total_playtime[ckey])
-// 		LoadPlaytimes(ckey)
-// 	if(!ckey_to_total_playtime[ckey])
-// 		return 0
-// 	return round(ckey_to_total_playtime[ckey] / 600)
-
 /// Takes a job priority #define such as JP_LOW and gets its string representation for logging.
 /datum/controller/subsystem/job/proc/job_priority_level_to_string(priority)
 	return job_priorities_to_strings["[priority]"] || "Undefined Priority \[[priority]\]"
@@ -214,7 +136,7 @@ SUBSYSTEM_DEF(job)
 	departments.Cut()
 	departments_by_name.Cut()
 	experience_jobs_map.Cut()
-
+//i am a dork lol
 
 	for(var/D in subtypesof(/datum/department))
 		var/datum/department/department = new D()
@@ -320,9 +242,6 @@ SUBSYSTEM_DEF(job)
 		if(check_job_eligibility(player, job, "FOC", add_job_to_log = FALSE) != JOB_AVAILABLE)
 			continue
 
-		// if(!assignable_by_job[job.type])
-		// 	assignable_by_job[job.type] = list("[JOB_LEVEL_LOW]" = list(), "[JOB_LEVEL_MEDIUM]" = list(), "[JOB_LEVEL_HIGH]" = list())
-		// assignable_by_job[job.type]["[player_job_level]"] |= player
 		JobDebug("FOC pass, Player: [player], Level: [job_priority_level_to_string(level)]")
 		candidates += player
 	return candidates
