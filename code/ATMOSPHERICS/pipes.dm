@@ -72,6 +72,8 @@
 	return QDEL_HINT_QUEUE
 
 /obj/machinery/atmospherics/pipe/attackby(obj/item/I, mob/user)
+	if (istype(src, /obj/machinery/atmospherics/tank))
+		return ..()
 	if (istype(src, /obj/machinery/atmospherics/pipe/vent))
 		return ..()
 
@@ -127,7 +129,10 @@
 		return null
 */
 
-/obj/machinery/atmospherics/pipe/color_cache_name(var/obj/machinery/atmospherics/node)
+/obj/machinery/atmospherics/pipe/color_cache_name(obj/machinery/atmospherics/node)
+	if(istype(src, /obj/machinery/atmospherics/tank))
+		return ..()
+
 	if(istype(node, /obj/machinery/atmospherics/pipe/manifold) || istype(node, /obj/machinery/atmospherics/pipe/manifold4w))
 		if(pipe_color == node.pipe_color)
 			return node.pipe_color
