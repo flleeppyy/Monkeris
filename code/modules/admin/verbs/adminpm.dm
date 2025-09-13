@@ -72,7 +72,7 @@
 			if(!C.holder && holder && holder.fakekey)
 				recieve_pm_type = "Admin"
 			else
-				recieve_pm_type = holder.rank
+				recieve_pm_type = holder.rank_names()
 
 	else if(!C.holder)
 		to_chat(src, "<font color='red'>Error: Admin-PM: Non-admin to non-admin PM communication is forbidden.</font>")

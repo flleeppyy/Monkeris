@@ -442,12 +442,10 @@
 	if(D) //they were previously an admin
 		D.disassociate() //existing admin needs to be disassociated
 		D.ranks = new_ranks //set the admin_rank as our rank
-		D.bypass_2fa = TRUE // Another admin has cleared us
 		var/client/C = GLOB.directory[admin_ckey]
 		D.associate(C)
 	else
 		D = new(new_ranks, admin_ckey) //new admin
-		D.bypass_2fa = TRUE // Another admin has cleared us
 		D.activate()
 	message_admins(m1)
 	log_admin(m2)
