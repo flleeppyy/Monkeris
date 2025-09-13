@@ -353,3 +353,15 @@
 		ST.storyteller_panel()
 	else
 		to_chat(usr, span_warning("There is no storyteller."))
+
+/datum/admins/proc/cmd_show_exp_panel(client/client_to_check)
+	if(!check_rights(R_ADMIN))
+		return
+	if(!client_to_check)
+		to_chat(usr, span_danger("ERROR: Client not found."), confidential = TRUE)
+		return
+	if(!CONFIG_GET(flag/use_exp_tracking))
+		to_chat(usr, span_warning("Tracking is disabled in the server configuration file."), confidential = TRUE)
+		return
+
+	new /datum/job_report_menu(client_to_check, usr)

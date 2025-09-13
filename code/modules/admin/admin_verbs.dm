@@ -167,6 +167,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, list(
 	/client/proc/admin_ghost,
 	/client/proc/invisimin,
 	/datum/verbs/menu/Admin/verb/playerpanel, /* It isn't /datum/admin but it fits no less */
+	/client/proc/cmd_admin_check_player_exp, /* shows players by playtime */
 	/client/proc/storyteller_panel,
 	/client/proc/stickybanpanel,
 	/client/proc/ban_panel,

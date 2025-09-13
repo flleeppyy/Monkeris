@@ -67,7 +67,7 @@
 			else
 				output += "<p>\[<a href='byond://?src=[REF(src)];showpoll=1'>Show Player Polls</A>\]</p>"
 
-	if (src.client.holder)
+	if (src.client?.holder)
 		output += "<hr>"
 		output += "<div align='center'>[span_bold("Admin Quick Verbs")]"
 		if (SSticker.state <= GAME_STATE_PREGAME)
