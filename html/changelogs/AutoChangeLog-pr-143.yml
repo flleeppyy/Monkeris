@@ -1,0 +1,5 @@
+author: Sun-Soaked
+delete-after: true
+changes:
+  - bugfix: removes an unessecary else statement that was preventing 
+      visible_message() from displaying to user properly
