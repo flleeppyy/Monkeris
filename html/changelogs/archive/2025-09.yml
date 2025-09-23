@@ -74,3 +74,7 @@
 2025-09-15:
   flleeppyy:
   - rscdel: Removed IRC functionality, it was barely used.
+2025-09-23:
+  Sun-Soaked:
+  - bugfix: removes an unessecary else statement that was preventing visible_message()
+      from displaying to user properly
