@@ -1,0 +1,10 @@
+author: Deal5
+delete-after: true
+changes:
+  - rscadd: Added a reward for killing OS Boss (Type - 0315)
+  - balance: Rebalanced One Star Stalkers.
+  - bugfix: Fixed One Star boss' attack patterns to be less clunky.
+  - soundadd: Added some sounds to One Star mobs
+  - balance: Changed several One Star drones bevaiors or characteristics
+  - bugfix: Simple mobs now update health properly and don't die with a delay if
+      hit.
