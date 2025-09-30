@@ -86,3 +86,6 @@
   - soundadd: Added some sounds to One Star mobs
   - balance: Changed several One Star drones bevaiors or characteristics
   - bugfix: Simple mobs now update health properly and don't die with a delay if hit.
+2025-09-30:
+  blackwolf602:
+  - bugfix: the errors in
