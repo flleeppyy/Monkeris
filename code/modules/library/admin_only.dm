@@ -83,7 +83,7 @@
 	search_page = clamp(search_page, 0, page_count)
 
 /obj/machinery/computer/libraryconsole/admin_only_do_not_map_in_you_fucker/ui_status(mob/user, datum/ui_state/state)
-	if(!check_rights_for(user.client, R_BAN))
+	if(!check_rights(R_BAN, C = user.client))
 		return UI_CLOSE
 	if(!SSdbcore.Connect())
 		can_connect = FALSE
