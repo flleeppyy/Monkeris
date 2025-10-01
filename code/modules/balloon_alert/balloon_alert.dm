@@ -28,7 +28,7 @@
 /atom/proc/balloon_alert_to_viewers(message, self_message, vision_distance = DEFAULT_MESSAGE_RANGE, list/ignored_mobs)
 	SHOULD_NOT_SLEEP(TRUE)
 
-	var/list/hearers = getHearersInRangeChunked(vision_distance, src)
+	var/list/hearers = getHearersInRangeChunked(src, vision_distance)
 	hearers -= ignored_mobs
 
 	for (var/mob/hearer in hearers)

@@ -57,19 +57,19 @@
 		var/datum/book_info/info = book.book_data
 		books_in_area += info.return_copy()
 
-/obj/structure/bookcase/examine(mob/user)
-	. = ..()
+/obj/structure/bookcase/examine(mob/user, extra_description = "")
 	if(!anchored)
-		. += span_notice("The <i>bolts</i> on the bottom are unsecured.")
+		extra_description += span_notice("The <i>bolts</i> on the bottom are unsecured.")
 	else
-		. += span_notice("It's secured in place with <b>bolts</b>.")
+		extra_description += span_notice("It's secured in place with <b>bolts</b>.")
 	switch(state)
 		if(BOOKCASE_UNANCHORED)
-			. += span_notice("There's a <b>small crack</b> visible on the back panel.")
+			extra_description += span_notice("There's a <b>small crack</b> visible on the back panel.")
 		if(BOOKCASE_ANCHORED)
-			. += span_notice("There's space inside for a <i>wooden</i> shelf.")
+			extra_description += span_notice("There's space inside for a <i>wooden</i> shelf.")
 		if(BOOKCASE_FINISHED)
-			. += span_notice("There's a <b>small crack</b> visible on the shelf.")
+			extra_description += span_notice("There's a <b>small crack</b> visible on the shelf.")
+	. = ..(user, extra_description)
 
 /obj/structure/bookcase/set_anchored(anchorvalue)
 	. = ..()

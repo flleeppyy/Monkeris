@@ -1,5 +1,5 @@
 
-import { sortBy } from 'common/collections';
+import { map, sortBy } from 'common/collections';
 import {
   Box,
   Button,
@@ -11,10 +11,36 @@ import {
   Table,
 } from 'tgui-core/components';
 import { flow } from 'tgui-core/fp';
+import { BooleanLike } from 'tgui-core/react';
 
 import { useBackend } from '../backend';
 import { Window } from '../layouts';
-import { PageSelect } from './LibraryConsole';
+import { PageSelect } from './LibraryConsole/components/PageSelect';
+
+type Book = {
+  author: string;
+  category: string;
+  title: string;
+  id: number;
+};
+
+type DisplayBook = Book & {
+  key: number;
+};
+
+interface LibraryVisitorData {
+  can_db_request: BooleanLike;
+  search_categories: string[];
+  category: string;
+  author: string;
+  title: string;
+  book_id: string;
+  page_count: number;
+  our_page: number;
+  pages: Book[];
+  can_connect: BooleanLike;
+  params_changed: BooleanLike;
+}
 
 export const LibraryVisitor = (props) => {
   return (
@@ -25,7 +51,7 @@ export const LibraryVisitor = (props) => {
 };
 
 const BookListing = (props) => {
-  const { act, data } = useBackend();
+  const { act, data } = useBackend<LibraryVisitorData>();
   const { can_connect, can_db_request, our_page, page_count } = data;
   if (!can_connect) {
     return (
@@ -62,7 +88,7 @@ const BookListing = (props) => {
 };
 
 const SearchAndDisplay = (props) => {
-  const { act, data } = useBackend();
+  const { act, data } = useBackend<LibraryVisitorData>();
   const {
     can_db_request,
     search_categories = [],
@@ -73,12 +99,12 @@ const SearchAndDisplay = (props) => {
     params_changed,
   } = data;
   const records = flow([
-    map((record, i) => ({
+    (records) => map<Book, DisplayBook>(records, (record, i) => ({
       ...record,
       // Generate a unique id
       key: i,
     })),
-    sortBy((record) => record.key),
+    (records) => sortBy<DisplayBook>(records, (record) => record.key),
   ])(data.pages);
   return (
     <Section>

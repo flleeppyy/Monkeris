@@ -16,9 +16,15 @@
 	var/in_use = 0
 	var/damtype = "brute"
 	var/armor_divisor = 1
-	var/corporation
 	var/heat = 0
+	/// The vertical pixel offset applied when the object is anchored on a tile with table
+	/// Ignored when set to 0 - to avoid shifting directional wall-mounted objects above tables
+	var/anchored_tabletop_offset = 0
 
+/obj/Initialize(mapload)
+	. = ..()
+
+	check_on_table()
 
 /obj/proc/is_hot()
 	return heat
@@ -281,6 +287,11 @@
 /obj/proc/deconstruct(disassembled = TRUE)
 	SEND_SIGNAL(src, COMSIG_OBJ_DECONSTRUCT, disassembled)
 	qdel(src)
+
+/// Adjusts the vertical pixel offset when the object is anchored on a tile with table
+/obj/proc/check_on_table()
+	if(anchored_tabletop_offset != 0 && !istype(src, /obj/structure/table) && locate(/obj/structure/table) in loc)
+		pixel_y = anchored ? anchored_tabletop_offset : initial(pixel_y)
 
 /obj/vv_get_dropdown()
 	. = ..()
