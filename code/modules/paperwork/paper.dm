@@ -97,6 +97,7 @@
 
 	// We check loc one level up, so we can rename in clipboards and such. See also: /obj/item/photo/rename()
 	if((loc == usr || loc.loc && loc.loc == usr) && usr.stat == 0 && n_name)
+		log_paper("[key_name(usr)] renamed [name] to [n_name]")
 		name = n_name
 		add_fingerprint(usr)
 
@@ -204,7 +205,7 @@
 	if (findtext(t, "\[sign\]"))
 		t = replacetext(t, "\[sign\]", "<font face=\"[signfont]\"><i>[get_signature(P, user)]</i></font>")
 
-	if (iscrayon) // If it is a crayon, and he still tries to use these, make them empty!
+	if (iscrayon) // If it is a crayon, and they still try to use these, make them empty!
 		t = replacetext(t, "\[*\]", "")
 		t = replacetext(t, "\[hr\]", "")
 		t = replacetext(t, "\[small\]", "")
@@ -243,6 +244,7 @@
 	if(P.lit && !user.restrained())
 		if(istype(P, /obj/item/flame/lighter/zippo))
 			class = "rose"
+		log_paper("[key_name(user)] burned [src] with [P]")
 
 		user.visible_message("<span class='[class]'>[user] holds \the [P] up to \the [src], it looks like \he's trying to burn it!</span>", \
 		"<span class='[class]'>You hold \the [P] up to \the [src], burning it slowly.</span>")
@@ -284,9 +286,10 @@
 		if(!t)
 			return
 
-		var/obj/item/i = usr.get_active_held_item() // Check to see if he still got that darn pen, also check if he's using a crayon or pen.
+		var/obj/item/i = usr.get_active_held_item() // Check to see if they still have that darn pen, also check if they're using a crayon or pen.
 		var/iscrayon = 0
 		if(!istype(i, /obj/item/pen))
+			log_paper("[key_name(usr)] failed to write to [src] with [i] (not a pen), contents: [i]")
 			return
 
 		if(istype(i, /obj/item/pen/crayon))
@@ -295,24 +298,30 @@
 
 		// if paper is not in usr, then it must be near them, or in a clipboard or folder, which must be in or near usr
 		if(src.loc != usr && !src.Adjacent(usr) && !((istype(src.loc, /obj/item/clipboard) || istype(src.loc, /obj/item/folder)) && (src.loc.loc == usr || src.loc.Adjacent(usr)) ) )
+			log_paper("[key_name(usr)] failed to write to [src] with [i] (ungodly long check), contents: [i]")
 			return
 
 		var/last_fields_value = fields
 
 		//t = html_encode(t)
 		t = replacetext(t, "\n", "<BR>")
+		var/before_pencode = t
 		t = parsepencode(t, i, usr, iscrayon) // Encode everything from pencode to html
 
 
 		if(fields > MAX_FIELDS)//large amount of fields creates a heavy load on the server, see updateinfolinks() and addtofield()
 			to_chat(usr, span_warning("Too many fields. Sorry, you can't do this."))
+			log_paper("[key_name(usr)] failed to write to [src] with [i], contents: [before_pencode]")
+
 			fields = last_fields_value
 			return
 
+		log_paper("[key_name(usr)] write to [src] with [i], contents: [before_pencode]")
+
 		if(id!="end")
-			addtofield(text2num(id), t) // He wants to edit a field, let him.
+			addtofield(text2num(id), t) // They want to edit a field, let them.
 		else
-			info += t // Oh, he wants to edit to the end of the file, let him.
+			info += t // Oh, they want to edit to the end of the file, let them.
 			updateinfolinks()
 		playsound(src,'sound/effects/PEN_Ball_Point_Pen_Circling_01_mono.ogg',40,1)
 		update_space(t)
@@ -396,6 +405,7 @@
 		if((!in_range(src, usr) && loc != user && !( istype(loc, /obj/item/clipboard) ) && loc.loc != user && user.get_active_held_item() != P))
 			return
 		playsound(src,'sound/effects/Stamp.ogg',40,1)
+		log_paper("[key_name(user)] stamped [name] with [P]")
 		stamps += (stamps=="" ? "<HR>" : "<BR>") + "<i>This paper has been stamped with the [P.name].</i>"
 
 		var/image/stampoverlay = image('icons/obj/bureaucracy.dmi')

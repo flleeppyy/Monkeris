@@ -277,6 +277,11 @@
 
 /obj/proc/multiply_projectile_halloss(newmult)
 
+///the obj is deconstructed into pieces, whether through careful disassembly or when destroyed.
+/obj/proc/deconstruct(disassembled = TRUE)
+	SEND_SIGNAL(src, COMSIG_OBJ_DECONSTRUCT, disassembled)
+	qdel(src)
+
 /obj/vv_get_dropdown()
 	. = ..()
 	VV_DROPDOWN_OPTION("", "---")
