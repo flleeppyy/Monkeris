@@ -270,10 +270,6 @@
 		return
 
 	if(href_list["write"])
-		if(!CONFIG_GET(flag/paper_input))
-			to_chat(usr, span_warning("No matter how hard you try to write on \the [src], nothing shows up! (Paper input disabled in config.)"))
-			return
-
 		var/id = href_list["write"]
 		//var/t = strip_html_simple(input(usr, "What text do you wish to add to " + (id=="end" ? "the end of the paper" : "field "+id) + "?", "[name]", null),8192) as message
 
