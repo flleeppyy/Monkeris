@@ -28,7 +28,6 @@
 		"game/machinery/overview.dm",
 		"game/machinery/syndicatebeacon.dm",
 		"game/machinery/transformer.dm",
-		"game/machinery/walllockers.dm",
 		"game/objects/items/weapons/circuitboards/computer/camera_monitor.dm",
 		"game/objects/items/weapons/game_kit.dm",
 		"game/objects/random/biomes/medical.dm",

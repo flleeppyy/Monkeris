@@ -30,12 +30,15 @@ def post_error(string):
     print(red(f"Ticked File Enforcement [{file_reference}]: " + string))
     if on_github:
         print(f"::error file={file_reference},line=1,title=Ticked File Enforcement::{string}")
+        missing_files = []
+        for excluded_file in excluded_files:
+            full_file_path = scannable_directory + excluded_file
+            if not os.path.isfile(full_file_path):
+                missing_files.append(full_file_path)
 
-for excluded_file in excluded_files:
-    full_file_path = scannable_directory + excluded_file
-    if not os.path.isfile(full_file_path):
-        post_error(f"Excluded file {full_file_path} does not exist, please remove it!")
-        sys.exit(1)
+        if missing_files:
+            post_error("The following excluded files do not exist:\n" + "\n".join(missing_files) + "\nPlease remove them!")
+            sys.exit(1)
 
 file_extensions = ("dm", "dmf")
 
