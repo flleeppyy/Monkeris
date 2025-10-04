@@ -219,8 +219,8 @@
 	if(!overridedatum.call_Flag(user = user, flag = GI_SPECIAL))
 		. = ..()
 
-/obj/item/gun/projectile/automatic/modular/hand_spin(mob/living/carbon/caller)
-	overridedatum.call_Flag(user = caller, flag = GI_SPIN)
+/obj/item/gun/projectile/automatic/modular/hand_spin(mob/living/carbon/requester)
+	overridedatum.call_Flag(user = requester, flag = GI_SPIN)
 
 /obj/item/gun/projectile/automatic/modular/proc/reset_action_buttons()
 	for(var/key in overridedatum.priorities)
