@@ -751,6 +751,9 @@ SUBSYSTEM_DEF(ticker)
 	// else if(gamelogloc)
 	// 	to_chat(world, span_info("Round logs can be located <a href=\"[gamelogloc]\">at this website!</a>"))
 
+	save_admin_data()
+	update_everything_flag_in_db()
+
 	log_game(span_boldannounce("Rebooting World. [reason]"))
 
 	world.Reboot()
