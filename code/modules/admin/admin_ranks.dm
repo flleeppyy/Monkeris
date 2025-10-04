@@ -79,8 +79,8 @@ GLOBAL_PROTECT(protected_ranks)
 				flag = R_VAREDIT
 			if("EVERYTHING")
 				flag = R_EVERYTHING
-			// if("SOUND")
-			// 	flag = R_SOUND
+			if("SOUND")
+				flag = R_SOUND
 			if("SPAWN")
 				flag = R_SPAWN
 			if("AUTOADMIN")

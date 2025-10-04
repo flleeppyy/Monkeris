@@ -182,8 +182,8 @@ GLOBAL_LIST_INIT(modulo_angle_to_dir, list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,
 	// 	. += "[seperator]POLL"
 	if(rights & R_VAREDIT)
 		. += "[seperator]VAREDIT"
-	// if(rights & R_SOUND)
-	// 	. += "[seperator]SOUND"
+	if(rights & R_SOUND)
+		. += "[seperator]SOUND"
 	if(rights & R_SPAWN)
 		. += "[seperator]SPAWN"
 	if(rights & R_AUTOADMIN)
