@@ -133,6 +133,17 @@
 	var/input_dir = 0
 	var/output_dir = 0
 
+/obj/machinery/mineral/processing_unit/Initialize(mapload, d)
+	. = ..()
+	//Locate our output and input machinery.
+	var/obj/marker = null
+	marker = locate(/obj/landmark/machinery/input) in range(1, loc)
+	if(marker)
+		input_dir = get_dir(src, marker)
+	marker = locate(/obj/landmark/machinery/output) in range(1, loc)
+	if(marker)
+		output_dir = get_dir(src, marker)
+
 /obj/machinery/mineral/processing_unit/LateInitialize()
 	. = ..()
 
@@ -142,26 +153,17 @@
 	// initialize static alloy_data list
 	if(!alloy_data)
 		alloy_data = list()
-		for(var/alloytype in typesof(/datum/alloy)-/datum/alloy)
+		for(var/alloytype in subtypesof(/datum/alloy))
 			alloy_data += new alloytype()
 
 	if(!ore_data || !ore_data.len)
-		for(var/oretype in typesof(/ore)-/ore)
+		for(var/oretype in subtypesof(/ore))
 			var/ore/OD = new oretype()
 			ore_data[OD.name] = OD
-	for(var/ore/OD in ore_data)
-		ores_processing[OD.name] = 0
-		ores_stored[OD.name] = 0
+	for(var/ore_name in ore_data)
+		ores_processing[ore_name] = 0
+		ores_stored[ore_name] = 0
 
-	spawn()
-		//Locate our output and input machinery.
-		var/obj/marker = null
-		marker = locate(/obj/landmark/machinery/input) in range(1, loc)
-		if(marker)
-			input_dir = get_dir(src, marker)
-		marker = locate(/obj/landmark/machinery/output) in range(1, loc)
-		if(marker)
-			output_dir = get_dir(src, marker)
 
 /obj/machinery/mineral/processing_unit/update_icon()
 	icon_state = "furnace[active ? "_on" : ""]"
