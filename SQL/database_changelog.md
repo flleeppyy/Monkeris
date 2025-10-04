@@ -2,17 +2,17 @@ Any time you make a change to the schema files, remember to increment the databa
 
 Make sure to also update `DB_MAJOR_VERSION` and `DB_MINOR_VERSION`, which can be found in `code/__DEFINES/subsystem.dm`.
 
-The latest database version is 2.0; The query to update the schema revision table is:
+The latest database version is 3.0; The query to update the schema revision table is:
 
 ```sql
-INSERT INTO `schema_revision` (`major`, `minor`) VALUES (2, 1);
+INSERT INTO `schema_revision` (`major`, `minor`) VALUES (3, 1);
 ```
 
 
 In any query remember to add a prefix to the table names if you use one.
 
 -----------------------------------------------------
-Version 2.1 1 October 2025, by Flleeppyy
+Version 3.1 3 October 2025, by Flleeppyy
 Alter `library` table to add , add `library_action` table.
 
 ```sql
@@ -42,6 +42,31 @@ CREATE TABLE `library_action` (
   `ip_addr` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4;
+```
+-----------------------------------------------------
+Version 3.0 3 October 2025, by Flleeppyy
+Add `admin_log`, `admin_ranks` table
+
+```sql
+CREATE TABLE `admin_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `datetime` datetime NOT NULL,
+  `round_id` int(11) unsigned NULL,
+  `adminckey` varchar(32) NOT NULL,
+  `adminip` int(10) unsigned NOT NULL,
+  `operation` enum('add admin','remove admin','change admin rank','add rank','remove rank','change rank flags') NOT NULL,
+  `target` varchar(32) NOT NULL,
+  `log` varchar(1000) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `admin_ranks` (
+  `rank` varchar(32) NOT NULL,
+  `flags` smallint(5) unsigned NOT NULL,
+  `exclude_flags` smallint(5) unsigned NOT NULL,
+  `can_edit_flags` smallint(5) unsigned NOT NULL,
+  PRIMARY KEY (`rank`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 ```
 -----------------------------------------------------
 Version 2.0 5 September 2025, by Flleeppyy

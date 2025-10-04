@@ -329,7 +329,7 @@ This function restores all organs.
 	sharp = FALSE,
 	edge = FALSE,
 	obj/used_weapon,
-	spread_damage = FALSE // NEW: evenly spread damage across all body parts
+	spread_damage = FALSE
 )
 
 	// Handle non-BRUTE/BURN damage first
