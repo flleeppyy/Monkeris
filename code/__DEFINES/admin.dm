@@ -34,6 +34,7 @@
 #define BAN_PANEL_PERMANENT "permanent"
 
 // Admin permissions.
+#define R_NONE 			 NONE
 #define R_FUN           (1<<0)
 #define R_SERVER        (1<<1)
 #define R_DEBUG         (1<<2)
@@ -47,10 +48,11 @@
 #define R_VAREDIT		(1<<10)
 #define R_AUTOADMIN 	(1<<11)
 #define R_DBRANKS		(1<<12)
+#define R_SOUND 		(1<<13)
 
 #define R_DEFAULT R_AUTOADMIN
 
-#define R_EVERYTHING (1<<13)-1 //the sum of all other rank permissions, used for +EVERYTHING
+#define R_EVERYTHING (1<<14)-1 //the sum of all other rank permissions, used for +EVERYTHING
 
 
 #define ADMIN_QUE(user) "(<a href='byond://?_src_=holder;[HrefToken(forceGlobal = TRUE)];adminmoreinfo=[REF(user)]'>?</a>)"
