@@ -3,6 +3,10 @@ set -euo pipefail
 
 source dependencies.sh
 
+#Disable man-db auto update
+echo "set man-db/auto-update false" | debconf-communicate
+dpkg-reconfigure man-db
+
 sudo dpkg --add-architecture i386
 sudo apt-get update
 sudo apt install libcurl4:i386
