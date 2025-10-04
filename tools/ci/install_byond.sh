@@ -2,6 +2,7 @@
 set -euo pipefail
 
 source dependencies.sh
+# This cuts some time down by omitting `man`
 sudo tee /etc/dpkg/dpkg.cfg.d/01_nodoc > /dev/null << 'EOF'
 path-exclude /usr/share/doc/*
 path-exclude /usr/share/man/*
