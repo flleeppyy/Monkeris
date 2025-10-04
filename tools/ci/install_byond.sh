@@ -2,10 +2,11 @@
 set -euo pipefail
 
 source dependencies.sh
-
-#Disable man-db auto update
-echo "set man-db/auto-update false" | debconf-communicate
-dpkg-reconfigure man-db
+sudo tee /etc/dpkg/dpkg.cfg.d/01_nodoc > /dev/null << 'EOF'
+path-exclude /usr/share/doc/*
+path-exclude /usr/share/man/*
+path-exclude /usr/share/info/*
+EOF
 
 sudo dpkg --add-architecture i386
 sudo apt-get update
