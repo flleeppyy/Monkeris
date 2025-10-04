@@ -183,7 +183,7 @@
 	return rolled_poster
 
 //separated to reduce code duplication. Moved here for ease of reference and to unclutter r_wall/attackby()
-/turf/closed/proc/place_poster(obj/item/poster/rolled_poster, mob/user)
+/turf/wall/proc/place_poster(obj/item/poster/rolled_poster, mob/user)
 	if(!rolled_poster.poster_structure)
 		to_chat(user, span_warning("[rolled_poster] has no poster... inside it? Inform a coder!"))
 		return

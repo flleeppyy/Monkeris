@@ -127,7 +127,7 @@ GLOBAL_VAR_INIT(refid_filter, TYPEID(filter(type="angular_blur")))
 #define istimer(A) (istype(A, /obj/item/device/assembly/timer))
 
 // Turfs
-#define isclosedturf(A) (istype(A, /turf/closed))
+#define isclosedturf(A) (A.layer == CLOSED_TURF_LAYER)
 
 // Book things
 GLOBAL_LIST_INIT(book_types, typecacheof(list(

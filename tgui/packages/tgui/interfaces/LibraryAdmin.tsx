@@ -23,7 +23,7 @@ export const LibraryAdmin = (props) => {
     <Window
       title="Admin Library Console"
       theme="admin"
-      width={800}
+      width={915}
       height={600}
     >
       {modifyMethod ? <ModifyPage /> : <BookListing />}
