@@ -15,7 +15,6 @@
 		"datums/wires/suit_storage_unit.dm",
 		"game/gamemodes/events/money_hacker.dm",
 		"game/gamemodes/events/spontaneous_appendicitis.dm",
-		"game/gamemodes/roleset/double_agents.dm",
 		"game/gamemodes/storyevents/meteors.dm",
 		"game/gamemodes/storytellers/debug.dm",
 		"game/gamemodes/storytellers/erida.dm",
