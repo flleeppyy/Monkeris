@@ -19,10 +19,12 @@ import { useLibraryContext } from '../useLibraryContext';
 
 export function Checkout(props) {
   const { act, data } = useBackend<LibraryConsoleData>();
-  const { checkout_page, checkout_page_count } = data;
+  const { checkout_page, checkout_page_count, inventory = [] } = data;
 
   const { checkoutBookState } = useLibraryContext();
   const [checkoutBook, setCheckoutBook] = checkoutBookState;
+
+  const noInventory = inventory.length === 0;
 
   return (
     <Stack vertical height="100%" justify="space-between">
@@ -54,6 +56,10 @@ export function Checkout(props) {
           icon="barcode"
           fontSize="20px"
           onClick={() => setCheckoutBook(true)}
+          disabled={noInventory}
+          tooltip={
+            noInventory ? 'No books in the inventory, add some!' : undefined
+          }
         >
           Check-Out Book
         </Button>

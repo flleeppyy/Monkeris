@@ -551,10 +551,12 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/inventory_update()
 	inventory_page_count = round(max(length(inventory) - 1, 0) / INVENTORY_PER_PAGE) //This is just floor()
 	inventory_page = clamp(inventory_page, 0, inventory_page_count)
+	update_static_data_for_all_viewers()
 
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/checkout_update()
 	checkout_page_count = round(max(length(checkouts) - 1, 0) / CHECKOUTS_PER_PAGE) //This is just floor()
 	checkout_page = clamp(checkout_page, 0, checkout_page_count)
+	update_static_data_for_all_viewers()
 
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/print_forbidden_lore(mob/user)
 	can_spawn_lore = FALSE
