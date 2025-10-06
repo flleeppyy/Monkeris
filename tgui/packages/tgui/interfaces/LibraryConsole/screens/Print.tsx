@@ -6,9 +6,11 @@ import type { LibraryConsoleData } from '../types';
 
 export function Print(props) {
   const { act, data } = useBackend<LibraryConsoleData>();
-  const { bible_name, bible_sprite, deity, posters, religion } = data;
+  const { posters } = data;
 
   const [selectedPoster, setSelectedPoster] = useState(posters[0]);
+
+  const noPosters = posters.length === 0;
 
   return (
     <Stack vertical fill>
@@ -68,6 +70,8 @@ export function Print(props) {
               fontSize="30px"
               lineHeight={2}
               textAlign="center"
+              disabled={noPosters}
+              tooltip={noPosters ? 'No posters available!' : undefined}
               onClick={() =>
                 act('print_poster', {
                   poster_name: selectedPoster,

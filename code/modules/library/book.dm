@@ -3,7 +3,7 @@
 	name = "book"
 	desc = "Crack it open, inhale the musk of its pages, and learn something new."
 	icon = 'icons/obj/library.dmi'
-	icon_state ="book"
+	icon_state ="book1"
 	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL  //upped to three because books are, y'know, pretty big. (and you could hide them inside eachother recursively forever)
@@ -39,6 +39,8 @@
 /obj/item/book/Initialize(mapload)
 	. = ..()
 	book_data = new(starting_title, starting_author, starting_content)
+	pixel_y = rand(-8, 8)
+	pixel_x = rand(-9, 9)
 
 	AddElement(/datum/element/falling_hazard, damage = 5, wound_bonus = 0, hardhat_safety = TRUE, crushes = FALSE, impact_sound = drop_sound)
 
@@ -224,10 +226,3 @@
 		playsound(src, 'sound/effects/rip1.ogg', vol = 75, vary = TRUE)
 	carved = TRUE
 	return TRUE
-
-/obj/item/book/random
-	icon_state = "random_book"
-	/// The category of books to pick from when creating this book.
-	var/random_category = null
-	/// If this book has already been 'generated' yet.
-	var/random_loaded = FALSE

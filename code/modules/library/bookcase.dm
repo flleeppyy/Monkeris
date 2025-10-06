@@ -24,13 +24,23 @@
 	/// How many random books to generate.
 	var/books_to_load = 0
 
-
-/obj/structure/bookcase/Initialize()
+/obj/structure/bookcase/Initialize(mapload)
 	. = ..()
+	if(!mapload || QDELETED(src))
+		return
+	// Only mapload from here on
+	set_anchored(TRUE)
+	state = BOOKCASE_FINISHED
 	for(var/obj/item/I in loc)
-		if(istype(I, /obj/item/book))
-			I.loc = src
+		if(!isbook(I))
+			continue
+		I.forceMove(src)
 	update_icon()
+
+	if(SSlibrary.initialized)
+		INVOKE_ASYNC(src, PROC_REF(load_shelf))
+	else
+		SSlibrary.shelves_to_load += src
 
 ///proc for doing things after a bookcase is randomly populated
 /obj/structure/bookcase/proc/after_random_load()
@@ -183,54 +193,11 @@
 	icon_state = "book-[clamp(amount, 0, 5)]"
 	return ..()
 
-/obj/structure/bookcase/random
-	load_random_books = TRUE
-	books_to_load = 2
-	icon_state = "random_bookcase"
-
-/obj/structure/bookcase/random/Initialize(mapload)
-	. = ..()
-	if(books_to_load && isnum(books_to_load))
-		books_to_load += pick(-1,-1,0,1,1)
-	update_icon()
-
-/proc/create_random_books(amount, location, fail_loud = FALSE, category = null, obj/item/book/existing_book)
-	. = list()
-	if(!isnum(amount) || amount<1)
-		return
-	if (!SSdbcore.Connect())
-		if(existing_book && (fail_loud || prob(5)))
-			var/error_text = "There once was a book from Nantucket<br>But the database failed us, so f*$k it.<br>I tried to be good to you<br>Now this is an I.O.U<br>If you're feeling entitled, well, stuff it!<br><br><font color='gray'>~</font>"
-			existing_book.book_data = new("Strange Book", "???", error_text)
-		return
-	if(prob(25))
-		category = null
-	var/datum/db_query/query_get_random_books = SSdbcore.NewQuery({"
-		SELECT title, author, content
-		FROM [format_table_name("library")]
-		WHERE isnull(deleted) AND (:category IS NULL OR category = :category)
-		ORDER BY rand() LIMIT :limit
-	"}, list("category" = category, "limit" = amount))
-	if(query_get_random_books.Execute())
-		while(query_get_random_books.NextRow())
-			var/list/book_deets = query_get_random_books.item
-			var/obj/item/book/to_randomize = existing_book ? existing_book : new(location)
-
-			to_randomize.book_data = new()
-			var/datum/book_info/data = to_randomize.book_data
-			data.set_title(book_deets[1], trusted = TRUE)
-			data.set_author(book_deets[2], trusted = TRUE)
-			data.set_content(book_deets[3], trusted = TRUE)
-			to_randomize.name = "Book: [to_randomize.book_data.title]"
-			if(!existing_book)
-				to_randomize.gen_random_icon_state()
-	qdel(query_get_random_books)
-
 /obj/structure/bookcase/manuals/medical
 	name = "Medical Manuals bookcase"
 
-/obj/structure/bookcase/manuals/medical/New()
-	..()
+/obj/structure/bookcase/manuals/medical/Initialize()
+	. = ..()
 	new /obj/item/book/manual/wiki/medical_guide(src)
 	new /obj/item/book/manual/wiki/medical_guide(src)
 	new /obj/item/book/manual/wiki/medical_guide(src)
@@ -240,8 +207,8 @@
 /obj/structure/bookcase/manuals/engineering
 	name = "Engineering Manuals bookcase"
 
-/obj/structure/bookcase/manuals/engineering/New()
-	..()
+/obj/structure/bookcase/manuals/engineering/Initialize()
+	. = ..()
 	new /obj/item/book/manual/wiki/engineering_construction(src)
 	new /obj/item/book/manual/wiki/engineering_hacking(src)
 	new /obj/item/book/manual/wiki/engineering_guide(src)
@@ -252,8 +219,8 @@
 /obj/structure/bookcase/manuals/research_and_development
 	name = "R&D Manuals bookcase"
 
-/obj/structure/bookcase/manuals/research_and_development/New()
-	..()
+/obj/structure/bookcase/manuals/research_and_development/Initialize()
+	. = ..()
 	new /obj/item/book/manual/wiki/science_research(src)
 	new /obj/item/book/manual/wiki/science_research(src)
 	new /obj/item/book/manual/wiki/science_robotics(src)

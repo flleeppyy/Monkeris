@@ -577,9 +577,9 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	can_spawn_lore = FALSE
 	to_chat(user, span_warning("You click off the page in a rush, and the machine hums back to normal, the tab gone..."))
 
-/obj/machinery/computer/libraryconsole/bookmanagement/balloon_alert_to_viewers(message, self_message, vision_distance, list/ignored_mobs)
-	. = ..()
-	say_quote(message)
+/obj/machinery/computer/libraryconsole/bookmanagement/balloon_alert_to_viewers(short_message, full_message)
+	. = ..(short_message)
+	say_quote(full_message || short_message)
 
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/upload_from_scanner(upload_category)
 	var/obj/machinery/libraryscanner/scan = get_scanner()
@@ -588,10 +588,10 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 		balloon_alert_to_viewers("No nearby scanner detected.")
 		return
 	if(!scan.cache)
-		balloon_alert_to_viewers("No cached book found. Aborting upload.")
+		balloon_alert_to_viewers("No cached book found.", "No cached book found. Aborting upload.")
 		return
 	if (!SSdbcore.Connect())
-		balloon_alert_to_viewers("Connection to Archive has been severed. Aborting.")
+		balloon_alert_to_viewers("Archive connection unavailable", "Connection to Archive has been severed. Aborting.")
 		return
 	var/datum/book_info/book = scan.cache
 	if(!book.title)
@@ -610,19 +610,20 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	"}, list("title" = book.title, "author" = book.author, "content" = book.content, "category" = upload_category, "ckey" = usr.ckey, "round_id" = GLOB.round_id))
 	if(!query_library_upload.Execute())
 		qdel(query_library_upload)
-		balloon_alert_to_viewers("Database error encountered uploading to Archive")
+		balloon_alert_to_viewers("Upload error!", "Database error encountered uploading to Archive")
 		return
 	usr.log_message(msg, LOG_GAME)
 	qdel(query_library_upload)
 	library_updated()
-	balloon_alert_to_viewers("Upload Complete. Uploaded title will be available for printing in a moment")
+	balloon_alert_to_viewers("Upload complete.", "Upload Complete. Uploaded title will be available for printing in a moment")
 	update_db_info()
+	update_static_data_for_all_viewers()
 
 /// Call this proc to attempt a print. It will return false if the print failed, true otherwise, longside some ux
 /// Accepts a callback to call when the print "finishes"
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/attempt_print(datum/callback/call_after)
 	if(!COOLDOWN_FINISHED(src, printer_cooldown))
-		balloon_alert_to_viewers("Printer currently unavailable, please wait a moment.")
+		balloon_alert_to_viewers("On cooldown!")
 		return FALSE
 	COOLDOWN_START(src, printer_cooldown, PRINTER_COOLDOWN)
 	playsound(src, 'sound/machines/printer.ogg', 50)
@@ -637,7 +638,7 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/print_book(id)
 	if (!SSdbcore.Connect())
-		balloon_alert_to_viewers("Connection to Archive has been severed. Aborting.")
+		balloon_alert_to_viewers("Upload error!", "Database error encountered uploading to Archive")
 		can_connect = FALSE
 		return
 
@@ -647,7 +648,7 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	)
 	if(!query_library_print.Execute())
 		qdel(query_library_print)
-		balloon_alert_to_viewers("PRINTER ERROR! Failed to print document (0x0000000F)")
+		balloon_alert_to_viewers("PRINTER ERROR!", "PRINTER ERROR! Failed to print document (0x0000000F)")
 		return
 
 	while(query_library_print.NextRow())
@@ -727,7 +728,7 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	switch(action)
 		if("scan")
 			if(cache?.compare(held_book.book_data))
-				balloon_alert_to_viewers("This book is already in my internal cache")
+				balloon_alert_to_viewers("Book already in cache!", "This book is already in my internal cache")
 				return
 			cache = held_book.book_data.return_copy()
 			flick("bigscanner1", src)

@@ -206,6 +206,8 @@
 
 	balloon_alert(user, "hanging poster...")
 	var/obj/structure/sign/poster/placed_poster = rolled_poster.poster_structure
+	// shitfix
+	// placed_poster.pixel_x = 0
 
 	flick("poster_being_set", placed_poster)
 	placed_poster.forceMove(src) //deletion of the poster is handled in poster/Exited(), so don't have to worry about P anymore.
@@ -244,7 +246,7 @@
 	name = "ripped poster"
 	desc = "You can't make out anything from the poster's original print. It's ruined."
 
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/ripped, 32)
+MAPPING_DIRECTIONAL_HELPERS_LIBRARY(/obj/structure/sign/poster/ripped, 32)
 
 /obj/structure/sign/poster/random
 	name = "random poster" // could even be ripped
@@ -256,6 +258,9 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/ripped, 32)
 	// 	/obj/structure/sign/poster/abductor,
 	// )
 
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/random, 32)
+/obj/structure/sign/poster/random/directional
+	printable = FALSE
+
+MAPPING_DIRECTIONAL_HELPERS_LIBRARY(/obj/structure/sign/poster/random, 32)
 
 #undef PLACE_SPEED
