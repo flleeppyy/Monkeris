@@ -79,5 +79,4 @@
 		poor_target.AddElement(/datum/element/squish, 30 SECONDS)
 	poor_target.Paralyse(0.5 SECONDS * fall_damage) // For a piano, that would be 30 seconds
 
-	#warn dont forget to get Mycahs input on if this should drain sanity, and how to do that.
 	// add_memory_in_range(poor_target, 7, /datum/memory/witness_vendor_crush, protagonist = poor_target, antagonist = source)

@@ -26,8 +26,6 @@ type Page = {
 export type LibraryConsoleData = {
   // active_newscaster_cooldown: BooleanLike;
   author: string;
-  bible_name: string;
-  bible_sprite: string;
   book_id: string;
   cache_author: string;
   cache_content: string;
@@ -40,7 +38,6 @@ export type LibraryConsoleData = {
   checkouts: CheckoutEntry[];
   // cooldown_string: string;
   default_category: string;
-  deity: string;
   display_lore: BooleanLike;
   has_cache: BooleanLike;
   has_checkout: BooleanLike;
@@ -54,7 +51,6 @@ export type LibraryConsoleData = {
   pages: Page[];
   params_changed: BooleanLike;
   posters: string[];
-  religion: string;
   screen_state: number;
   search_categories: string[];
   show_dropdown: BooleanLike;

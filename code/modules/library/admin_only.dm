@@ -2,8 +2,6 @@
 #define BOOK_ADMIN_RESTORE "undeleted"
 #define BOOK_ADMIN_REPORT "reported"
 
-#warn figure out why the fuck does this not work AT ALL
-
 /obj/machinery/computer/libraryconsole/admin_only_do_not_map_in_you_fucker
 	interface_type = "LibraryAdmin"
 	/// When a user clicks view, do we display the raw text, or process it with markdown
