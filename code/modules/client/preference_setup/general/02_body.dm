@@ -27,6 +27,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	name = "Body"
 	sort_order = 2
 	var/hide_species = TRUE
+	var/randomize_shutup = FALSE
 
 /datum/category_item/player_setup_item/physical/body/load_character(savefile/S)
 	from_file(S["species"], pref.species)
@@ -138,7 +139,16 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		return TOPIC_REFRESH
 
 	else if(href_list["random"])
-		pref.randomize_appearance_and_body_for()
+		if(randomize_shutup)
+			return TOPIC_REFRESH_UPDATE_PREVIEW
+
+		var/ohgod = alert(user, "Are you SURE you want to randomize your character? (You can always click \"Reload Slot\" at the top)", "Randomize Character", "Yes", "Yes (Shut up)", "No!")
+		if(ohgod == "No!")
+			return
+
+		if(ohgod == "Yes (Shut up)")
+			randomize_shutup = TRUE
+
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	else if(href_list["blood_type"])

@@ -72,6 +72,7 @@
 
 /datum/preferences/proc/ShowChoices(mob/user)
 	if(!SScharacter_setup.initialized)
+		to_chat(user, span_danger("Still initializing, please wait!"))
 		return
 	if(!user || !user.client)
 		return
