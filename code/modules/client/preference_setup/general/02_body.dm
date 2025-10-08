@@ -142,6 +142,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 
 	else if(href_list["random"])
 		if(randomize_shutup)
+			pref.randomize_appearance_and_body_for()
 			return TOPIC_REFRESH_UPDATE_PREVIEW
 
 		var/ohgod = alert(user, "Are you SURE you want to randomize your character? (You can always click \"Reload Slot\" at the top)", "Randomize Character", "Yes", "Yes (Shut up)", "No!")
@@ -151,6 +152,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		if(ohgod == "Yes (Shut up)")
 			randomize_shutup = TRUE
 
+		pref.randomize_appearance_and_body_for()
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	else if(href_list["blood_type"])
