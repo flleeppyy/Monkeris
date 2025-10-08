@@ -93,7 +93,6 @@
 	if(mymob)
 		updatePlaneMasters(mymob)
 
-
 /datum/hud/human
 	name = "ErisStyle"
 	icon = 'icons/mob/screen/ErisStyleHolo.dmi'
