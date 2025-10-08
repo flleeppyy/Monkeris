@@ -108,10 +108,7 @@ GLOBAL_LIST_EMPTY(gear_datums)
 /datum/category_item/player_setup_item/loadout/content(mob/user)
 	if(!pref.preview_icon)
 		pref.update_preview_icon()
-	if(pref.preview_north && pref.preview_south && pref.preview_west)
-		user << browse_rsc(pref.preview_north, "new_previewicon[NORTH].png")
-		user << browse_rsc(pref.preview_south, "new_previewicon[SOUTH].png")
-		user << browse_rsc(pref.preview_west, "new_previewicon[WEST].png")
+
 	. = list()
 	var/total_cost = 0
 	var/list/gears = pref.gear_list[pref.gear_slot]
@@ -156,8 +153,25 @@ GLOBAL_LIST_EMPTY(gear_datums)
 				. += " <a href='byond://?src=\ref[src];select_category=[category]'><font color = '#e67300'>[category] - [category_cost]</font></a> "
 			else
 				. += " <a href='byond://?src=\ref[src];select_category=[category]'>[category] - 0</a> "
-	. += "<div class='statusDisplay' style = 'max-width: 192px; clear:both;'><img src=new_previewicon[SOUTH].png width=64 height=64><img src=new_previewicon[WEST].png width=64 height=64><img src=new_previewicon[NORTH].png width=64 height=64></div>"
+	. += "<style>.icon { width: 64px; }</style>"
+	var/icon/north_icon = pref.preview_north
+	var/icon/south_icon = pref.preview_south
+	var/icon/east_icon = pref.preview_east
+	var/icon/west_icon = pref.preview_west
+
+	if(!north_icon) north_icon = pref.preview_icon
+	if(!south_icon) south_icon = pref.preview_icon
+	if(!east_icon) east_icon = pref.preview_icon
+	if(!west_icon) west_icon = pref.preview_icon
+
+	. += "<div class='statusDisplay' style = 'max-width: fit-content; clear:both;'>[ma2html(north_icon, user)][ma2html(south_icon, user)][ma2html(east_icon, user)][ma2html(west_icon, user)]</div>"
 	. += "</b></center></td></tr>"
+
+	. += "<tr><td colspan=3><center>"
+	. += "<a href='byond://?src=\ref[src];toggle_preview_value=[EQUIP_PREVIEW_LOADOUT]'>[pref.equip_preview_mob & EQUIP_PREVIEW_LOADOUT ? "Hide loadout" : "Show loadout"]</a>"
+	. += "<br><a href='byond://?src=\ref[src];toggle_preview_value=[EQUIP_PREVIEW_JOB]'>[pref.equip_preview_mob & EQUIP_PREVIEW_JOB ? "Hide job gear" : "Show job gear"]</a>"
+	. += "</center></td></tr>"
+
 
 	var/datum/loadout_category/LC = GLOB.loadout_categories[current_tab]
 	. += "<tr><td colspan=3><hr></td></tr>"

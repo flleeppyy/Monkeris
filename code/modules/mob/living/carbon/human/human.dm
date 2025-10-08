@@ -959,6 +959,8 @@ var/list/rank_prefix = list(\
 		icon_state = lowertext(species.name)
 		if (!organs.len)
 			rebuild_organs()
+			src.sync_organ_dna()
+
 		species.handle_post_spawn(src)
 		return !!species
 

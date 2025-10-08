@@ -17,9 +17,13 @@
 	var/list/obj/screen/plane_master/plane_masters = list() // see "appearance_flags" in the ref, assoc list of "[plane]" = object
 	var/list/obj/screen/openspace_overlay/openspace_overlays = list()
 
+	var/obj/screen/vis_holder/vis_holder
+
 /datum/hud/proc/updatePlaneMasters(mob/mymob)
 	if(!mymob || !mymob.client)
 		return
+	if (vis_holder)
+		mymob.client.screen += vis_holder
 
 	var/atom/player = mymob
 	if(mymob.client.virtual_eye)
@@ -85,8 +89,10 @@
 
 
 /datum/hud/New(mob/mymob)
+	vis_holder = new(null, src)
 	if(mymob)
 		updatePlaneMasters(mymob)
+
 
 /datum/hud/human
 	name = "ErisStyle"
@@ -109,7 +115,7 @@
 		"glassesoverlay" = list("type" = /obj/screen/glasses_overlay, "loc" = "1,1:-32", "icon_state" = "blank"),
 	)
 
-	/* !!!! IF YOU WANT TO ADD A VERB TO THIS - ADD ITS NAME TO code\modules\mob\living\carbon\human\species\species_hud.dm 
+	/* !!!! IF YOU WANT TO ADD A VERB TO THIS - ADD ITS NAME TO code\modules\mob\living\carbon\human\species\species_hud.dm
 	PLEASE DON'T REPEAT MY MISTAKES, I'VE WASTED HOURS OF MY LIFE ON THIS - Kegdo 2022*/
 	HUDneed = list(
 //status
