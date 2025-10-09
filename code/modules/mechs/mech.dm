@@ -66,7 +66,7 @@
 	injury_type = INJURY_TYPE_UNLIVING // Has no soft vitals, but also contains delicate electronics
 
 // Interface stuff.
-	var/list/hud_elements = list()
+	var/list/atom/movable/hud_elements = list()
 	var/list/hardpoint_hud_elements = list()
 	var/atom/movable/screen/movable/exosuit/health/hud_health
 	var/atom/movable/screen/movable/exosuit/toggle/hatch_open/hud_open

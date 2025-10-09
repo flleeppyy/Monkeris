@@ -149,7 +149,7 @@
 
 /datum/click_handler/ai/Click(atom/target, location, control, params)
 	var/modifiers = params2list(params)
-	if(isHUDobj(target) || istype(target, /HUD_element) || istype(target, /obj/effect))
+	if(isHUDobj(target) || istype(target, /atom/movable/hud_element) || istype(target, /obj/effect))
 		return TRUE
 	if(!isatom(target))
 		return TRUE
