@@ -348,7 +348,7 @@
 
 	var/dat = ""
 	dat += "<b>Welcome, [name].<br></b>"
-	dat += "Round Duration: [gameTimestamp()]<br>"
+	dat += "Round Duration: <B>[DisplayTimeText(world.time - SSticker.round_start_time)]</B><BR>"
 
 	if(evacuation_controller.has_evacuated()) //In case Nanotrasen decides reposess CentCom's shuttles.
 		dat += "<font color='red'><b>The vessel has been evacuated.</b></font><br>"
