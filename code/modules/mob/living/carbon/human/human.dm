@@ -1574,7 +1574,7 @@ var/list/rank_prefix = list(\
 	blocking = TRUE
 	visible_message(span_warning("[src] tenses up, ready to block!"))
 	if(HUDneed.Find("block"))
-		var/obj/screen/block/HUD = HUDneed["block"]
+		var/atom/movable/screen/block/HUD = HUDneed["block"]
 		HUD.update_icon()
 	update_block_overlay()
 	return
@@ -1585,7 +1585,7 @@ var/list/rank_prefix = list(\
 	blocking = FALSE
 	visible_message(span_notice("[src] lowers \his guard."))
 	if(HUDneed.Find("block"))
-		var/obj/screen/block/HUD = HUDneed["block"]
+		var/atom/movable/screen/block/HUD = HUDneed["block"]
 		HUD.update_icon()
 	update_block_overlay()
 	return

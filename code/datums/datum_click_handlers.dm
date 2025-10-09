@@ -56,8 +56,8 @@
 //In the case of click catchers, we resolve and return the turf under it
 /datum/click_handler/proc/resolve_world_target(a)
 
-	if (istype(a, /obj/screen/click_catcher))
-		var/obj/screen/click_catcher/CC = a
+	if (istype(a, /atom/movable/screen/click_catcher))
+		var/atom/movable/screen/click_catcher/CC = a
 		return CC.resolve(owner.mob)
 
 	if (istype(a, /turf))
