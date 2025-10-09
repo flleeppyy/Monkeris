@@ -87,7 +87,7 @@
 	return TRUE
 //--------------------------------------------------close end---------------------------------------------------------
 
-/obj/screen/vis_holder
+/atom/movable/screen/vis_holder
 	icon = ""
 	invisibility = INVISIBILITY_MAXIMUM
 

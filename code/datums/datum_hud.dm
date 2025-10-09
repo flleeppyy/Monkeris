@@ -17,7 +17,7 @@
 	var/list/atom/movable/screen/plane_master/plane_masters = list() // see "appearance_flags" in the ref, assoc list of "[plane]" = object
 	var/list/atom/movable/screen/openspace_overlay/openspace_overlays = list()
 
-	var/obj/screen/vis_holder/vis_holder
+	var/atom/movable/screen/vis_holder/vis_holder
 
 /datum/hud/proc/updatePlaneMasters(mob/mymob)
 	if(!mymob || !mymob.client)
