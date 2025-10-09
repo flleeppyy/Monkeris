@@ -95,3 +95,4 @@ if __name__ == "__main__":
         print("\nWARNING: The following files are not valid UTF-8:")
         for file in non_utf8_files:
             print(f" - {file}")
+
