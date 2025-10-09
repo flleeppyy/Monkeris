@@ -675,10 +675,10 @@
 	if (integrity <= 15)
 		prefix = "--CRITICAL WARNING!--"
 		color = "crimson"
-	if (integrity <= 25)
+	else if (integrity <= 25)
 		prefix = "Danger!"
 		color = "red"
-	if (integrity <= 50)
+	else if (integrity <= 50)
 		prefix = "Warning!"
 		color = "orange"
 	else
