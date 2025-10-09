@@ -30,5 +30,6 @@
 
 	new_player_panel()
 
-	GLOB.lobbyScreen.play_music(client)
+	if (SSticker.state != GAME_STATE_STARTUP)
+		GLOB.lobbyScreen.play_music(client)
 	GLOB.lobbyScreen.show_titlescreen(client)
