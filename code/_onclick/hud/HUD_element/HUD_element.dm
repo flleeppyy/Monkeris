@@ -8,8 +8,6 @@ element identifiers are used to manage different hud parts for clients, f.e. the
 
 
 /atom/movable/hud_element
-	parent_type = /atom/movable
-
 	layer = HUD_LAYER
 	plane = HUD_PLANE
 	//mouse_opacity = 2

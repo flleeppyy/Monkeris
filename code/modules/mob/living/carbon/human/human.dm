@@ -75,7 +75,7 @@
 			. += list(list("Distribution Pressure: [internal.distribute_pressure]"))
 
 	// RIG/hardsuit territory
-	// TODO: /stat_rig_module/ got no reason to continue existing, delete it
+	// TODO: /atom/movable/stat_rig_module/ got no reason to continue existing, delete it
 	// TODO: Cache some of the stuff below on the RIG side
 	if(back && istype(back,/obj/item/rig))
 		var/obj/item/rig/suit = back
