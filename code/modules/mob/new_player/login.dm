@@ -41,6 +41,6 @@
 	if (SSticker.state != GAME_STATE_STARTUP)
 		GLOB.lobbyScreen.play_music(client)
 	GLOB.lobbyScreen.show_titlescreen(client)
-  
-  if(GLOB.admin_notice)
+
+	if(GLOB.admin_notice)
 		to_chat(src, span_notice("<b>Admin Notice:</b>\n \t [GLOB.admin_notice]"))

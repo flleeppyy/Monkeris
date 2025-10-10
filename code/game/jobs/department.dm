@@ -125,7 +125,7 @@
 /datum/department/silicon
 	name = "Silicons"
 	id = DEPARTMENT_SILICON
-  department_experience_type = DEPARTMENT_SILICON
+	department_experience_type = DEPARTMENT_SILICON
 	// Robots arent real. they dont need money
 	account_initial_balance = 0
 	budget_base = 0
