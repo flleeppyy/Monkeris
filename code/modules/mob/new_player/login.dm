@@ -20,9 +20,12 @@
 		mind.active = TRUE
 		mind.current = src
 
-	. = ..()
-	if(!. || !client)
-		return FALSE
+	// It's neccessary to have a hud since we need it for anything ma2html related
+	hud_used = new /datum/hud(src)
+
+	// . = ..()
+	// if(!. || !client)
+	// 	return FALSE
 
 	if(join_motd)
 		to_chat(src, "<div class='motd'>[join_motd]</div>")
@@ -35,7 +38,9 @@
 
 	new_player_panel()
 
-	if (SSticker.current_state == GAME_STATE_PREGAME)
+	if (SSticker.state != GAME_STATE_STARTUP)
 		GLOB.lobbyScreen.play_music(client)
-
 	GLOB.lobbyScreen.show_titlescreen(client)
+  
+  if(GLOB.admin_notice)
+		to_chat(src, span_notice("<b>Admin Notice:</b>\n \t [GLOB.admin_notice]"))

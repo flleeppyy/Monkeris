@@ -449,3 +449,16 @@
 
 /proc/cmp_playtime_asc(client/a, client/b)
 	return cmp_numeric_asc(a.get_exp_living(TRUE), b.get_exp_living(TRUE))
+  
+/client/proc/get(atom/movable/A)
+	set category = "Debug"
+	set name = "Get"
+
+	if (isnull(usr.loc))
+		to_chat(usr, "Can't move to nullspace!")
+		return
+
+	if(QDELETED(A))
+		return
+
+	A.forceMove(get_turf(usr))

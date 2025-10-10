@@ -76,6 +76,7 @@
 
 /datum/preferences/proc/ShowChoices(mob/user)
 	if(!SScharacter_setup.initialized)
+		to_chat(user, span_danger("Still initializing, please wait!"))
 		return
 	if(!user || !user.client)
 		return
@@ -146,6 +147,8 @@
 		load_preferences()
 		load_character()
 		sanitize_preferences()
+		preview_should_rebuild_organs = TRUE
+		update_preview_icon(naked = istype(player_setup.selected_category, /datum/category_group/player_setup_category/augmentation))
 	else if(href_list["load"])
 		if(!IsGuestKey(usr.key))
 			open_load_dialog(usr)
@@ -199,7 +202,8 @@
 	character.f_style = f_style
 
 	// Build mob body from prefs
-	character.rebuild_organs(src)
+	if (preview_should_rebuild_organs)
+		character.rebuild_organs(src)
 
 	character.eyes_color = eyes_color
 	character.hair_color = hair_color
@@ -225,9 +229,11 @@
 
 	character.backpack_setup = new(backpack, backpack_metadata["[backpack]"])
 
-	character.force_update_limbs()
-	character.update_mutations(0)
-	character.update_implants(0)
+	if (preview_should_rebuild_organs)
+		character.force_update_limbs()
+		character.update_mutations(0)
+		character.update_implants(0)
+		preview_should_rebuild_organs = FALSE
 
 
 	character.update_body(0)
