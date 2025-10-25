@@ -343,17 +343,25 @@ em {
   color: hsl(120, 100%, 76.7%);
 }
 
+/* RADIO COLORS */
+/* IF YOU CHANGE THIS KEEP IT IN SYNC WITH TGUI CONSTANTS */
+
 .radio {
   color: hsl(120, 100%, 25.1%);
+}
+
+.comradio {
+  color: hsl(197, 90%, 39%);
 }
 
 .sciradio {
   color: hsl(300, 50%, 40%);
 }
 
-.comradio {
-  color: hsl(57.9, 97.3%, 29.4%);
+.ntradio {
+  color: hsl(46, 48%, 41%);
 }
+
 
 .secradio {
   color: hsl(0, 100%, 32%);
@@ -367,11 +375,11 @@ em {
   color: hsl(17.3, 96.7%, 52.9%);
 }
 
-.suppradio {
+.supradio {
   color: hsl(34.6, 59.2%, 41.4%);
 }
 
-.servradio {
+.srvradio {
   color: hsl(88.6, 58.9%, 42%);
 }
 
@@ -387,7 +395,7 @@ em {
   color: hsl(0, 0%, 40.8%);
 }
 
-.aiprivradio {
+.airadio {
   color: hsl(300, 100%, 50%);
 }
 
