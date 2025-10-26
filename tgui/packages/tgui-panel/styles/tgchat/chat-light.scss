@@ -194,11 +194,9 @@ a:visited {
   padding: 2px 0;
 }
 
-.filterMessages input {
-}
+.filterMessages input {}
 
-.filterMessages label {
-}
+.filterMessages label {}
 
 .icon-stack {
   height: 1em;
@@ -321,11 +319,14 @@ em {
 .emote,
 .infoplain,
 .oocplain,
-.warningplain {
-}
+.warningplain {}
 
 .deadsay {
   color: hsl(264, 100%, 45.1%);
+}
+
+.angelsay {
+  color: hsl(40, 80%, 41%);
 }
 
 .binarysay {
@@ -558,6 +559,10 @@ h2.alert {
   font-weight: bold;
 }
 
+.alium {
+  color: #0ca00c;
+}
+
 .hear {
   color: hsl(240, 100%, 30%);
   font-style: italic;
@@ -753,6 +758,19 @@ h2.alert {
   color: hsl(0, 100%, 50%);
   font-size: 185%;
   font-weight: bold;
+}
+
+.revolution {
+  color: hsl(344, 100%, 35%);
+  font-weight: bold;
+  font-style: italic;
+}
+
+.revolution_alert {
+  color: hsl(344, 100%, 35%);
+  font-weight: bold;
+  font-style: italic;
+  font-size: 200%;
 }
 
 .spiderbroodmother {
@@ -1219,13 +1237,11 @@ $border-width-px: $border-width * 1px;
     padding: 0;
     display: flex;
     flex-direction: column;
-    border-image: repeating-linear-gradient(
-      -45deg,
-      map.get($alert-stripe-alternate-colors, $color-name),
-      map.get($alert-stripe-alternate-colors, $color-name) 10px,
-      $color-value 10px,
-      $color-value 20px
-    );
+    border-image: repeating-linear-gradient(-45deg,
+        map.get($alert-stripe-alternate-colors, $color-name),
+        map.get($alert-stripe-alternate-colors, $color-name) 10px,
+        $color-value 10px,
+        $color-value 20px);
     border-image-slice: $border-width fill;
     border-width: $border-width-px;
     border-image-width: $border-width-px;
@@ -1247,25 +1263,66 @@ $border-width-px: $border-width * 1px;
   }
 
   .chat_alert_#{$color-name} .minor_announcement_text {
-    background-color: color.adjust(
-      map.get($alert-stripe-alternate-colors, $color-name),
-      $lightness: 5%,
-      $space: hsl
-    );
+    background-color: color.adjust(map.get($alert-stripe-alternate-colors, $color-name),
+        $lightness: 5%,
+        $space: hsl);
   }
 
   .chat_alert_#{$color-name} .major_announcement_text {
-    background-color: color.adjust(
-      map.get($alert-stripe-alternate-colors, $color-name),
-      $lightness: 5%,
-      $space: hsl
-    );
+    background-color: color.adjust(map.get($alert-stripe-alternate-colors, $color-name),
+        $lightness: 5%,
+        $space: hsl);
   }
 }
 
 .looc {
   color: #2e57d1;
   font-weight: bold;
+}
+
+
+
+.alien {
+  color: #543354;
+}
+
+.monkey {
+  color: #22228b;
+}
+
+.rough {
+  font-family:
+    Trebuchet MS,
+    cursive,
+    sans-serif;
+}
+
+.say_quote {
+  font-family: Georgia, Verdana, sans-serif;
+}
+
+.russian {
+  color: #665f15;
+}
+
+.serbian {
+  color: #ad6f1d;
+}
+
+.jive {
+  color: #575757;
+}
+
+.german {
+  color: #0219c2;
+}
+
+.neohongo {
+  color: #6b186b;
+}
+
+.latin {
+  color: #7e6415;
 }
 
 .death_message {
