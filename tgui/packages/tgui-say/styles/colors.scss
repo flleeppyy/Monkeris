@@ -29,7 +29,7 @@ $_channel_map: (
   'Sec': hsl(0, 71.2%, 53.7%),
   'Supp': hsl(33.7, 44.9%, 49.8%),
   'Svc': hsl(88.1, 60.6%, 40.8%),
-  'Synd': hsl(359.1, 31.8%, 42.5%),
+  'Merc': hsl(359.1, 31.8%, 42.5%),
 );
 
 $channel_keys: map.keys($_channel_map) !default;
