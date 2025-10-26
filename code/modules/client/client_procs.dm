@@ -1153,9 +1153,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 /// This grabs the DPI of the user per their skin
 /client/proc/acquire_dpi()
-	window_scaling = text2num(winget(src, null, "dpi"))
-
-	debug_admins("scalies: [window_scaling]")
+	window_scaling = text2num(winget(src, null, "dpi"))s
 
 /client/proc/add_verbs_from_config()
 	if(CONFIG_GET(flag/see_own_notes))
