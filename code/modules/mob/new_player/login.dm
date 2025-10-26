@@ -35,10 +35,6 @@
 	my_client = client
 	sight |= SEE_TURFS
 	GLOB.player_list |= src
-	if(GLOB.persistent_clients_by_ckey[ckey])
-		persistent_client = GLOB.persistent_clients_by_ckey[ckey]
-	else
-		persistent_client = new(ckey)
 
 	new_player_panel()
 
