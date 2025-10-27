@@ -1007,6 +1007,9 @@
 	icon_state = "floor4"
 	},
 /area/shuttle/syndicate_elite/mothership)
+"gd" = (
+/turf/wall/low/with_glass/smart,
+/area/space)
 "ge" = (
 /turf/wall/low/with_glass/smart,
 /area/centcom/small_base)
@@ -1672,6 +1675,7 @@
 	},
 /area/skipjack_station/start)
 "if" = (
+/turf/wall/low/with_glass/reinforced,
 /obj/machinery/door/blast/regular{
 	density = 0;
 	icon_state = "pdoor0";
@@ -1679,7 +1683,6 @@
 	name = "Outer Airlock";
 	opacity = 0
 	},
-/turf/wall/low/with_glass/reinforced,
 /area/shuttle/pirate)
 "ik" = (
 /obj/effect/shuttle_landmark/escape_pod/out/pod1,
@@ -4228,8 +4231,8 @@
 /area/space)
 "qI" = (
 /obj/map_data/admin,
-/turf/snowflake,
-/area/snowflake)
+/turf/space,
+/area/space)
 "qX" = (
 /obj/structure/table/rack,
 /obj/item/gun/launcher/spikethrower,
@@ -5322,6 +5325,7 @@
 /turf/floor/tiled/steel/gray_platform,
 /area/centcom/pirate_base)
 "BR" = (
+/turf/wall/low/with_glass/reinforced,
 /obj/machinery/door/blast/regular{
 	density = 0;
 	icon_state = "pdoor0";
@@ -5329,7 +5333,6 @@
 	name = "Outer Airlock";
 	opacity = 0
 	},
-/turf/wall/low/with_glass/reinforced,
 /area/shuttle/pirate)
 "BX" = (
 /obj/structure/bed/chair/custom/holochair,
@@ -5701,6 +5704,7 @@
 /turf/floor/holofloor/tiled/dark,
 /area/space)
 "Gt" = (
+/turf/wall/low/with_glass/reinforced,
 /obj/machinery/door/blast/regular{
 	density = 0;
 	icon_state = "pdoor0";
@@ -5708,7 +5712,6 @@
 	name = "Outer Airlock";
 	opacity = 0
 	},
-/turf/wall/low/with_glass/reinforced,
 /area/shuttle/pirate)
 "Gw" = (
 /turf/floor/holofloor/tiled/bar_dance,
@@ -6069,8 +6072,8 @@
 /turf/floor/holofloor/reinforced,
 /area/space)
 "Kq" = (
-/obj/structure/grille,
 /turf/wall/low/with_glass/reinforced,
+/obj/structure/grille,
 /area/centcom/merc_base)
 "Kr" = (
 /obj/machinery/light,
@@ -6472,6 +6475,7 @@
 /turf/floor/holofloor/tiled/dark,
 /area/space)
 "Om" = (
+/turf/wall/low/with_glass/reinforced,
 /obj/effect/shuttle_landmark/pirate/start,
 /obj/machinery/door/blast/regular{
 	density = 0;
@@ -6480,7 +6484,6 @@
 	name = "Outer Airlock";
 	opacity = 0
 	},
-/turf/wall/low/with_glass/reinforced,
 /area/shuttle/pirate)
 "Or" = (
 /obj/machinery/light,
@@ -40529,10 +40532,10 @@ aa
 aa
 gi
 ei
-gj
-gj
-gj
-gj
+gd
+gd
+gd
+gd
 ei
 ei
 gO
