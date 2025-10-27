@@ -254,19 +254,17 @@ SUBSYSTEM_DEF(plexora)
 		"round_timer" = ROUND_TIME(),
 		"map" = GLOB.maps_data.path,
 		"playercount" = length(GLOB.clients),
-		"playerstring" = "**Total**: [length(GLOB.clients)], **Living**: [length(GLOB.alive_player_list)], **Dead**: [length(GLOB.dead_player_list)], **Observers**: [length(GLOB.current_observers_list)]",
+		"playerstring" = "**Total**: [length(GLOB.clients)], **Living**: [length(GLOB.player_list - GLOB.dead_mob_list)], **Dead**: [length(GLOB.dead_mob_list )], **Observers**: [length(GLOB.player_ghost_list)]",
 		"defconstring" = alert,
 		"defconlevel" = level,
 	))
 
 /datum/controller/subsystem/plexora/proc/new_note(list/note)
-	note["replay_pass"] = CONFIG_GET(string/replay_password)
 	http_basicasync("noteupdates", note)
 
 /datum/controller/subsystem/plexora/proc/new_ban(list/ban)
 	// TODO: It might be easier to just send off a ban ID to Plexora, but oh well.
 	// list values are in sql_ban_system.dm
-	ban["replay_pass"] = CONFIG_GET(string/replay_password)
 	http_basicasync("banupdates", ban)
 /*
 // Maybe we should consider that, if theres no admin_ckey when creating a new ticket,
@@ -443,57 +441,57 @@ SUBSYSTEM_DEF(plexora)
 			continue
 		. += list(list("key" = client.holder?.fakekey || client.key, "avgping" = "[round(client.avgping, 1)]ms"))
 
-/datum/world_topic/plx_adminwho
-	keyword = "PLX_adminwho"
-	require_comms_key = TRUE
+// /datum/world_topic/plx_adminwho
+// 	keyword = "PLX_adminwho"
+// 	require_comms_key = TRUE
 
-/datum/world_topic/plx_adminwho/Run(list/input)
-	. = list()
-	for (var/client/admin as anything in GLOB.admins)
-		if(QDELETED(admin) || !mentor.holder || mentor.holder?.rights == R_MENTOR)
-			continue
-		var/admin_info = list(
-			"name" = admin,
-			"ckey" = admin.ckey,
-			"rank" = admin.holder.rank,
-			"afk" = admin.is_afk(),
-			"stealth" = !!admin.holder.fakekey,
-			"stealthkey" = admin.holder.fakekey,
-		)
+// /datum/world_topic/plx_adminwho/Run(list/input)
+// 	. = list()
+// 	for (var/client/admin as anything in GLOB.admins)
+// 		if(QDELETED(admin) || !admin.holder || admin.holder?.rights == R_MENTOR)
+// 			continue
+// 		var/admin_info = list(
+// 			"name" = admin,
+// 			"ckey" = admin.ckey,
+// 			"rank" = admin.holder.rank,
+// 			"afk" = admin.is_afk(),
+// 			"stealth" = !!admin.holder.fakekey,
+// 			"stealthkey" = admin.holder.fakekey,
+// 		)
 
-		if(isobserver(admin.mob))
-			admin_info["state"] = "observing"
-		else if(isnewplayer(admin.mob))
-			admin_info["state"] = "lobby"
-		else
-			admin_info["state"] = "playing"
+// 		if(isobserver(admin.mob))
+// 			admin_info["state"] = "observing"
+// 		else if(isnewplayer(admin.mob))
+// 			admin_info["state"] = "lobby"
+// 		else
+// 			admin_info["state"] = "playing"
 
-		. += LIST_VALUE_WRAP_LISTS(admin_info)
+// 		. += LIST_VALUE_WRAP_LISTS(admin_info)
 
-/datum/world_topic/plx_mentorwho
-	keyword = "PLX_mentorwho"
-	require_comms_key = TRUE
+// /datum/world_topic/plx_mentorwho
+// 	keyword = "PLX_mentorwho"
+// 	require_comms_key = TRUE
 
-/datum/world_topic/plx_mentorwho/Run(list/input)
-	. = list()
-	for (var/client/mentor as anything in GLOB.admins)
-		if(QDELETED(mentor) || !mentor.holder || !(mentor.holder?.rights & R_MENTOR))
-			continue
-		var/list/mentor_info = list(
-			"name" = mentor,
-			"ckey" = mentor.ckey,
-			"rank" = mentor.holder?.rank,
-			"afk" = mentor.is_afk(),
-		)
+// /datum/world_topic/plx_mentorwho/Run(list/input)
+// 	. = list()
+// 	for (var/client/mentor as anything in GLOB.admins)
+// 		if(QDELETED(mentor) || !mentor.holder || !(mentor.holder?.rights & R_MENTOR))
+// 			continue
+// 		var/list/mentor_info = list(
+// 			"name" = mentor,
+// 			"ckey" = mentor.ckey,
+// 			"rank" = mentor.holder?.rank,
+// 			"afk" = mentor.is_afk(),
+// 		)
 
-		if(isobserver(mentor.mob))
-			mentor_info["state"] = "observing"
-		else if(isnewplayer(mentor.mob))
-			mentor_info["state"] = "lobby"
-		else
-			mentor_info["state"] = "playing"
+// 		if(isobserver(mentor.mob))
+// 			mentor_info["state"] = "observing"
+// 		else if(isnewplayer(mentor.mob))
+// 			mentor_info["state"] = "lobby"
+// 		else
+// 			mentor_info["state"] = "playing"
 
-		. += LIST_VALUE_WRAP_LISTS(mentor_info)
+// 		. += LIST_VALUE_WRAP_LISTS(mentor_info)
 
 /*
 /datum/world_topic/plx_getloadoutrewards

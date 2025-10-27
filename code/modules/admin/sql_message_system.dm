@@ -121,7 +121,7 @@
 			"world_time" = world.time,
 		)
 
-		plexora_note["total_playtime"] = SSjob.ckey_to_total_playtime[mock_player]
+		plexora_note["total_playtime"] = mock_player.get_exp_living()
 		SSplexora.new_note(plexora_note)
 		// Monkestation edit end
 		if(browse)
