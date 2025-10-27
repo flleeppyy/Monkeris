@@ -87,5 +87,4 @@ GLOBAL_VAR_INIT(random_parallax, pick("space0", "space1", "space2", "space3", "s
 		parallax = new(src)
 		var/atom/movable/screen/parallax/oldpara = locate() in client.screen
 		qdel(oldpara)
-	if (!(parallax in client.screen))
-		client.screen += parallax
+	client.screen |= parallax
