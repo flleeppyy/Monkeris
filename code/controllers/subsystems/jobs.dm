@@ -10,14 +10,24 @@ SUBSYSTEM_DEF(job)
 	init_order = INIT_ORDER_JOBS
 	wait = 1 MINUTE
 
-	var/list/occupations = list()			//List of all jobs
-	var/list/occupations_by_name = list()	//Dict of all jobs, keys are titles
-	var/list/departments = list()			//List of all departments
-	var/list/departments_by_name = list()	//Dict of all departments, keys are names
-	// var/list/datum/department/joinable_departments = list()
-	var/list/unassigned = list()			//Players who need jobs
-	var/list/job_debug = list()				//Debug info
-	var/list/job_mannequins = list()				//Cache of icons for job info window
+	/// List of all jobs
+	var/list/occupations = list()
+	/// Dict of all jobs, keys are titles
+	var/list/occupations_by_name = list()
+	/// List of all departments
+	var/list/departments = list()
+	/// Dict of all departments, keys are names
+	var/list/departments_by_name = list()
+	/// Players who need jobs
+	var/list/unassigned = list()
+	/// Used for checking against population caps
+	var/initial_players_to_assign = 0
+	/// var/list/datum/department/joinable_departments = list()
+
+	/// Debug info
+	var/list/job_debug = list()
+	/// Cache of icons for job info window
+	var/list/job_mannequins = list()
 	var/list/ckey_to_job_to_playtime = list()
 	/// Eris specific stuff , playtimes are based off overall hours , and not on hours in said departament.
 	var/list/ckey_to_total_playtime = list()
@@ -325,6 +335,9 @@ SUBSYSTEM_DEF(job)
 	Debug("Running FOC, Job: [job], Level: [level], Flag: [flag]")
 	var/list/candidates = list()
 	for(var/mob/new_player/player in unassigned)
+		if(popcap_reached())
+			Debug("FOC popcap reached, rejecting player: [player]")
+			continue
 		if(!CanHaveJob(player.client.ckey, job.title))
 			Debug("FOC playtime failed, Player:[player]")
 			continue
@@ -366,6 +379,10 @@ SUBSYSTEM_DEF(job)
 
 		if(jobban_isbanned(player.ckey, job.title))
 			Debug("GRJ isbanned failed, Player: [player], Job: [job.title]")
+			continue
+
+		if(popcap_reached())
+			Debug("GRJ: Popcap reached, rejecting: [player]")
 			continue
 
 		var/datum/category_item/setup_option/core_implant/I = player.client.prefs.get_option("Core implant")
@@ -460,7 +477,10 @@ SUBSYSTEM_DEF(job)
 		if(player.ready && player.mind && !player.mind.assigned_role)
 			unassigned += player
 
-	Debug("DO, Len: [unassigned.len]")
+	initial_players_to_assign = length(unassigned)
+
+	Debug("DO: Player count to assign roles to: [initial_players_to_assign]")
+
 	if(unassigned.len == 0)
 		return FALSE
 
@@ -508,6 +528,10 @@ SUBSYSTEM_DEF(job)
 				/*if(!job || SSticker.mode.disabled_jobs.Find(job.title) )
 					continue
 				*/
+				if(popcap_reached())
+					Debug("Popcap reached, trying to reject player: [player]")
+					continue
+
 				if(jobban_isbanned(player.ckey, job.title))
 					Debug("DO isbanned failed, Player: [player], Job:[job.title]")
 					continue
@@ -842,3 +866,12 @@ SUBSYSTEM_DEF(job)
 		return num2text(expnum) + "m"
 	else
 		return "0h"
+
+/datum/controller/subsystem/job/proc/popcap_reached()
+	var/hpc = CONFIG_GET(number/hard_popcap)
+	var/epc = CONFIG_GET(number/extreme_popcap)
+	if(hpc || epc)
+		var/relevent_cap = max(hpc, epc)
+		if((initial_players_to_assign - length(unassigned)) >= relevent_cap)
+			return 1
+	return 0
