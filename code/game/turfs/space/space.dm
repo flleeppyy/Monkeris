@@ -193,3 +193,6 @@
 				if ((A && A.loc))
 					A.loc.Entered(A)
 	return
+
+/turf/snowflake
+	name = "snowflake space"

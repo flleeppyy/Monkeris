@@ -16536,8 +16536,8 @@
 /area/space)
 "aQH" = (
 /obj/map_data/eris,
-/turf/space,
-/area/space)
+/turf/snowflake,
+/area/snowflake)
 "aQI" = (
 /obj/effect/overmap/ship/eris,
 /turf/space,

@@ -43,6 +43,7 @@
 
 	next_move = 1
 	sight |= SEE_SELF
+	client.statobj = src
 
 	// YES, this is expensive
 	// YES, this calls 200k Move() calls
