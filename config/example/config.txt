@@ -345,7 +345,6 @@ CONFIG_ERRORS_RUNTIME
 #GLITCHTIP_DSN
 # Environment this is running in, "production", "development" and "testing" are most common
 #GLITCHTIP_ENVIRONMENT development
-#GLITCHTIP_ENABLED
 
 ## Uncomment to allow admins with +DEBUG to start the byond-tracy profiler during the round.
 #ALLOW_TRACY_START

@@ -331,8 +331,6 @@
 /datum/config_entry/string/glitchtip_environment
 	config_entry_value = "production"
 
-/datum/config_entry/flag/glitchtip_enabled
-
 
 /*****************/
 /*     VOTES     */
