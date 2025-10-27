@@ -11,10 +11,22 @@ INSERT INTO `schema_revision` (`major`, `minor`) VALUES (3, 2);
 
 In any query remember to add a prefix to the table names if you use one.
 -----------------------------------------------------
-Version 3.2 10 September 2025, by Flleeppyy
-Add `legacy_population`, `role_time` and `role_time_log` tables
+Version 3.2 27 October 2025, by Flleeppyy
+Add `feedback`, `legacy_population`, `role_time` and `role_time_log` tables
 
 ```sql
+
+CREATE TABLE `feedback` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `datetime` datetime NOT NULL,
+  `round_id` int(11) unsigned NULL,
+  `key_name` varchar(32) NOT NULL,
+  `key_type` enum('text', 'amount', 'tally', 'nested tally', 'associative') NOT NULL,
+  `version` tinyint(3) unsigned NOT NULL,
+  `json` json NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 CREATE TABLE `legacy_population` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `playercount` int(11) DEFAULT NULL,
