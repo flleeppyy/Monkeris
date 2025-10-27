@@ -90,16 +90,19 @@
 */
 /obj/procedural/jp_DungeonGenerator/proc/getAdjacent(turf/t)
 	//Doesn't just go list(get_step(blah blah), get_step(blah blah) etc. because that could return null if on the border of the map
-	.=list()
+	. = list()
 	var/k = get_step(t,NORTH)
-	if(k).+=k
+	if(k)
+		. += k
 	k = get_step(t,SOUTH)
-	if(k).+=k
+	if(k)
+		. += k
 	k = get_step(t,EAST)
-	if(k).+=k
+	if(k)
+		. += k
 	k = get_step(t,WEST)
-	if(k).+=k
-
+	if(k)
+		. += k
 
 /*
 
@@ -853,7 +856,7 @@
 			out_numPaths++
 			if(long) out_numLongPaths++
 			end = start
-			return retPath(end, previous, pathWidth, start, end)
+			return retPath(end, previous, pathWidth, start)
 
 	next-=borders
 	for(var/turf/t in next)
@@ -903,14 +906,13 @@
 		if(!check_tick_in)
 			check_tick_in = 3
 			CHECK_TICK
-	return retPath(end, previous, pathWidth, start, end)
+	return retPath(end, previous, pathWidth, start)
 
-/obj/procedural/jp_DungeonGenerator/proc/retPath(list/end, list/previous, pathWidth, turf/start, turf/end)
+/obj/procedural/jp_DungeonGenerator/proc/retPath(list/end, list/previous, pathWidth, turf/start)
 	var/list/ret = list()
 	ret += GetSquare(end, pathWidth)
 	var/turf/last = end
-	while(1)
-		if(last==start) break
+	while(last != start)
 		ret+= GetSquare(previous["\ref[last]"], pathWidth)
 		last=previous["\ref[last]"]
 

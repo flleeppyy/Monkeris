@@ -338,7 +338,7 @@ world
 	if(text2ascii(rgb) == 35) ++start // skip opening #
 	var/ch, which=0, r=0, g=0, b=0, alpha=0, usealpha
 	var/digits=0
-	for(i=start, i<=length(rgb), ++i)
+	for(i=start; i<=length(rgb); ++i)
 		ch = text2ascii(rgb, i)
 		if(ch < 48 || (ch > 57 && ch < 65) || (ch > 70 && ch < 97) || ch > 102) break
 		++digits
@@ -347,7 +347,7 @@ world
 	var/single = digits < 6
 	if(digits != 3 && digits != 4 && digits != 6 && digits != 8) return
 	if(digits == 4 || digits == 8) usealpha = 1
-	for(i=start, digits>0, ++i)
+	for(i=start; digits>0; ++i)
 		ch = text2ascii(rgb, i)
 		if(ch >= 48 && ch <= 57) ch -= 48
 		else if(ch >= 65 && ch <= 70) ch -= 55
@@ -388,7 +388,7 @@ world
 	if(text2ascii(hsv) == 35) ++start // skip opening #
 	var/ch, which=0, hue=0, sat=0, val=0, alpha=0, usealpha
 	var/digits=0
-	for(i=start, i<=length(hsv), ++i)
+	for(i=start; i<=length(hsv); ++i)
 		ch = text2ascii(hsv, i)
 		if(ch < 48 || (ch > 57 && ch < 65) || (ch > 70 && ch < 97) || ch > 102) break
 		++digits
@@ -396,7 +396,7 @@ world
 	if(digits > 7) usealpha = 1
 	if(digits <= 4) ++which
 	if(digits <= 2) ++which
-	for(i=start, digits>0, ++i)
+	for(i=start; digits>0; ++i)
 		ch = text2ascii(hsv, i)
 		if(ch >= 48 && ch <= 57) ch -= 48
 		else if(ch >= 65 && ch <= 70) ch -= 55
@@ -856,7 +856,7 @@ The _flatIcons list is a cache for generated icon files.
 	var/icon/alpha_mask = getIconMask(src)//getFlatIcon(src) is accurate but SLOW. Not designed for running each tick. This is also a little slow since it's blending a bunch of icons together but good enough.
 	opacity_icon.AddAlphaMask(alpha_mask)//Likely the main source of lag for this proc. Probably not designed to run each tick.
 	opacity_icon.ChangeOpacity(0.4)//Front end for MapColors so it's fast. 0.5 means half opacity and looks the best in my opinion.
-	for(var/i=0,i<5,i++)//And now we add it as overlays. It's faster than creating an icon and then merging it.
+	for(var/i = 0; i < 5; i++)//And now we add it as overlays. It's faster than creating an icon and then merging it.
 		var/image/I = image("icon" = opacity_icon, "icon_state" = A.icon_state, "layer" = layer+0.8)//So it's above other stuff but below weapons and the like.
 		switch(i)//Now to determine offset so the result is somewhat blurred.
 			if(1)
@@ -1044,8 +1044,8 @@ non_blocking var, if true, will allow sleeping to prevent server freeze, at the 
 
 	var/list/average_rgb = list(0,0,0)
 	var/pixel_count = 0
-	for (var/x = 1, x <= I.Width(), x++)
-		for (var/y = 1, y <= I.Height(), y++)
+	for(var/x = 1; x <= I.Width(); x++)
+		for(var/y = 1; y <= I.Height(); y++)
 			if (!I.GetPixel(x, y, dir = image_dir))
 				continue
 			pixel_count++
@@ -1352,3 +1352,63 @@ non_blocking var, if true, will allow sleeping to prevent server freeze, at the 
 		var/icon/my_icon = icon(icon_path)
 		GLOB.icon_dimensions[icon_path] = list("width" = my_icon.Width(), "height" = my_icon.Height())
 	return GLOB.icon_dimensions[icon_path]
+
+/// Strips all underlays on a different plane from an appearance.
+/// Returns the stripped appearance.
+/proc/strip_appearance_underlays(mutable_appearance/appearance) as /mutable_appearance
+	RETURN_TYPE(/mutable_appearance)
+	var/base_plane = appearance.plane
+	for(var/mutable_appearance/underlay as anything in appearance.underlays)
+		if(isnull(underlay))
+			continue
+		if(underlay.plane != base_plane)
+			appearance.underlays -= underlay
+	return appearance
+
+/**
+ * Copies the passed /appearance, returns a /mutable_appearance
+ *
+ * Filters out certain overlays from the copy, depending on their planes
+ * Prevents stuff like lighting from being copied to the new appearance
+ */
+/proc/copy_appearance_filter_overlays(appearance_to_copy) as /mutable_appearance
+	RETURN_TYPE(/mutable_appearance)
+	var/mutable_appearance/copy = new(appearance_to_copy)
+	var/static/list/plane_whitelist = list(FLOAT_PLANE, GAME_PLANE, FLOOR_PLANE)
+
+	copy.overlays = recursively_filter_emissive_blockers(copy.overlays, plane_whitelist)
+	copy.underlays = recursively_filter_emissive_blockers(copy.underlays, plane_whitelist)
+
+	return copy
+
+/proc/recursively_filter_emissive_blockers(list/input_list, list/plane_whitelist)
+	var/list/filtered_list = list()
+
+	for(var/mutable_appearance/overlay_item as anything in input_list)
+		if(isnull(overlay_item))
+			continue
+
+		var/mutable_appearance/real = new()
+		real.appearance = overlay_item
+
+		// // Skip emissive blockers
+		// if(is_emissive_blocker(real))
+		// 	continue
+
+		// Skip non-whitelisted planes
+		if(!(real.plane in plane_whitelist))
+			continue
+
+		if(length(real.overlays))
+			real.overlays = recursively_filter_emissive_blockers(real.overlays, plane_whitelist)
+		if(length(real.underlays))
+			real.underlays = recursively_filter_emissive_blockers(real.underlays, plane_whitelist)
+
+		filtered_list += real
+
+	return filtered_list
+
+// /proc/is_emissive_blocker(mutable_appearance/MA)
+// 	if(MA.plane == EMISSIVE_PLANE)
+// 		return TRUE
+// 	return FALSE

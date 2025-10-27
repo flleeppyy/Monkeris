@@ -7,6 +7,15 @@
 
 /datum/config_entry/string/hostedby
 
+/// if the game appears on the hub or not
+/datum/config_entry/flag/hub
+
+/// Pop requirement for the server to be removed from the hub
+/datum/config_entry/number/max_hub_pop
+	default = 0 //0 means disabled
+	integer = TRUE
+	min_val = 0
+
 // Time in minutes before empty server will restart
 /datum/config_entry/number/empty_server_restart_time
 
@@ -92,6 +101,8 @@
 
 /datum/config_entry/flag/aggressive_changelog
 
+/datum/config_entry/flag/autoconvert_notes //if all connecting player's notes should attempt to be converted to the database
+	protection = CONFIG_ENTRY_LOCKED
 
 /******************/
 /* Job/Role Prefs */
@@ -138,6 +149,31 @@
 
 // Does nothing, used nowhere
 /datum/config_entry/flag/guest_jobban
+
+/datum/config_entry/flag/use_exp_tracking
+
+/// Enables head jobs time restrictions.
+/datum/config_entry/flag/use_exp_restrictions_heads
+
+/datum/config_entry/number/use_exp_restrictions_heads_hours
+	default = 0
+	integer = FALSE
+	min_val = 0
+
+/datum/config_entry/flag/use_exp_restrictions_heads_department
+
+/// Enables non-head jobs time restrictions.
+/datum/config_entry/flag/use_exp_restrictions_other
+
+/datum/config_entry/flag/use_exp_restrictions_admin_bypass
+
+/datum/config_entry/flag/use_low_living_hour_intern
+
+/datum/config_entry/number/use_low_living_hour_intern_hours
+	default = 0
+	integer = FALSE
+	min_val = 0
+
 
 /*****************/
 /*   Mob Prefs   */
@@ -215,6 +251,9 @@
 
 /// log crew manifest to separate file
 /datum/config_entry/flag/log_manifest
+
+/// log roundstart divide occupations debug information to a file
+/datum/config_entry/flag/log_job_debug
 
 /// log assets
 /datum/config_entry/flag/log_asset
@@ -299,40 +338,38 @@
 /*     VOTES     */
 /*****************/
 
-// minimum time between voting sessions (deciseconds, 10 minute default)
+/// minimum time between voting sessions (deciseconds, 10 minute default)
 /datum/config_entry/number/vote_delay
 	default = 6000
 	integer = FALSE
 	min_val = 0
 
-// length of voting period (deciseconds, default 1 minute)
+/// length of voting period (deciseconds, default 1 minute)
 /datum/config_entry/number/vote_period
 	default = 600
 	integer = FALSE
 	min_val = 0
 
-//Length of time before round start when autogamemode vote is called (in seconds, default 100).
+/// Length of time before round start when autogamemode vote is called (in seconds, default 100).
 /datum/config_entry/number/vote_autogamemode_timeleft
 	default = 100
 	integer = FALSE
 	min_val = 0
 
-// vote does not default to nochange/norestart (tbi)
-// /datum/config_entry/flag/vote_no_default
+/**
+ * vote does not default to nochange/norestart (tbi)
+ * /datum/config_entry/flag/vote_no_default
+ */
 
 /// Prevents dead people from voting.
 /datum/config_entry/flag/vote_no_dead
 
-// allow votes to change mode
+/// allow votes to change mode
 /datum/config_entry/flag/allow_vote_mode
-
 
 /*****************/
 /*     ADMIN     */
 /*****************/
-
-
-/datum/config_entry/flag/mentors
 
 /// allows admins with relevant permissions to have their own ooc colour
 /datum/config_entry/flag/allow_admin_ooccolor
@@ -340,30 +377,37 @@
 /// allows admins with relevant permissions to have a personalized asay color
 /datum/config_entry/flag/allow_admin_asaycolor
 
-//adminPMs to non-admins show in a pop-up 'reply' window when enabled.
+/// adminPMs to non-admins show in a pop-up 'reply' window when enabled.
 /datum/config_entry/flag/popup_admin_pm
 
-// Forid admins from possessing scringularaitirtiys
+/// Forid admins from possessing scringularaitirtiys
 /datum/config_entry/flag/forbid_singulo_possession
 
-/datum/config_entry/flag/admin_legacy_system //Defines whether the server uses the legacy admin system with admins.txt or the SQL system
+/// Gives the !localhost! rank to any client connecting from 127.0.0.1 or ::1
+/datum/config_entry/flag/enable_localhost_rank
 	protection = CONFIG_ENTRY_LOCKED
 
-/datum/config_entry/flag/enable_localhost_rank //Gives the !localhost! rank to any client connecting from 127.0.0.1 or ::1
+/// Defines whether the server uses the legacy admin system with admins.txt or the SQL system
+/datum/config_entry/flag/admin_legacy_system
+	protection = CONFIG_ENTRY_LOCKED
+
+/datum/config_entry/flag/protect_legacy_admins //Stops any admins loaded by the legacy system from having their rank edited by the permissions panel
+	protection = CONFIG_ENTRY_LOCKED
+
+/// Stops any ranks loaded by the legacy system from having their flags edited by the permissions panel
+/datum/config_entry/flag/protect_legacy_ranks
+	protection = CONFIG_ENTRY_LOCKED
+
+/datum/config_entry/flag/load_legacy_ranks_only //Loads admin ranks only from legacy admin_ranks.txt, while enabled ranks are mirrored to the database
+	protection = CONFIG_ENTRY_LOCKED
+
+//Gives the !localhost! rank to any client connecting from 127.0.0.1 or ::1
+/datum/config_entry/flag/enable_localhost_rank
 	protection = CONFIG_ENTRY_LOCKED
 
 /datum/config_entry/flag/admin_memo_system
 	protection = CONFIG_ENTRY_LOCKED
 
-// /datum/config_entry/flag/protect_legacy_admins //Stops any admins loaded by the legacy system from having their rank edited by the permissions panel
-// 	protection = CONFIG_ENTRY_LOCKED
-
-// /datum/config_entry/flag/protect_legacy_ranks //Stops any ranks loaded by the legacy system from having their flags edited by the permissions panel
-// 	protection = CONFIG_ENTRY_LOCKED
-
-
-// /datum/config_entry/flag/load_legacy_ranks_only //Loads admin ranks only from legacy admin_ranks.txt, while enabled ranks are mirrored to the database
-// 	protection = CONFIG_ENTRY_LOCKED
 
 /datum/config_entry/flag/mods_can_tempban
 
@@ -381,6 +425,17 @@
 
 /datum/config_entry/flag/forbid_admin_profiling
 
+/datum/config_entry/flag/see_own_notes //Can players see their own admin notes
+
+/datum/config_entry/number/note_fresh_days
+	default = null
+	min_val = 0
+	integer = FALSE
+
+/datum/config_entry/number/note_stale_days
+	default = null
+	min_val = 0
+	integer = FALSE
 
 /*****************/
 /*     GAME      */
@@ -452,34 +507,32 @@
 /*     MISC      */
 /*****************/
 
-//Defines whether the server uses recursive or circular explosions.
+/// Defines whether the server uses recursive or circular explosions.
 /datum/config_entry/flag/use_recursive_explosions
 
 /datum/config_entry/flag/emojis
 
 /datum/config_entry/flag/paper_input
 
-// If true, submaps loaded automatically can be rotated.
+/// If true, submaps loaded automatically can be rotated.
 /datum/config_entry/flag/random_submap_orientation
 
 /datum/config_entry/flag/use_overmap
 
 
-// Path to the python2 executable on the system.
+/// Path to the python2 executable on the system.
 /datum/config_entry/string/python_path
 
-
-
-// motd.txt
-// Sets an MOTD of the server.
-// You can use this multiple times, and the MOTDs will be appended in order.
-// Based on config directory, so "motd.txt" points to "config/motd.txt"
-
+/**
+ * motd.txt
+ * Sets an MOTD of the server.
+ * You can use this multiple times, and the MOTDs will be appended in order.
+ * Based on config directory, so "motd.txt" points to "config/motd.txt"
+ */
 /datum/config_entry/str_list/motd
 
 /datum/config_entry/flag/config_errors_runtime
 	default = FALSE
-
 /*****************/
 /*  URLS & Lang  */
 /*****************/

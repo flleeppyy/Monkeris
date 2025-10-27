@@ -21,7 +21,7 @@
 		return 0
 	if(access_cent_captain in held_card.access)
 		return 2
-	else if(access_hop in held_card.access || (access_captain in held_card.access))
+	else if((access_hop in held_card.access) || (access_captain in held_card.access))
 		return 1
 
 /obj/machinery/account_database/proc/create_transation(target, reason, amount)
@@ -91,7 +91,7 @@
 			data["transactions"] = trx
 
 	var/list/accounts[0]
-	for(var/i=1, i<=all_money_accounts.len, i++)
+	for(var/i=1; i<=all_money_accounts.len; i++)
 		var/datum/money_account/D = all_money_accounts[i]
 		accounts.Add(list(list(\
 			"account_number"=D.account_number,\
@@ -251,7 +251,7 @@
 							<tbody>
 					"}
 
-					for(var/i=1, i<=all_money_accounts.len, i++)
+					for(var/i=1; i<=all_money_accounts.len; i++)
 						var/datum/money_account/D = all_money_accounts[i]
 						text += {"
 								<tr>

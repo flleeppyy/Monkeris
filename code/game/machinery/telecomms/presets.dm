@@ -25,6 +25,9 @@
 	autolinkers = list("r_relay")
 
 /obj/machinery/telecomms/relay/preset/pulsar
+	name = "teleroachication relay"
+	icon_state = "roach_relay"
+	desc = "Utilizing the power of a bluespace roach to send massive amounts of data far away."
 	id = "Pulsar Relay"
 	produces_heat = 0
 	autolinkers = list("p_relay")
@@ -65,7 +68,7 @@
 
 //Common and other radio frequencies for people to freely use
 /obj/machinery/telecomms/receiver/preset_right/New()
-	for(var/i = PUBLIC_LOW_FREQ, i < PUBLIC_HIGH_FREQ, i += 2)
+	for(var/i = PUBLIC_LOW_FREQ; i < PUBLIC_HIGH_FREQ; i += 2)
 		freq_listening |= i
 	..()
 
@@ -92,7 +95,7 @@
 	autolinkers = list("processor2", "supply", "service", "nt", "unused")
 
 /obj/machinery/telecomms/bus/preset_two/New()
-	for(var/i = PUBLIC_LOW_FREQ, i < PUBLIC_HIGH_FREQ, i += 2)
+	for(var/i = PUBLIC_LOW_FREQ; i < PUBLIC_HIGH_FREQ; i += 2)
 		if(i == PUB_FREQ)
 			continue
 		freq_listening |= i
@@ -183,7 +186,7 @@
 	autolinkers = list("unused")
 
 /obj/machinery/telecomms/server/presets/unused/New()
-	for(var/i = PUBLIC_LOW_FREQ, i < PUBLIC_HIGH_FREQ, i += 2)
+	for(var/i = PUBLIC_LOW_FREQ; i < PUBLIC_HIGH_FREQ; i += 2)
 		if(i == AI_FREQ || i == PUB_FREQ)
 			continue
 		freq_listening |= i

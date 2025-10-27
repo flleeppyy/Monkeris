@@ -1,5 +1,5 @@
 
-GLOBAL_VAR_INIT(OOC_COLOR, null)//If this is null, use the CSS for OOC. Otherwise, use a custom colour.
+GLOBAL_VAR_INIT(OOC_COLOR, "#cca300")//If this is null, use the CSS for OOC. Otherwise, use a custom colour.
 GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 
 /client/verb/ooc(msg as text)
@@ -214,3 +214,25 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 		to_chat(src, "[span_boldnotice("Admin Notice:")]\n \t [GLOB.admin_notice]")
 	else
 		to_chat(src, span_notice("There are no admin notices at the moment."))
+
+/client/proc/self_notes()
+	set name = "View Admin Remarks"
+	set category = "OOC"
+	set desc = "View the notes that admins have written about you"
+
+	if(!CONFIG_GET(flag/see_own_notes))
+		to_chat(usr, span_notice("Sorry, that function is not enabled on this server."))
+		return
+
+	browse_messages(null, usr.ckey, null, TRUE)
+
+/client/proc/self_playtime()
+	set name = "View tracked playtime"
+	set category = "OOC"
+	set desc = "View the amount of playtime for roles the server has tracked."
+
+	if(!CONFIG_GET(flag/use_exp_tracking))
+		to_chat(usr, span_notice("Sorry, tracking is currently disabled."))
+		return
+
+	new /datum/job_report_menu(src, usr)

@@ -101,7 +101,7 @@ var/list/_client_preferences_by_type
 
 /datum/client_preference/play_lobby_music/changed(mob/preference_mob, new_value)
 	if(new_value == GLOB.PREF_YES)
-		if(isnewplayer(preference_mob))
+		if(isnewplayer(preference_mob) && !SSticker.state == GAME_STATE_STARTUP)
 			GLOB.lobbyScreen.play_music(preference_mob.client)
 	else
 		GLOB.lobbyScreen.stop_music(preference_mob.client)
@@ -139,6 +139,11 @@ var/list/_client_preferences_by_type
 /datum/client_preference/play_ambiance/changed(mob/preference_mob, new_value)
 	if(new_value == GLOB.PREF_NO)
 		sound_to(preference_mob, sound(null, repeat = 0, wait = 0, volume = 0, channel = GLOB.ambience_sound_channel))
+
+/datum/client_preference/play_sound_announcements
+	description ="Play sounds for announcements"
+	key = "SOUND_ANNOUNCEMENTS"
+	default_value = GLOB.PREF_YES
 
 /datum/client_preference/ghost_ears
 	description ="Ghost ears"

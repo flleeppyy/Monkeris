@@ -128,7 +128,7 @@ var/list/global/organ_rel_size = list(
 	var/intag = 0
 	var/block = list()
 	. = list()
-	for(var/i = 1, i <= length(n), i++)
+	for(var/i = 1; i <= length(n); i++)
 		var/char = copytext_char(n, i, i+1)
 		if(!intag && (char == "<"))
 			intag = 1
@@ -147,7 +147,7 @@ var/list/global/organ_rel_size = list(
 /proc/stars_no_html(text, pr, re_encode)
 	text = html_decode(text) //We don't want to screw up escaped characters
 	. = list()
-	for(var/i = 1, i <= length(text), i++)
+	for(var/i = 1; i <= length(text); i++)
 		var/char = copytext_char(text, i, i+1)
 		if(char == " " || prob(pr))
 			. += char
@@ -187,7 +187,7 @@ var/list/global/organ_rel_size = list(
 	var/p = 1//1 is the start of any word
 	while(p <= n)//while P, which starts at 1 is less or equal to N which is the length.
 		var/n_letter = copytext_char(te, p, p + 1)//copies text from a certain distance. In this case, only one letter at a time.
-		if (prob(80) && (lowertext(n_letter) in LIST_OF_CONSONANT|LIST_OF_CONSONANT_RU))
+		if (prob(80) && (lowertext(n_letter) in (LIST_OF_CONSONANT|LIST_OF_CONSONANT_RU)))
 			if (prob(10))
 				n_letter = text("[n_letter]-[n_letter]-[n_letter]-[n_letter]")//replaces the current letter with this instead.
 			else
@@ -205,14 +205,14 @@ var/list/global/organ_rel_size = list(
 /proc/Gibberish(t, p)//t is the inputted message, and any value higher than 70 for p will cause letters to be replaced instead of added
 	/* Turn text into complete gibberish! */
 	var/returntext = ""
-	for(var/i = 1, i <= length(t), i++)
+	for(var/i = 1; i <= length(t); i++)
 
 		var/letter = copytext_char(t, i, i+1)
 		if(prob(50))
 			if(p >= 70)
 				letter = ""
 
-			for(var/j = 1, j <= rand(0, 2), j++)
+			for(var/j = 1; j <= rand(0, 2); j++)
 				letter += pick("#","@","*","&","%","$","/", "<", ">", ";","*","*","*","*","*","*","*")
 
 		returntext += letter
@@ -311,7 +311,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 			a_intent = I_HELP
 
 	if (HUDneed.Find("intent"))
-		var/obj/screen/intent/I = HUDneed["intent"]
+		var/atom/movable/screen/intent/I = HUDneed["intent"]
 		I.update_icon()
 
 
@@ -373,10 +373,11 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 					name = M.real_name
 		if(!name)
 			name = (C.holder && C.holder.fakekey) ? C.holder.fakekey : C.key
+		var/verby = pick("skulks","lurks","prowls","creeps","stalks")
 		if(joined_ghosts)
-			deadchat_broadcast("The ghost of [span_name("[name]")] now [pick("skulks","lurks","prowls","creeps","stalks")] among the dead. [message]")
+			deadchat_broadcast("The ghost of [span_name("[name]")] now [verby] among the dead. [message]")
 		else
-			deadchat_broadcast("[span_name("[name]")] no longer [pick("skulks","lurks","prowls","creeps","stalks")] in the realm of the dead. [message]")
+			deadchat_broadcast("[span_name("[name]")] no longer [verby] in the realm of the dead. [message]")
 
 /mob/proc/switch_to_camera(obj/machinery/camera/C)
 	if (!C.can_use() || stat || (get_dist(C, src) > 1 || machine != src || blinded || !canmove))

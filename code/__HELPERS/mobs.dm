@@ -445,6 +445,9 @@ Proc for attack log creation, because really why not
 /proc/get_mob_by_ckey(key)
 	if(!key)
 		return
+	var/mob/persistent_mob = GLOB.persistent_clients_by_ckey[key]?.mob
+	if(persistent_mob)
+		return persistent_mob
 	for(var/mob/mob in GLOB.mob_list)
 		if(mob.ckey == key)
 			return mob
@@ -511,12 +514,12 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 		// 	toggles = prefs.toggles
 		// 	ignoring = prefs.ignoring
 		if(admin_only)
-			if (!check_rights_for(M, R_ADMIN))
+			if (!check_rights_for(M.client, R_ADMIN))
 				return
 			else
 				message += span_deadsay(" (This is viewable to admins only).")
 		var/override = FALSE
-		if(check_rights_for(M, R_ADMIN) && (M.client?.get_preference_value(/datum/client_preference/show_dsay)))
+		if(check_rights_for(M.client, R_ADMIN) && (M.client?.get_preference_value(/datum/client_preference/show_dsay)))
 			override = TRUE
 		// if(HAS_TRAIT(M, TRAIT_SIXTHSENSE) && message_type == DEADCHAT_REGULAR)
 		// 	override = TRUE

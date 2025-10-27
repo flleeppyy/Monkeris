@@ -214,7 +214,7 @@ var/list/adminfaxes = list()	//cache for faxes that have been sent to admins
 	var/msg = span_blue("<b><font color='[font_colour]'>[faxname]: </font>[key_name(sender, 1)] [ADMIN_PP(sender)] [ADMIN_VV(sender)] [ADMIN_SM(sender)] ([admin_jump_link(sender, src)]) (<A href='byond://?_src_=holder;[HrefToken()];secretsadmin=check_antagonist'>CA</A>) (<a href='byond://?_src_=holder;[HrefToken()];[reply_type]=\ref[sender];originfax=\ref[src]'>REPLY</a>)</b>: Receiving '[sent.name]' via secure connection ... <a href='byond://?_src_=holder;[HrefToken()];AdminFaxView=\ref[sent]'>view message</a>")
 
 	for(var/client/C in GLOB.admins)
-		if(R_ADMIN & C.holder.rights)
+		if(& C.holder.rank_flags() & R_ADMIN)
 			to_chat(C, msg)
 	var/faxid = export_fax(sent)
 	message_chat_admins(sender, faxname, sent, faxid, font_colour)
@@ -237,7 +237,7 @@ var/list/adminfaxes = list()	//cache for faxes that have been sent to admins
 	else if (istype(fax, /obj/item/paper_bundle))
 		var/obj/item/paper_bundle/B = fax
 		var/data = ""
-		for (var/page = 1, page <= B.pages.len, page++)
+		for(var/page = 1; page <= B.pages.len; page++)
 			var/obj/pageobj = B.pages[page]
 			var/page_faxid = export_fax(pageobj)
 			data += "<a href='fax_[page_faxid].html'>Page [page] - [pageobj.name]</a><br>"

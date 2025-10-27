@@ -266,12 +266,12 @@
 
 /obj/machinery/surveillance_pod/proc/handle_occupant_UI(hide_ui)
 	if(hide_ui)
-		for(var/obj/screen/inventory/IS in occupant.HUDinventory)
+		for(var/atom/movable/screen/inventory/IS in occupant.HUDinventory)
 			if(IS.hideflag)
 				IS.invisibility = 101
 				IS.handle_inventory_invisibility(IS, occupant)
 
-		for(var/obj/screen/S in occupant.HUDfrippery)
+		for(var/atom/movable/screen/S in occupant.HUDfrippery)
 			if(S.hideflag)
 				S.invisibility = 101
 
@@ -286,16 +286,16 @@
 		occupant.client.create_UI(big_brother.type)
 
 	else
-		for(var/obj/screen/inventory/IS in occupant.HUDinventory)
+		for(var/atom/movable/screen/inventory/IS in occupant.HUDinventory)
 			if(IS.hideflag)
 				IS.invisibility = 0
 				IS.handle_inventory_invisibility(IS, occupant)
 
-		for(var/obj/screen/S in occupant.HUDfrippery)
+		for(var/atom/movable/screen/S in occupant.HUDfrippery)
 			if(S.hideflag)
 				S.invisibility = 0
 
-		for(var/i=1, i<=occupant.HUDneed.len, i++)
+		for(var/i=1; i<=occupant.HUDneed.len; i++)
 			var/p = occupant.HUDneed[i]
 			if(!(p in HUDneed_element_to_keep))
 				occupant.client.screen += occupant.HUDneed[p]
@@ -303,7 +303,7 @@
 		occupant.client.destroy_UI()
 
 
-/obj/screen/inventory/proc/handle_inventory_invisibility(obj/screen/inventory/inv_elem, mob/parentmob)
+/atom/movable/screen/inventory/proc/handle_inventory_invisibility(atom/movable/screen/inventory/inv_elem, mob/parentmob)
 	var/mob/living/carbon/human/H = parentmob
 	switch (inv_elem.slot_id)
 		if(slot_head)

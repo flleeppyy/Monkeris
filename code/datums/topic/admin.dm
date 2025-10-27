@@ -115,108 +115,39 @@
 	var/ban_id = input["unbanlog"]
 	usr.client.holder.ban_log(ban_id)
 
+/datum/admin_topic/editrightsbrowser
+	keyword = "editrightsbrowser"
+	require_perms = list(R_PERMISSIONS)
+
+/datum/admin_topic/editrightsbrowser/Run(list/href_list)
+	usr.client.edit_admin_permissions(0)
+
+/datum/admin_topic/editrightsbrowserlog
+	keyword = "editrightsbrowserlog"
+	require_perms = list(R_PERMISSIONS)
+
+/datum/admin_topic/editrightsbrowserlog/Run(list/href_list)
+	usr.client.edit_admin_permissions(1, href_list["editrightstarget"], href_list["editrightsoperation"], href_list["editrightspage"])
+
+/datum/admin_topic/editrightsbrowsermanage
+	keyword = "editrightsbrowsermanage"
+	require_perms = list(R_PERMISSIONS)
+
+/datum/admin_topic/editrightsbrowsermanage/Run(list/href_list)
+	if(href_list["editrightschange"])
+		usr.client.holder.change_admin_rank(ckey(href_list["editrightschange"]), href_list["editrightschange"], TRUE)
+	else if(href_list["editrightsremove"])
+		usr.client.holder.remove_admin(ckey(href_list["editrightsremove"]), href_list["editrightsremove"], TRUE)
+	else if(href_list["editrightsremoverank"])
+		usr.client.holder.remove_rank(href_list["editrightsremoverank"])
+	usr.client.edit_admin_permissions(2)
+
 /datum/admin_topic/editrights
 	keyword = "editrights"
 	require_perms = list(R_PERMISSIONS)
 
-/datum/admin_topic/editrights/Run(list/input)
-
-	var/adm_ckey
-
-	var/task = input["editrights"]
-	if(task == "add")
-		var/new_ckey = ckey(input(usr,"New admin's ckey","Admin ckey", null) as text|null)
-		if(!new_ckey)
-			return
-		if(new_ckey in GLOB.admin_datums)
-			to_chat(usr, "<font color='red'>Error: Topic 'editrights': [new_ckey] is already an admin</font>")
-			return
-		adm_ckey = new_ckey
-		task = "rank"
-	else if(task != "show")
-		adm_ckey = ckey(input["ckey"])
-		if(!adm_ckey)
-			to_chat(usr, "<font color='red'>Error: Topic 'editrights': No valid ckey</font>")
-			return
-
-	var/datum/admins/D = GLOB.admin_datums[adm_ckey]
-
-	if(task == "remove")
-		if(alert("Are you sure you want to remove [adm_ckey]?","Message","Yes","Cancel") == "Yes")
-			if(!D)
-				return
-			GLOB.admin_datums -= adm_ckey
-			D.disassociate()
-
-			message_admins("[key_name_admin(usr)] removed [adm_ckey] from the admins list")
-			log_admin("[key_name(usr)] removed [adm_ckey] from the admins list")
-			source.log_admin_rank_modification(adm_ckey, "player")
-
-	else if(task == "rank")
-		var/new_rank
-		if(GLOB.admin_ranks.len)
-			new_rank = input("Please select a rank", "New rank", null, null) as null|anything in (GLOB.admin_ranks|"*New Rank*")
-		else
-			new_rank = input("Please select a rank", "New rank", null, null) as null|anything in list("Game Master","Game Admin", "Trial Admin", "Admin Observer","*New Rank*")
-
-		var/rights = 0
-		if(D)
-			rights = D.rights
-		switch(new_rank)
-			if(null,"")
-				return
-			if("*New Rank*")
-				new_rank = input("Please input a new rank", "New custom rank", null, null) as null|text
-				if(CONFIG_GET(flag/admin_legacy_system))
-					new_rank = ckeyEx(new_rank)
-				if(!new_rank)
-					to_chat(usr, "<font color='red'>Error: Topic 'editrights': Invalid rank</font>")
-					return
-				if(CONFIG_GET(flag/admin_legacy_system))
-					if(GLOB.admin_ranks.len)
-						if(new_rank in GLOB.admin_ranks)
-							rights = GLOB.admin_ranks[new_rank]		//we typed a rank which already exists, use its rights
-						else
-							GLOB.admin_ranks[new_rank] = 0			//add the new rank to GLOB.admin_ranks
-			else
-				if(CONFIG_GET(flag/admin_legacy_system))
-					new_rank = ckeyEx(new_rank)
-					rights = GLOB.admin_ranks[new_rank]				//we input an existing rank, use its rights
-
-		if(D)
-			D.disassociate()								//remove adminverbs and unlink from client
-			D.rank = new_rank								//update the rank
-			D.rights = rights								//update the rights based on GLOB.admin_ranks (default: 0)
-		else
-			D = new /datum/admins(new_rank, rights, adm_ckey)
-
-		var/client/C = GLOB.directory[adm_ckey]						//find the client with the specified ckey (if they are logged in)
-		D.associate(C)											//link up with the client and add verbs
-
-		to_chat(C, "[key_name_admin(usr)] has set your admin rank to: [new_rank].")
-		message_admins("[key_name_admin(usr)] edited the admin rank of [adm_ckey] to [new_rank]")
-		log_admin("[key_name(usr)] edited the admin rank of [adm_ckey] to [new_rank]")
-		source.log_admin_rank_modification(adm_ckey, new_rank)
-
-	else if(task == "permissions")
-		if(!D)
-			return
-		var/list/permissionlist = list()
-		for(var/i = R_FUN, i <= R_ADMIN, i = (i<<1)) // Here 'i' matches one of admin permissions on each cycle, from R_FUN(1<<0) to R_ADMIN(1<<6)
-			permissionlist[rights2text(i)] = i
-		var/new_permission = input("Select a permission to turn on/off", "Permission toggle", null, null) as null|anything in permissionlist
-		if(!new_permission)
-			return
-		D.rights ^= permissionlist[new_permission]
-
-		var/client/C = GLOB.directory[adm_ckey]
-		to_chat(C, "[key_name_admin(usr)] has toggled your permission: [new_permission].")
-		message_admins("[key_name_admin(usr)] toggled the [new_permission] permission of [adm_ckey]")
-		log_admin("[key_name(usr)] toggled the [new_permission] permission of [adm_ckey]")
-		source.log_admin_permission_modification(adm_ckey, permissionlist[new_permission], new_permission)
-
-	source.edit_admin_permissions()
-
+/datum/admin_topic/editrights/Run(list/href_list)
+	usr.client.holder.edit_rights_topic(href_list)
 
 /datum/admin_topic/simplemake
 	keyword = "simplemake"
@@ -311,6 +242,8 @@
 	GLOB.player_list -= M.ckey
 	NP.ckey = M.ckey
 	qdel(M)
+	sound_to(NP, sound(null, repeat = 0, wait = 0, volume = 100))
+
 
 /datum/admin_topic/mute
 	keyword = "mute"
@@ -521,6 +454,20 @@
 	var/mob/observer/ghost/ghost = usr
 	ghost.ManualFollow(target)
 
+/datum/admin_topic/admingetmovable
+	keyword = "admingetmovable"
+	require_perms = list(R_ADMIN)
+
+/datum/admin_topic/admingetmovable/Run(list/input)
+	var/atom/movable/AM = locate(input["admingetmovable"])
+	if(QDELETED(AM))
+		return
+	if (isnull(usr.loc))
+		to_chat(usr, "Can't move to nullspace!")
+		return
+
+	AM.forceMove(get_turf(usr))
+
 /datum/admin_topic/adminplayerobservecoodjump
 	keyword = "adminplayerobservecoodjump"
 	require_perms = list(R_ADMIN)
@@ -691,7 +638,7 @@
 		var/data = ""
 		var/obj/item/paper_bundle/B = fax
 
-		for (var/page = 1, page <= B.pages.len, page++)
+		for(var/page = 1; page <= B.pages.len; page++)
 			var/obj/pageobj = B.pages[page]
 			data += "<A href='byond://?src=\ref[source];AdminFaxViewPage=[page];paper_bundle=\ref[B]'>Page [page] - [pageobj.name]</A><BR>"
 
@@ -1178,22 +1125,3 @@
 			source.admincaster_screen = 1
 			source.access_news_network()
 
-
-//Player Notes
-/datum/admin_topic/notes
-	keyword = "notes"
-
-/datum/admin_topic/notes/Run(list/input)
-	var/ckey = input["ckey"]
-	if(!ckey)
-		var/mob/M = locate(input["mob"])
-		if(ismob(M))
-			ckey = M.ckey
-
-	switch(input[keyword])
-		if("add")
-			notes_add(ckey, input["text"])
-		if("remove")
-			notes_remove(ckey, text2num(input["from"]), text2num(input["to"]))
-
-	source.notes_show(ckey)

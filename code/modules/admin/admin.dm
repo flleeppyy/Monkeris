@@ -18,7 +18,7 @@ var/global/floorIsLava = 0
 	log_attack(text)
 	var/rendered = "<span class='log_message'><span class='prefix'>ATTACK:</span> <span class='message'>[text]</span></span>"
 	for(var/client/C in GLOB.admins)
-		if(R_ADMIN & C.holder.rights)
+		if(C.holder.rank_flags() & R_ADMIN)
 			if(C.get_preference_value(/datum/client_preference/staff/show_attack_logs) == GLOB.PREF_SHOW)
 				var/msg = rendered
 				to_chat(C, msg)
@@ -32,7 +32,7 @@ var/global/floorIsLava = 0
  */
 /proc/message_adminTicket(msg, important = FALSE)
 	for(var/client/C in GLOB.admins)
-		if(R_ADMIN & C.holder.rights)
+		if(C.holder.rank_flags() & R_ADMIN)
 			to_chat(C, msg)
 			if(important || (C.get_preference_value(/datum/client_preference/staff/play_adminhelp_ping) == GLOB.PREF_HEAR))
 				sound_to(C, 'sound/effects/adminhelp.ogg')
@@ -82,7 +82,7 @@ var/global/floorIsLava = 0
 	usr << browse(HTML_SKELETON_TITLE("Log Panel of [M.real_name]", body), "window=\ref[M]logs;size=500x500")
 
 
-//shows an interface for individual players, with various links (links require additional flags
+/// shows an interface for individual players, with various links (links require additional flags
 /datum/admins/proc/show_player_panel(mob/M in GLOB.mob_list)
 	set category = null
 	set name = "Show Player Panel"
@@ -102,8 +102,10 @@ var/global/floorIsLava = 0
 
 	if(M.client)
 		body += " played by <b><a href='http://byond.com/members/[M.client.ckey]'>[M.client]</b></a> "
-		body += "\[<A href='byond://?src=\ref[src];[HrefToken()];editrights=show'>[M.client.holder ? M.client.holder.rank : "Player"]</A>\]<br>"
+		body += "\[<A href='byond://?src=\ref[src];[HrefToken()];editrights=show'>[M.client.holder ? M.client.holder.rank_names() : "Player"]<br>"
 		body += "<b>Registration date:</b> [M.client.account_join_date ? M.client.account_join_date : "Unknown"]<br>"
+		if(CONFIG_GET(flag/use_exp_tracking))
+			body += "\[<A href='byond://?_src_=holder;[HrefToken()];getplaytimewindow=[REF(M)]'>" + M.client.get_exp_living(FALSE) + " Playtime</a>\]"
 		body += "<b>IP:</b> [M.client.address ? M.client.address : "Unknown"]<br>"
 
 		var/country = M.client.country
@@ -144,6 +146,7 @@ var/global/floorIsLava = 0
 	else
 		body += "<A href='byond://?_src_=holder;[HrefToken()];newbankey=[M.key]'>Ban</A> | "
 
+	body += "<A href='byond://?_src_=holder;[HrefToken()];showmessageckey=[M.ckey]'>Notes | Messages | Watchlist</A> | "
 	if(M.client)
 		body += "\ <A href='byond://?_src_=holder;[HrefToken()];sendbacktolobby=\ref[M]'>Send back to Lobby</A> | "
 		var/muted = M.client.prefs.muted
@@ -231,12 +234,16 @@ var/global/floorIsLava = 0
 
 	usr << browse(HTML_SKELETON_TITLE("Options for [M.key]", body), "window=adminplayeropts;size=550x515")
 
-/datum/player_info/var/author // admin who authored the information
-/datum/player_info/var/rank //rank of admin who made the notes
-/datum/player_info/var/content // text content of the information
-/datum/player_info/var/timestamp // Because this is bloody annoying
+/// Admin who authored the information
+/datum/player_info/var/author
+/// Rank of admin who made the notes
+/datum/player_info/var/rank
+/// Text content of the information
+/datum/player_info/var/content
+/// Because this is bloody annoying
+/datum/player_info/var/timestamp
 
-//allows access of newscasters
+/// allows access of newscasters
 /datum/admins/proc/access_news_network() //MARKER
 	set category = "Fun"
 	set name = "Access Newscaster Network"
@@ -545,7 +552,7 @@ var/global/floorIsLava = 0
 
 	var/result = input(usr, "Select reboot method", "World Reboot", options[1]) as null|anything in options
 	if(result)
-		// SSblackbox.record_feedback("tally", "admin_verb", 1, "Reboot World") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+		SSblackbox.record_feedback("tally", "admin_verb", 1, "Reboot World") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 		var/init_by = "Initiated by [usr.client.holder.fakekey ? "Admin" : usr.key]."
 		switch(result)
 			if("Regular Restart")
@@ -581,7 +588,7 @@ var/global/floorIsLava = 0
 				to_chat(world, "Server restart - [init_by]")
 				world.TgsEndProcess()
 
-//priority announce something to all clients.
+/// priority announce something to all clients.
 /datum/admins/proc/announce()
 	set category = "Special Verbs"
 	set name = "Announce"
@@ -592,11 +599,9 @@ var/global/floorIsLava = 0
 	var/message = input("Global message to send:", "Admin Announce", null, null)  as message
 	if(message)
 		if(!check_rights(R_SERVER,0))
-			message = sanitize(message, 500, extra = 0)
-		message = replacetext(message, "\n", "<br>") // required since we're putting it in a <p> tag
-		to_chat(world, span_notice("<b>[usr.client.holder.fakekey ? "Administrator" : usr.key] Announces:</b><p style='text-indent: 50px'>[message]</p>"))
+			message = adminscrub(message,500)
+		send_formatted_announcement(message, "From [usr.client.holder.fakekey ? "Administrator" : usr.key]")
 		log_admin("Announce: [key_name(usr)] : [message]")
-		SEND_SOUND(world, sound('sound/misc/notice2.ogg'))
 
 /datum/admins/proc/set_respawn_timer()
 	set name = "Set Respawn Timer"
@@ -629,7 +634,7 @@ var/global/floorIsLava = 0
 	if(confirm == "Yes")
 		SSticker.force_ending = ADMIN_FORCE_END_ROUND
 
-//toggles ooc on/off for everyone
+/// toggles ooc on/off for everyone
 /datum/admins/proc/toggleooc()
 	set category = "Server"
 	set desc="Globally Toggles OOC"
@@ -645,7 +650,7 @@ var/global/floorIsLava = 0
 		to_chat(world, "<B>The OOC channel has been globally disabled!</B>")
 	log_and_message_admins("toggled OOC.")
 
-//toggles looc on/off for everyone
+/// toggles looc on/off for everyone
 /datum/admins/proc/togglelooc()
 	set category = "Server"
 	set desc="Globally Toggles LOOC"
@@ -661,7 +666,7 @@ var/global/floorIsLava = 0
 		to_chat(world, "<B>The LOOC channel has been globally disabled!</B>")
 	log_and_message_admins("toggled LOOC.")
 
-//toggles dsay on/off for everyone
+/// toggles dsay on/off for everyone
 /datum/admins/proc/toggledsay()
 	set category = "Server"
 	set desc="Globally Toggles DSAY"
@@ -678,7 +683,7 @@ var/global/floorIsLava = 0
 	log_admin("[key_name(usr)] toggled deadchat.")
 	message_admins("[key_name_admin(usr)] toggled deadchat.", 1)
 
-//toggles ooc on/off for everyone who is dead
+/// toggles ooc on/off for everyone who is dead
 /datum/admins/proc/toggleoocdead()
 	set category = "Server"
 	set desc="Toggle Dead OOC."
@@ -716,7 +721,7 @@ var/global/floorIsLava = 0
 		to_chat(usr, span_warning(span_red("Error: Start Now: Game has already started.")))
 	return FALSE
 
-//toggles whether people can join the current game
+/// toggles whether people can join the current game
 /datum/admins/proc/toggleenter()
 	set category = "Server"
 	set desc="People can't enter"
@@ -865,7 +870,7 @@ var/global/floorIsLava = 0
 	new /obj/effect/plant(get_turf(usr), SSplants.seeds[seedtype])
 	log_admin("[key_name(usr)] spawned [seedtype] vines at ([usr.x],[usr.y],[usr.z])")
 
-// allows us to spawn instances
+/// allows us to spawn instances
 /datum/admins/proc/spawn_atom(object as text)
 	set category = "Debug"
 	set desc = "(atom path) Spawn an atom"
@@ -900,7 +905,7 @@ var/global/floorIsLava = 0
 
 	log_and_message_admins("spawned [chosen] at ([usr.x],[usr.y],[usr.z])")
 
-//interface which shows a mob's mind
+/// interface which shows a mob's mind
 /datum/admins/proc/show_contractor_panel(mob/M in SSmobs.mob_list | SShumans.mob_list)
 	set category = "Admin"
 	set desc = "Edit mobs's memory and role"
@@ -927,7 +932,7 @@ var/global/floorIsLava = 0
 	log_admin("[key_name(usr)] toggled welder vision.")
 	message_admins("[key_name_admin(usr)] toggled welder vision.", 1)
 
-//toggles whether guests can join the current game
+/// toggles whether guests can join the current game
 /datum/admins/proc/toggleguests()
 	set category = "Server"
 	set desc="Guests can't enter"
@@ -1068,7 +1073,7 @@ var/global/floorIsLava = 0
 	if(!C.holder)
 		return FALSE
 
-	if(C.holder.rights == R_MENTOR)
+	if(C.holder.rank_flags() & R_MENTOR)
 		return TRUE
 	return FALSE
 
@@ -1135,6 +1140,7 @@ var/global/floorIsLava = 0
 		tomob.ghostize(0)
 	message_admins(span_adminnotice("[key_name_admin(usr)] has put [frommob.ckey] in control of [tomob.name]."))
 	log_admin("[key_name(usr)] stuffed [frommob.ckey] into [tomob.name].")
+	SSblackbox.record_feedback("tally", "admin_verb", 1, "Ghost Drag Control")
 
 	tomob.ckey = frommob.ckey
 	if(tomob.client)
@@ -1180,19 +1186,6 @@ var/global/floorIsLava = 0
 			continue
 		result[1]++
 	return result
-
-//This proc checks whether subject has at least ONE of the rights specified in rights_required.
-/proc/check_rights_for(_subject, rights_required)
-	var/client/subject
-	if (ismob(_subject))
-		var/mob/M = _subject
-		subject = M?.client
-
-	if(subject && subject.holder)
-		if(rights_required && !(rights_required & subject.holder.rights))
-			return FALSE
-		return TRUE
-	return FALSE
 
 /datum/admins/proc/z_level_shooting()
 	set category = "Server"

@@ -38,8 +38,9 @@ var/next_station_date_change = 1 DAYS
 		station_date = num2text((text2num(time2text(timeofday, "YYYY")) + 544)) + "-" + time2text(timeofday, "MM-DD")
 	return station_date
 
-/proc/time_stamp()
-	return time2text(world.timeofday, "hh:mm:ss")
+/proc/time_stamp(format = "hh:mm:ss", show_ds)
+	var/time_string = time2text(world.timeofday, format)
+	return show_ds ? "[time_string]:[world.timeofday % 10]" : time_string
 
 /proc/time_stamp_metric()
 	var/date_portion = time2text(world.timeofday, "YYYY-MM-DD")

@@ -561,9 +561,7 @@ default behaviour is:
 						if (prob(75))
 							var/obj/item/grab/G = pick(M.grabbed_by)
 							if (istype(G, /obj/item/grab))
-								for(var/mob/O in viewers(M, null))
-									O.show_message(span_red(text("[] has been pulled from []'s grip by []", G.affecting, G.assailant, src)), 1)
-								//G = null
+								M.visible_message(span_danger("[G.affecting] has been pulled from [G.assailant]'s grip by [src]."))
 								qdel(G)
 						else
 							ok = 0
@@ -772,13 +770,13 @@ default behaviour is:
 /mob/living/throw_mode_off()
 	src.in_throw_mode = 0
 	if (HUDneed.Find("throw"))
-		var/obj/screen/HUDthrow/HUD = HUDneed["throw"]
+		var/atom/movable/screen/HUDthrow/HUD = HUDneed["throw"]
 		HUD.update_icon()
 
 /mob/living/throw_mode_on()
 	src.in_throw_mode = 1
 	if (HUDneed.Find("throw"))
-		var/obj/screen/HUDthrow/HUD = HUDneed["throw"]
+		var/atom/movable/screen/HUDthrow/HUD = HUDneed["throw"]
 		HUD.update_icon()
 
 /mob/living/start_pulling(atom/movable/AM)
@@ -838,7 +836,7 @@ default behaviour is:
 	AM.pulledby = src
 
 	if (HUDneed.Find("pull"))
-		var/obj/screen/HUDthrow/HUD = HUDneed["pull"]
+		var/atom/movable/screen/HUDthrow/HUD = HUDneed["pull"]
 		HUD.update_icon()
 
 	if(ishuman(AM))
@@ -932,3 +930,21 @@ default behaviour is:
 	switch(var_name)
 		if(NAMEOF(src, maxHealth))
 			updatehealth()
+
+/**
+ * Returns an assoc list of assignments and minutes for updating a client's exp time in the databse.
+ *
+ * Arguments:
+ * * minutes - The number of minutes to allocate to each valid role.
+ */
+/mob/living/proc/get_exp_list(minutes)
+	var/list/exp_list = list()
+
+	if(mind && player_is_antag(mind) && !(mind.datum_flags & DF_VAR_EDITED))
+		for(var/datum/antagonist/antag in mind.antagonist)
+			exp_list[antag.id] = minutes
+
+	if(mind.assigned_role in GLOB.exp_specialmap[EXP_TYPE_SPECIAL])
+		exp_list[mind.assigned_role] = minutes
+
+	return exp_list

@@ -1,12 +1,12 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:31
 
-/proc/dopage(src, target)
+/proc/dopage(source, target)
 	var/href_list
 	var/href
-	href_list = params2list("src=\ref[src]&[target]=1")
-	href = "src=\ref[src];[target]=1"
-	src:temphtml = null
-	src:Topic(href, href_list)
+	href_list = params2list("src=\ref[source]&[target]=1")
+	href = "src=\ref[source];[target]=1"
+	source:temphtml = null
+	source:Topic(href, href_list)
 	return null
 
 /proc/get_z(O)
@@ -290,7 +290,7 @@
 	return candidates
 
 /proc/ScreenText(obj/O, maptext="", screen_loc="CENTER-7,CENTER-7", maptext_height=480, maptext_width=480)
-	if(!isobj(O))	O = new /obj/screen/text()
+	if(!isobj(O))	O = new /atom/movable/screen/text()
 	O.maptext = maptext
 	O.maptext_height = maptext_height
 	O.maptext_width = maptext_width

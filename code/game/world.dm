@@ -128,10 +128,12 @@ GLOBAL_VAR(restart_counter)
 	call_restart_webhook()
 	TgsInitializationComplete()
 
+/**
+ * Everything in here is prioritized in a very specific way.
+ * If you need to add to it, ask yourself hard if what your adding is in the right spot
+ * (i.e. basically nothing should be added before load_admins() in here)
+ */
 /world/proc/ConfigLoaded()
-	// Everything in here is prioritized in a very specific way.
-	// If you need to add to it, ask yourself hard if what your adding is in the right spot
-	// (i.e. basically nothing should be added before load_admins() in here)
 
 	//apply a default value to CONFIG_GET(string/python_path), if needed
 	if (!CONFIG_GET(string/python_path))
@@ -477,6 +479,15 @@ var/world_topic_spam_protect_time = world.timeofday
 	/* does this help? I do not know */
 	if (src.status != s)
 		src.status = s
+
+/world/proc/update_hub_visibility(new_visibility)
+	if(new_visibility == GLOB.hub_visibility)
+		return
+	GLOB.hub_visibility = new_visibility
+	if(GLOB.hub_visibility)
+		hub_password = "kMZy3U5jJHSiBQjr"
+	else
+		hub_password = "SORRYNOPASSWORD"
 
 /world/proc/incrementMaxZ()
 	SEND_SIGNAL(SSdcs, COMSIG_WORLD_MAXZ_INCREMENTING)

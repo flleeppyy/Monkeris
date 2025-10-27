@@ -194,7 +194,7 @@
 	if(!restrict_safety)
 		verbs += /obj/item/gun/proc/toggle_safety_verb  //addint it to all guns
 
-		var/obj/screen/item_action/action = new /obj/screen/item_action/top_bar/gun/safety
+		var/atom/movable/screen/item_action/action = new /atom/movable/screen/item_action/top_bar/gun/safety
 		action.owner = src
 		hud_actions += action
 	verbs += /obj/item/gun/proc/toggle_carry_state_verb
@@ -214,7 +214,7 @@
 	if(!wielded_item_state) // If the gun has no wielded item state then use this generic one.
 		wielded_item_state = "_doble" //Someone mispelled double but they did it so consistently it's staying this way.
 	generate_guntags()
-	var/obj/screen/item_action/action = new /obj/screen/item_action/top_bar/weapon_info
+	var/atom/movable/screen/item_action/action = new /atom/movable/screen/item_action/top_bar/weapon_info
 	action.owner = src
 	hud_actions += action
 
@@ -230,7 +230,7 @@
 	if(flashlight_attachment)
 		flashlight_attachment.forceMove(get_turf(src))
 		flashlight_attachment = null
-	..()
+	. = ..()
 
 /obj/item/gun/proc/set_item_state(state, hands = TRUE, back = FALSE, onsuit = FALSE)
 	var/wield_state
@@ -246,7 +246,6 @@
 		else
 			item_state_slots[slot_l_hand_str] = "lefthand"  + state
 			item_state_slots[slot_r_hand_str] = "righthand" + state
-	state = initial(state)
 
 	var/carry_state = inversed_carry
 	if(back && !carry_state)
@@ -663,7 +662,9 @@
 			return
 
 		in_chamber.on_hit(M)
+		in_chamber.on_impact(M)
 		if(!in_chamber.is_halloss())
+			user.suicided = TRUE
 			log_and_message_admins("[key_name(user)] commited suicide using \a [src]")
 			for(var/damage_type in in_chamber.damage_types)
 				var/damage = in_chamber.damage_types[damage_type]*2.5
@@ -738,10 +739,10 @@
 
 
 /obj/item/gun/proc/initialize_firemode_actions()
-	var/obj/screen/item_action/action = locate(/obj/screen/item_action/top_bar/gun/fire_mode) in hud_actions
+	var/atom/movable/screen/item_action/action = locate(/atom/movable/screen/item_action/top_bar/gun/fire_mode) in hud_actions
 	if(LAZYLEN(firemodes) > 1)
 		if(!action)
-			action = new /obj/screen/item_action/top_bar/gun/fire_mode
+			action = new /atom/movable/screen/item_action/top_bar/gun/fire_mode
 			action.owner = src
 			hud_actions += action
 	else
@@ -749,10 +750,10 @@
 		hud_actions -= action
 
 /obj/item/gun/proc/initialize_scope()
-	var/obj/screen/item_action/action = locate(/obj/screen/item_action/top_bar/gun/scope) in hud_actions
+	var/atom/movable/screen/item_action/action = locate(/atom/movable/screen/item_action/top_bar/gun/scope) in hud_actions
 	if(LAZYLEN(zoom_factors) >= 1)
 		if(!action)
-			action = new /obj/screen/item_action/top_bar/gun/scope
+			action = new /atom/movable/screen/item_action/top_bar/gun/scope
 			action.owner = src
 			hud_actions += action
 			if(ismob(loc))
@@ -1016,6 +1017,7 @@
 	sharp = initial(sharp)
 	braceable = initial(braceable)
 	recoil = getRecoil(init_recoil[1], init_recoil[2], init_recoil[3])
+	w_class = initial(w_class)
 
 	attack_verb = list()
 	if(LAZYLEN(custom_default)) // this override is used by the artwork_revolver for RNG gun stats

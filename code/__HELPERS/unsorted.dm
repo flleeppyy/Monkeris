@@ -245,7 +245,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 	var/i, ch, len = length(key)
 
-	for(i = 7, i <= len, ++i) //we know the first 6 chars are Guest-
+	for(i = 7; i <= len; ++i) //we know the first 6 chars are Guest-
 		ch = text2ascii(key, i)
 		if(ch < 48 || ch > 57) //0-9
 			return FALSE
@@ -274,6 +274,10 @@ Turf and target are seperate in case you want to teleport some distance from a t
 	name = newname
 	if(mind)
 		mind.name = newname
+		if(mind.key)
+			log_played_names(ckey(mind.key) ,newname) //Just in case the mind is unsynced at the moment.
+
+	log_played_names(ckey, newname)
 
 	if(oldname)
 		//update the datacore records! This is goig to be a bit costly.
@@ -309,7 +313,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 		var/time_passed = world.time
 		var/newname
 
-		for(var/i=1, i<=3, i++)	//we get 3 attempts to pick a suitable name.
+		for(var/i=1; i<=3; i++)	//we get 3 attempts to pick a suitable name.
 			newname = input(src, "You are \a [role]. Would you like to change your name to something else?", "Name change", oldname) as text
 			if((world.time-time_passed)>3000)
 				return	//took too long
@@ -343,7 +347,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 //Picks a string of symbols to display as the law number for hacked or ion laws
 /proc/ionnum()
-	return "[pick("1", "2", "3", "4", "5", "6", "7", "8", "9", "0")][pick("!", "@", "#", "$", "%", "^", "&", "*")][pick("!", "@", "#", "$", "%", "^", "&", "*")][pick("!", "@", "#", "$", "%", "^", "&", "*")]"
+	return "[pick(GLOB.numerals)][pick("!", "@", "#", "$", "%", "^", "&", "*")][pick("!", "@", "#", "$", "%", "^", "&", "*")][pick("!", "@", "#", "$", "%", "^", "&", "*")]"
 
 //When an AI is activated, it can choose from a list of non-slaved borgs to have as a slave.
 /proc/freeborg()

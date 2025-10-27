@@ -208,7 +208,7 @@
 	if(length(results) == 3)
 		for(var/I in 1 to 3)
 			to_chat(usr, results[I], confidential = TRUE)
-	// SSblackbox.record_feedback("nested tally", "SDQL query", 1, list(ckey, query_text))
+	SSblackbox.record_feedback("nested tally", "SDQL query", 1, list(ckey, query_text))
 
 /world/proc/SDQL2_query(query_text, log_entry1, log_entry2, silent = FALSE)
 	var/query_log = "executed SDQL query(s): \"[query_text]\"."
@@ -814,7 +814,7 @@ GLOBAL_DATUM_INIT(sdql2_vv_statobj, /obj/effect/statclick/sdql2_vv_all, new(null
 	var/result = 0
 	var/val
 
-	for(var/i = start, i <= expression.len, i++)
+	for(var/i = start; i <= expression.len; i++)
 		var/op = ""
 
 		if(i > start)
@@ -1114,7 +1114,7 @@ GLOBAL_DATUM_INIT(sdql2_vv_statobj, /obj/effect/statclick/sdql2_vv_all, new(null
 	var/len = length(query_text)
 	var/char = ""
 
-	for(var/i = 1, i <= len, i += length(char))
+	for(var/i = 1; i <= len; i += length(char))
 		char = query_text[i]
 
 		if(char in whitespace)
@@ -1150,7 +1150,7 @@ GLOBAL_DATUM_INIT(sdql2_vv_statobj, /obj/effect/statclick/sdql2_vv_all, new(null
 
 			word = "'"
 
-			for(i += length(char), i <= len, i += length(char))
+			for(i += length(char); i <= len; i += length(char))
 				char = query_text[i]
 
 				if(char == "'")
@@ -1178,7 +1178,7 @@ GLOBAL_DATUM_INIT(sdql2_vv_statobj, /obj/effect/statclick/sdql2_vv_all, new(null
 
 			word = "\""
 
-			for(i += length(char), i <= len, i += length(char))
+			for(i += length(char); i <= len; i += length(char))
 				char = query_text[i]
 
 				if(char == "\"")
