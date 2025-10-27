@@ -148,8 +148,6 @@
 				to_chat(src, span_danger("Could not locate an observer spawn point. Use the Teleport verb to jump to the station map."))
 			observer.timeofdeath = world.time // Set the time of death so that the respawn timer works correctly.
 
-
-			announce_ghost_joinleave(src)
 			observer.icon = client.prefs.update_preview_icon()
 			observer.alpha = 127
 
@@ -171,6 +169,7 @@
 
 			observer.client.create_UI(observer.type)
 			qdel(src)
+			announce_ghost_joinleave(observer)
 
 			return 1
 
