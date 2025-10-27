@@ -72,8 +72,6 @@
 	return QDEL_HINT_QUEUE
 
 /obj/machinery/atmospherics/pipe/attackby(obj/item/I, mob/user)
-	if (istype(src, /obj/machinery/atmospherics/tank))
-		return ..()
 	if (istype(src, /obj/machinery/atmospherics/pipe/vent))
 		return ..()
 
