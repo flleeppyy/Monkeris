@@ -20,12 +20,10 @@
 		mind.active = TRUE
 		mind.current = src
 
-	// It's neccessary to have a hud since we need it for anything ma2html related
-	hud_used = new /datum/hud(src)
-
-	// . = ..()
-	// if(!. || !client)
-	// 	return FALSE
+	. = ..()
+	if(!. || !client)
+		return FALSE
+	loc = null
 
 	if(join_motd)
 		to_chat(src, "<div class='motd'>[join_motd]</div>")
@@ -35,7 +33,6 @@
 	if(spc && living_player_count() >= spc)
 		to_chat(src, span_notice("<b>Server Notice:</b>\n \t [CONFIG_GET(string/soft_popcap_message)]"))
 
-	loc = null
 	my_client = client
 	sight |= SEE_TURFS
 	GLOB.player_list |= src
