@@ -161,7 +161,6 @@
 			observer.PossessByPlayer(ckey)
 			observer.client.init_verbs()
 			observer.initialise_postkey()
-			#warn Potential shit might happen here, if nothing happens, then yippee! but TEST THIS YOU BITCH
 			observer.client = client
 
 			if (observer.client)
