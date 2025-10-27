@@ -36,7 +36,7 @@ SUBSYSTEM_DEF(job)
 	wait = 1 MINUTE
 
 	/// List of all jobs
-var/list/occupations = list()
+	var/list/occupations = list()
 	/// Dict of all jobs, keys are titles
 	var/list/occupations_by_name = list()
 	/// List of all jobs datums, keys are titles
@@ -240,8 +240,6 @@ var/list/occupations = list()
 		if(popcap_reached())
 			JobDebug("FOC popcap reached, rejecting player: [player]")
 			continue
-		if(!CanHaveJob(player.client.ckey, job.title))
-			JobDebug("FOC playtime failed, Player:[player]")
 		if(!player)
 			JobDebug("FOC player no longer exists.")
 			continue
@@ -765,14 +763,6 @@ var/list/occupations = list()
 	if(!job || job == ASSISTANT_TITLE)
 		return FALSE
 	return job.create_record
-
-/proc/get_exp_format(expnum)
-	if(expnum > 60)
-		return num2text(round(expnum / 60)) + "h"
-	else if(expnum > 0)
-		return num2text(expnum) + "m"
-	else
-		return "0h"
 
 /datum/controller/subsystem/job/proc/popcap_reached()
 	var/hpc = CONFIG_GET(number/hard_popcap)
