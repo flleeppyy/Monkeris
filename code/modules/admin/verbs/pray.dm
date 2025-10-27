@@ -25,7 +25,7 @@
 	msg = span_blue("[icon2html(cross, receivers)] <b><font color=purple>PRAY: </font> [ADMIN_FULLMONTY(src)]:</b> [msg]")
 
 	for(var/client/C in GLOB.admins)
-		if(R_ADMIN & C.holder.rights)
+		if(C.holder.rank_flags() & R_ADMIN)
 			if(C.get_preference_value(/datum/client_preference/staff/show_chat_prayers) == GLOB.PREF_SHOW)
 				to_chat(C, msg)
 	to_chat(usr, "Your prayers have been received by the gods.")
@@ -33,3 +33,5 @@
 	log_prayer("[src.key]/([src.name]): [msg]")
 
 	//log_admin("HELP: [key_name(src)]: [msg]")
+	SSblackbox.record_feedback("tally", "admin_verb", 1, "Prayer") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+

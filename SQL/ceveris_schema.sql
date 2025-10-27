@@ -25,6 +25,43 @@ CREATE TABLE `admin` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `admin_log`
+--
+
+DROP TABLE IF EXISTS `admin_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `admin_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `datetime` datetime NOT NULL,
+  `round_id` int(11) unsigned NULL,
+  `adminckey` varchar(32) NOT NULL,
+  `adminip` int(10) unsigned NOT NULL,
+  `operation` enum('add admin','remove admin','change admin rank','add rank','remove rank','change rank flags') NOT NULL,
+  `target` varchar(32) NOT NULL,
+  `log` varchar(1000) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `admin_ranks`
+--
+
+DROP TABLE IF EXISTS `admin_ranks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `admin_ranks` (
+  `rank` varchar(32) NOT NULL,
+  `flags` smallint(5) unsigned NOT NULL,
+  `exclude_flags` smallint(5) unsigned NOT NULL,
+  `can_edit_flags` smallint(5) unsigned NOT NULL,
+  PRIMARY KEY (`rank`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
 -- Table structure for table `ban`
 --
 
@@ -61,55 +98,6 @@ CREATE TABLE `ban` (
   KEY `idx_ban_count` (`bantime`,`a_ckey`,`applies_to_admins`,`unbanned_datetime`,`expiration_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `stickyban`
---
-DROP TABLE IF EXISTS `stickyban`;
-CREATE TABLE `stickyban` (
-	`ckey` VARCHAR(32) NOT NULL,
-	`reason` VARCHAR(2048) NOT NULL,
-	`banning_admin` VARCHAR(32) NOT NULL,
-	`datetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (`ckey`)
-) ENGINE=InnoDB;
-
---
--- Table structure for table `stickyban_matched_ckey`
---
-DROP TABLE IF EXISTS `stickyban_matched_ckey`;
-CREATE TABLE `stickyban_matched_ckey` (
-	`stickyban` VARCHAR(32) NOT NULL,
-	`matched_ckey` VARCHAR(32) NOT NULL,
-	`first_matched` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`last_matched` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	`exempt` TINYINT(1) NOT NULL DEFAULT '0',
-	PRIMARY KEY (`stickyban`, `matched_ckey`)
-) ENGINE=InnoDB;
-
---
--- Table structure for table `stickyban_matched_ip`
---
-DROP TABLE IF EXISTS `stickyban_matched_ip`;
-CREATE TABLE `stickyban_matched_ip` (
-	`stickyban` VARCHAR(32) NOT NULL,
-	`matched_ip` INT UNSIGNED NOT NULL,
-	`first_matched` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`last_matched` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	PRIMARY KEY (`stickyban`, `matched_ip`)
-) ENGINE=InnoDB;
-
---
--- Table structure for table `stickyban_matched_cid`
---
-DROP TABLE IF EXISTS `stickyban_matched_cid`;
-CREATE TABLE `stickyban_matched_cid` (
-	`stickyban` VARCHAR(32) NOT NULL,
-	`matched_cid` VARCHAR(32) NOT NULL,
-	`first_matched` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`last_matched` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	PRIMARY KEY (`stickyban`, `matched_cid`)
-) ENGINE=InnoDB;
 
 --
 --
@@ -171,6 +159,26 @@ CREATE TABLE `death` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `feedback`
+--
+
+DROP TABLE IF EXISTS `feedback`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `feedback` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `datetime` datetime NOT NULL,
+  `round_id` int(11) unsigned NULL,
+  `key_name` varchar(32) NOT NULL,
+  `key_type` enum('text', 'amount', 'tally', 'nested tally', 'associative') NOT NULL,
+  `version` tinyint(3) unsigned NOT NULL,
+  `json` json NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
 -- Table structure for table `player`
 --
 
@@ -192,6 +200,25 @@ CREATE TABLE `player` (
   `country` varchar(255),
   `VPN_check_white` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ckey`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `legacy_population`
+--
+
+DROP TABLE IF EXISTS `legacy_population`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `legacy_population` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `playercount` int(11) DEFAULT NULL,
+  `admincount` int(11) DEFAULT NULL,
+  `time` datetime NOT NULL,
+  `server_ip` int(10) unsigned NOT NULL,
+  `server_port` smallint(5) unsigned NOT NULL,
+  `round_id` int(11) unsigned NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -252,6 +279,44 @@ CREATE TABLE `messages` (
   KEY `idx_msg_type_ckey_time_odr` (`type`,`targetckey`,`timestamp`, `deleted`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `role_time`
+--
+
+DROP TABLE IF EXISTS `role_time`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+
+CREATE TABLE `role_time`
+( `ckey` VARCHAR(32) NOT NULL ,
+ `job` VARCHAR(32) NOT NULL ,
+ `minutes` INT UNSIGNED NOT NULL,
+ PRIMARY KEY (`ckey`, `job`)
+ ) ENGINE = InnoDB;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `role_time`
+--
+
+DROP TABLE IF EXISTS `role_time_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+
+CREATE TABLE IF NOT EXISTS `role_time_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ckey` varchar(32) NOT NULL,
+  `job` varchar(128) NOT NULL,
+  `delta` int(11) NOT NULL,
+  `datetime` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `ckey` (`ckey`),
+  KEY `job` (`job`),
+  KEY `datetime` (`datetime`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
 
 
 --
@@ -363,25 +428,33 @@ CREATE TABLE `poll_votes` (
   CONSTRAINT `fk_rails_a6e6974b7e` FOREIGN KEY (`poll_id`) REFERENCES `polls` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP PROCEDURE IF EXISTS `set_poll_deleted`;
+DROP TRIGGER IF EXISTS `role_timeTlogupdate`;
+DROP TRIGGER IF EXISTS `role_timeTloginsert`;
+DROP TRIGGER IF EXISTS `role_timeTlogdelete`;
+DELIMITER $$
+CREATE PROCEDURE `set_poll_deleted`(
+	IN `poll_id` INT
+)
+SQL SECURITY INVOKER
+BEGIN
+UPDATE `poll_question` SET deleted = 1 WHERE id = poll_id;
+UPDATE `poll_option` SET deleted = 1 WHERE pollid = poll_id;
+UPDATE `poll_vote` SET deleted = 1 WHERE pollid = poll_id;
+UPDATE `poll_textreply` SET deleted = 1 WHERE pollid = poll_id;
+END
+$$
+CREATE TRIGGER `role_timeTlogupdate` AFTER UPDATE ON `role_time` FOR EACH ROW BEGIN INSERT into role_time_log (ckey, job, delta) VALUES (NEW.CKEY, NEW.job, NEW.minutes-OLD.minutes);
+END
+$$
+CREATE TRIGGER `role_timeTloginsert` AFTER INSERT ON `role_time` FOR EACH ROW BEGIN INSERT into role_time_log (ckey, job, delta) VALUES (NEW.ckey, NEW.job, NEW.minutes);
+END
+$$
+CREATE TRIGGER `role_timeTlogdelete` AFTER DELETE ON `role_time` FOR EACH ROW BEGIN INSERT into role_time_log (ckey, job, delta) VALUES (OLD.ckey, OLD.job, 0-OLD.minutes);
+END
+$$
+DELIMITER ;
 
---
--- Table structure for table `populations`
---
-
-DROP TABLE IF EXISTS `populations`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `populations` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `playercount` int(11) DEFAULT NULL,
-  `admincount` int(11) DEFAULT NULL,
-  `time` datetime NOT NULL,
-  `server_ip` int(10) unsigned NOT NULL,
-  `server_port` smallint(5) unsigned NOT NULL,
-  `round_id` int(11) unsigned NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `round`

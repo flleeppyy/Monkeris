@@ -150,6 +150,31 @@
 // Does nothing, used nowhere
 /datum/config_entry/flag/guest_jobban
 
+/datum/config_entry/flag/use_exp_tracking
+
+/// Enables head jobs time restrictions.
+/datum/config_entry/flag/use_exp_restrictions_heads
+
+/datum/config_entry/number/use_exp_restrictions_heads_hours
+	default = 0
+	integer = FALSE
+	min_val = 0
+
+/datum/config_entry/flag/use_exp_restrictions_heads_department
+
+/// Enables non-head jobs time restrictions.
+/datum/config_entry/flag/use_exp_restrictions_other
+
+/datum/config_entry/flag/use_exp_restrictions_admin_bypass
+
+/datum/config_entry/flag/use_low_living_hour_intern
+
+/datum/config_entry/number/use_low_living_hour_intern_hours
+	default = 0
+	integer = FALSE
+	min_val = 0
+
+
 /*****************/
 /*   Mob Prefs   */
 /*****************/
@@ -226,6 +251,9 @@
 
 /// log crew manifest to separate file
 /datum/config_entry/flag/log_manifest
+
+/// log roundstart divide occupations debug information to a file
+/datum/config_entry/flag/log_job_debug
 
 /// log assets
 /datum/config_entry/flag/log_asset
@@ -320,9 +348,6 @@
 /*     ADMIN     */
 /*****************/
 
-
-/datum/config_entry/flag/mentors
-
 /// allows admins with relevant permissions to have their own ooc colour
 /datum/config_entry/flag/allow_admin_ooccolor
 
@@ -335,26 +360,31 @@
 /// Forid admins from possessing scringularaitirtiys
 /datum/config_entry/flag/forbid_singulo_possession
 
+/// Gives the !localhost! rank to any client connecting from 127.0.0.1 or ::1
+/datum/config_entry/flag/enable_localhost_rank
+	protection = CONFIG_ENTRY_LOCKED
+
 /// Defines whether the server uses the legacy admin system with admins.txt or the SQL system
 /datum/config_entry/flag/admin_legacy_system
 	protection = CONFIG_ENTRY_LOCKED
 
-/// Gives the !localhost! rank to any client connecting from 127.0.0.1 or ::1
+/datum/config_entry/flag/protect_legacy_admins //Stops any admins loaded by the legacy system from having their rank edited by the permissions panel
+	protection = CONFIG_ENTRY_LOCKED
+
+/// Stops any ranks loaded by the legacy system from having their flags edited by the permissions panel
+/datum/config_entry/flag/protect_legacy_ranks
+	protection = CONFIG_ENTRY_LOCKED
+
+/datum/config_entry/flag/load_legacy_ranks_only //Loads admin ranks only from legacy admin_ranks.txt, while enabled ranks are mirrored to the database
+	protection = CONFIG_ENTRY_LOCKED
+
+//Gives the !localhost! rank to any client connecting from 127.0.0.1 or ::1
 /datum/config_entry/flag/enable_localhost_rank
 	protection = CONFIG_ENTRY_LOCKED
 
 /datum/config_entry/flag/admin_memo_system
 	protection = CONFIG_ENTRY_LOCKED
 
-// /datum/config_entry/flag/protect_legacy_admins //Stops any admins loaded by the legacy system from having their rank edited by the permissions panel
-// 	protection = CONFIG_ENTRY_LOCKED
-
-// /datum/config_entry/flag/protect_legacy_ranks //Stops any ranks loaded by the legacy system from having their flags edited by the permissions panel
-// 	protection = CONFIG_ENTRY_LOCKED
-
-
-// /datum/config_entry/flag/load_legacy_ranks_only //Loads admin ranks only from legacy admin_ranks.txt, while enabled ranks are mirrored to the database
-// 	protection = CONFIG_ENTRY_LOCKED
 
 /datum/config_entry/flag/mods_can_tempban
 

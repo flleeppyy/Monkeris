@@ -10,7 +10,7 @@
 	status_flags = PASSEMOTES
 	a_intent = I_HURT
 	mob_size = MOB_GIGANTIC
-	can_be_fed = 0
+	can_be_fed = FALSE
 	defaultHUD = "exosuits"
 	bad_type = /mob/living/exosuit
 
@@ -66,14 +66,14 @@
 	injury_type = INJURY_TYPE_UNLIVING // Has no soft vitals, but also contains delicate electronics
 
 // Interface stuff.
-	var/list/hud_elements = list()
+	var/list/atom/movable/hud_elements = list()
 	var/list/hardpoint_hud_elements = list()
-	var/obj/screen/movable/exosuit/health/hud_health
-	var/obj/screen/movable/exosuit/toggle/hatch_open/hud_open
-	var/obj/screen/movable/exosuit/power/hud_power
-	var/obj/screen/movable/exosuit/heat/hud_heat
-	var/obj/screen/movable/exosuit/toggle/power_control/hud_power_control
-	var/obj/screen/movable/exosuit/toggle/camera/hud_camera
+	var/atom/movable/screen/movable/exosuit/health/hud_health
+	var/atom/movable/screen/movable/exosuit/toggle/hatch_open/hud_open
+	var/atom/movable/screen/movable/exosuit/power/hud_power
+	var/atom/movable/screen/movable/exosuit/heat/hud_heat
+	var/atom/movable/screen/movable/exosuit/toggle/power_control/hud_power_control
+	var/atom/movable/screen/movable/exosuit/toggle/camera/hud_camera
 
 	var/power = MECH_POWER_OFF
 
