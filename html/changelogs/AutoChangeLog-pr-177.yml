@@ -1,0 +1,7 @@
+author: blackwolf602
+delete-after: true
+changes:
+  - rscadd: Goliath Skin over industrial
+  - rscadd: replaced the suitcase with a rig skin for the merc rig
+  - rscadd: Cyclops mining voidsuit replaces the current mining voidsuit sprites
+  - rscadd: Industrial rigs to mining shuttle
