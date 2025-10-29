@@ -31,3 +31,10 @@
   - bugfix: OOC color now has a default instead of pure black
   - bugfix: parent call to mob.Login should no longer call 600k moives.
   - bugfix: Chat colors being off.
+2025-10-29:
+  blackwolf602:
+  - bugfix: removed random white dot on panzer side view
+  - rscadd: Goliath Skin over industrial
+  - rscadd: replaced the suitcase with a rig skin for the merc rig
+  - rscadd: Cyclops mining voidsuit replaces the current mining voidsuit sprites
+  - rscadd: Industrial rigs to mining shuttle
