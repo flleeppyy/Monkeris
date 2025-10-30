@@ -41,6 +41,9 @@ SUBSYSTEM_DEF(ticker)
 	/// Num of ready admins, used for pregame stats on statpanel (only viewable by admins)
 	var/total_admins_ready = 0
 
+	var/queue_delay = 0
+	var/list/queued_players = list() //used for join queues when the server exceeds the hard population cap
+
 	var/delay_end = FALSE //if set true, the round will not restart on it's own
 	var/admin_delay_notice = "" //a message to display to anyone who tries to restart the world after a delay
 	var/ready_for_reboot = FALSE //all roundend preparation done with, all that's left is reboot
@@ -65,7 +68,7 @@ SUBSYSTEM_DEF(ticker)
 
 	//station_explosion used to be a variable for every mob's hud. Which was a waste!
 	//Now we have a general cinematic centrally held within the gameticker....far more efficient!
-	var/obj/screen/cinematic = null
+	var/atom/movable/screen/cinematic = null
 
 	var/list/round_start_events
 
@@ -108,10 +111,15 @@ SUBSYSTEM_DEF(ticker)
 			pregame_timeleft = initial(pregame_timeleft)
 			for(var/client/C in GLOB.clients)
 				window_flash(C) //let them know lobby has opened up.
+				GLOB.lobbyScreen.play_music(C)
+
 			if(!start_immediately)
 				to_chat(world, span_boldnotice("Please, setup your character and select ready. Game will start in [DisplayTimeText(SSticker.GetTimeLeft())]."))
 			to_chat(world, span_notice("<b>Welcome to [station_name()]!</b>"))
 			current_state = GAME_STATE_PREGAME
+			// Start playing music for clients
+			for(var/client/C in GLOB.clients)
+				GLOB.lobbyScreen.play_music(C)
 			SEND_SIGNAL(src, COMSIG_TICKER_ENTER_PREGAME)
 			fire()
 		if(GAME_STATE_PREGAME)
@@ -169,6 +177,7 @@ SUBSYSTEM_DEF(ticker)
 		if(GAME_STATE_PLAYING)
 			GLOB.storyteller.Process()
 			GLOB.storyteller.process_events()
+			check_queue()
 
 			if(!process_empty_server())
 				return
@@ -178,8 +187,6 @@ SUBSYSTEM_DEF(ticker)
 			if(!nuke_in_progress && game_finished)
 				current_state = GAME_STATE_FINISHED
 				Master.SetRunLevel(RUNLEVEL_POSTGAME)
-				for(var/client_key in SSinactivity_and_job_tracking.current_playtimes)
-					SSjob.SavePlaytimes(client_key)
 				declare_completion()
 
 // This proc will scan for player and if the game is in progress and...
@@ -597,8 +604,9 @@ SUBSYSTEM_DEF(ticker)
 	if(dronecount)
 		to_chat(world, "<b>There [dronecount>1 ? "were" : "was"] [dronecount] industrious maintenance [dronecount>1 ? "drones" : "drone"] at the end of this round.</b>")
 
-	GLOB.storyteller.declare_completion()//To declare normal completion.
-	scoreboard()//scores
+	GLOB.storyteller.declare_completion() //To declare normal completion.
+	scoreboard() //scores
+	gather_roundend_feedback()
 	//Ask the event manager to print round end information
 	SSevent.RoundEnd()
 	SSdbcore.SetRoundEnd()
@@ -622,6 +630,152 @@ SUBSYSTEM_DEF(ticker)
 	callHook("roundend")
 	ready_for_reboot = TRUE
 	standard_reboot()
+
+/datum/controller/subsystem/ticker/proc/gather_roundend_feedback()
+	gather_antag_data()
+
+/datum/controller/subsystem/ticker/proc/gather_antag_data()
+	// var/team_gid = 1
+	// var/list/team_ids = list()
+
+	for(var/datum/antagonist/A in GLOB.antagonists)
+		if(!A.owner)
+			continue
+
+		var/list/antag_info = list()
+		antag_info["key"] = A.owner.key
+		antag_info["name"] = A.owner.name
+		antag_info["antagonist_type"] = A.type
+		antag_info["antagonist_name"] = A.id //For auto and custom roles
+		antag_info["objectives"] = list()
+		antag_info["team"] = list()
+		// var/datum/team/T = A.get_team()
+		// if(T)
+		// 	antag_info["team"]["type"] = T.type
+		// 	antag_info["team"]["name"] = T.name
+		// 	if(!team_ids[T])
+		// 		team_ids[T] = team_gid++
+		// 	antag_info["team"]["id"] = team_ids[T]
+
+		if(length(A.objectives))
+			for(var/datum/objective/O in A.objectives)
+				var/result = O.check_completion() ? "SUCCESS" : "FAIL"
+				antag_info["objectives"] += list(list("objective_type"=O.type,"text"=O.explanation_text,"result"=result))
+		SSblackbox.record_feedback("associative", "antagonists", 1, antag_info)
+/datum/controller/subsystem/ticker/proc/save_admin_data()
+	if(IsAdminAdvancedProcCall())
+		to_chat(usr, "<span class='admin prefix'>Admin rank DB Sync blocked: Advanced ProcCall detected.</span>")
+		return
+	if(CONFIG_GET(flag/admin_legacy_system)) //we're already using legacy system so there's nothing to save
+		return
+	else if(load_admins(TRUE)) //returns true if there was a database failure and the backup was loaded from
+		return
+	sync_ranks_with_db()
+	var/list/sql_admins = list()
+	for(var/i in GLOB.protected_admins)
+		var/datum/admins/A = GLOB.protected_admins[i]
+		sql_admins += list(list("ckey" = A.target, "rank" = A.rank_names()))
+	SSdbcore.MassInsert(format_table_name("admin"), sql_admins, duplicate_key = TRUE)
+	var/datum/db_query/query_admin_rank_update = SSdbcore.NewQuery("UPDATE [format_table_name("player")] p INNER JOIN [format_table_name("admin")] a ON p.ckey = a.ckey SET p.lastadminrank = a.rank")
+	query_admin_rank_update.Execute()
+	qdel(query_admin_rank_update)
+
+	//json format backup file generation stored per server
+	var/json_file = file("data/admins_backup.json")
+	var/list/file_data = list(
+		"ranks" = list(),
+		"admins" = list(),
+		"connections" = list(),
+	)
+	for(var/datum/admin_rank/R in GLOB.admin_ranks)
+		file_data["ranks"]["[R.name]"] = list()
+		file_data["ranks"]["[R.name]"]["include rights"] = R.include_rights
+		file_data["ranks"]["[R.name]"]["exclude rights"] = R.exclude_rights
+		file_data["ranks"]["[R.name]"]["can edit rights"] = R.can_edit_rights
+
+	for(var/admin_ckey in GLOB.admin_datums + GLOB.deadmins)
+		var/datum/admins/admin = GLOB.admin_datums[admin_ckey]
+
+		if(!admin)
+			admin = GLOB.deadmins[admin_ckey]
+			if (!admin)
+				continue
+
+		file_data["admins"][admin_ckey] = admin.rank_names()
+
+		if (admin.owner)
+			file_data["connections"][admin_ckey] = list(
+				"cid" = admin.owner.computer_id,
+				"ip" = admin.owner.address,
+			)
+
+	fdel(json_file)
+	WRITE_FILE(json_file, json_encode(file_data))
+
+/datum/controller/subsystem/ticker/proc/update_everything_flag_in_db()
+	for(var/datum/admin_rank/R in GLOB.admin_ranks)
+		var/list/flags = list()
+		if(R.include_rights == R_EVERYTHING)
+			flags += "flags"
+		if(R.exclude_rights == R_EVERYTHING)
+			flags += "exclude_flags"
+		if(R.can_edit_rights == R_EVERYTHING)
+			flags += "can_edit_flags"
+		if(!flags.len)
+			continue
+		var/flags_to_check = flags.Join(" != [R_EVERYTHING] AND ") + " != [R_EVERYTHING]"
+		var/datum/db_query/query_check_everything_ranks = SSdbcore.NewQuery(
+			"SELECT flags, exclude_flags, can_edit_flags FROM [format_table_name("admin_ranks")] WHERE rank = :rank AND ([flags_to_check])",
+			list("rank" = R.name)
+		)
+		if(!query_check_everything_ranks.Execute())
+			qdel(query_check_everything_ranks)
+			return
+		if(query_check_everything_ranks.NextRow()) //no row is returned if the rank already has the correct flag value
+			var/flags_to_update = flags.Join(" = [R_EVERYTHING], ") + " = [R_EVERYTHING]"
+			var/datum/db_query/query_update_everything_ranks = SSdbcore.NewQuery(
+				"UPDATE [format_table_name("admin_ranks")] SET [flags_to_update] WHERE rank = :rank",
+				list("rank" = R.name)
+			)
+			if(!query_update_everything_ranks.Execute())
+				qdel(query_update_everything_ranks)
+				return
+			qdel(query_update_everything_ranks)
+		qdel(query_check_everything_ranks)
+
+/datum/controller/subsystem/ticker/proc/check_queue()
+	if(!queued_players.len)
+		return
+	var/hard_popcap = CONFIG_GET(number/hard_popcap)
+	if(!hard_popcap)
+		list_clear_nulls(queued_players)
+		for (var/mob/new_player/new_player in queued_players)
+			to_chat(new_player, span_userdanger("The alive players limit has been released!<br><a href='byond://?src=[REF(new_player)];late_join=override'>[html_encode(">>Join Game<<")]</a>"))
+			SEND_SOUND(new_player, sound('sound/misc/notice1.ogg'))
+			send_link(new_player, "?late_join=override")
+		queued_players.len = 0
+		queue_delay = 0
+		return
+
+	queue_delay++
+	var/mob/new_player/next_in_line = queued_players[1]
+
+	switch(queue_delay)
+		if(5) //every 5 ticks check if there is a slot available
+			list_clear_nulls(queued_players)
+			if(living_player_count() < hard_popcap)
+				if(next_in_line?.client)
+					to_chat(next_in_line, span_userdanger("A slot has opened! You have approximately 20 seconds to join. <a href='byond://?src=[REF(next_in_line)];late_join=override'>\>\>Join Game\<\<</a>"))
+					SEND_SOUND(next_in_line, sound('sound/misc/notice1.ogg'))
+					send_link(next_in_line, "?late_join=override")
+					return
+				queued_players -= next_in_line //Client disconnected, remove he
+			queue_delay = 0 //No vacancy: restart timer
+		if(25 to INFINITY)  //No response from the next in line when a vacancy exists, remove he
+			to_chat(next_in_line, span_danger("No response received. You have been removed from the line."))
+			queued_players -= next_in_line
+			queue_delay = 0
+
 
 /datum/controller/subsystem/ticker/proc/HasRoundStarted()
 	return current_state >= GAME_STATE_PLAYING
@@ -668,6 +822,9 @@ SUBSYSTEM_DEF(ticker)
 	// 	to_chat(world, span_info("Round statistics and logs can be viewed <a href=\"[statspage][GLOB.round_id]\">at this website!</a>"))
 	// else if(gamelogloc)
 	// 	to_chat(world, span_info("Round logs can be located <a href=\"[gamelogloc]\">at this website!</a>"))
+
+	save_admin_data()
+	update_everything_flag_in_db()
 
 	log_game(span_boldannounce("Rebooting World. [reason]"))
 

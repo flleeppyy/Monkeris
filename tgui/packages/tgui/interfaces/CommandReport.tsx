@@ -189,12 +189,11 @@ const AnnouncementSound = (props) => {
 /** Creates the report textarea with a submit button. */
 const ReportText = (props) => {
   const { act, data } = useBackend<Data>();
-  const {
-    announce_to_all_mobs,
+  const { announce_to_all_mobs, command_report_content, sanitize_content } =
+    data;
+  const [commandReport, setCommandReport] = useState<string>(
     command_report_content,
-    sanitize_content,
-  } = data;
-  const [commandReport, setCommandReport] = useState<string>(command_report_content);
+  );
 
   return (
     <Section
@@ -228,7 +227,7 @@ const ReportText = (props) => {
               checked={announce_to_all_mobs}
               onClick={() => act('toggle_mob_announce')}
               tooltip={
-                "Whether or not this should announce to all mobs, or just those in the GLOB.player_list"
+                'Whether or not this should announce to all mobs, or just those in the GLOB.player_list'
               }
             >
               Announce to all mobs

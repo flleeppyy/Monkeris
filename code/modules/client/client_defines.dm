@@ -38,7 +38,6 @@
 		////////////////
 	///Contains admin info. Null if client is not an admin.
 	var/datum/admins/holder = null
-	var/datum/admins/deadmin_holder = null
 	var/buildmode		= 0
 
 	///Contains the last message sent by this client - used to protect against copy-paste spamming.
@@ -136,6 +135,9 @@
 	var/connection_time //world.time they connected
 	var/connection_realtime //world.realtime they connected
 	var/connection_timeofday //world.timeofday they connected
+
+	///these persist between logins/logouts during the same round.
+	var/datum/persistent_client/persistent_client
 
 	// List of all asset filenames sent to this client by the asset cache, along with their assoicated md5s
 	var/list/sent_assets = list()

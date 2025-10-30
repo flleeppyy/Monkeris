@@ -12,7 +12,11 @@
 	var/last_ip
 	var/last_id
 
+	var/db_flags
+
 	var/save_load_cooldown
+
+	var/list/exp = list()
 
 	//game-preferences
 	var/lastchangelog = ""				//Saved changlog filesize to detect if there was a change
@@ -72,6 +76,7 @@
 
 /datum/preferences/proc/ShowChoices(mob/user)
 	if(!SScharacter_setup.initialized)
+		to_chat(user, span_danger("Still initializing, please wait!"))
 		return
 	if(!user || !user.client)
 		return
@@ -89,7 +94,6 @@
 
 	var/dat = "<html><body><center>"
 	if(path)
-		SSjob.UpdatePlayableJobs(user.client.ckey)
 		dat += "Slot - "
 		dat += "<a href='byond://?src=\ref[src];load=1'>Load slot</a> - "
 		dat += "<a href='byond://?src=\ref[src];save=1'>Save slot</a> - "
@@ -143,6 +147,8 @@
 		load_preferences()
 		load_character()
 		sanitize_preferences()
+		preview_should_rebuild_organs = TRUE
+		update_preview_icon(naked = istype(player_setup.selected_category, /datum/category_group/player_setup_category/augmentation))
 	else if(href_list["load"])
 		if(!IsGuestKey(usr.key))
 			open_load_dialog(usr)
@@ -196,7 +202,8 @@
 	character.f_style = f_style
 
 	// Build mob body from prefs
-	character.rebuild_organs(src)
+	if (preview_should_rebuild_organs)
+		character.rebuild_organs(src)
 
 	character.eyes_color = eyes_color
 	character.hair_color = hair_color
@@ -222,9 +229,11 @@
 
 	character.backpack_setup = new(backpack, backpack_metadata["[backpack]"])
 
-	character.force_update_limbs()
-	character.update_mutations(0)
-	character.update_implants(0)
+	if (preview_should_rebuild_organs)
+		character.force_update_limbs()
+		character.update_mutations(0)
+		character.update_implants(0)
+		preview_should_rebuild_organs = FALSE
 
 
 	character.update_body(0)
@@ -283,3 +292,12 @@
 		panel.close()
 		panel = null
 	user << browse(null, "window=saves")
+
+/datum/preferences/proc/GetJobLevel(datum/job/job)
+	. = JOB_LEVEL_NEVER
+	if(job_high == job.title)
+		. = JOB_LEVEL_HIGH
+	else if(job.title in job_medium)
+		. = JOB_LEVEL_MEDIUM
+	else if(job.title in job_low)
+		. = JOB_LEVEL_LOW

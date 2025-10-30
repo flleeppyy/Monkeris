@@ -271,7 +271,7 @@
 	else
 		playsound(src.loc, lock_off_sound, 60, 1, -3)
 	if(user)
-		user.visible_message(span_notice("The [ctype] has been [locked ? null : "un"]locked by [user]."), range = 3)
+		user.visible_message(span_notice("The [ctype] has been [locked ? null : "un"]locked by [user]."), vision_distance = 3)
 	update_icon()
 
 //Cham Projector Exception
@@ -487,7 +487,7 @@
 	return
 
 /obj/structure/closet/MouseDrop_T(atom/movable/O as mob|obj, mob/user)
-	if(istype(O, /obj/screen))	//fix for HUD elements making their way into the world	-Pete
+	if(istype(O, /atom/movable/screen))	//fix for HUD elements making their way into the world	-Pete
 		return
 	if(O.loc == user)
 		return

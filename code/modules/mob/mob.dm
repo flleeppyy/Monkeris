@@ -1,4 +1,5 @@
 /mob/Destroy()//This makes sure that mobs with clients/keys are not just deleted from the game.
+	persistent_client?.set_mob(null)
 	if(ishuman(src))
 		STOP_PROCESSING(SShumans, src)
 	else
@@ -277,7 +278,7 @@
 	if((is_blind(src) || stat) && !isobserver(src))
 		to_chat(src, span_notice("Something is there but you can't see it."))
 		return
-	if(!istype(examinify, /obj/screen))
+	if(!istype(examinify, /atom/movable/screen))
 		face_atom(examinify)
 	var/obj/item/device/lighting/toggleable/flashlight/FL = locate() in src
 	if (FL?.on && stat != DEAD && !incapacitated())
@@ -479,7 +480,7 @@
 	set category = "OOC"
 	var/is_admin = 0
 
-	if(client.holder && (client.holder.rights & R_ADMIN))
+	if(client.holder && (client.holder.rank_flags() & R_ADMIN))
 		is_admin = 1
 	else if(stat != DEAD || isnewplayer(src))
 		to_chat(usr, span_blue("You must be observing to use this!"))
@@ -609,7 +610,7 @@
 		pulling.pulledby = null
 		pulling = null
 		if(HUDneed.Find("pull"))
-			var/obj/screen/HUDthrow/HUD = HUDneed["pull"]
+			var/atom/movable/screen/HUDthrow/HUD = HUDneed["pull"]
 			HUD.update_icon()
 
 
@@ -1182,7 +1183,7 @@ All Canmove setting in this proc is temporary. This var should not be set from h
 	set src = usr
 
 	if(HUDneed["move intent"])
-		var/obj/screen/mov_intent/mov_intent = HUDneed["move intent"]
+		var/atom/movable/screen/mov_intent/mov_intent = HUDneed["move intent"]
 		mov_intent.Click()  // Yep , this is all.
 
 /mob/proc/adjustEarDamage()
@@ -1201,7 +1202,7 @@ All Canmove setting in this proc is temporary. This var should not be set from h
 
 /mob/proc/throw_mode_off()
 	src.in_throw_mode = 0
-	/*for (var/obj/screen/HUDthrow/HUD in src.client.screen.)
+	/*for (var/atom/movable/screen/HUDthrow/HUD in src.client.screen.)
 		if(HUD.name == "throw") //in case we don't have the HUD and we use the hotkey
 			//src.throw_icon.icon_state = "act_throw_off"
 			HUD.toggle_throw_mode()
@@ -1211,7 +1212,7 @@ All Canmove setting in this proc is temporary. This var should not be set from h
 	src.in_throw_mode = 1
 	/*if(src.throw_icon)
 		src.throw_icon.icon_state = "act_throw_on"*/
-	/*for (var/obj/screen/HUDthrow/HUD in src.client.screen.)
+	/*for (var/atom/movable/screen/HUDthrow/HUD in src.client.screen.)
 		if(HUD.name == "throw") //in case we don't have the HUD and we use the hotkey
 			//src.throw_icon.icon_state = "act_throw_off"
 			HUD.toggle_throw_mode()
@@ -1286,13 +1287,24 @@ All Canmove setting in this proc is temporary. This var should not be set from h
 /client/proc/toggle_zone_sel(list/zones)
 	if(!check_has_body_select())
 		return
-	var/obj/screen/zone_sel/selector = mob.HUDneed["damage zone"]
+	var/atom/movable/screen/zone_sel/selector = mob.HUDneed["damage zone"]
 	selector.set_selected_zone(next_list_item(mob.targeted_organ,zones))
 	logger.Log(
 		LOG_CATEGORY_TARGET_ZONE_SWITCH,
 		"[key_name(src)] manually changed selected zone",
 		data = zones
 	)
+
+/// Cleanup proc that's called when a mob loses a client, either through client destroy or logout
+/// Logout happens post client del, so we can't just copypaste this there. This keeps things clean and consistent
+/mob/proc/become_uncliented()
+	if(!canon_client)
+		return
+
+	for(var/datum/callback/callback as anything in persistent_client?.post_logout_callbacks)
+		callback.Invoke()
+
+	canon_client = null
 
 /mob/proc/set_stat(new_stat)
 	. = stat != new_stat
@@ -1399,3 +1411,42 @@ All Canmove setting in this proc is temporary. This var should not be set from h
 /mob/vv_auto_rename(new_name)
 	//Do not do parent's actions, as we *usually* do this differently.
 	fully_replace_character_name(real_name, new_name)
+
+/// Makes a client temporarily aware of an appearance via and invisible vis contents object.
+/mob/proc/send_appearance(mutable_appearance/appearance) as /atom/movable/screen
+	RETURN_TYPE(/atom/movable/screen)
+	if(!hud_used || isnull(appearance))
+		return
+
+	var/atom/movable/screen/container = new
+	container.appearance = appearance
+
+	hud_used.vis_holder.vis_contents += container
+	addtimer(CALLBACK(src, PROC_REF(remove_appearance), container), 5 SECONDS, TIMER_DELETE_ME)
+
+	return container
+
+/mob/proc/remove_appearance(container)
+	if(!hud_used)
+		return
+
+	hud_used.vis_holder.vis_contents -= container
+
+/proc/ma2html(mutable_appearance/appearance, mob/viewer, extra_classes = "")
+	if(isatom(appearance))
+		var/atom/atom = appearance
+		appearance = copy_appearance_filter_overlays(atom.appearance)
+	else if(isappearance_or_image(appearance) || isicon(appearance))
+		appearance = copy_appearance_filter_overlays(appearance)
+	else
+		CRASH("Invalid appearance passed to ma2html - either a appearance, image, icon, or atom must be passed!")
+
+	if(IS_CLIENT_OR_MOCK(viewer))
+		var/datum/client_interface/client = viewer
+		viewer = client.mob
+	if(!ismob(viewer))
+		CRASH("Invalid viewer passed to ma2html")
+	var/atom/movable/screen/container = viewer.send_appearance(appearance)
+	if(QDELETED(container))
+		CRASH("Failed to send appearance to client")
+	return "<img class='icon [extra_classes]' src='\ref[container]' style='image-rendering: pixelated; -ms-interpolation-mode: nearest-neighbor'>"

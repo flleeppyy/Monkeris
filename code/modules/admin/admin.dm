@@ -18,7 +18,7 @@ var/global/floorIsLava = 0
 	log_attack(text)
 	var/rendered = "<span class='log_message'><span class='prefix'>ATTACK:</span> <span class='message'>[text]</span></span>"
 	for(var/client/C in GLOB.admins)
-		if(R_ADMIN & C.holder.rights)
+		if(C.holder.rank_flags() & R_ADMIN)
 			if(C.get_preference_value(/datum/client_preference/staff/show_attack_logs) == GLOB.PREF_SHOW)
 				var/msg = rendered
 				to_chat(C, msg)
@@ -32,7 +32,7 @@ var/global/floorIsLava = 0
  */
 /proc/message_adminTicket(msg, important = FALSE)
 	for(var/client/C in GLOB.admins)
-		if(R_ADMIN & C.holder.rights)
+		if(C.holder.rank_flags() & R_ADMIN)
 			to_chat(C, msg)
 			if(important || (C.get_preference_value(/datum/client_preference/staff/play_adminhelp_ping) == GLOB.PREF_HEAR))
 				sound_to(C, 'sound/effects/adminhelp.ogg')
@@ -102,8 +102,10 @@ var/global/floorIsLava = 0
 
 	if(M.client)
 		body += " played by <b><a href='http://byond.com/members/[M.client.ckey]'>[M.client]</b></a> "
-		body += "\[<A href='byond://?src=\ref[src];[HrefToken()];editrights=show'>[M.client.holder ? M.client.holder.rank : "Player"]</A>\]<br>"
+		body += "\[<A href='byond://?src=\ref[src];[HrefToken()];editrights=show'>[M.client.holder ? M.client.holder.rank_names() : "Player"]<br>"
 		body += "<b>Registration date:</b> [M.client.account_join_date ? M.client.account_join_date : "Unknown"]<br>"
+		if(CONFIG_GET(flag/use_exp_tracking))
+			body += "\[<A href='byond://?_src_=holder;[HrefToken()];getplaytimewindow=[REF(M)]'>" + M.client.get_exp_living(FALSE) + " Playtime</a>\]"
 		body += "<b>IP:</b> [M.client.address ? M.client.address : "Unknown"]<br>"
 
 		var/country = M.client.country
@@ -550,7 +552,7 @@ var/global/floorIsLava = 0
 
 	var/result = input(usr, "Select reboot method", "World Reboot", options[1]) as null|anything in options
 	if(result)
-		// SSblackbox.record_feedback("tally", "admin_verb", 1, "Reboot World") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+		SSblackbox.record_feedback("tally", "admin_verb", 1, "Reboot World") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 		var/init_by = "Initiated by [usr.client.holder.fakekey ? "Admin" : usr.key]."
 		switch(result)
 			if("Regular Restart")
@@ -1071,7 +1073,7 @@ var/global/floorIsLava = 0
 	if(!C.holder)
 		return FALSE
 
-	if(C.holder.rights == R_MENTOR)
+	if(C.holder.rank_flags() & R_MENTOR)
 		return TRUE
 	return FALSE
 
@@ -1138,6 +1140,7 @@ var/global/floorIsLava = 0
 		tomob.ghostize(0)
 	message_admins(span_adminnotice("[key_name_admin(usr)] has put [frommob.ckey] in control of [tomob.name]."))
 	log_admin("[key_name(usr)] stuffed [frommob.ckey] into [tomob.name].")
+	SSblackbox.record_feedback("tally", "admin_verb", 1, "Ghost Drag Control")
 
 	tomob.ckey = frommob.ckey
 	if(tomob.client)
@@ -1183,19 +1186,6 @@ var/global/floorIsLava = 0
 			continue
 		result[1]++
 	return result
-
-//This proc checks whether subject has at least ONE of the rights specified in rights_required.
-/proc/check_rights_for(_subject, rights_required)
-	var/client/subject
-	if (ismob(_subject))
-		var/mob/M = _subject
-		subject = M?.client
-
-	if(subject && subject.holder)
-		if(rights_required && !(rights_required & subject.holder.rights))
-			return FALSE
-		return TRUE
-	return FALSE
 
 /datum/admins/proc/z_level_shooting()
 	set category = "Server"
