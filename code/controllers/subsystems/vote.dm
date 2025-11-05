@@ -1,5 +1,4 @@
-/// Define to mimic a span macro but for the purple font that vote specifically uses.
-#define vote_font(text) ("<font color='purple'>" + text + "</font>")
+
 
 SUBSYSTEM_DEF(vote)
 	name = "Vote"
@@ -62,7 +61,7 @@ SUBSYSTEM_DEF(vote)
 	log_vote(to_display)
 	to_chat(world, custom_boxed_message("purple_box center", span_infoplain(vote_font("[span_bold(to_display)]<br>\
 		Type <b>vote</b> or click <a href='byond://?src=\ref[src]'>here</a> to place your votes.\n\
-		You have [DisplayTimeText(poll.time)] to vote."))), type = MESSAGE_TYPE_OOC)
+		You have [poll.time] to vote."))), type = MESSAGE_TYPE_OOC)
 	sound_to(world, sound('sound/ambience/alarm4.ogg', repeat = 0, wait = 0, volume = 50, channel = GLOB.vote_sound_channel))
 
 	return TRUE
@@ -192,5 +191,3 @@ SUBSYSTEM_DEF(vote)
 	set name = "Vote"
 
 	SSvote.interface_client(client)
-
-#undef vote_font

@@ -183,5 +183,5 @@
 		winner.on_win()
 
 	log_vote(text)
-	to_chat(world, fieldset_block("Vote Results: [name] ", text, "boxed_message purple_box"))
+	to_chat(world, vote_font(fieldset_block("Vote Results: [name] ", text, "boxed_message purple_box")))
 	return
