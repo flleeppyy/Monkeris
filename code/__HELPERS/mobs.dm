@@ -448,6 +448,9 @@ Proc for attack log creation, because really why not
 /proc/get_mob_by_ckey(key)
 	if(!key)
 		return
+	var/mob/persistent_mob = GLOB.persistent_clients_by_ckey[key]?.mob
+	if(persistent_mob)
+		return persistent_mob
 	for(var/mob/mob in GLOB.mob_list)
 		if(mob.ckey == key)
 			return mob
@@ -563,3 +566,11 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 			to_chat(M, rendered_message, avoid_highlighting = speaker_ckey == M.key)
 		else
 			to_chat(M, message, avoid_highlighting = speaker_ckey == M.key)
+
+///Returns the amount of currently living players
+/proc/living_player_count()
+	var/living_player_count = 0
+	for(var/mob in GLOB.player_list)
+		if(mob in GLOB.mob_list && !(mob in GLOB.dead_mob_list))
+			living_player_count += 1
+	return living_player_count

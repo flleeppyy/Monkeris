@@ -104,6 +104,31 @@
 /datum/config_entry/flag/autoconvert_notes //if all connecting player's notes should attempt to be converted to the database
 	protection = CONFIG_ENTRY_LOCKED
 
+// Pop caps
+/datum/config_entry/number/soft_popcap
+	default = null
+	min_val = 0
+
+/datum/config_entry/number/hard_popcap
+	default = null
+	min_val = 0
+
+/datum/config_entry/number/extreme_popcap
+	default = null
+	min_val = 0
+
+/datum/config_entry/string/soft_popcap_message
+	default = "Be warned that the server is currently serving a high number of users, consider using alternative game servers."
+
+/datum/config_entry/string/hard_popcap_message
+	default = "The server is currently serving a high number of users, You cannot currently join. You may wait for the number of living crew to decline, observe, or find alternative servers."
+
+/datum/config_entry/string/extreme_popcap_message
+	default = "The server is currently serving a high number of users, find alternative servers."
+
+/datum/config_entry/flag/byond_member_bypass_popcap
+
+
 /******************/
 /* Job/Role Prefs */
 /******************/
@@ -149,6 +174,31 @@
 
 // Does nothing, used nowhere
 /datum/config_entry/flag/guest_jobban
+
+/datum/config_entry/flag/use_exp_tracking
+
+/// Enables head jobs time restrictions.
+/datum/config_entry/flag/use_exp_restrictions_heads
+
+/datum/config_entry/number/use_exp_restrictions_heads_hours
+	default = 0
+	integer = FALSE
+	min_val = 0
+
+/datum/config_entry/flag/use_exp_restrictions_heads_department
+
+/// Enables non-head jobs time restrictions.
+/datum/config_entry/flag/use_exp_restrictions_other
+
+/datum/config_entry/flag/use_exp_restrictions_admin_bypass
+
+/datum/config_entry/flag/use_low_living_hour_intern
+
+/datum/config_entry/number/use_low_living_hour_intern_hours
+	default = 0
+	integer = FALSE
+	min_val = 0
+
 
 /*****************/
 /*   Mob Prefs   */
@@ -226,6 +276,9 @@
 
 /// log crew manifest to separate file
 /datum/config_entry/flag/log_manifest
+
+/// log roundstart divide occupations debug information to a file
+/datum/config_entry/flag/log_job_debug
 
 /// log assets
 /datum/config_entry/flag/log_asset
@@ -319,9 +372,6 @@
 /*****************/
 /*     ADMIN     */
 /*****************/
-
-
-/datum/config_entry/flag/mentors
 
 /// allows admins with relevant permissions to have their own ooc colour
 /datum/config_entry/flag/allow_admin_ooccolor
