@@ -10,7 +10,120 @@ INSERT INTO `schema_revision` (`major`, `minor`) VALUES (3, 3);
 
 
 In any query remember to add a prefix to the table names if you use one.
+-----------------------------------------------------
+Version 3.3 5 November 2025, by Flleeppyy
+Alter `library` table to add , add `library_action` table.
 
+```sql
+ALTER TABLE `library`
+DROP FOREIGN KEY `fk_rails_53d51ce16a`,
+DROP INDEX `index_library_on_author_id`,
+CHANGE COLUMN `author` `author` VARCHAR(45) NOT NULL ,
+CHANGE COLUMN `title` `title` VARCHAR(45) NOT NULL ,
+CHANGE COLUMN `content` `content` TEXT NOT NULL ,
+CHANGE COLUMN `category` `category` ENUM('Any','Fiction','Non-Fiction','Adult','Reference','Religion') NOT NULL ,
+CHANGE COLUMN `author_id` `ckey` VARCHAR(32) NOT NULL DEFAULT 'LEGACY' ,
+CHANGE COLUMN `created_at` `datetime` DATETIME NOT NULL ,
+DROP COLUMN `updated_at`,
+ADD COLUMN `round_id_created` INT(11) UNSIGNED NULL AFTER `deleted`,
+ADD INDEX `deleted_idx` (`deleted` ASC),
+ADD INDEX `idx_lib_id_del` (`id` ASC, `deleted` ASC),
+ADD INDEX `idx_lib_del_title` (`deleted` ASC, `title` ASC),
+ADD INDEX `idx_lib_search` (`deleted` ASC, `author` ASC, `title` ASC, `category` ASC);
+
+CREATE TABLE `library_action` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `book` int(10) unsigned NOT NULL,
+  `reason` longtext DEFAULT NULL,
+  `ckey` varchar(32) NOT NULL DEFAULT '',
+  `datetime` datetime NOT NULL DEFAULT current_timestamp(),
+  `action` varchar(11) NOT NULL DEFAULT '',
+  `ip_addr` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
+```
+-----------------------------------------------------
+Version 3.2 27 October 2025, by Flleeppyy
+Add `feedback`, `legacy_population`, `role_time` and `role_time_log` tables
+
+```sql
+
+CREATE TABLE `feedback` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `datetime` datetime NOT NULL,
+  `round_id` int(11) unsigned NULL,
+  `key_name` varchar(32) NOT NULL,
+  `key_type` enum('text', 'amount', 'tally', 'nested tally', 'associative') NOT NULL,
+  `version` tinyint(3) unsigned NOT NULL,
+  `json` json NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `legacy_population` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `playercount` int(11) DEFAULT NULL,
+  `admincount` int(11) DEFAULT NULL,
+  `time` datetime NOT NULL,
+  `server_ip` int(10) unsigned NOT NULL,
+  `server_port` smallint(5) unsigned NOT NULL,
+  `round_id` int(11) unsigned NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `role_time`
+( `ckey` VARCHAR(32) NOT NULL ,
+ `job` VARCHAR(32) NOT NULL ,
+ `minutes` INT UNSIGNED NOT NULL,
+ PRIMARY KEY (`ckey`, `job`)
+ ) ENGINE = InnoDB;
+
+
+CREATE TABLE `role_time_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ckey` varchar(32) NOT NULL,
+  `job` varchar(128) NOT NULL,
+  `delta` int(11) NOT NULL,
+  `datetime` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `ckey` (`ckey`),
+  KEY `job` (`job`),
+  KEY `datetime` (`datetime`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+DELIMITER $$
+CREATE PROCEDURE `set_poll_deleted`(
+	IN `poll_id` INT
+)
+SQL SECURITY INVOKER
+BEGIN
+UPDATE `poll_question` SET deleted = 1 WHERE id = poll_id;
+UPDATE `poll_option` SET deleted = 1 WHERE pollid = poll_id;
+UPDATE `poll_vote` SET deleted = 1 WHERE pollid = poll_id;
+UPDATE `poll_textreply` SET deleted = 1 WHERE pollid = poll_id;
+END
+$$
+CREATE TRIGGER `role_timeTlogupdate` AFTER UPDATE ON `role_time` FOR EACH ROW BEGIN INSERT into role_time_log (ckey, job, delta) VALUES (NEW.CKEY, NEW.job, NEW.minutes-OLD.minutes);
+END
+$$
+CREATE TRIGGER `role_timeTloginsert` AFTER INSERT ON `role_time` FOR EACH ROW BEGIN INSERT into role_time_log (ckey, job, delta) VALUES (NEW.ckey, NEW.job, NEW.minutes);
+END
+$$
+CREATE TRIGGER `role_timeTlogdelete` AFTER DELETE ON `role_time` FOR EACH ROW BEGIN INSERT into role_time_log (ckey, job, delta) VALUES (OLD.ckey, OLD.job, 0-OLD.minutes);
+END
+$$
+DELIMITER ;
+```
+
+-----------------------------------------------------
+Version 3.1 7 October 2025, by Flleeppyy
+Remove `stickyban` and its related tables.
+
+```sql
+DROP TABLE IF EXISTS `stickyban`;
+DROP TABLE IF EXISTS `stickyban_matched_ckey`;
+DROP TABLE IF EXISTS `stickyban_matched_ip`;
+DROP TABLE IF EXISTS `stickyban_matched_cid`;
+```
 -----------------------------------------------------
 Version 3.0 3 October 2025, by Flleeppyy
 Add `admin_log`, `admin_ranks` table
