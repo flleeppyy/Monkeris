@@ -117,7 +117,7 @@
 		search_query.warn_execute()
 		while(search_query.NextRow())
 			output += "<tr><th>[search_query.item[1]]</th><th>[search_query.item[2]]</th><th>[search_query.item[3]]</th><th>[search_query.item[4]]</th></tr>"
-			hsrc.panel.add_content(output)
+		hsrc.panel.add_content(output)
 		output += "</table></div>"
 		qdel(search_query)
 		hsrc.panel.open()
