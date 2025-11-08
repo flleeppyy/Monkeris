@@ -302,7 +302,6 @@
 
 	qdel(voted_query)
 
-	// sanitize text
 	reply_text = replacetext(reply_text, "%BR%", "")
 	reply_text = replacetext(reply_text, "\n", "%BR%")
 	var/text_pass = reject_bad_text(reply_text,8000)
