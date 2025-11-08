@@ -19,3 +19,7 @@
   Sun-Soaked:
   - bugfix: characters with only a first name no longer have an extra unessecary space
       in their chat messages
+2025-11-08:
+  dwasint:
+  - rscadd: lighting respects z-levels
+  - bugfix: Eliminates 2 minute roundstart lag.
