@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useBackend } from 'tgui/backend';
-import { sanitizeText } from 'tgui/sanitize';
 import {
   Box,
   Button,
@@ -13,6 +12,7 @@ import {
   Stack,
 } from 'tgui-core/components';
 
+import { MarkdownRenderer } from '../../MarkdownViewer';
 import type { LibraryConsoleData } from '../types';
 import { useLibraryContext } from '../useLibraryContext';
 
@@ -43,10 +43,6 @@ export function Upload(props) {
   if (!has_cache) {
     return <NoticeBox>Scan in a book to upload.</NoticeBox>;
   }
-
-  const contentHtml = {
-    __html: sanitizeText(cache_content),
-  };
 
   return (
     <>
@@ -106,8 +102,9 @@ export function Upload(props) {
                 preserveWhitespace
                 fontSize="15px"
                 title="Content:"
+                backgroundColor="white"
               >
-                <Box dangerouslySetInnerHTML={contentHtml} />
+                <MarkdownRenderer content={cache_content} />
               </Section>
             </Stack.Item>
           </Stack>
