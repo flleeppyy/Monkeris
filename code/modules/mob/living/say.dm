@@ -330,7 +330,7 @@ var/list/channel_to_radio_key = new
 	var/image/say_popup = image('icons/mob/talk.dmi', src, "[bubble_type][talk_icon_state]", FLY_LAYER)
 	say_popup.plane = ABOVE_HUD_PLANE
 	say_popup.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
-	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(animate_speechbubble), say_popup, speech_bubble_recipients, 2 SECONDS)
+	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(animate_speechbubble), say_popup, speech_bubble_recipients, 3 SECONDS)
 	// LAZYADD(update_on_z, say_popup)
 	// addtimer(CALLBACK(src, PROC_REF(clear_saypopup), say_popup), 3.5 SECONDS)
 
