@@ -5,6 +5,7 @@
 	icon_state = "alienh_running"
 	icon_dead = "alien_l"
 	icon_gib = "syndicate_gib"
+	bubble_icon = "alien"
 	response_help = "pokes"
 	response_disarm = "shoves"
 	response_harm = "hits"
