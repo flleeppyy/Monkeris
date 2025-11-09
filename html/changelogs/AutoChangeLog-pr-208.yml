@@ -1,0 +1,4 @@
+author: flleeppyy
+delete-after: true
+changes:
+  - bugfix: add qdels to DB queries that were missing it
