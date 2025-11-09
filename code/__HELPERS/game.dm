@@ -327,7 +327,7 @@
 
 /// Add an image to a list of clients and calls a proc to remove it after a duration
 /proc/flick_overlay_global(image/image_to_show, list/show_to, duration)
-	if(!show_to || !length(show_to) || !image_to_show)
+	if(!length(show_to) || !image_to_show)
 		return
 	for(var/client/add_to in show_to)
 		add_to.images += image_to_show
