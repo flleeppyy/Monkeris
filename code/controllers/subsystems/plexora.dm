@@ -413,10 +413,10 @@ SUBSYSTEM_DEF(plexora)
 	switch(LOWER_TEXT(controller))
 		if("master")
 			Recreate_MC()
-			// SSblackbox.record_feedback("tally", "admin_verb", 1, "PLX: Restart Master Controller")
+			SSblackbox.record_feedback("tally", "admin_verb", 1, "PLX: Restart Master Controller")
 		if("failsafe")
 			new /datum/controller/failsafe()
-			// SSblackbox.record_feedback("tally", "admin_verb", 1, "PLX: Restart Failsafe Controller")
+			SSblackbox.record_feedback("tally", "admin_verb", 1, "PLX: Restart Failsafe Controller")
 	message_admins("PLEXORA: @[username] ([userid]) has restarted the [controller] controller from the Discord.")
 
 
@@ -441,32 +441,32 @@ SUBSYSTEM_DEF(plexora)
 			continue
 		. += list(list("key" = client.holder?.fakekey || client.key, "avgping" = "[round(client.avgping, 1)]ms"))
 
-// /datum/world_topic/plx_adminwho
-// 	keyword = "PLX_adminwho"
-// 	require_comms_key = TRUE
+/datum/world_topic/plx_adminwho
+	keyword = "PLX_adminwho"
+	require_comms_key = TRUE
 
-// /datum/world_topic/plx_adminwho/Run(list/input)
-// 	. = list()
-// 	for (var/client/admin as anything in GLOB.admins)
-// 		if(QDELETED(admin) || !admin.holder || admin.holder?.rights == R_MENTOR)
-// 			continue
-// 		var/admin_info = list(
-// 			"name" = admin,
-// 			"ckey" = admin.ckey,
-// 			"rank" = admin.holder.rank,
-// 			"afk" = admin.is_afk(),
-// 			"stealth" = !!admin.holder.fakekey,
-// 			"stealthkey" = admin.holder.fakekey,
-// 		)
+/datum/world_topic/plx_adminwho/Run(list/input)
+	. = list()
+	for (var/client/admin as anything in GLOB.admins)
+		if(QDELETED(admin) || !admin.holder || admin.holder?.rank_flags() & R_MENTOR)
+			continue
+		var/admin_info = list(
+			"name" = admin,
+			"ckey" = admin.ckey,
+			"rank" = admin.holder.rank_names(),
+			"afk" = admin.is_afk(),
+			"stealth" = !!admin.holder.fakekey,
+			"stealthkey" = admin.holder.fakekey,
+		)
 
-// 		if(isobserver(admin.mob))
-// 			admin_info["state"] = "observing"
-// 		else if(isnewplayer(admin.mob))
-// 			admin_info["state"] = "lobby"
-// 		else
-// 			admin_info["state"] = "playing"
+		if(isobserver(admin.mob))
+			admin_info["state"] = "observing"
+		else if(isnewplayer(admin.mob))
+			admin_info["state"] = "lobby"
+		else
+			admin_info["state"] = "playing"
 
-// 		. += LIST_VALUE_WRAP_LISTS(admin_info)
+		. += LIST_VALUE_WRAP_LISTS(admin_info)
 
 // /datum/world_topic/plx_mentorwho
 // 	keyword = "PLX_mentorwho"
@@ -493,92 +493,8 @@ SUBSYSTEM_DEF(plexora)
 
 // 		. += LIST_VALUE_WRAP_LISTS(mentor_info)
 
-/*
-/datum/world_topic/plx_getloadoutrewards
-	keyword = "PLX_getloadoutrewards"
-	require_comms_key = TRUE
 
-/datum/world_topic/plx_getloadoutrewards/Run(list/input)
-	return subtypesof(/datum/store_item) - typesof(/datum/store_item/roundstart)
 
-/datum/world_topic/plx_getunusualitems
-	keyword = "PLX_getunusualitems"
-	require_comms_key = TRUE
-
-/datum/world_topic/plx_getunusualitems/Run(list/input)
-	return GLOB.possible_lootbox_clothing
-
-/datum/world_topic/get_unusualeffects
-	keyword = "PLX_getunusualeffects"
-	require_comms_key = TRUE
-
-/datum/world_topic/get_unusualeffects/Run(list/input)
-	return subtypesof(/datum/component/particle_spewer) - /datum/component/particle_spewer/movement
-
-/datum/world_topic/plx_getsmites
-	keyword = "PLX_getsmites"
-	require_comms_key = TRUE
-
-/datum/world_topic/plx_getsmites/Run(list/input)
-	. = list()
-	for (var/datum/smite/smite_path as anything in subtypesof(/datum/smite))
-		var/smite_name = smite_path::name
-		if(!smite_name)
-			continue
-		try
-			var/datum/smite/smite_instance = new smite_path
-			if (smite_instance.configure(new /datum/client_interface("fake_player")) == "NO_CONFIG")
-				.[smite_name] = smite_path
-			QDEL_NULL(smite_instance)
-		catch
-			pass()
-
-/datum/world_topic/plx_gettwitchevents
-	keyword = "PLX_gettwitchevents"
-	require_comms_key = TRUE
-
-/datum/world_topic/plx_gettwitchevents/Run(list/input)
-	. = list()
-	for (var/datum/twitch_event/event_path as anything in subtypesof(/datum/twitch_event))
-		.[event_path::event_name] = event_path
-
-/datum/world_topic/plx_getbasicplayerdetails
-	keyword = "PLX_getbasicplayerdetails"
-	require_comms_key = TRUE
-
-/datum/world_topic/plx_getbasicplayerdetails/Run(list/input)
-	var/ckey = input["ckey"]
-
-	if (!ckey)
-		return list("error" = PLEXORA_ERROR_MISSING_CKEY)
-
-	var/list/returning = list(
-		"ckey" = ckey
-	)
-
-	var/client/client = disambiguate_client(ckey)
-
-	if (QDELETED(client))
-		returning["present"] = FALSE
-	else
-		returning["present"] = TRUE
-		returning["key"] = client.key
-
-	var/datum/persistent_client/details = GLOB.persistent_clients_by_ckey[ckey]
-
-	if (details)
-		returning["byond_version"] = details.byond_version
-
-	if (QDELETED(client))
-		var/datum/client_interface/mock_player = new(ckey)
-		mock_player.prefs = new /datum/preferences(mock_player)
-		returning["playtime"] = mock_player.get_exp_living(FALSE)
-	else
-		returning["playtime"] = client.get_exp_living(FALSE)
-
-	return returning
-*/
-/*
 /datum/world_topic/plx_getplayerdetails
 	keyword = "PLX_getplayerdetails"
 	require_comms_key = TRUE
@@ -604,7 +520,7 @@ SUBSYSTEM_DEF(plexora)
 		"logging" = details.logging,
 		"played_names" = details.played_names,
 		"byond_version" = details.byond_version,
-		"achievements" = details.achievements.data,
+		// "achievements" = details.achievements.data,
 	)
 
 	var/mob/clientmob
@@ -628,8 +544,7 @@ SUBSYSTEM_DEF(plexora)
 			"ranks" = ckeyadatum.ranks,
 			"fakekey" = ckeyadatum.fakekey,
 			"deadmined" = ckeyadatum.deadmined,
-			"bypass_2fa" = ckeyadatum.bypass_2fa,
-			"admin_signature" = ckeyadatum.admin_signature,
+			"admin_signature" = ckeyadatum.admincaster_signature,
 		)
 
 	if (!QDELETED(clientmob))
@@ -673,86 +588,6 @@ SUBSYSTEM_DEF(plexora)
 	TOPIC_EMITTER
 
 	return returning
-
-/datum/world_topic/plx_generategiveawaycodes
-	keyword = "PLX_generategiveawaycodes"
-	require_comms_key = TRUE
-
-/datum/world_topic/plx_generategiveawaycodes/Run(list/input)
-	var/type = input["type"]
-	var/codeamount = input["limit"]
-
-	. = list()
-
-	if (type == "loadout" && !input["loadout"])
-		return
-
-	for (var/i in 1 to codeamount)
-		var/returning = list("type" = type)
-
-		switch(type)
-			if ("coin")
-				var/amount = input["coins"]
-				if (isnull(amount))
-					amount = 5000
-				returning["coins"] = amount
-				returning["code"] = generate_coin_code(amount, TRUE)
-			if ("loadout")
-				var/loadout = input["loadout"]
-				//we are not chosing a random one for this, you MUST specify
-				if (!loadout) return
-				returning["loadout"] = loadout
-				returning["code"] = generate_loadout_code(loadout, TRUE)
-			if ("antagtoken")
-				var/tokentype = input["antagtoken"]
-				if (!tokentype)
-					tokentype = LOW_THREAT
-				returning["antagtoken"] = tokentype
-				returning["code"] = generate_antag_token_code(tokentype, TRUE)
-			if ("unusual")
-				var/item = input["unusual_item"]
-				var/effect = input["unusual_effect"]
-				if (!item)
-					item = pick(GLOB.possible_lootbox_clothing)
-				if (!effect)
-					var/static/list/possible_effects = subtypesof(/datum/component/particle_spewer) - /datum/component/particle_spewer/movement
-					effect = pick(possible_effects)
-				returning["item"] = item
-				returning["effect"] = effect
-				returning["code"] = generate_unusual_code(item, effect, TRUE)
-
-		. += list(returning)
-
-/datum/world_topic/plx_givecoins
-	keyword = "PLX_givecoins"
-	require_comms_key = TRUE
-
-/datum/world_topic/plx_givecoins/Run(list/input)
-	var/ckey = input["ckey"]
-	var/amount = input["amount"]
-	var/reason = input["reason"]
-
-	var/client/userclient = disambiguate_client(ckey)
-
-	var/datum/preferences/prefs
-	if (QDELETED(userclient))
-		var/datum/client_interface/mock_player = new(ckey)
-		mock_player.prefs = new /datum/preferences(mock_player)
-
-		prefs = mock_player.prefs
-	else
-		prefs = userclient.prefs
-
-	prefs.adjust_metacoins(ckey, amount, reason, donator_multiplier = FALSE, respects_roundcap = FALSE, announces = FALSE)
-
-	return list("totalcoins" = prefs.metacoins)
-
-/datum/world_topic/plx_generategiveawaycode
-	keyword = "PLX_generategiveawaycode"
-	require_comms_key = TRUE
-
-/datum/world_topic/plx_generategiveawaycode/Run(list/input)
-*/
 
 /datum/world_topic/plx_forceemote
 	keyword = "PLX_forceemote"
