@@ -141,7 +141,7 @@
 			M.hear_say(new_message, verb, speaking, alt_name, italics, src)
 
 	var/talk_icon_state = say_test(message)
-	var/image/say_popup = image('icons/mob//talk.dmi', src, "[bubble_type][talk_icon_state]", FLY_LAYER)
+	var/image/say_popup = image('icons/mob/talk.dmi', src, "[bubble_type][talk_icon_state]", FLY_LAYER)
 	say_popup.plane = ABOVE_HUD_PLANE
 	say_popup.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
 	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(flick_overlay_global), say_popup, speech_bubble_recipients, 3 SECONDS)
