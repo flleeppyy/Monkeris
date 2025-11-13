@@ -23,3 +23,9 @@
   dwasint:
   - rscadd: lighting respects z-levels
   - bugfix: Eliminates 2 minute roundstart lag.
+2025-11-10:
+  flleeppyy:
+  - bugfix: add qdels to DB queries that were missing it
+  - tweak: Made votes look nicer
+  - rscadd: new speech bubbles
+  - bugfix: speech bubbles no longer stay after you type.
