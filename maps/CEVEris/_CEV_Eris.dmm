@@ -99389,7 +99389,7 @@
 	pixel_y = 28
 	},
 /obj/structure/table/woodentable,
-/obj/machinery/computer/libraryconsole,
+/obj/machinery/computer/libraryconsole/bookmanagement,
 /turf/floor/wood,
 /area/eris/crew_quarters/library)
 "jnX" = (
