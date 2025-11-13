@@ -1,4 +1,3 @@
-
 import { map, sortBy } from 'common/collections';
 import {
   Box,
@@ -99,11 +98,12 @@ const SearchAndDisplay = (props) => {
     params_changed,
   } = data;
   const records = flow([
-    (records) => map<Book, DisplayBook>(records, (record, i) => ({
-      ...record,
-      // Generate a unique id
-      key: i,
-    })),
+    (records) =>
+      map<Book, DisplayBook>(records, (record, i) => ({
+        ...record,
+        // Generate a unique id
+        key: i,
+      })),
     (records) => sortBy<DisplayBook>(records, (record) => record.key),
   ])(data.pages);
   return (
@@ -117,7 +117,7 @@ const SearchAndDisplay = (props) => {
                 placeholder={book_id === null ? 'ID' : book_id}
                 mt={0.5}
                 width="70px"
-                onChange={(e, value) =>
+                onChange={(value) =>
                   act('set_search_id', {
                     id: value,
                   })
@@ -140,7 +140,7 @@ const SearchAndDisplay = (props) => {
                 value={title}
                 placeholder={title || 'Title'}
                 mt={0.5}
-                onChange={(e, value) =>
+                onChange={(value) =>
                   act('set_search_title', {
                     title: value,
                   })
@@ -152,7 +152,7 @@ const SearchAndDisplay = (props) => {
                 value={author}
                 placeholder={author || 'Author'}
                 mt={0.5}
-                onChange={(e, value) =>
+                onChange={(value) =>
                   act('set_search_author', {
                     author: value,
                   })
