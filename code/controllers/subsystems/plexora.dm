@@ -196,20 +196,6 @@ SUBSYSTEM_DEF(plexora)
 		"playerstring" = "**Total**: [length(GLOB.clients)], **Living**: [length(GLOB.mob_list - GLOB.dead_mob_list)], **Dead**: [length(GLOB.dead_mob_list)], **Observers**: [length(GLOB.player_ghost_list)]",
 	))
 
-// /datum/controller/subsystem/plexora/proc/interview(datum/interview/interview)
-// 	http_basicasync("interviewupdates", list(
-// 		"id" = interview.id,
-// 		"atomic_id" = interview.atomic_id,
-// 		"owner_ckey" = interview.owner_ckey,
-// 		"responses" = interview.responses,
-// 		"read_only" = interview.read_only,
-// 		"pos_in_queue" = interview.pos_in_queue,
-// 		"status" = interview.status,
-// 		"ip" = interview.owner?.address,
-// 		"computer_id" = interview.owner?.computer_id,
-// 	))
-//
-
 /datum/controller/subsystem/plexora/proc/check_byondserver_status(id)
 	if (isnull(id)) return
 
@@ -234,14 +220,14 @@ SUBSYSTEM_DEF(plexora)
 		"prefix" = prefix,
 		"key" = user.key,
 		"message" = message,
-//		"icon_b64" = icon2base64(getFlatIcon(user.mob, SOUTH, no_anim = TRUE)),
+		"icon_b64" = icon2base64(getFlatIcon(user.mob, SOUTH, no_anim = TRUE)),
 	))
 
 /datum/controller/subsystem/plexora/proc/relay_admin_say(client/user, message)
 	http_basicasync("relay_admin_say", list(
 		"key" = user.key,
 		"message" = message,
-//		"icon_b64" = icon2base64(getFlatIcon(user.mob, SOUTH, no_anim = TRUE)),
+		"icon_b64" = icon2base64(getFlatIcon(user.mob, SOUTH, no_anim = TRUE)),
 	))
 
 // note: recover_all_SS_and_recreate_master to force mc shit
@@ -468,31 +454,30 @@ SUBSYSTEM_DEF(plexora)
 
 		. += LIST_VALUE_WRAP_LISTS(admin_info)
 
-// /datum/world_topic/plx_mentorwho
-// 	keyword = "PLX_mentorwho"
-// 	require_comms_key = TRUE
+/datum/world_topic/plx_mentorwho
+	keyword = "PLX_mentorwho"
+	require_comms_key = TRUE
 
-// /datum/world_topic/plx_mentorwho/Run(list/input)
-// 	. = list()
-// 	for (var/client/mentor as anything in GLOB.admins)
-// 		if(QDELETED(mentor) || !mentor.holder || !(mentor.holder?.rights & R_MENTOR))
-// 			continue
-// 		var/list/mentor_info = list(
-// 			"name" = mentor,
-// 			"ckey" = mentor.ckey,
-// 			"rank" = mentor.holder?.rank,
-// 			"afk" = mentor.is_afk(),
-// 		)
+/datum/world_topic/plx_mentorwho/Run(list/input)
+	. = list()
+	for (var/client/mentor as anything in GLOB.admins)
+		if(QDELETED(mentor) || !mentor.holder || !((mentor.holder?.rank_flags() & R_MENTOR) && !(mentor.holder?.rank_flags() & R_ADMIN)))
+			continue
+		var/list/mentor_info = list(
+			"name" = mentor,
+			"ckey" = mentor.ckey,
+			"rank" = mentor.holder.rank_names(),
+			"afk" = mentor.is_afk(),
+		)
 
-// 		if(isobserver(mentor.mob))
-// 			mentor_info["state"] = "observing"
-// 		else if(isnewplayer(mentor.mob))
-// 			mentor_info["state"] = "lobby"
-// 		else
-// 			mentor_info["state"] = "playing"
+		if(isobserver(mentor.mob))
+			mentor_info["state"] = "observing"
+		else if(isnewplayer(mentor.mob))
+			mentor_info["state"] = "lobby"
+		else
+			mentor_info["state"] = "playing"
 
-// 		. += LIST_VALUE_WRAP_LISTS(mentor_info)
-
+		. += LIST_VALUE_WRAP_LISTS(mentor_info)
 
 
 /datum/world_topic/plx_getplayerdetails
@@ -520,7 +505,6 @@ SUBSYSTEM_DEF(plexora)
 		"logging" = details.logging,
 		"played_names" = details.played_names,
 		"byond_version" = details.byond_version,
-		// "achievements" = details.achievements.data,
 	)
 
 	var/mob/clientmob
@@ -609,7 +593,7 @@ SUBSYSTEM_DEF(plexora)
 		return list("error" = PLEXORA_ERROR_CLIENTNOMOB)
 
 	return list(
-		"success" = client_mob.emote(emote, message = emote_args, intentional = FALSE)
+		"success" = client_mob.emote(emote, message = emote_args)
 	)
 
 /datum/world_topic/plx_forcesay
@@ -630,7 +614,7 @@ SUBSYSTEM_DEF(plexora)
 	if (QDELETED(client_mob))
 		return list("error" = PLEXORA_ERROR_CLIENTNOMOB)
 
-	client_mob.say(message, forced = TRUE)
+	client_mob.say(message)
 /*
 /datum/world_topic/plx_smite
 	keyword = "PLX_smite"
@@ -868,8 +852,8 @@ SUBSYSTEM_DEF(plexora)
 		html = msg,
 		confidential = TRUE)
 
-	// SSblackbox.record_feedback("tally", "admin_say_relay", 1, "Asay external") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-/*
+	SSblackbox.record_feedback("tally", "admin_say_relay", 1, "Asay external") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
 /datum/world_topic/plx_relaymentorsay
 	keyword = "PLX_relaymentorsay"
 	require_comms_key = TRUE
@@ -889,10 +873,10 @@ SUBSYSTEM_DEF(plexora)
 
 	for(var/iter_ckey in pinged_mentor_clients)
 		var/client/iter_mentor_client = pinged_mentor_clients[iter_ckey]
-		if(!iter_mentor_client?.mentor_datum)
+		if(!(iter_mentor_client?.holder?.rank_flags() & R_MENTOR))
 			continue
 		window_flash(iter_mentor_client)
-		SEND_SOUND(iter_mentor_client.mob, sound('sound/misc/bloop.ogg'))
+		SEND_SOUND(iter_mentor_client.mob, sound('sound/effects/fastbeep.ogg'))
 
 	log_mentor("MSAY(DISCORD): [sender] : [msg]")
 	msg = "<b><font color='#7544F0'><span class='prefix'>DISCORD:</span> <EM>[sender]</EM>: <span class='message linkify'>[msg]</span></font></b>"
@@ -903,7 +887,7 @@ SUBSYSTEM_DEF(plexora)
 		confidential = TRUE)
 
 	SSblackbox.record_feedback("tally", "mentor_say_relay", 1, "Msay external") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-*/
+
 #undef OLD_PLEXORA_CONFIG
 #undef AUTH_HEADER
 #undef TOPIC_EMITTER
