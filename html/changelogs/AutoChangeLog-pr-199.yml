@@ -1,0 +1,6 @@
+author: Sun-Soaked
+delete-after: true
+changes:
+  - balance: raised shields can now block attacks from simplemobs and superior 
+      mobs
+  - bugfix: eshields now respond properly to being activated
