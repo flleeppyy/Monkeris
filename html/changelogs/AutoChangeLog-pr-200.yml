@@ -1,0 +1,52 @@
+author: flleeppyy
+delete-after: true
+changes:
+  - rscadd: Real round time in stat panel, since time dilation. Also added 
+      conditionals for showing some statpanel entries.
+  - admin: Tickets now have their ticket number in the message when one is 
+      created
+  - code_imp: Codespeak global was moved to GLOB, and should properly init now.
+  - code_imp: new_player mobs have been moved to the start area room instead of 
+      being thrown into the bottom left.
+  - code_imp: rename say_quote to say_quote_old since that was conflicting and 
+      messing up dead say.
+  - code_imp: Replaces some shutdown/reboot code which fixes some Reboot options
+      doing nothing
+  - code_imp: span_\*'s being called with ternary's that should have been 
+      wrapped in a string instead of being directly passed.
+  - config: Add autoadminning for development
+  - config: added enable_localhost_rank to default config file
+  - config: Config system will copy the required/neccessary files depending on 
+      if non-default files are present in the config directory.
+  - rscdel: adminobservejump has been removed in place of 
+      `adminplayerobservecoodjump`
+  - rscdel: get_options_bar & admin_jump_link removed in favor of ADMIN_JMP and 
+      ADMIN_FULLMONTY
+  - rscdel: remove's python2 from config, it wasn't used at all.
+  - bugfix: Admin href links should no longer not do anything.
+  - bugfix: alive players being able to see dead mob messages in runechat.
+  - bugfix: Clicking on turfs should not generate a permission error intended 
+      for quick VV, it should only happen when you ctrl shift click now.
+  - bugfix: deadsay should no longer runtime when talking as a dead mob that's 
+      also technically a ghost
+  - bugfix: EFTPOS runtiming when an account doesn't exist.
+  - bugfix: Fix a sorting bug for something related to crewmember sensor data.
+  - bugfix: fix runtime on disgorger when processing organs
+  - bugfix: fixed a few instances where mobs speaking would have blank messages.
+  - bugfix: Follow buttons for ghosts in chat should NOW PROPERLY ACTUALLY WORK 
+      FOR REAL THIS TIME!
+  - bugfix: ghosts having a null client
+  - bugfix: hydroponic trays should no longer runtime when scanning them and 
+      properly returns no data if no seeds are present.
+  - bugfix: LOOC should now display properly.
+  - bugfix: mobs should now unbuckle from whatever they are buckled too, if they
+      are Destroyed
+  - bugfix: moebius uselessly processing when nobody is wearing it.
+  - bugfix: show_titlescreen no longer complains about invalid mob.
+  - bugfix: Signal proc refs having an incorrect first argument
+  - bugfix: Target zone switches should no longer complain about invalid data 
+      params.
+  - bugfix: Viewing turf on statpanel should no longer scream about invalid 
+      resource.
+  - bugfix: Fixed browser windows not being able to get UI scaling prefs if the 
+      client doesn't exist yet, is fine.
