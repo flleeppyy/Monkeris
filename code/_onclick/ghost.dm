@@ -11,8 +11,7 @@
 		to_chat(src, span_notice("You will no longer examine things you click on."))
 
 /mob/observer/ghost/DblClickOn(atom/A, params)
-	if(client.buildmode)
-		build_click(src, client.buildmode, params, A)
+	if(check_click_intercept(params, A))
 		return
 	if(can_reenter_corpse && mind && mind.current)
 		if(A == mind.current || (mind.current in A)) // double click your corpse or whatever holds it
@@ -34,8 +33,7 @@
 			client.debug_variables(A)
 			return
 
-	if(client.buildmode)
-		build_click(src, client.buildmode, params, A)
+	if(check_click_intercept(params, A))
 		return
 	if(!can_click()) return
 	setClickCooldown(4)

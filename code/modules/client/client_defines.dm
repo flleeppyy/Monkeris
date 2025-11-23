@@ -72,6 +72,11 @@
 	/// Disables default BYOND verb panel in favor of Stat Panel™
 	show_verb_panel = FALSE
 
+	///Needs to implement InterceptClickOn(user,params,atom) proc
+	var/datum/click_intercept = null
+	///Time when the click was intercepted
+	var/click_intercept_time = 0
+
 		///////////////
 		//SOUND STUFF//
 		///////////////

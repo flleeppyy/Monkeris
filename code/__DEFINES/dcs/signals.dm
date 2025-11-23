@@ -76,7 +76,6 @@
 
 // /atom signals
 #define COMSIG_EXAMINE "examine"								//from atom/examine(): (mob/user, distance)
-#define COMSIG_ATOM_UPDATE_OVERLAYS "atom_update_overlays"  //update_overlays()
 #define COMSIG_ATOM_UNFASTEN "atom_unfasten" // set_anchored()
 // Whenever we are put into a container of any sort , storage , closets , pockets. (atom/true_parent)
 #define COMSIG_ATOM_CONTAINERED "atom_containered"
@@ -208,6 +207,22 @@
 #define COMSIG_GENERATE_DUNGEON "generate_dungeon"
 #define COMSIG_DUNGEON_GENERATED "dungeon_generated"
 
+///from base of [/atom/update_icon]: ()
+#define COMSIG_ATOM_UPDATE_ICON "atom_update_icon"
+	/// If returned from [COMSIG_ATOM_UPDATE_ICON] it prevents the atom from updating its icon state.
+	#define COMSIG_ATOM_NO_UPDATE_ICON_STATE UPDATE_ICON_STATE
+	/// If returned from [COMSIG_ATOM_UPDATE_ICON] it prevents the atom from updating its overlays.
+	#define COMSIG_ATOM_NO_UPDATE_OVERLAYS UPDATE_OVERLAYS
+///from base of [atom/update_inhand_icon]: (/mob)
+#define COMSIG_ATOM_UPDATE_INHAND_ICON "atom_update_inhand_icon"
+///from base of [atom/update_icon_state]: ()
+#define COMSIG_ATOM_UPDATE_ICON_STATE "atom_update_icon_state"
+///from base of [/atom/update_overlays]: (list/new_overlays)
+#define COMSIG_ATOM_UPDATE_OVERLAYS "atom_update_overlays"
+///from base of [/atom/update_icon]: (signalOut, did_anything)
+#define COMSIG_ATOM_UPDATED_ICON "atom_updated_icon"
+///from base of [/atom/proc/smooth_icon]: ()
+#define COMSIG_ATOM_SMOOTHED_ICON "atom_smoothed_icon"
 /*******Component Specific Signals*******/
 //Janitor
 

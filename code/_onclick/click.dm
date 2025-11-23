@@ -3,6 +3,22 @@
 	~Sayu
 */
 
+//Mouse buttons held
+#define RIGHT_CLICK "right"
+#define MIDDLE_CLICK "middle"
+#define LEFT_CLICK "left"
+#define BUTTON4 "xbutton1"
+#define BUTTON5 "xbutton2"
+
+///Mouse button that was just clicked/released
+///if(modifiers[BUTTON] == LEFT_CLICK)
+#define BUTTON "button"
+
+//Keys held down during the mouse action
+#define CTRL_CLICK "ctrl"
+#define ALT_CLICK "alt"
+#define SHIFT_CLICK "shift"
+
 // 1 decisecond click delay (above and beyond mob/next_move)
 /mob/var/next_click = 0
 
@@ -75,8 +91,7 @@
 
 	next_click = world.time + 1
 
-	if(client.buildmode)
-		build_click(src, client.buildmode, params, A)
+	if(check_click_intercept(params,A))
 		return
 
 	var/list/modifiers = params2list(params)
@@ -417,3 +432,16 @@ GLOBAL_LIST_INIT(click_catchers, create_click_catcher())
 /atom/movable/screen/click_catcher/proc/resolve(mob/user)
 	var/turf/T = screen_loc2turf(screen_loc, get_turf(user))
 	return T
+
+/mob/proc/check_click_intercept(params,A)
+	//Client level intercept
+	if(client?.click_intercept)
+		if(call(client.click_intercept, "InterceptClickOn")(src, params, A))
+			return TRUE
+
+	//Mob level intercept
+	if(click_intercept)
+		if(call(click_intercept, "InterceptClickOn")(src, params, A))
+			return TRUE
+
+	return FALSE

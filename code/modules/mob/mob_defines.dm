@@ -242,6 +242,8 @@
 
 	var/list/progressbars
 
+	///Allows a datum to intercept all click calls this mob is the source of
+	var/datum/click_intercept
 
 	var/speed_factor = 1
 
@@ -253,7 +255,7 @@
 
 	// Did they suicide?
 	var/suicided = FALSE
-  
+
 	///The z level this mob is currently registered in
 	var/registered_z
 
