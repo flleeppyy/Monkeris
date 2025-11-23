@@ -56,7 +56,7 @@
 	if(check_rights(R_ADMIN, 0))
 		sender_name = span_admin("[sender_name]")
 	for(var/client/C in GLOB.admins)
-		to_chat(C, "<span class='mod_channel'> MOD: [span_name("[sender_name]")]([admin_jump_link(mob, C.holder)]): <span class='message linkify'>[msg]</span></span>")
+		to_chat(C, "<span class='mod_channel'> MOD: [span_name("[sender_name]")]): <span class='message linkify'>[msg]</span></span>")
 
 // Checks a given message to see if any of the words contain an active mentor's ckey with an @ before it
 /proc/check_mentor_pings(message)
