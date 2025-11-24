@@ -45,7 +45,7 @@
 
 
 /mob/living/simple_animal/hostile/commanded/FindTarget(new_stance = HOSTILE_STANCE_ATTACK)
-	if(!allowed_targets.len)
+	if(!length(allowed_targets))
 		return null
 	var/mode = "specific"
 	if(allowed_targets[1] == "everyone") //we have been given the golden gift of murdering everything. Except our master, of course. And our friends. So just mostly everyone.
@@ -157,7 +157,7 @@
 		target_mob = speaker //this wont bite me in the ass later.
 		return 1
 	var/list/targets = get_targets_by_name(text)
-	if(targets.len > 1 || !targets.len) //CONFUSED. WHO DO I FOLLOW?
+	if(targets.len > 1 || !length(targets)) //CONFUSED. WHO DO I FOLLOW?
 		return 0
 
 	stance = COMMANDED_FOLLOW //GOT SOMEBODY. BETTER FOLLOW EM.

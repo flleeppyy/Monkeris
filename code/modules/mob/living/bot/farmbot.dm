@@ -129,7 +129,7 @@
 			if(path.len && frustration < 5)
 				if(path[1] == loc)
 					path -= path[1]
-				if(path.len)
+				if(length(path))
 					var/t = step_towards(src, path[1])
 					if(t)
 						path -= path[1]

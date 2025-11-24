@@ -14,7 +14,7 @@
 
 /datum/firemode/New(obj/item/gun/_gun, list/properties = null)
 	..()
-	if(!properties || !properties.len) return
+	if(!length(properties)) return
 
 	gun = _gun
 	for(var/propname in properties)

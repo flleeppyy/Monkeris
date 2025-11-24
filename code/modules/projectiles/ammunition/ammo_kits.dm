@@ -17,7 +17,7 @@
 
 /obj/item/ammo_kit/attack_self(mob/user)
 	var/list/items_to_spawn = make_scrap_ammo(user, src)
-	if(items_to_spawn && items_to_spawn.len)
+	if(length(items_to_spawn))
 		if(do_mob(user, src, 10 SECONDS))
 			var/location = get_turf(src)
 			for(var/i in items_to_spawn)
@@ -119,7 +119,7 @@
 							continue
 
 			if("Craft picked")
-				if(!items_to_spawn.len)
+				if(!length(items_to_spawn))
 					if(alert(user, "No items picked. Abort crafting?", "Material points: [material_points]", "Yes", "No, turn back") != "No, turn back")
 						user_is_choosing = FALSE
 				else

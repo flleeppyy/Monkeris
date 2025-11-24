@@ -73,7 +73,7 @@
 		..()
 
 /obj/structure/filingcabinet/attack_self_tk(mob/user)
-	if(contents.len)
+	if(length(contents))
 		if(prob(40 + contents.len * 5))
 			var/obj/item/I = pick(contents)
 			I.loc = loc

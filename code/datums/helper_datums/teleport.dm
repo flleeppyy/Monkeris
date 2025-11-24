@@ -161,19 +161,19 @@
 
 	var/ofholding = 0
 	var/list/bagholding = teleatom.search_contents_for(/obj/item/storage/backpack/holding)
-	if(bagholding.len)
+	if(length(bagholding))
 		ofholding += bagholding.len
 	var/list/pouchholding = teleatom.search_contents_for(/obj/item/storage/pouch/holding)
-	if(pouchholding.len)
+	if(length(pouchholding))
 		ofholding += pouchholding.len
 	var/list/beltholding = teleatom.search_contents_for(/obj/item/storage/belt/holding)
-	if(beltholding.len)
+	if(length(beltholding))
 		ofholding += beltholding.len
 	var/list/trashholding = teleatom.search_contents_for(/obj/item/storage/bag/trash/holding)
-	if(trashholding.len)
+	if(length(trashholding))
 		ofholding += trashholding.len
 	var/list/satchelholding = teleatom.search_contents_for(/obj/item/storage/bag/ore/holding)
-	if(satchelholding.len)
+	if(length(satchelholding))
 		ofholding += satchelholding.len
 
 	if(ofholding)
@@ -181,15 +181,15 @@
 		precision = max(rand(1, 100)*ofholding, 100)
 		if(isliving(teleatom))
 			var/mob/living/MM = teleatom
-			if(bagholding.len)
+			if(length(bagholding))
 				to_chat(MM, span_danger("The bluespace interface of your bag of holding interferes with the teleport!"))
-			if(pouchholding.len)
+			if(length(pouchholding))
 				to_chat(MM, span_danger("The bluespace interface of your pouch of holding interferes with the teleport!"))
-			if(beltholding.len)
+			if(length(beltholding))
 				to_chat(MM, span_danger("The bluespace interface of your belt of holding interferes with the teleport!"))
-			if(trashholding.len)
+			if(length(trashholding))
 				to_chat(MM, span_danger("The bluespace interface of your trashbag of holding interferes with the teleport!"))
-			if(satchelholding.len)
+			if(length(satchelholding))
 				to_chat(MM, span_danger("The bluespace interface of your satchel of holding interferes with the teleport!"))
 	return 1
 /datum/teleport/instant/science/teleportChecks()

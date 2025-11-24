@@ -186,7 +186,7 @@
 		return
 	generatingShield = TRUE
 
-	if(field_segments.len)
+	if(length(field_segments))
 		for(var/obj/effect/shield/S in field_segments)
 			qdel(S)
 			CHECK_TICK

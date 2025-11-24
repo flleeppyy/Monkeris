@@ -111,9 +111,9 @@
 			else
 				crewmembers_goodbois += list(entry)
 	data["crewmembers"] = list()
-	if(crewmembers_problematic.len)
+	if(length(crewmembers_problematic))
 		data["crewmembers"] += crewmembers_problematic
-	if(crewmembers_goodbois.len)
+	if(length(crewmembers_goodbois))
 		data["crewmembers"] += crewmembers_goodbois
 	ddata = data
 	crew = crewmembers_problematic

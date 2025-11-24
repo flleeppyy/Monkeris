@@ -201,7 +201,7 @@
 	new /obj/item/reagent_containers/pill/carbon(src)
 
 /obj/item/storage/firstaid/nt/update_icon()
-	if(!contents.len)
+	if(!length(contents))
 		icon_state = "[initial(icon_state)]_empty"
 		item_state = "[initial(item_state)]_empty"
 	else

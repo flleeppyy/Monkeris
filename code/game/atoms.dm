@@ -296,7 +296,7 @@
 				pass |= istype(A, type)
 			if(!pass)
 				continue
-		if(A.contents.len)
+		if(length(A.contents))
 			found += A.search_contents_for(path, filter_path)
 	return found
 
@@ -612,7 +612,7 @@
 			fingerprintslast = M.key
 
 	//Cleaning up shit.
-	if(fingerprints && !fingerprints.len)
+	if(fingerprints && !length(fingerprints))
 		fingerprints = null
 	return
 

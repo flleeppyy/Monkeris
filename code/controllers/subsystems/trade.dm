@@ -164,7 +164,7 @@ SUBSYSTEM_DEF(trade)
 	if(!islist(offer_types))
 		offer_types = list()
 
-	if(!offer_types.len)
+	if(!length(offer_types))
 		offer_types.Add(path)
 		offer_types[path] += 1
 		return
@@ -551,9 +551,9 @@ SUBSYSTEM_DEF(trade)
 	var/list/target_hockable_tags = target_spawn_tags & hockable_tags
 
 	// Junk tags override hockable tags and offer types override both
-	if(target_hockable_tags.len)
+	if(length(target_hockable_tags))
 		. = HOCKABLE
-	if(target_junk_tags.len)
+	if(length(target_junk_tags))
 		. = JUNK
 	for(var/offer_type in offer_types)
 		if(istype(target, offer_type))
@@ -562,7 +562,7 @@ SUBSYSTEM_DEF(trade)
 // === ORDERING ===
 
 /datum/controller/subsystem/trade/proc/build_order(requesting_account, reason, list/shopping_list)
-	if(!requesting_account || !shopping_list || !shopping_list.len)
+	if(!requesting_account || !shopping_list || !length(shopping_list))
 		return
 
 	var/cost = collect_price_for_list(shopping_list)

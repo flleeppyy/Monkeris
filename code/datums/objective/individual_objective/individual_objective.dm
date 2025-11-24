@@ -12,7 +12,7 @@
 		valid_objectives[npath] = multiplier/IO.rarity
 	for(var/datum/individual_objective/objective in mind.individual_objectives)
 		valid_objectives -= objective.type
-	if(!valid_objectives.len) return
+	if(!length(valid_objectives)) return
 	var/new_individual_objective = pickweight(valid_objectives)
 	var/datum/individual_objective/IO = new new_individual_objective()
 	IO.assign(mind)
@@ -103,7 +103,7 @@
 		if(!istype(faction_item, strict_type))
 			continue
 		valid_targets += faction_item
-	if(valid_targets.len)
+	if(length(valid_targets))
 		return pick(valid_targets)
 	return FALSE
 

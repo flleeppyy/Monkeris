@@ -1,6 +1,6 @@
 /datum/antagonist/proc/create_objectives(survive = FALSE)
 
-	if(!possible_objectives || !possible_objectives.len)
+	if(!length(possible_objectives))
 		return
 	pick_objectives(src, possible_objectives, objective_quantity)
 
@@ -14,7 +14,7 @@
 	if(!owner || !owner.current)
 		return
 
-	if(objectives.len)
+	if(length(objectives))
 		to_chat(owner.current, span_danger("<font size=3>Your objectives were updated.</font>"))
 
 	objectives.Cut()
@@ -42,7 +42,7 @@
 //Quantity: How many objectives we will select
 /proc/pick_objectives(owner, list/possible_objectives, quantity)
 	//Safety checks first
-	if(!possible_objectives || !possible_objectives.len)
+	if(!length(possible_objectives))
 		return
 
 	if (!owner || (!istype(owner, /datum/faction) && !istype(owner, /datum/antagonist)))
@@ -53,7 +53,7 @@
 
 
 	for (var/i = 0; i < quantity; i++)
-		if (!possible_objectives.len)
+		if (!length(possible_objectives))
 			return
 
 		var/chosen_obj = pickweight(possible_objectives)

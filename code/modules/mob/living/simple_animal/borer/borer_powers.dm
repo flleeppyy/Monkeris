@@ -50,7 +50,7 @@
 		if(src.Adjacent(C))
 			choices += C
 
-	if(!choices.len)
+	if(!length(choices))
 		to_chat(src, span_warning("There are no viable hosts nearby."))
 		return
 

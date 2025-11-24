@@ -315,7 +315,7 @@
 			var/mob/living/carbon/human/H = M
 			for(var/obj/item/grab/G in list(H.r_hand, H.l_hand))
 				moveWithMob += G.affecting
-		if(moveWithMob.len)
+		if(length(moveWithMob))
 			var/turf/pull_target = istop ? GetBelow(ES) : GetAbove(ES)
 			if(target)
 				pull_target = get_turf(target)

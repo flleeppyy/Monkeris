@@ -327,7 +327,7 @@
 //Similar deal as the other atmos process procs.
 //mix_sources maps input gas mixtures to mix ratios. The mix ratios MUST add up to 1.
 /proc/mix_gas(obj/machinery/M, list/mix_sources, datum/gas_mixture/sink, total_transfer_moles, available_power)
-	if (!mix_sources.len)
+	if (!length(mix_sources))
 		return -1
 
 	var/total_specific_power = 0	//the power needed to mix one mole of gas

@@ -108,7 +108,7 @@
 
 //attempt at more consistent history generation for xenoarch finds.
 /obj/effect/overmap/sector/exoplanet/proc/get_engravings()
-	if(!actors.len)
+	if(!length(actors))
 		actors += pick("alien humanoid","an amorphic blob","a short, hairy being","a rodent-like creature","a robot","a primate","a reptilian alien","an unidentifiable object","a statue","a starship","unusual devices","a structure")
 		actors += pick("alien humanoids","amorphic blobs","short, hairy beings","rodent-like creatures","robots","primates","reptilian aliens")
 
@@ -350,7 +350,7 @@
 				sanity = 0
 
 			var/part = total_moles * rand(3,80)/100 //allocate percentage to it
-			if(i == gasnum || !newgases.len) //if it's last gas, let it have all remaining moles
+			if(i == gasnum || !length(newgases)) //if it's last gas, let it have all remaining moles
 				part = total_moles
 			atmosphere.gas[ng] += part
 			total_moles = max(total_moles - part, 0)
@@ -420,12 +420,12 @@
 
 /obj/effect/overmap/sector/exoplanet/proc/get_atmosphere_color()
 	var/list/colors = list(COLOR_DEEP_SKY_BLUE, COLOR_PURPLE)
-	if(planet_colors.len)
+	if(length(planet_colors))
 		colors = planet_colors
 	/*for(var/g in atmosphere.gas)
 		if(gas_data.tile_overlay_color[g])
 			colors += gas_data.tile_overlay_color[g]*/
-	if(colors.len)
+	if(length(colors))
 		return MixColors(colors)
 
 /obj/effect/overmap/sector/exoplanet/proc/update_lighting()

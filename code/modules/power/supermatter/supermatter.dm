@@ -172,7 +172,7 @@
 			candidates.Remove("[zlevel]")
 		candidates.Remove("[src.z]")
 
-		if(candidates.len)
+		if(length(candidates))
 			return text2num(pickweight(candidates))
 
 	return ..()

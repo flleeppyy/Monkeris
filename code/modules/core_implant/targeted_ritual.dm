@@ -30,7 +30,7 @@
 					CL.Add(C.address)
 
 			CL.Add(TARGET_CANCEL)
-			if(CL.len)
+			if(length(CL))
 				address = input("Select [copytext(G[i],2,-1)]","Ritual target",null) in CL
 
 			if(!address || address == TARGET_CANCEL)

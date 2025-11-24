@@ -69,7 +69,7 @@ var/global/datum/ntnet/ntnet_global = new()
 			return comp
 
 /datum/ntnet/proc/check_banned(NID)
-	if(!relays || !relays.len)
+	if(!length(relays))
 		return FALSE
 
 	for(var/obj/machinery/ntnet_relay/R in relays)
@@ -80,7 +80,7 @@ var/global/datum/ntnet/ntnet_global = new()
 
 // Checks whether NTNet operates. If parameter is passed checks whether specific function is enabled.
 /datum/ntnet/proc/check_function(specific_action = 0)
-	if(!relays || !relays.len) // No relays found. NTNet is down
+	if(!length(relays)) // No relays found. NTNet is down
 		return 0
 
 	var/operating = 0

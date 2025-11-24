@@ -4,7 +4,7 @@
 			to_chat(user, span_danger("You can't install a hardsuit module while the suit is being worn."))
 		return FALSE
 
-	if(installed_modules.len)
+	if(length(installed_modules))
 		for(var/obj/item/rig_module/installed_mod in installed_modules)
 			if(!installed_mod.redundant && istype(installed_mod,mod.type))
 				if (user && feedback)

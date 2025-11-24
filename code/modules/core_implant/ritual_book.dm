@@ -72,7 +72,7 @@
 	data["categories"] = category_data
 
 	data["firstcat"] = ""
-	if(category_data.len)
+	if(length(category_data))
 		data["firstcat"] = category_data[1]
 
 	data["currcat"] = current_category

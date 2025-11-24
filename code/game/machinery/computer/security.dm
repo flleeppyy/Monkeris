@@ -163,7 +163,7 @@
 							<A href='byond://?src=\ref[src];choice=Print Poster'>Print Wanted Poster</A><BR> \
 							<A href='byond://?src=\ref[src];choice=Return'>Back</A><BR>"
 				if(4)
-					if(!Perp.len)
+					if(!length(Perp))
 						dat += text("ERROR.  String could not be located.<br><br><A href='byond://?src=\ref[];choice=Return'>Back</A>", src)
 					else
 						dat += {"
@@ -641,7 +641,7 @@ What a mess.*/
 					R.fields["criminal"] = pick("None", "*Arrest*", "Incarcerated", "Parolled", "Released")
 				if(5)
 					R.fields["p_stat"] = pick("*Unconcious*", "Active", "Physically Unfit")
-					if(PDA_Manifest.len)
+					if(length(PDA_Manifest))
 						PDA_Manifest.Cut()
 				if(6)
 					R.fields["m_stat"] = pick("*Insane*", "*Unstable*", "*Watch*", "Stable")

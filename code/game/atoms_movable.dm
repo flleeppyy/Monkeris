@@ -300,7 +300,7 @@
 		for (var/n in GLOB.maps_data.station_levels)
 			candidates.Remove("[n]")
 
-	if(!candidates.len)
+	if(!length(candidates))
 		return null
 	return text2num(pickweight(candidates))
 

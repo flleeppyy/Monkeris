@@ -655,7 +655,7 @@
 /obj/machinery/autolathe/proc/can_recycle(obj/O)
 	if(!selectively_recycled_types)
 		return FALSE
-	if(!selectively_recycled_types.len)
+	if(!length(selectively_recycled_types))
 		return FALSE
 
 	for(var/type in selectively_recycled_types)
@@ -729,7 +729,7 @@
 
 /obj/machinery/autolathe/proc/print_post()
 	flick("[initial(icon_state)]_finish", src)
-	if(!current_file && !queue.len)
+	if(!current_file && !length(queue))
 		playsound(src.loc, 'sound/machines/ping.ogg', 50, 1, -3)
 		visible_message("\The [src] pings, indicating that queue is complete.")
 
@@ -751,7 +751,7 @@
 		if(stored_material[rmat] < SANITIZE_LATHE_COST(design.materials[rmat]))
 			return ERR_NOMATERIAL
 
-	if(design.chemicals.len)
+	if(length(design.chemicals))
 		if(!container || !container.is_drawable())
 			return ERR_NOREAGENT
 
@@ -836,7 +836,7 @@
 /obj/machinery/autolathe/proc/next_file()
 	current_file = null
 	progress = 0
-	if(queue.len)
+	if(length(queue))
 		current_file = queue[1]
 		print_pre()
 		working = TRUE

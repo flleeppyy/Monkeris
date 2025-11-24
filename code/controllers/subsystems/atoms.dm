@@ -68,7 +68,7 @@ SUBSYSTEM_DEF(atoms)
 	if(previous_state != initialized)
 		initialized = previous_state
 
-	if(late_loaders.len)
+	if(length(late_loaders))
 		for(var/I in 1 to late_loaders.len)
 			var/atom/A = late_loaders[I]
 			//I hate that we need this

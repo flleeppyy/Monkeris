@@ -19,7 +19,7 @@
 
 
 /obj/machinery/multistructure/bioreactor_part/loader/Destroy()
-	if(contents.len)
+	if(length(contents))
 		for(var/obj/object_inside_me in contents)
 			object_inside_me.forceMove(get_turf(src))
 	return ..()
@@ -30,7 +30,7 @@
 		use_power(idle_power_usage)	//not very optimised. Can be done better
 		return
 	use_power(active_power_usage)
-	if(contents.len)
+	if(length(contents))
 		for(var/atom/movable/A in contents)
 			var/obj/machinery/multistructure/bioreactor_part/platform/empty_platform = MS_bioreactor.get_unoccupied_platform()
 			if(empty_platform)

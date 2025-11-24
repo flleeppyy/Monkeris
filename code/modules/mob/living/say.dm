@@ -138,7 +138,7 @@ var/list/channel_to_radio_key = new
 			return
 
 
-	if(GLOB.in_character_filter.len)
+	if(length(GLOB.in_character_filter))
 		if(findtext(message, config.ic_filter_regex))
 			// let's try to be a bit more informative!
 			var/warning_message = "A splitting spike of headache prevents you from saying whatever vile words you planned to say! You think better of saying such nonsense again. The following terms break the atmosphere and are not allowed: &quot;"
@@ -245,7 +245,7 @@ var/list/channel_to_radio_key = new
 	var/italics = FALSE
 	var/message_range = world.view
 	//speaking into radios
-	if(used_radios.len)
+	if(length(used_radios))
 		italics = TRUE
 		message_range = 1
 		if(speaking)
@@ -426,7 +426,7 @@ var/list/channel_to_radio_key = new
 		if(!say_understands(speaker, language))
 			if(isanimal(speaker))
 				var/mob/living/simple_animal/S = speaker
-				if(S.speak.len)
+				if(length(S.speak))
 					message = pick(S.speak)
 			else
 				if(language)

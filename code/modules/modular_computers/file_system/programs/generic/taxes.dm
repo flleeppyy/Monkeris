@@ -291,7 +291,7 @@
 					"employee_debt" = A.debt ? A.debt : "None",
 					"employee_wage" = A.wage ? A.wage : "None",
 					"employee_is_manual" = A.wage_manual ? "Manually" : "Automatically")))
-			if(employee_accounts.len)
+			if(length(employee_accounts))
 				data["have_employees"] = TRUE
 				data["account_employees"] = employee_accounts
 
@@ -305,7 +305,7 @@
 				"amount" = T.amount,
 				"source_terminal" = T.source_terminal)))
 
-		if(logs.len)
+		if(length(logs))
 			data["account_logs"] = logs
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)

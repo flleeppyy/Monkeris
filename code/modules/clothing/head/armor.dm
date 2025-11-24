@@ -749,7 +749,7 @@
 	for(var/z_level in z_levels_to_scan)
 		crewmembers += crew_repository.health_data(z_level)
 
-	if(crewmembers.len)
+	if(length(crewmembers))
 		for(var/i = 1; i <= crewmembers.len; i++)
 			var/list/entry = crewmembers[i]
 			if(entry["alert"] && !entry["muted"])

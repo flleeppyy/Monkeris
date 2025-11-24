@@ -90,7 +90,7 @@
 
 	var/mob/living/carbon/user = usr
 
-	if(!cards.len)
+	if(!length(cards))
 		to_chat(usr, "There are no cards in the deck.")
 		return
 
@@ -121,7 +121,7 @@
 
 	if(usr.stat || !Adjacent(usr)) return
 
-	if(!cards.len)
+	if(!length(cards))
 		to_chat(usr, "There are no cards in the deck.")
 		return
 
@@ -177,7 +177,7 @@
 
 	if(!ishuman(over) || !(over in viewers(3))) return
 
-	if(!cards.len)
+	if(!length(cards))
 		to_chat(usr, "There are no cards in the deck.")
 		return
 
@@ -239,7 +239,7 @@
 	usr.visible_message("\The [usr] plays \the [discarding].")
 	H.loc = get_step(usr,usr.dir)
 
-	if(!cards.len)
+	if(!length(cards))
 		qdel(src)
 
 /obj/item/hand/attack_self(mob/user as mob)
@@ -256,7 +256,7 @@
 
 /obj/item/hand/update_icon(direction = 0)
 
-	if(!cards.len)
+	if(!length(cards))
 		qdel(src)
 		return
 	else if(cards.len > 1)

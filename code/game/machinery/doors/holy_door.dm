@@ -140,10 +140,10 @@
 /obj/machinery/door/holy/update_icon()
 	set_light(0)
 
-	if(overlays.len)
+	if(length(overlays))
 		cut_overlays()
 
-	if(underlays.len)
+	if(length(underlays))
 		underlays.Cut()
 
 	if(density)
@@ -164,12 +164,12 @@
 /obj/machinery/door/holy/do_animate(animation)
 	switch(animation)
 		if("opening")
-			if(overlays.len)
+			if(length(overlays))
 				cut_overlays()
 			flick("door_opening", src)
 			update_icon()
 		if("closing")
-			if(overlays.len)
+			if(length(overlays))
 				cut_overlays()
 			flick("door_closing", src)
 			update_icon()

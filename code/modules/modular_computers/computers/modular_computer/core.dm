@@ -329,7 +329,7 @@
 		last_world_time = stationtime2text()
 		ui_update_needed = TRUE
 
-	if(all_threads.len)
+	if(length(all_threads))
 		var/list/current_header_icons = list()
 		for(var/p in all_threads)
 			var/datum/computer_file/program/PRG = p

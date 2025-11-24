@@ -110,7 +110,7 @@ Class Procs:
 			var/list/close_turfs = list()
 			for(var/turf/U in connecting_turfs)
 				if(get_dist(M,U) < world.view) close_turfs += U
-			if(!close_turfs.len) continue
+			if(!length(close_turfs)) continue
 
 			M.airflow_dest = pick(close_turfs) //Pick a random midpoint to fly towards.
 

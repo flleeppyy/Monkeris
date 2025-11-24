@@ -143,7 +143,7 @@
 			for (var/obj/item/organ/external/O in organs)
 				if(!(O.status & ORGAN_MUTATED))
 					candidates |= O
-			if (candidates.len)
+			if(length(candidates))
 				var/obj/item/organ/external/O = pick(candidates)
 				O.mutate()
 				to_chat(src, "<span class = 'notice'>Something is not right with your [O.name]...</span>")
@@ -206,7 +206,7 @@
 //It automatically updates health status
 /mob/living/carbon/human/heal_organ_damage(brute, burn, additionally_brute_percent = 0, additionaly_burn_percent = 0)
 	var/list/obj/item/organ/external/parts = get_damaged_organs(brute,burn)
-	if(!parts.len)	return
+	if(!length(parts))	return
 	var/obj/item/organ/external/picked = pick(parts)
 	if(picked.heal_damage(brute + (picked.brute_dam/100 * additionally_brute_percent),burn + (picked.burn_dam/100 * additionaly_burn_percent)))
 		UpdateDamageIcon()
@@ -222,7 +222,7 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 //It automatically updates health status
 /mob/living/carbon/human/take_organ_damage(brute, burn, sharp = FALSE, edge = FALSE)
 	var/list/obj/item/organ/external/parts = get_damageable_organs()
-	if(!parts.len)	return
+	if(!length(parts))	return
 	var/obj/item/organ/external/picked = pick(parts)
 	if(picked.take_damage(brute,burn,sharp,edge))
 		UpdateDamageIcon()

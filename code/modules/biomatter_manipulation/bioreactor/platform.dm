@@ -172,7 +172,7 @@
 	for(var/obj/structure/window/reinforced/bioreactor/glass in loc)
 		if(glass.dir in glass_dirs)
 			glass_dirs -= glass.dir
-	if(glass_dirs.len)
+	if(length(glass_dirs))
 		MS_bioreactor.chamber_breached = TRUE
 		return TRUE
 	return FALSE

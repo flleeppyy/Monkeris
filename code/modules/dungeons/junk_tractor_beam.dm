@@ -167,7 +167,7 @@
 	spawn(beam_cooldown_time)
 		if(src)  // Check if jtb_generator has not been destroyed during spawn time
 			beam_state = BEAM_IDLE
-			if(jf_pool.len)
+			if(length(jf_pool))
 				current_jf = jf_pool[1]  // Select the first available junk field by default
 	return
 
@@ -742,7 +742,7 @@
 	if(href_list["pick"])
 		var/list/possible_fields = get_possible_fields()
 		var/datum/junk_field/JF
-		if(possible_fields.len)
+		if(length(possible_fields))
 			JF = input("Choose Junk Field", "Junk Field") as null|anything in possible_fields
 		else
 			playsound(loc, 'sound/machines/twobeep.ogg', 50, 1)

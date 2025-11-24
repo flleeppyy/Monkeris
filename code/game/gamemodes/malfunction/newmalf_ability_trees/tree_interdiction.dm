@@ -92,7 +92,7 @@
 			if(R.lockcharge)
 				robots += R
 				robot_names += R.name
-		if(!robots.len)
+		if(!length(robots))
 			to_chat(user, "No locked cyborgs connected.")
 			return
 
@@ -136,7 +136,7 @@
 	var/mob/living/silicon/ai/user = usr
 
 	var/list/L = get_unlinked_cyborgs(user)
-	if(!L.len)
+	if(!length(L))
 		to_chat(user, span_notice("ERROR: No unlinked cyborgs detected!"))
 
 
@@ -204,7 +204,7 @@
 	var/mob/living/silicon/ai/user = usr
 
 	var/list/L = get_other_ais(user)
-	if(!L.len)
+	if(!length(L))
 		to_chat(user, span_notice("ERROR: No other AIs detected!"))
 
 	if(target && !istype(target))

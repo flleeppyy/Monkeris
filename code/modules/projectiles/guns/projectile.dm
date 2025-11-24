@@ -60,7 +60,7 @@
 
 /obj/item/gun/projectile/consume_next_projectile()
 	//get the next casing
-	if(loaded.len)
+	if(length(loaded))
 		chambered = loaded[1] //load next casing.
 		if(handle_casings != HOLD_CASINGS)
 			loaded -= chambered
@@ -241,7 +241,7 @@
 			playsound(src.loc, unload_sound, 75, 1)
 		ammo_magazine.update_icon()
 		ammo_magazine = null
-	else if(loaded.len)
+	else if(length(loaded))
 		//presumably, if it can be speed-loaded, it can be speed-unloaded.
 		if(allow_dump && (load_method & SPEEDLOADER))
 			var/count = 0
@@ -273,13 +273,13 @@
 		if(saw_off == FALSE)
 			to_chat(user, span_notice("Sawing down \the [src] will achieve nothing or may impede operation."))
 			return
-		if (src.item_upgrades.len)
+		if(length(src.item_upgrades))
 			if(src.dna_compare_samples) //or else you can override dna lock
 				to_chat(user, span_notice("Sawing down \the [src] will not allow use of the firearm."))
 				return
 			if("No" == input(user, "There are attachments present. Would you like to destroy them?") in list("Yes", "No"))
 				return
-		if(loaded.len)
+		if(length(loaded))
 			for(var/i in 1 to max_shells)
 				afterattack(user, user)	//will this work? //it will. we call it twice, for twice the FUN
 				playsound(user, fire_sound, 50, 1)
@@ -375,7 +375,7 @@
 	var/proj_type
 	if(chambered)
 		proj_type = chambered.BB.type
-	else if(loaded.len)
+	else if(length(loaded))
 		var/obj/item/ammo_casing/A = loaded[1]
 		if(!A.BB)
 			return null

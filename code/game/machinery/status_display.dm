@@ -170,7 +170,7 @@
 	return "[add_zero(num2text((timeleft / 60) % 60),2)]:[add_zero(num2text(timeleft % 60), 2)]"
 
 /obj/machinery/status_display/proc/remove_display()
-	if(overlays.len)
+	if(length(overlays))
 		overlays.Cut()
 	if(maptext)
 		maptext = ""

@@ -677,7 +677,7 @@
 	for(var/mob/living/carbon/human/victim in GLOB.player_list)
 		if(victim.stat == CONSCIOUS)
 			possible_victims.Add(victim)
-	if(possible_victims.len)
+	if(length(possible_victims))
 		use_ability(pick(possible_victims))
 		set_cooldown()
 

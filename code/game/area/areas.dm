@@ -351,7 +351,7 @@ var/list/mob/living/forced_ambiance_list = new
 	var/client/CL = L.client
 
 	if(CL.ambience_playing) // If any ambience already playing
-		if(forced_ambience && forced_ambience.len)
+		if(length(forced_ambience))
 			if(CL.ambience_playing in forced_ambience)
 				return 1
 			else

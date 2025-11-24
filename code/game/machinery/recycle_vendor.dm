@@ -101,7 +101,7 @@
 	if(sales_paused || !user.unEquip(I))
 		return
 
-	if(I.contents.len)
+	if(length(I.contents))
 		if(istype(I, /obj/item/storage/deferred))
 			var/obj/item/storage/deferred/fillinsides
 			fillinsides.populate_contents()
@@ -843,7 +843,7 @@
 			desclist.Add(currentdatum.desc)
 		data["idnums"] = IDToCheck.access
 		data["iddescs"] = desclist
-	if(PortMats.len)
+	if(length(PortMats))
 		var/list/maticonarrayB = list()
 		var/list/matnumarrayB = list()
 		var/list/matvaluearrayB = list()

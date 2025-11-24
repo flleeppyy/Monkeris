@@ -11,7 +11,7 @@
 	for(var/trap in possible_traps)
 		if(spread_range && istype(loc, /turf))
 			var/list/point_to_spawn = find_smart_point(trap)
-			if(point_to_spawn.len)
+			if(length(point_to_spawn))
 				continue
 		else if(can_spawn_trap(loc, trap))
 			continue
@@ -46,7 +46,7 @@
 
 /obj/spawner/traps/find_smart_point(path)
 	var/list/spawn_points = ..()
-	if(!spawn_points.len)
+	if(!length(spawn_points))
 		return spawn_points
 	var/list/trap_points = list()
 	for(var/turf/T in spawn_points)

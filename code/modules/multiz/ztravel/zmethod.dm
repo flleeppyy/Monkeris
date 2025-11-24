@@ -294,12 +294,12 @@
 		if (T.is_hole)
 			spaces.Add(T)
 
-	if (!spaces.len)
+	if (!length(spaces))
 		//Welp we didn't find one. lets loop again, all floors are allowed now
 		for (var/turf/floor/T in orange(1, M))
 			spaces.Add(T)
 
-	if (!spaces.len)
+	if (!length(spaces))
 		//Still didn't find any? We must somehow be in a 1x1 room. Can't slip here
 		return
 

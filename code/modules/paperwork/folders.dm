@@ -26,7 +26,7 @@
 
 /obj/item/folder/update_icon()
 	cut_overlays()
-	if(contents.len)
+	if(length(contents))
 		overlays += "folder_paper"
 	return
 

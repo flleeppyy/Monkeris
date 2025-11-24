@@ -13,7 +13,7 @@
 	var/list/T = list()
 	for (var/obj/machinery/camera/C in GLOB.cameranet.cameras)
 		var/list/tempnetwork = C.network&src.network
-		if (tempnetwork.len)
+		if(length(tempnetwork))
 			T[text("[][]", C.c_tag, (C.can_use() ? null : " (Deactivated)"))] = C
 
 	track = new()
@@ -27,7 +27,7 @@
 	if(check_unable())
 		return
 	var/list/cameras = get_camera_list()
-	if (!cameras.len)
+	if (!length(cameras))
 		return 0
 	var/camera = input(src, "Choose a camera:", "Registered cameras") as null|anything in cameras
 	if(!camera)

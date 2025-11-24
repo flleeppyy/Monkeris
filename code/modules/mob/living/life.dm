@@ -232,7 +232,7 @@
 			var/mob/living/carbon/human/H = usr
 			var/datum/hud/human/HUDdatum = GLOB.HUDdatums[usr.client.prefs.UI_style]
 			if (!H.HUDneed.len)
-				if (H.HUDprocess.len)
+				if(length(H.HUDprocess))
 					log_debug("[usr] have object in HUDprocess list, but HUDneed is empty.")
 					for(var/atom/movable/screen/health/HUDobj in H.HUDprocess)
 						H.HUDprocess -= HUDobj

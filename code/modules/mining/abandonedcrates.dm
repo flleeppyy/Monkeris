@@ -168,7 +168,7 @@
 				to_chat(user, span_warning("* Anti-Tamper system will activate on the next failed access attempt."))
 			else
 				to_chat(user, span_notice("* Anti-Tamper system will activate after [src.attempts] failed access attempts."))
-			if(lastattempt.len)
+			if(length(lastattempt))
 				var/bulls = 0
 				var/cows = 0
 

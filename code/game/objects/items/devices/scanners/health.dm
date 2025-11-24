@@ -160,7 +160,7 @@
 					reagentdata["[R.id]"] = span("highlight", "    [round(C.reagents.get_reagent_amount(R.id), 1)]u [R.name]")
 				else
 					unknown++
-			if(reagentdata.len)
+			if(length(reagentdata))
 				dat += span("highlight", "Beneficial reagents detected in subject's blood:")
 				for(var/d in reagentdata)
 					dat += reagentdata[d]

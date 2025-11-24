@@ -264,7 +264,7 @@
 	for(var/list/obj/item/stock_parts/P in component_parts)
 		if(istype(P, type))
 			parts.Add(P)
-	if(!parts.len)
+	if(!length(parts))
 		error("max_part_rating() havent found any parts")
 		return
 	var/rating = 1

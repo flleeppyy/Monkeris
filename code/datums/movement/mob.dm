@@ -279,7 +279,7 @@
 
 /mob/living/ProcessGrabs()
 	//if we are being grabbed
-	if(grabbed_by.len)
+	if(length(grabbed_by))
 		resist() //shortcut for resisting grabs
 
 /mob/proc/ProcessGrabs()

@@ -78,14 +78,14 @@
 	if(!fuel_consumption)
 		return 1 //shuttles with zero fuel consumption are magic and can always launch
 	else
-		if(fuel_ports.len)
+		if(length(fuel_ports))
 			var/list/obj/item/tank/fuel_tanks = list()
 			for(var/obj/structure/FP in fuel_ports) //loop through fuel ports and assemble list of all fuel tanks
-				if(FP.contents.len)
+				if(length(FP.contents))
 					var/obj/item/tank/FT = FP.contents[1]
 					if(istype(FT))
 						fuel_tanks += FT
-			if(!fuel_tanks.len)
+			if(!length(fuel_tanks))
 				return 0 //can't launch if you have no fuel TANKS in the ports
 			var/total_flammable_gas_moles = 0
 			for(var/obj/item/tank/FT in fuel_tanks)

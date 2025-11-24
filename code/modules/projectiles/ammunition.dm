@@ -274,10 +274,10 @@
 	if(user.get_inactive_held_item() == src && stored_ammo.len)
 		var/obj/item/ammo_casing/stack = removeCasing()
 		if(stack)
-			if(stored_ammo.len)
+			if(length(stored_ammo))
 				// We end on -1 since we already removed one
 				for(var/i = 1; i <= stack.maxamount - 1; i++)
-					if(!stored_ammo.len)
+					if(!length(stored_ammo))
 						break
 					var/obj/item/ammo_casing/AC = removeCasing()
 					if(!stack.mergeCasing(AC, null, user, noIconUpdate = TRUE))
@@ -298,7 +298,7 @@
 		if(C.caliber != caliber)
 			to_chat(user, span_warning("[C] does not fit into [src]."))
 			return
-		if(stored_ammo.len)
+		if(length(stored_ammo))
 			var/obj/item/ammo_casing/T = removeCasing()
 			if(T)
 				if(!C.mergeCasing(T, null, user))
@@ -332,10 +332,10 @@
 	return TRUE
 
 /obj/item/ammo_magazine/proc/removeCasing()
-	if(stored_ammo.len)
+	if(length(stored_ammo))
 		var/obj/item/ammo_casing/AC = stored_ammo[1]
 		stored_ammo -= AC
-		if(!stored_ammo.len)
+		if(!length(stored_ammo))
 			stored_ammo.Cut()
 		update_icon()
 		return AC
@@ -365,7 +365,7 @@
 		return
 	if(!Adjacent(usr))
 		return
-	if(!stored_ammo.len)
+	if(!length(stored_ammo))
 		to_chat(usr, span_notice("[src] is already empty!"))
 		return
 	to_chat(usr, span_notice("You take out ammo from [src]."))
@@ -398,7 +398,7 @@
 	if(value)
 		ammo_label = value
 	else
-		if(stored_ammo.len)
+		if(length(stored_ammo))
 			var/obj/item/ammo_casing/AC = stored_ammo[stored_ammo.len]
 			if(AC && AC.shell_color)
 				ammo_label = AC.shell_color

@@ -87,7 +87,7 @@ Class Procs:
 		fuel_objs -= fuel
 	T.zone = null
 	T.update_graphic(graphic_remove = air.graphic)
-	if(contents.len)
+	if(length(contents))
 		air.group_multiplier = contents.len
 	else
 		c_invalidate()

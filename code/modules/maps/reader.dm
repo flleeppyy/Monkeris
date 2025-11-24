@@ -313,7 +313,7 @@ var/global/datum/dmm_suite/preloader/_preloader = null
 
 /datum/dmm_suite/preloader/New(list/the_attributes, path)
 	.=..()
-	if(!the_attributes.len)
+	if(!length(the_attributes))
 		del(src)
 		return
 	attributes = the_attributes

@@ -31,7 +31,7 @@
 
 /datum/poll/proc/start()
 	init_choices()
-	if(!choices.len)
+	if(!length(choices))
 		return FALSE
 
 
@@ -161,7 +161,7 @@
 		for(var/datum/vote_choice/V in choice_votes)
 			if(choice_votes[V] == max_votes)
 				winners.Add(V)
-		if(winners.len)
+		if(length(winners))
 			winner = pick(winners)
 
 	var/non_voters = GLOB.clients.len - all_voters.len

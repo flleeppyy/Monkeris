@@ -203,7 +203,7 @@
 		if (!job.player_old_enough(user.client))
 			job_days_left[job.title] = job.available_in_days(user.client)
 
-	if (job_days_left.len)
+	if(length(job_days_left))
 		data["job_days_left"] = job_days_left
 
 	if (job_required_experience)
@@ -351,7 +351,7 @@
 		for (var/a in ALL_STATS)
 			job_desc += "<li>[a]: ???</li>"
 		job_desc += "</ul>"
-	else if (job.stat_modifiers.len)
+	else if(length(job.stat_modifiers))
 		job_desc += "<ul>"
 		for (var/a in job.stat_modifiers)
 			job_desc += "<li>[a]: [job.stat_modifiers[a]]</li>"
@@ -359,7 +359,7 @@
 	else
 		job_desc += "None"
 	job_desc += "<h1 style='padding: 0px;'>Perks:</h1>"
-	if (job.perks.len)
+	if(length(job.perks))
 		job_desc += "<ul>"
 		for (var/a in job.perks)
 			var/datum/perk/P = a

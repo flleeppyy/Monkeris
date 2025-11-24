@@ -634,9 +634,9 @@ There are 9 wires.
 
 /obj/machinery/door/airlock/update_icon()
 	set_light(0)
-	if(overlays.len)
+	if(length(overlays))
 		cut_overlays()
-	if(underlays.len)
+	if(length(underlays))
 		underlays.Cut()
 	if(density)
 		if(locked && lights && arePowerSystemsOn())
@@ -667,7 +667,7 @@ There are 9 wires.
 /obj/machinery/door/airlock/do_animate(animation)
 	switch(animation)
 		if("opening")
-			if(overlays.len)
+			if(length(overlays))
 				overlays.Cut()
 			if(p_open)
 				flick("o_door_opening", src)  //can not use flick due to BYOND bug updating overlays right before flicking
@@ -676,7 +676,7 @@ There are 9 wires.
 				flick("door_opening", src)//[stat ? "_stat":]
 				update_icon()
 		if("closing")
-			if(overlays.len)
+			if(length(overlays))
 				overlays.Cut()
 			if(p_open)
 				flick("o_door_closing", src)
@@ -1332,9 +1332,9 @@ There are 9 wires.
 	//update the electronics to match the door's access
 	if(!src.req_access)
 		src.check_access()
-	if(src.req_access.len)
+	if(length(src.req_access))
 		electronics.conf_access = src.req_access
-	else if (src.req_one_access.len)
+	else if(length(src.req_one_access))
 		electronics.conf_access = src.req_one_access
 		electronics.one_access = 1
 

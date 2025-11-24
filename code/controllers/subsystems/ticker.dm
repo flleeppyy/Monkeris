@@ -201,7 +201,7 @@ SUBSYSTEM_DEF(ticker)
 		return TRUE
 	switch(current_state)
 		if(GAME_STATE_PLAYING)
-			if(GLOB.clients.len)
+			if(length(GLOB.clients))
 				// Resets countdown if any player connects on empty server
 				if(last_player_left_timestamp)
 					last_player_left_timestamp = 0
@@ -328,7 +328,7 @@ SUBSYSTEM_DEF(ticker)
 		if(GLOB.revdata.originmastercommit)
 			to_set += "commit_hash = :commit_hash"
 			arguments["commit_hash"] = GLOB.revdata.originmastercommit
-		if(to_set.len)
+		if(length(to_set))
 			arguments["round_id"] = GLOB.round_id
 			var/datum/db_query/query_round_game_mode = SSdbcore.NewQuery(
 				"UPDATE [format_table_name("round")] SET [to_set.Join(", ")] WHERE id = :round_id",
@@ -440,7 +440,7 @@ SUBSYSTEM_DEF(ticker)
 /datum/controller/subsystem/ticker/proc/send_quote_of_the_round()
 	var/message
 	var/list/quotes = file2list("strings/quotes.txt")
-	if(quotes.len)
+	if(length(quotes))
 		message = pick(quotes)
 	if(!message)
 		return
@@ -584,7 +584,7 @@ SUBSYSTEM_DEF(ticker)
 			to_chat(world, "<b>[aiPlayer.name] (Played by: [aiPlayer.key])'s laws when it was deactivated were:</b>")
 		aiPlayer.show_laws(TRUE)
 
-		if(aiPlayer.connected_robots.len)
+		if(length(aiPlayer.connected_robots))
 			var/robolist = "<b>The AI's loyal minions were:</b> "
 			for(var/mob/living/silicon/robot/robo in aiPlayer.connected_robots)
 				robolist += "[robo.name][robo.stat?" (Deactivated) (Played by: [robo.key]), ":" (Played by: [robo.key]), "]"
@@ -722,7 +722,7 @@ SUBSYSTEM_DEF(ticker)
 			flags += "exclude_flags"
 		if(R.can_edit_rights == R_EVERYTHING)
 			flags += "can_edit_flags"
-		if(!flags.len)
+		if(!length(flags))
 			continue
 		var/flags_to_check = flags.Join(" != [R_EVERYTHING] AND ") + " != [R_EVERYTHING]"
 		var/datum/db_query/query_check_everything_ranks = SSdbcore.NewQuery(
@@ -745,7 +745,7 @@ SUBSYSTEM_DEF(ticker)
 		qdel(query_check_everything_ranks)
 
 /datum/controller/subsystem/ticker/proc/check_queue()
-	if(!queued_players.len)
+	if(!length(queued_players))
 		return
 	var/hard_popcap = CONFIG_GET(number/hard_popcap)
 	if(!hard_popcap)

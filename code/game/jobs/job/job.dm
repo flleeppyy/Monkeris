@@ -115,7 +115,7 @@
 
 	var/mob/living/carbon/human/H = target
 
-	if(!also_known_languages.len)
+	if(!length(also_known_languages))
 		return FALSE
 
 	var/i
@@ -146,7 +146,7 @@
 		remembered_info += "<b>Your account pin is:</b> [M.remote_access_pin]<br>"
 		remembered_info += "<b>Your account funds are:</b> [M.money][CREDS]<br>"
 
-		if(M.transaction_log.len)
+		if(length(M.transaction_log))
 			var/datum/transaction/T = M.transaction_log[1]
 			remembered_info += "<b>Your account was created:</b> [T.time], [T.date] at [T.source_terminal]<br>"
 		H.mind.store_memory(remembered_info)
@@ -183,7 +183,7 @@
 
 /datum/job/proc/apply_fingerprints_to_item(mob/living/carbon/human/holder, obj/item/item)
 	item.add_fingerprint(holder,1)
-	if(item.contents.len)
+	if(length(item.contents))
 		for(var/obj/item/sub_item in item.contents)
 			apply_fingerprints_to_item(holder, sub_item)
 

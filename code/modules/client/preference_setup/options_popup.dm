@@ -81,27 +81,27 @@
 	dat += "[selected_option.desc]<br>"
 	dat += "<br>"
 
-	if(selected_option.stat_modifiers.len)
+	if(length(selected_option.stat_modifiers))
 		dat += "Stats:<br>"
 		for(var/stat in selected_option.stat_modifiers)
 			dat += "[stat] [selected_option.stat_modifiers[stat]]<br>"
 		dat += "<br>"
 
-	if(selected_option.restricted_jobs.len)
+	if(length(selected_option.restricted_jobs))
 		dat += "Restricted jobs:<br>"
 		for(var/job in selected_option.restricted_jobs)
 			var/datum/job/J = job
 			dat += "[initial(J.title)]<br>" //enjoy your byond magic
 		dat += "<br>"
 
-	if(selected_option.allowed_jobs.len)
+	if(length(selected_option.allowed_jobs))
 		dat += "Special jobs:<br>"
 		for(var/job in selected_option.allowed_jobs)
 			var/datum/job/J = job
 			dat += "[initial(J.title)]<br>"
 		dat += "<br>"
 
-	if(selected_option.perks.len)
+	if(length(selected_option.perks))
 		dat += "Perks:<br>"
 		for(var/perk in selected_option.perks)
 			var/datum/perk/P = perk

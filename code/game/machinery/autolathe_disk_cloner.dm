@@ -245,13 +245,13 @@
 		if(original)
 			overlays.Add(image(icon, icon_state = "disk_cloner_screen_disk1"))
 
-			if(original.stored_files.len)
+			if(length(original.stored_files))
 				overlays.Add(image(icon, icon_state = "disk_cloner_screen_list1"))
 
 		if(copy)
 			overlays.Add(image(icon, icon_state = "disk_cloner_screen_disk2"))
 
-			if(copy.stored_files.len)
+			if(length(copy.stored_files))
 				overlays.Add(image(icon, icon_state = "disk_cloner_screen_list2"))
 
 		if(copying)

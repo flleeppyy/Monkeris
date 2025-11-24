@@ -246,7 +246,7 @@
 
 // Check if a potential poi does not overlap with already placed pois
 /obj/cave_generator/proc/check_poi_overlap(x_bl, y_bl, size_x, size_y)
-	if(!pois_placed.len)
+	if(!length(pois_placed))
 		// No overlap since no poi has been placed yet
 		return TRUE
 

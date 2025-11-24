@@ -56,7 +56,7 @@
 		var/mob/living/carbon/human/H = target
 		affected = H.organs_by_name[organ]
 		if(!affected)
-			if(allowed_organs.len)
+			if(length(allowed_organs))
 				organ = pick(allowed_organs)
 			else
 				organ = BP_CHEST

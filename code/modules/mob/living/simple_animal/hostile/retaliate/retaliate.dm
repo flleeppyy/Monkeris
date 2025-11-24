@@ -11,7 +11,7 @@
 			enemies -= L
 
 /mob/living/simple_animal/hostile/retaliate/ListTargets()
-	if(!enemies.len)
+	if(!length(enemies))
 		return list()
 	var/list/see = ..()
 	see &= enemies // Remove all entries that aren't in enemies

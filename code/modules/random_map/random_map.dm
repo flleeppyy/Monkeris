@@ -188,7 +188,7 @@ var/global/list/map_count = list()
 	return
 
 /datum/random_map/proc/overlay_with(datum/random_map/target_map, tx, ty)
-	if(!map.len || !istype(target_map))
+	if(!length(map) || !istype(target_map))
 		return
 	tx-- // Update origin so that x/y index
 	ty-- // doesn't push it off-kilter by one.

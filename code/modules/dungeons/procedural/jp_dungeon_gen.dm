@@ -413,7 +413,7 @@
 */
 /obj/procedural/jp_DungeonGenerator/proc/removeAllowedRoom(r)
 	allowedRooms["[r]"] = null
-	if(!allowedRooms || !allowedRooms.len) allowedRooms = null
+	if(!length(allowedRooms)) allowedRooms = null
 
 /*
 	Returns the list of allowed jp_DungeonRooms. This may be null, if the list is empty
@@ -596,7 +596,7 @@
 
 		nextloc = locate(rand(minx, maxx), rand(miny, maxy), z)
 
-		if(!required.len) nextentry = allowedRooms[pick(allowedRooms)]
+		if(!length(required)) nextentry = allowedRooms[pick(allowedRooms)]
 		else
 			nextentry = required[1]
 			if(nextentry.count>=nextentry.required)
@@ -661,13 +661,13 @@
 				continue
 
 		var/list/regBord = region1.getBorder()
-		if(!regBord.len)
+		if(!length(regBord))
 			regions -= region1
 			continue
 
 		var/list/turf/path = getPath(region1, region2, regions)
 
-		if(!path || !path.len) continue
+		if(!length(path)) continue
 
 		numits = 0
 
@@ -864,7 +864,7 @@
 		previous["\ref[t]"] = start
 		cost["\ref[t]"]=1
 
-	if(!next.len) return list() //We've somehow found a route that can not be continued.
+	if(!length(next)) return list() //We've somehow found a route that can not be continued.
 	var/check_tick_in = 3
 	while(1)
 		check_tick_in = check_tick_in - 1

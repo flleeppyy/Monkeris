@@ -460,7 +460,7 @@
 			return
 
 /obj/machinery/camera/proc/clear_all_networks()
-	if(network.len)
+	if(length(network))
 		network.Cut()
 		update_coverage(1)
 
@@ -478,7 +478,7 @@
 	if(network_change)
 		var/list/open_networks = difflist(network, restricted_camera_networks)
 		// Add or remove camera from the camera net as necessary
-		if(on_open_network && !open_networks.len)
+		if(on_open_network && !length(open_networks))
 			GLOB.cameranet.removeCamera(src)
 		else if(!on_open_network && open_networks.len)
 			on_open_network = 1

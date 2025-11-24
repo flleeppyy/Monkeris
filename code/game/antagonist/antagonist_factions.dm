@@ -36,7 +36,7 @@
 	if(announce)
 		to_chat(member.owner.current, span_notice("You became a member of the [name]."))
 
-	if(objectives.len)
+	if(length(objectives))
 		member.set_objectives(objectives)
 
 	add_verb(member.owner.current, faction_datum_verbs)
@@ -131,7 +131,7 @@
 		A.set_objectives(new_objs)
 
 /datum/faction/proc/update_members()
-	if(!members.len)
+	if(!length(members))
 		remove_faction()
 
 /datum/faction/proc/customize(mob/leader)
@@ -164,12 +164,12 @@
 	return FALSE
 
 /datum/faction/proc/print_success()
-	if(!members.len)
+	if(!length(members))
 		return
 
 	var/text = ""//<b>[capitalize(name)] was faction of [antag].</b>"
 
-	if(leaders.len)
+	if(length(leaders))
 		text += "<br><b>[capitalize(name)]'s leader[leaders.len >= 1?"":"s"] was:</b>"
 		for(var/datum/antagonist/A in leaders)
 			text += A.print_player()
@@ -183,7 +183,7 @@
 
 	text += "<br>"
 
-	if(objectives.len)
+	if(length(objectives))
 		var/failed = FALSE
 		var/num = 1
 

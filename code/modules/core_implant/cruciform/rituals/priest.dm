@@ -176,7 +176,7 @@
 	power = 45
 
 /datum/ritual/targeted/cruciform/priest/atonement/perform(mob/living/carbon/human/user, obj/item/implant/core_implant/C,list/targets)
-	if(!targets.len)
+	if(!length(targets))
 		fail("Target not found.",user,C,targets)
 		return FALSE
 
@@ -457,7 +457,7 @@
 	cooldown_time = 5 MINUTE
 
 /datum/ritual/targeted/cruciform/priest/excommunication/perform(mob/living/carbon/human/user, obj/item/implant/core_implant/C, list/targets)
-	if(!targets.len)
+	if(!length(targets))
 		fail("Target not found.", user, C, targets)
 		return FALSE
 

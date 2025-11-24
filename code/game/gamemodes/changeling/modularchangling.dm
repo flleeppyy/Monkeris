@@ -137,7 +137,7 @@ var/list/datum/power/carrion/powerinstances = list()
 		return
 	src = core
 
-	if(!powerinstances.len)
+	if(!length(powerinstances))
 		for(var/P in powers)
 			powerinstances += new P()
 

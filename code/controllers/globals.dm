@@ -60,7 +60,7 @@ GLOBAL_VAR(world_)
 	var/expected_len = vars.len - gvars_datum_in_built_vars.len
 	if(global_procs.len != expected_len)
 		warning("Unable to detect all global initialization procs! Expected [expected_len] got [global_procs.len]!")
-		if(global_procs.len)
+		if(length(global_procs))
 			var/list/expected_global_procs = vars - gvars_datum_in_built_vars
 			for(var/I in global_procs)
 				expected_global_procs -= replacetext("[I]", "InitGlobal", "")

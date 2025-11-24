@@ -736,7 +736,7 @@
 			for(var/name in BP_ALL_LIMBS)
 				if(!H.has_appendage(name))
 					missingLimbs += name
-			if(missingLimbs.len)
+			if(length(missingLimbs))
 				var/luckyLimbName = pick(missingLimbs)
 				H.restore_organ(luckyLimbName)
 				M.pain(luckyLimbName, 100, TRUE)

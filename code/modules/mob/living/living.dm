@@ -500,7 +500,7 @@ default behaviour is:
 
 	// Delete them from datacore.
 
-	if(PDA_Manifest.len)
+	if(length(PDA_Manifest))
 		PDA_Manifest.Cut()
 	for(var/datum/data/record/R in data_core.medical)
 		if ((R.fields["name"] == src.real_name))

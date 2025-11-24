@@ -140,7 +140,7 @@ SUBSYSTEM_DEF(tips)
 	for(var/type in GLOB.rolesTips)
 		if(istype(role, type))
 			candidates += GLOB.rolesTips[type]
-	if(candidates.len)
+	if(length(candidates))
 		var/tipsAndTricks/T = pick(candidates)
 		return T
 
@@ -151,7 +151,7 @@ SUBSYSTEM_DEF(tips)
 	for(var/type in GLOB.jobsTips)
 		if(istype(job, type))
 			candidates += GLOB.jobsTips[type]
-	if(candidates.len)
+	if(length(candidates))
 		var/tipsAndTricks/T = pick(candidates)
 		return T
 
@@ -162,6 +162,6 @@ SUBSYSTEM_DEF(tips)
 	for(var/type in GLOB.mobsTips)
 		if(istype(mob, type))
 			candidates += GLOB.mobsTips[type]
-	if(candidates.len)
+	if(length(candidates))
 		var/tipsAndTricks/T = pick(candidates)
 		return T

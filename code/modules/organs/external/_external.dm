@@ -300,7 +300,7 @@
 			take_damage(5, BURN)
 
 /obj/item/organ/external/attack_self(mob/user)
-	if(!contents.len)
+	if(!length(contents))
 		return ..()
 	var/list/removable_objects = list()
 	for(var/obj/item/organ/external/E in (contents + src))
@@ -310,7 +310,7 @@
 			if(istype(I,/obj/item/organ))
 				continue
 			removable_objects |= I
-	if(removable_objects.len)
+	if(length(removable_objects))
 		var/obj/item/I = pick(removable_objects)
 		I.loc = get_turf(user) //just in case something was embedded that is not an item
 		if(istype(I))
@@ -370,7 +370,7 @@
 		else
 			nerve_struck = 1
 
-	if(children && children.len)
+	if(length(children))
 		for(var/obj/item/organ/external/child in children)
 			child.nerve_strike_add()
 
@@ -380,7 +380,7 @@
 /obj/item/organ/external/proc/nerve_strike_remove()
 	if(nerve_struck != -1)
 		nerve_struck = 0
-	if(children && children.len)
+	if(length(children))
 		for(var/obj/item/organ/external/child in children)
 			if(child.nerve_struck == 1)
 				child.nerve_strike_remove()
@@ -443,7 +443,7 @@ This function completely restores a damaged organ to perfect condition.
 				if (W.can_worsen(type, damage))
 					compatible_wounds += W
 
-			if(compatible_wounds.len)
+			if(length(compatible_wounds))
 				var/datum/wound/W = pick(compatible_wounds)
 				W.open_wound(damage)
 				if(owner && prob(25))
@@ -860,7 +860,7 @@ This function completely restores a damaged organ to perfect condition.
 		else
 			wound_descriptors[this_wound_desc] = W.amount
 
-	if(wound_descriptors.len)
+	if(length(wound_descriptors))
 		var/list/flavor_text = list()
 		var/list/no_exclude = list("gaping wound", "big gaping wound", "massive wound", "large bruise",\
 		"huge bruise", "massive bruise", "severe burn", "large burn", "deep burn", "carbonised area") //note to self make this more robust

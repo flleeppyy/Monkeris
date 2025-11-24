@@ -91,7 +91,7 @@ var/global/datum/matchmaker/matchmaker = new()
 
 /datum/relation/proc/find_match()
 	var/list/candidates = get_candidates()
-	if(!candidates.len) //bwoop bwoop
+	if(!length(candidates)) //bwoop bwoop
 		return 0
 	var/datum/relation/R = pick(candidates)
 	R.open--
@@ -132,7 +132,7 @@ var/global/datum/matchmaker/matchmaker = new()
 					candidates[M] = 5	//coworkers are 5 times as likely to know about your relations
 
 		for(var/i=1 to 5)
-			if(!candidates.len)
+			if(!length(candidates))
 				break
 			var/mob/M = pickweight(candidates)
 			candidates -= M

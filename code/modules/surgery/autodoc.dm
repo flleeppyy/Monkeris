@@ -61,7 +61,7 @@
 	var/datum/autodoc_patchnote/toxnote = new()
 	if(patient.getToxLoss())
 		toxnote.surgery_operations |= AUTODOC_TOXIN
-	if(patient.reagents.reagent_list.len)
+	if(length(patient.reagents.reagent_list))
 		toxnote.surgery_operations |= AUTODOC_DIALYSIS
 	if((patient.vessel.get_reagent_amount("blood") / patient.species.blood_volume) < 1)
 		toxnote.surgery_operations |= AUTODOC_BLOOD
@@ -98,7 +98,7 @@
 				if(locate(/obj/item/material/shard/shrapnel) in external.implants)
 					patchnote.surgery_operations |= AUTODOC_EMBED_OBJECT
 
-		if(external.wounds.len)
+		if(length(external.wounds))
 			for(var/datum/wound/wound in external.wounds)
 				if(AUTODOC_OPEN_WOUNDS in possible_operations)
 					if(!wound.is_treated())
@@ -222,7 +222,7 @@
 	var/list/organs = list()
 
 	var/i = 0
-	if(!scanned_patchnotes.len)
+	if(!length(scanned_patchnotes))
 		data["antitox"] = FALSE
 		data["antitox_picked"] = FALSE
 

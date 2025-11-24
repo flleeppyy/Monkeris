@@ -114,7 +114,7 @@
 		deltimer(cooldown_timer_id)
 	if(emp_timer_id)
 		deltimer(emp_timer_id)
-	if(shot_timer_ids.len)
+	if(length(shot_timer_ids))
 		for(var/id in shot_timer_ids)
 			deltimer(id)
 	..()
@@ -218,7 +218,7 @@
 		return
 
 	// Delete previously queued shots to prevent overlap
-	if(shot_timer_ids.len)
+	if(length(shot_timer_ids))
 		for(var/id in shot_timer_ids)
 			deltimer(id)
 		shot_timer_ids = list()

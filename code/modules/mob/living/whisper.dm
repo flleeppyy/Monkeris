@@ -148,7 +148,7 @@
 	// LAZYADD(update_on_z, say_popup)
 	// addtimer(CALLBACK(src, PROC_REF(clear_saypopup), say_popup), 3.5 SECONDS)
 
-	if (watching.len)
+	if(length(watching))
 		var/rendered = "<span class='game say'>[span_name("[src.name]")] [not_heard].</span>"
 		for (var/mob/M in watching)
 			M.show_message(rendered, 2)

@@ -16,7 +16,7 @@
 	var/list/possible_points = list()
 	for(var/turf/floor/F in view(holder, world.view+1))
 		possible_points += F
-	if(possible_points.len)
+	if(length(possible_points))
 		for(var/i = 1 to number)
 			var/image/thing = generate_mirage()
 			things += thing

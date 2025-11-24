@@ -109,5 +109,5 @@ GLOBAL_LIST_EMPTY(loot_biomes)
 	chek_tags()
 
 /obj/landmark/loot_biomes/proc/chek_tags()
-	if(!tags_to_spawn.len)
+	if(!length(tags_to_spawn))
 		CRASH("[src.name] has no spawn tag: [x],[y],[z]")

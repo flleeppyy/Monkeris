@@ -151,8 +151,8 @@
 /datum/nano_module/appearance_changer/proc/generate_data()
 	if(!owner)
 		return
-	if(!valid_species.len)
+	if(!length(valid_species))
 		valid_species = owner.generate_valid_species()
-	if(!valid_hairstyles.len || !valid_facial_hairstyles.len)
+	if(!length(valid_hairstyles) || !length(valid_facial_hairstyles))
 		valid_hairstyles = owner.generate_valid_hairstyles(check_gender = 0)
 		valid_facial_hairstyles = owner.generate_valid_facial_hairstyles()

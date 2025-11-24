@@ -49,12 +49,12 @@
 			else
 				if(path.len && (get_dist(patient, path[path.len]) > 2)) // We have a path, but it's off
 					path = list()
-				if(!path.len && (get_dist(src, patient) > 1))
+				if(!length(path) && (get_dist(src, patient) > 1))
 					spawn(0)
 						path = AStar(loc, get_turf(patient), /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 30, id = botcard)
 						if(!path)
 							path = list()
-				if(path.len)
+				if(length(path))
 					step_to(src, path[1])
 					path -= path[1]
 					++frustration

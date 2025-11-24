@@ -100,7 +100,7 @@
 				if(!O.CanPass(master, T))
 					continue
 		places_to_spawn.Add(T)
-	if(!places_to_spawn.len)
+	if(!length(places_to_spawn))
 		places_to_spawn.Add(get_turf(master))
 
 	var/mob/living/simple_animal/hostile/hivemind/champion

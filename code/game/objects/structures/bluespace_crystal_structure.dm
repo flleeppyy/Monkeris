@@ -92,7 +92,7 @@
 	if(target_turf)
 		var/list/target_turf_contents = target_turf.contents
 
-		if(!teleport_destination || !target_turf_contents.len)
+		if(!teleport_destination || !length(target_turf_contents))
 			return
 		for(var/obj/item/I in target_turf_contents)
 			go_to_bluespace(get_turf(src), entropy_value, FALSE, I, teleport_destination)

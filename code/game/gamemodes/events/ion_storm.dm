@@ -103,7 +103,7 @@
 			continue
 		players += player.real_name
 
-	if(players.len)
+	if(length(players))
 		return pick(players)
 	return default_if_none
 
@@ -114,7 +114,7 @@
 		if(initial(specimen.spawn_flags) & CAN_JOIN)
 			species += initial(specimen.name_plural)
 
-	if(species.len)
+	if(length(species))
 		return pick(species.len)
 	return default_if_none
 
@@ -148,7 +148,7 @@ Would like to add a law like "Law x is _______" where x = a number, and _____ is
 			var/list/pos_crew = list()
 			for(var/mob/living/carbon/human/pos in GLOB.player_list)
 				pos_crew += pos.real_name
-			if(pos_crew.len)
+			if(length(pos_crew))
 				crew = pick(pos_crew)
 			else
 				crew = "Any Human"

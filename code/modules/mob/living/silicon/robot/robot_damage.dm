@@ -50,7 +50,7 @@
 
 /mob/living/silicon/robot/proc/get_armour()
 
-	if(!components.len) return FALSE
+	if(!length(components)) return FALSE
 	var/datum/robot_component/C = components["armour"]
 	if(C && C.installed == 1)
 		return C
@@ -58,13 +58,13 @@
 
 /mob/living/silicon/robot/heal_organ_damage(brute, burn)
 	var/list/datum/robot_component/parts = get_damaged_components(brute,burn)
-	if(!parts.len)	return
+	if(!length(parts))	return
 	var/datum/robot_component/picked = pick(parts)
 	picked.heal_damage(brute,burn)
 
 /mob/living/silicon/robot/take_organ_damage(brute = 0, burn = 0, sharp = FALSE, edge = FALSE, emp = 0)
 	var/list/components = get_damageable_components()
-	if(!components.len)
+	if(!length(components))
 		return
 
 	 //Combat shielding absorbs a percentage of damage directly into the cell.

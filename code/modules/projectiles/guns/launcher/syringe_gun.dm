@@ -104,7 +104,7 @@
 	if(next)
 		user.visible_message("[user] unlatches and carefully relaxes the bolt on [src].", span_warning("You unlatch and carefully relax the bolt on [src], unloading the spring."))
 		next = null
-	else if(darts.len)
+	else if(length(darts))
 		playsound(src.loc, 'sound/weapons/flipblade.ogg', 50, 1)
 		user.visible_message("[user] draws back the bolt on [src], clicking it into place.", span_warning("You draw back the bolt on the [src], loading the spring!"))
 		next = darts[1]
@@ -112,7 +112,7 @@
 
 /obj/item/gun/launcher/syringe/attack_hand(mob/living/user as mob)
 	if(user.get_inactive_held_item() == src)
-		if(!darts.len)
+		if(!length(darts))
 			to_chat(user, span_warning("[src] is empty."))
 			return
 		if(next)

@@ -390,7 +390,7 @@ var/world_topic_spam_protect_time = world.timeofday
 
 /world/proc/load_storyteller()
 	var/list/Lines = file2list("data/mode.txt")
-	if(Lines.len)
+	if(length(Lines))
 		if(Lines[1])
 			master_storyteller = Lines[1]
 			log_game("Saved storyteller is '[master_storyteller]'")

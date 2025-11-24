@@ -210,7 +210,7 @@
 	..()
 	if(inoperable())
 		return
-	if(contents.len)
+	if(length(contents))
 		dry()
 
 /obj/machinery/smartfridge/drying_rack/update_icon()
@@ -219,7 +219,7 @@
 		icon_state = icon_off
 	else
 		icon_state = icon_on
-	if(contents.len)
+	if(length(contents))
 		overlays += "drying_rack_filled"
 		if(!inoperable() && currently_drying)
 			overlays += "drying_rack_drying"
@@ -309,7 +309,7 @@
 	if(panel_open && icon_panel)
 		overlays += image(icon, icon_panel)
 
-	if(contents.len)
+	if(length(contents))
 		if(contents.len <= 10)
 			overlays += image(icon, icon_fill10)
 		else if(contents.len <= 20)

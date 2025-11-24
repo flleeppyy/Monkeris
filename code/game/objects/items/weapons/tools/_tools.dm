@@ -241,7 +241,7 @@
 	data["w_class"] = w_class
 
 	// it could be done with catalog using one line but whatever
-	if(item_upgrades.len)
+	if(length(item_upgrades))
 		data["attachments"] = list()
 		for(var/atom/A in item_upgrades)
 			data["attachments"] += list(list(
@@ -273,7 +273,7 @@
 
 //Damaged tools are worth less matter for recycling
 /obj/item/tool/get_matter()
-	if(!matter || !matter.len || !degradation)
+	if(!matter || !length(matter) || !degradation)
 		return ..()
 
 	//If it's this broken, you get nothing
@@ -578,7 +578,7 @@
 				var/list/targets = list()
 				for(var/atom/movable/AM in orange(user, 1))
 					targets.Add(AM)
-				if(!targets.len)
+				if(!length(targets))
 					return
 
 				var/newtarget = pick(targets)
@@ -662,7 +662,7 @@
 			return TRUE
 
 /obj/item/proc/get_tool_quality(quality_id)
-	if(tool_qualities && tool_qualities.len)
+	if(length(tool_qualities))
 		return tool_qualities[quality_id]
 	return null
 
@@ -673,7 +673,7 @@
 
 	var/list/L = required_qualities & tool_qualities
 
-	if(L.len)
+	if(length(L))
 		if(L.len == 1)
 			return L[1]
 		for(var/i in L)
@@ -868,7 +868,7 @@
 		if(workspeed != 1)
 			extra_description += "\nWork Speed: [span_notice("[workspeed*100]%")]"
 
-		if(item_upgrades.len)
+		if(length(item_upgrades))
 			extra_description += "\nIt has the following upgrades installed:"
 			for(var/obj/item/TU in item_upgrades)
 				extra_description += span_notice("\n[TU.name]")

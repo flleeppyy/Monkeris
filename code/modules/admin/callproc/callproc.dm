@@ -295,7 +295,7 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 	if(islist(returnval))
 		var/list/returnedlist = returnval
 		. = "<font color='blue'>"
-		if(returnedlist.len)
+		if(length(returnedlist))
 			var/assoc_check = returnedlist[1]
 			if(istext(assoc_check) && (returnedlist[assoc_check] != null))
 				. += "[procname] returned an associative list:"

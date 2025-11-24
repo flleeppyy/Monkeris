@@ -370,12 +370,12 @@
 			set_light(0)
 
 	if(!(update_state & UPDATE_ALLGOOD))
-		if(overlays.len)
+		if(length(overlays))
 			overlays = 0
 			return
 
 	if(update > 1)
-		if(overlays.len)
+		if(length(overlays))
 			overlays.len = 0
 		if(!(stat & (BROKEN|MAINT)) && update_state & UPDATE_ALLGOOD)
 			overlays += status_overlays_lock[locked+1]

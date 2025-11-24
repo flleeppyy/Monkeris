@@ -255,7 +255,7 @@ GLOBAL_VAR_INIT(GLOBAL_INSIGHT_MOD, 1)
 			else
 				desires += desire
 				continue
-		if(potential_desires.len)
+		if(length(potential_desires))
 			var/candidate = pick(potential_desires)
 			desires += candidate
 	print_desires()
@@ -316,7 +316,7 @@ GLOBAL_VAR_INIT(GLOBAL_INSIGHT_MOD, 1)
 				if(is_type_in_list(I, valid_inspirations) && I.GetComponent(/datum/component/inspiration))
 					inspiration_items += I
 
-			if(inspiration_items.len)//should always work, but in case of bug, there is an else
+			if(length(inspiration_items))//should always work, but in case of bug, there is an else
 				var/obj/item/O = inspiration_items.len > 1 ? owner.client ? input(owner, "Select something to use as inspiration", "Level up") in inspiration_items : pick(inspiration_items) : inspiration_items[1]
 				if(!O)
 					return

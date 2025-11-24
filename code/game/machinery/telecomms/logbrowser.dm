@@ -48,7 +48,7 @@
 		if(0)
 			dat += "<br>[temp]<br>"
 			dat += "<br>Current Network: <a href='byond://?src=\ref[src];network=1'>[network]</a><br>"
-			if(servers.len)
+			if(length(servers))
 				dat += "<br>Detected Telecommunication Servers:<ul>"
 				for(var/obj/machinery/telecomms/T in servers)
 					dat += "<li><a href='byond://?src=\ref[src];viewserver=[T.id]'>\ref[T] [T.name]</a> ([T.id])</li>"
@@ -151,7 +151,7 @@
 				else
 					servers = find_machines(/obj/machinery/telecomms/server)
 
-					if(!servers.len)
+					if(!length(servers))
 						temp = "<font color = #D70B00>- FAILED: UNABLE TO LOCATE SERVERS IN \[[network]\] -</font>"
 					else
 						temp = "<font color = #336699>- [servers.len] SERVERS PROBED & BUFFERED -</font>"

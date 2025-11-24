@@ -33,7 +33,7 @@
 		usable_qualities.Add(QUALITY_SCREW_DRIVING)
 	if(state == 3)
 		usable_qualities.Add(QUALITY_WIRE_CUTTING)
-	if(upgrades.len)
+	if(length(upgrades))
 		usable_qualities.Add(QUALITY_PRYING)
 
 	var/tool_type = I.get_tool_type(user, usable_qualities, src)
@@ -112,7 +112,7 @@
 			return
 
 		if(QUALITY_PRYING)
-			if(upgrades.len)
+			if(length(upgrades))
 				if(I.use_tool(user, src, WORKTIME_FAST, tool_type, FAILCHANCE_VERY_EASY, required_stat = STAT_MEC))
 					var/obj/U = locate(/obj) in upgrades
 					if(U)

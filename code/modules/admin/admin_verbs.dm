@@ -767,7 +767,7 @@ GLOBAL_PROTECT(admin_verbs_possess)
 		for (var/datum/job/J in SSjob.occupations)
 			if (J.current_positions >= J.total_positions && J.total_positions != -1)
 				jobs += J.title
-		if (!jobs.len)
+		if (!length(jobs))
 			to_chat(usr, "There are no fully staffed jobs.")
 			return
 		var/job = input("Please select job slot to free", "Free job slot")  as null|anything in jobs

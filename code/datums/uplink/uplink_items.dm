@@ -66,7 +66,7 @@ var/datum/uplink/uplink = new()
 
 /datum/uplink_item/proc/can_view(obj/item/device/uplink/U)
 	// Making the assumption that if no uplink was supplied, then we don't care about antag roles
-	if(!U || !antag_roles.len)
+	if(!U || !length(antag_roles))
 		return 1
 	if(!U.uplink_owner)
 		return !!length(U.owner_roles & antag_roles)
@@ -105,7 +105,7 @@ var/datum/uplink/uplink = new()
 
 	if(istype(I, /list))
 		var/list/L = I
-		if(L.len) I = L[1]
+		if(length(L)) I = L[1]
 
 	if(istype(I))
 		user.put_in_hands(I)

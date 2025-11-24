@@ -64,7 +64,7 @@
 
 			to_chat(user, span_notice("External prosthetics:"))
 			var/organ_found
-			if(H.internal_organs.len)
+			if(length(H.internal_organs))
 				for(var/obj/item/organ/external/E in H.organs)
 					if(!BP_IS_ROBOTIC(E))
 						continue
@@ -75,7 +75,7 @@
 			to_chat(user, "<hr>")
 			to_chat(user, span_notice("Internal prosthetics:"))
 			organ_found = null
-			if(H.internal_organs.len)
+			if(length(H.internal_organs))
 				for(var/obj/item/organ/O in H.internal_organs)
 					if(!BP_IS_ROBOTIC(O))
 						continue

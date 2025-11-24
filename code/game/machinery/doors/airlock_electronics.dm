@@ -110,7 +110,7 @@
 			conf_access += req
 		else
 			conf_access -= req
-			if (!conf_access.len)
+			if (!length(conf_access))
 				conf_access = null
 
 

@@ -140,7 +140,7 @@
 
 // bullet/pellets redefines this
 /obj/item/projectile/proc/adjust_damages(list/newdamages)
-	if(!newdamages.len)
+	if(!length(newdamages))
 		return
 	for(var/damage_type in newdamages)
 		if(damage_type == IRRADIATE)
@@ -644,7 +644,7 @@
 			damage_types[dmg_type] = dmg
 		else
 			damage_types -= dmg_type
-	if(!damage_types.len)
+	if(!length(damage_types))
 		on_impact(A)
 		qdel(src)
 

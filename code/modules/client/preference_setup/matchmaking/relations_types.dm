@@ -69,9 +69,9 @@
 			best += R
 		if(R.holder.assigned_job.department_flag & holder.assigned_job.department_flag)
 			good += R
-	if(best.len)
+	if(length(best))
 		return best
-	else if (good.len)
+	else if(length(good))
 		return good
 	return rest
 

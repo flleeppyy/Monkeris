@@ -50,7 +50,7 @@
 		else
 			return capitalize(pick(first_names_male)) + " " + capitalize(pick(last_names))
 
-	if(!syllables || !syllables.len)
+	if(!length(syllables))
 		if(gender==FEMALE)
 			return capitalize(pick(GLOB.first_names_female)) + " " + capitalize(pick(GLOB.last_names))
 		else
@@ -75,7 +75,7 @@
 		else
 			return capitalize(pick(first_names_male))
 
-	if(!syllables || !syllables.len)
+	if(!length(syllables))
 		if(gender==FEMALE)
 			return capitalize(pick(GLOB.first_names_female))
 		else
@@ -97,7 +97,7 @@
 	if (name_lists)
 		return capitalize(pick(last_names))
 
-	if(!syllables || !syllables.len)
+	if(!length(syllables))
 		return capitalize(pick(GLOB.last_names))
 
 	var/full_name = ""
@@ -128,7 +128,7 @@
 
 /datum/language/proc/scramble(input)
 
-	if(!syllables || !syllables.len)
+	if(!length(syllables))
 		return stars(input)
 
 	// If the input is cached already, move it to the end of the cache and return it

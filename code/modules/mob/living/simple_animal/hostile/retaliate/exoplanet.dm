@@ -5,9 +5,9 @@
 
 /mob/living/simple_animal/hostile/retaliate/beast/ListTargets(dist = 7)
 	var/list/see = ..()
-	if(see.len)
+	if(length(see))
 		return see
-	if(prey.len)
+	if(length(prey))
 		. = list()
 		for(var/datum/weakref/W in prey)
 			var/mob/M = W.resolve()

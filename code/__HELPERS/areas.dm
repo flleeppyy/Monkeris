@@ -27,7 +27,7 @@
 
 /proc/pick_area_turf(areatype, list/predicates)
 	var/list/turfs = get_area_turfs(areatype, predicates)
-	if(turfs && turfs.len)
+	if(length(turfs))
 		return pick(turfs)
 
 /proc/is_matching_vessel(atom/A, atom/B)
@@ -93,7 +93,7 @@
 	for(var/turf/floor/F in src.contents)
 		if(turf_clear(F))
 			turfs += F
-	if (turfs.len)
+	if(length(turfs))
 		return pick(turfs)
 	else return null
 
@@ -104,7 +104,7 @@
 		if(turf_clear(F))
 			if (F.flooring && (F.flooring.flags & TURF_HIDES_THINGS))
 				turfs += F
-	if (turfs.len)
+	if(length(turfs))
 		return pick(turfs)
 	else return null
 

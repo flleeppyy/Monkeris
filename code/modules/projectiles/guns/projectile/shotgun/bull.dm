@@ -42,7 +42,7 @@
 			chambered.forceMove(newloc) //Eject casing
 			chambered = null
 	if(!chambered)
-		if(loaded.len)
+		if(length(loaded))
 			var/obj/item/ammo_casing/AC = loaded[1] //load next casing.
 			loaded -= AC //Remove casing from loaded list.
 			chambered = AC
@@ -62,7 +62,7 @@
 		chambered.forceMove(newloc) //Eject casing
 		chambered = null
 		if(!reload)
-			if(loaded.len)
+			if(length(loaded))
 				var/obj/item/ammo_casing/AC = loaded[1] //load next casing.
 				loaded -= AC //Remove casing from loaded list.
 				chambered = AC

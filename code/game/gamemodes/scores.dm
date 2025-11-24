@@ -124,10 +124,10 @@ GLOBAL_VAR_INIT(score_technomancer_faction_item_loss, 0)
 					GLOB.ironhammer_operative_dead++
 				if(!M.antagonist.len)
 					GLOB.crew_dead++
-			if(M.antagonist.len)
+			if(length(M.antagonist))
 				GLOB.captured_or_dead_antags++
 		else
-			if(M.antagonist.len)
+			if(length(M.antagonist))
 				var/area/A = get_area(M.current)
 				if(istype(A, /area/eris/security/prison) || istype(A, /area/eris/security/brig) || M.current.restrained())
 					GLOB.captured_or_dead_antags++

@@ -13,7 +13,7 @@
 		use_power(idle_power_usage)
 		return
 	use_power(active_power_usage)
-	if(contents.len)
+	if(length(contents))
 		var/obj/item/misc = locate() in contents
 		if(misc)
 			unload(misc)

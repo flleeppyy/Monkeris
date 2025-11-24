@@ -338,7 +338,7 @@
 
 	flush_count++
 	if( flush_count >= flush_every_ticks )
-		if( contents.len )
+		if(length(contents))
 			if(mode == DISPOSALS_CHARGED)
 				spawn(0)
 					flush()

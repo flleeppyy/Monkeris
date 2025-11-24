@@ -124,7 +124,7 @@
 				continue
 			all_fabricators[DF.fabricator_tag] = DF
 
-		if(!all_fabricators.len)
+		if(!length(all_fabricators))
 			to_chat(user, span_danger("There are no available drone spawn points, sorry."))
 			return
 

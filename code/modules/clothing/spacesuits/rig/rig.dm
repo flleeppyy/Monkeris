@@ -157,10 +157,10 @@
 	wires = new(src)
 
 	//Add on any extra items allowed into suit storage
-	if (extra_allowed.len)
+	if(length(extra_allowed))
 		allowed |= extra_allowed
 
-	if((!req_access || !req_access.len) && (!req_one_access || !req_one_access.len))
+	if((!length(req_access)) && (!length(req_one_access)))
 		locked = FALSE
 
 	spark_system = new()
@@ -189,7 +189,7 @@
 			chest.allowed |= allowed
 		chest.slowdown = offline_slowdown
 
-	if(initial_modules && initial_modules.len)
+	if(length(initial_modules))
 		for(var/path in initial_modules)
 			var/obj/item/rig_module/module = new path(src)
 			install(module)
@@ -538,7 +538,7 @@
 		module_list += list(module_data)
 		i++
 
-	if(module_list.len)
+	if(length(module_list))
 		data["modules"] = module_list
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
@@ -552,7 +552,7 @@
 	return 'icons/mob/rig_back.dmi'
 
 /obj/item/rig/update_icon(update_mob_icon)
-	if(installed_modules.len)
+	if(length(installed_modules))
 		for(var/obj/item/rig_module/module in installed_modules)
 			if(module.suit_overlay && !module.suit_overlay_mob_only)
 				chest.overlays += image("icon" = 'icons/mob/rig_modules.dmi', "icon_state" = module.suit_overlay, "dir" = SOUTH)
@@ -857,7 +857,7 @@
 
 /obj/item/rig/proc/take_hit(damage, source, is_emp=0)
 
-	if(!installed_modules.len)
+	if(!length(installed_modules))
 		return
 
 	var/chance
@@ -882,9 +882,9 @@
 				damaged_modules |= module
 
 	var/obj/item/rig_module/dam_module = null
-	if(damaged_modules.len)
+	if(length(damaged_modules))
 		dam_module = pick(damaged_modules)
-	else if(valid_modules.len)
+	else if(length(valid_modules))
 		dam_module = pick(valid_modules)
 
 	if(!dam_module) return

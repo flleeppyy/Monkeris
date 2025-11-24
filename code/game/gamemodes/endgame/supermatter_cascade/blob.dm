@@ -29,7 +29,7 @@
 		return
 
 	// No more available directions? Stop processing.
-	if(!avail_dirs.len)
+	if(!length(avail_dirs))
 		return PROCESS_KILL
 
 	// Choose a direction.

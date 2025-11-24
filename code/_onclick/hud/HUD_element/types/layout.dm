@@ -25,7 +25,7 @@
 
 /atom/movable/hud_element/layout/horizontal/alignElements(horizontal, vertical, list/atom/movable/hud_element/targets, padding = 0)
 	_alignment = horizontal
-	if(targets && targets.len)
+	if(length(targets))
 		for (var/atom/movable/hud_element/T in targets)
 			add(T,padding,padding)
 			//we are using _aligment to align elements in alignElements()
@@ -36,7 +36,7 @@
 
 /atom/movable/hud_element/layout/vertical/alignElements(horizontal, vertical, list/atom/movable/hud_element/targets, padding = 0)
 	_alignment = vertical
-	if(targets && targets.len)
+	if(length(targets))
 		for (var/atom/movable/hud_element/T in targets)
 			add(T,padding,padding)
 			//we are using _aligment to align elements in alignElements()
@@ -48,7 +48,7 @@
 /atom/movable/hud_element/layout/horizontal/_spreadElements()
 	setWidth(0)
 
-	if(!_paddingData.len)
+	if(!length(_paddingData))
 		return
 
 	if (_alignment == HUD_HORIZONTAL_WEST_INSIDE_ALIGNMENT)
@@ -72,7 +72,7 @@
 /atom/movable/hud_element/layout/vertical/_spreadElements()
 	setHeight(0)
 
-	if(!_paddingData.len)
+	if(!length(_paddingData))
 		return
 
 	if (_alignment == HUD_VERTICAL_NORTH_INSIDE_ALIGNMENT)

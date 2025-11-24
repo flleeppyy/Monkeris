@@ -36,7 +36,7 @@
 	power = 35
 
 /datum/ritual/targeted/cruciform/inquisitor/penance/perform(mob/living/carbon/human/user, obj/item/implant/core_implant/C,list/targets)
-	if(!targets.len)
+	if(!length(targets))
 		fail("Target not found.",user,C,targets)
 		return FALSE
 

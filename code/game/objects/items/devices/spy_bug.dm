@@ -139,7 +139,7 @@
 	if(operating)
 		return
 
-	if(!cameras.len)
+	if(!length(cameras))
 		to_chat(user, span_warning("No paired cameras detected!"))
 		to_chat(user, span_warning("Bring a bug in contact with this device to pair the camera."))
 		return

@@ -24,7 +24,7 @@
 			else if(H.sanity.level <= 50)
 				to_chat(user, span_notice("[H] is visibly stressed, shivering slightly and grinding their teeth."))
 
-		if(E.wounds.len)
+		if(length(E.wounds))
 			to_chat(user, span_warning("You find [E.get_wounds_desc()]"))
 			wound_found = TRUE
 		if(E.number_internal_wounds)

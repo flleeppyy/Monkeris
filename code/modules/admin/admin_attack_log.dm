@@ -12,7 +12,7 @@
 	message_admins(user ? "[key_name_admin(user)] [message]" : "EVENT [message]")
 
 /proc/log_and_message_admins_many(list/mob/users, message)
-	if(!users || !users.len)
+	if(!length(users))
 		return
 
 	var/list/user_keys = list()
@@ -31,7 +31,7 @@
 	msg_admin_attack("[key_name(attacker)] [admin_message] [key_name(victim)] (INTENT: [attacker? uppertext(attacker.a_intent) : "N/A"]) [ADMIN_JMP(attacker)]")
 
 /proc/admin_attacker_log_many_victims(mob/attacker, list/mob/victims, attacker_message, victim_message, admin_message)
-	if(!victims || !victims.len)
+	if(!length(victims))
 		return
 
 	for(var/mob/victim in victims)

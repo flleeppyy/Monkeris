@@ -203,7 +203,7 @@
 		extra_description += "\nIt is being piloted by [english_list(pilots, nothing_text = "nobody")]."
 	if(body && LAZYLEN(body.pilot_positions))
 		extra_description += "\nIt can seat [body.pilot_positions.len] pilot\s total."
-	if(hardpoints.len)
+	if(length(hardpoints))
 		extra_description += "\nIt has the following hardpoints:"
 		for(var/hardpoint in hardpoints)
 			var/obj/item/I = hardpoints[hardpoint]

@@ -143,7 +143,7 @@
 
 			totalWidth += itemBackground.getWidth() + spacingBetweenSlots
 
-		if (contents.len)
+		if(length(contents))
 			totalWidth -= spacingBetweenSlots
 
 		var/remainingStorage = max_storage_space - totalStorageCost
@@ -317,7 +317,7 @@
 	if(W.anchored)
 		return FALSE
 
-	if(can_hold.len)
+	if(length(can_hold))
 		if(!is_type_in_list(W, can_hold))
 			if(!stop_messages && ! istype(W, /obj/item/hand_labeler))
 				to_chat(usr, span_notice("[src] cannot hold \the [W]."))

@@ -261,7 +261,7 @@ GLOBAL_LIST_INIT(excel_item_targets,list(
 		var/list/candidates = GLOB.antag_item_targets.Copy()
 		for(var/datum/antag_contract/item/steal/C in GLOB.various_antag_contracts)
 			candidates.Remove(C.target_desc)
-		if(candidates.len)
+		if(length(candidates))
 			target_desc = pick(candidates)
 			target_type = candidates[target_desc]
 			desc = "Steal [target_desc] and send it via BSDM."
@@ -354,7 +354,7 @@ GLOBAL_LIST_INIT(excel_item_targets,list(
 		var/list/candidates = GLOB.excel_item_targets.Copy()
 		for(var/datum/antag_contract/excel/appropriate/C in GLOB.excel_antag_contracts)
 			candidates.Remove(C.target_desc)
-		if(candidates.len)
+		if(length(candidates))
 			target_desc = pick(candidates)
 			target_type = candidates[target_desc]
 			desc = "Appropriate [target_desc] by sending it in the teleporter."

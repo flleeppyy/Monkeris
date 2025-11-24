@@ -54,14 +54,14 @@
 		if(!cleaning)
 			UnarmedAttack(target)
 			return 1
-	if(!path.len)
+	if(!length(path))
 //		spawn(0)
 		path = AStar(loc, target.loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 30, id = botcard)
 		if(!path)
 			target = null
 			path = list()
 		return
-	if(path.len)
+	if(length(path))
 		step_to(src, path[1])
 		path -= path[1]
 		return 1
@@ -124,7 +124,7 @@
 
 
 	if(!found_spot && !target) // No targets in range
-		if(!patrol_path || !patrol_path.len)
+		if(!length(patrol_path))
 			if(!signal_sent || signal_sent > world.time + 200) // Waited enough or didn't send yet
 				var/datum/radio_frequency/frequency = SSradio.return_frequency(beacon_freq)
 				if(!frequency)

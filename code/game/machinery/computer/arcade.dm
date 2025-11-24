@@ -40,7 +40,7 @@
 		return INITIALIZE_HINT_QDEL
 
 /obj/machinery/computer/arcade/proc/prizevend()
-	if(!contents.len)
+	if(!length(contents))
 		var/prizeselect = pickweight(prizes)
 		new prizeselect(src.loc)
 
@@ -205,7 +205,7 @@
 				log_game("[key_name_admin(usr)] has outbombed Cuban Pete and been awarded a bomb.")
 				src.New()
 				emagged = 0
-			else if(!contents.len)
+			else if(!length(contents))
 				src.prizevend()
 
 			else

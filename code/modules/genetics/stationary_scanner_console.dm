@@ -235,7 +235,7 @@
 				"hex" = M.hex,
 				"is_active" = "ACTIVE")))
 
-			if(occupant_mutations.len)
+			if(length(occupant_mutations))
 				data["have_mutations"] = TRUE
 				data["occupant_mutations"] = occupant_mutations
 

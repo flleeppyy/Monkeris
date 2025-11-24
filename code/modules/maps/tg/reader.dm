@@ -127,7 +127,7 @@ var/global/use_preloader = FALSE
 			if(leadingBlanks > 1)
 				gridLines.Cut(1, leadingBlanks) // Remove all leading blank lines.
 
-			if(!gridLines.len) // Skip it if only blank lines exist.
+			if(!length(gridLines)) // Skip it if only blank lines exist.
 				continue
 
 			if(gridLines.len && gridLines[gridLines.len] == "")
@@ -311,7 +311,7 @@ var/global/use_preloader = FALSE
 			if(variables_start)//if there's any variable
 				full_def = copytext(full_def, variables_start + length(full_def[variables_start]), -length(copytext_char(full_def, -1))) //removing the last '}'
 				fields = readlist(full_def, ";", TRUE)
-				if(fields.len)
+				if(length(fields))
 					if(!trim(fields[fields.len]))
 						--fields.len
 					for(var/I in fields)
@@ -534,7 +534,7 @@ var/global/use_preloader = FALSE
 	var/target_path
 
 /datum/dmm_suite/preloader/proc/setup(list/the_attributes, path)
-	if(the_attributes.len)
+	if(length(the_attributes))
 		use_preloader = TRUE
 		attributes = the_attributes
 		target_path = path

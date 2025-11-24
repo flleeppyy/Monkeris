@@ -53,7 +53,7 @@
 	var/list/mobs = list()
 	for(var/mob/living/carbon/human/M in world)
 		var/obj/item/clothing/U = M.w_uniform
-		if(U && length(U.accessories))
+		if(length(U?.accessories))
 			for(var/obj/item/clothing/accessory/bs_silk/silk in U.accessories)
 				if(M && silk.silk_id && silk.silk_id == silk_id)
 					teleport_back(M)

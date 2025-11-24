@@ -320,7 +320,7 @@
 				var/list/beaconlist = new()
 				for(var/obj/machinery/navbeacon/N in navbeacons)
 					beaconlist.Add(N.location)
-				if(beaconlist.len)
+				if(length(beaconlist))
 					new_dest = input("Select new destination tag", "Mulebot [suffix ? "([suffix])" : ""]", destination) in beaconlist
 				else
 					alert("No destination beacons available.")

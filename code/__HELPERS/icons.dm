@@ -900,7 +900,7 @@ The _flatIcons list is a cache for generated icon files.
 //Adds a list of values to the HSV of a color
 /proc/adjust_HSV(color, list/values)
 	if (!color) return "#FFFFFF"
-	if (!values || !values.len) return color
+	if (!length(values)) return color
 
 	var/hsv_string = RGBtoHSV(color)
 	var/list/HSV = ReadHSV(hsv_string)
@@ -913,7 +913,7 @@ The _flatIcons list is a cache for generated icon files.
 //A null entry won't overwrite anything
 /proc/set_HSV(color, list/values)
 	if (!color) return "#FFFFFF"
-	if (!values || !values.len) return color
+	if (!length(values)) return color
 
 	var/hsv_string = RGBtoHSV(color)
 	var/list/HSV = ReadHSV(hsv_string)

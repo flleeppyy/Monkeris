@@ -164,7 +164,7 @@ Procs:
 // Unlocks hidden tech trees
 /datum/research/proc/check_item_for_tech(obj/item/I)
 	var/list/temp_tech = I.origin_tech
-	if(!temp_tech.len)
+	if(!length(temp_tech))
 		return
 
 	for(var/tree in researched_tech)

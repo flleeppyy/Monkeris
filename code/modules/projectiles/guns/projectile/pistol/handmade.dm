@@ -77,7 +77,7 @@
 	src.chamber_open = TRUE
 	icon_state = "hm_pistol_open"
 	playsound(src.loc, 'sound/weapons/guns/interact/batrifle_magout.ogg', 65, 1)
-	if(loaded.len)
+	if(length(loaded))
 		var/obj/item/ammo_casing/our_bullet = loaded[1]
 		our_bullet.loc = get_turf(src)
 		loaded -= our_bullet

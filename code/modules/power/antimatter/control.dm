@@ -138,7 +138,7 @@
 					"You hear a ratchet")
 				src.anchored = TRUE
 				connect_to_network()
-			else if(!linked_shielding.len > 0)
+			else if(!length(linked_shielding) > 0)
 				user.visible_message("[user.name] unsecures the [src.name].", \
 					"You remove the anchor bolts.", \
 					"You hear a ratchet")

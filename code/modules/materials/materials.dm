@@ -506,7 +506,7 @@ var/list/name_to_material
 	)
 
 /material/glass/build_windows(mob/living/user, obj/item/stack/used_stack)
-	if(!user || !used_stack || !created_window || !window_options.len)
+	if(!user || !used_stack || !created_window || !length(window_options))
 		return 0
 
 	if(!user.IsAdvancedToolUser())
@@ -537,7 +537,7 @@ var/list/name_to_material
 	if(window_count >= 4)
 		failed_to_build = 1
 	else
-		if(possible_directions.len)
+		if(length(possible_directions))
 			for(var/direction in list(user.dir, turn(user.dir,90), turn(user.dir,180), turn(user.dir,270) ))
 				if(direction in possible_directions)
 					build_dir = direction

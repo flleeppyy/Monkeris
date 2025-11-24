@@ -137,7 +137,7 @@
 // return FALSE if player decline to spawn in not living-friendly environmental
 /datum/spawnpoint/proc/put_mob(mob/M, ignore_environment = FALSE, announce = TRUE)
 	var/list/free_turfs = get_free_turfs()
-	if(!free_turfs.len)
+	if(!length(free_turfs))
 		return FALSE
 	var/turf/spawn_turf = pick(free_turfs)
 
@@ -180,7 +180,7 @@
 	. = ..()
 	if (.)
 		var/list/cryopods = get_spawn_locations()
-		if (cryopods.len)
+		if(length(cryopods))
 			return TRUE
 	return FALSE
 
@@ -190,7 +190,7 @@
 
 /datum/spawnpoint/cryo/put_mob(mob/M, ignore_environment = FALSE, announce = TRUE)
 	var/list/cryopods = get_spawn_locations()
-	if (cryopods.len)
+	if(length(cryopods))
 		var/obj/machinery/cryopod/C = pick(cryopods)
 		C.set_occupant(M, FALSE)
 
@@ -236,7 +236,7 @@
 	. = ..()
 	if (.)
 		var/list/cryopods = get_spawn_locations()
-		if (cryopods.len)
+		if(length(cryopods))
 			return TRUE
 	return FALSE
 
@@ -246,7 +246,7 @@
 
 /datum/spawnpoint/dormitory/put_mob(mob/M, ignore_environment = FALSE, announce = TRUE)
 	var/list/beds = get_spawn_locations()
-	if (beds.len)
+	if(length(beds))
 		var/obj/structure/bed/C = pick(beds)
 		M.forceMove(C.loc)
 		C.buckle_mob(M)

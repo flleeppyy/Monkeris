@@ -80,7 +80,7 @@ var/global/list/ashtray_cache = list()
 /obj/item/material/ashtray/throw_impact(atom/hit_atom)
 	if (health > 0)
 		health = max(0,health - 3)
-		if (contents.len)
+		if(length(contents))
 			src.visible_message(span_danger("\The [src] slams into [hit_atom], spilling its contents!"))
 		for (var/obj/item/clothing/mask/smokable/cigarette/O in contents)
 			O.loc = src.loc

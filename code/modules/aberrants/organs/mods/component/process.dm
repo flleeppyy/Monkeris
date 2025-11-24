@@ -41,7 +41,7 @@
 		blood_req_base 					+= round(organ_stats[4] * modifier, 0.01)
 		nutriment_req_base 				+= round(organ_stats[5] * modifier, 0.01)
 		oxygen_req_base 				+= round(organ_stats[6] * modifier, 0.01)
-	
+
 	modifications[ORGAN_SPECIFIC_SIZE_BASE] = specific_organ_size_base
 	modifications[ORGAN_MAX_BLOOD_STORAGE_BASE] = max_blood_storage_base
 	modifications[ORGAN_BLOOD_REQ_BASE] = blood_req_base
@@ -90,7 +90,7 @@
 */
 
 /datum/component/modification/organ/process/map/trigger(atom/movable/holder, mob/living/carbon/owner, list/input)
-	if(!holder || !owner || !input || !input.len)
+	if(!holder || !owner || !input || !length(input))
 		return
 
 	var/list/shuffled_input = list()
@@ -100,7 +100,7 @@
 		for(var/i in 1 to input.len)
 			packet_order += "[i]"
 			packet_order["[i]"] = i
-			
+
 		shuffle(packet_order)
 
 		for(var/i in 1 to input.len)
@@ -111,7 +111,7 @@
 
 		input = shuffled_input
 
-	if(input.len)
+	if(length(input))
 		SEND_SIGNAL(holder, COMSIG_ABERRANT_OUTPUT, owner, input)
 
 
@@ -128,7 +128,7 @@
 
 	var/list/condensed_input = list("condensed input" = 0)
 
-	if(input.len)
+	if(length(input))
 		for(var/element in input)
 			condensed_input["condensed input"] |= input[element]
 

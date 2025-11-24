@@ -179,7 +179,7 @@
 	if (((num + 1) > 0) && get_lane(num + 1) == get_lane(num))
 		if(!is_generated(num + 1))
 			neighbors += (num + 1)
-	if (neighbors.len)
+	if(length(neighbors))
 		return neighbors
 	else
 		neighbors += 0
@@ -202,7 +202,7 @@
 			continue
 		else
 			free_neighbors += i
-	if (free_neighbors.len)
+	if(length(free_neighbors))
 		return free_neighbors
 	else
 		return 0
@@ -291,7 +291,7 @@
 	while(secret_rooms > 0)
 		var/obj/crawler/room_controller/occupied_room = pick(occupied_rooms)
 		var/list/neighbors = get_all_free_neighbors(occupied_room.roomnum)
-		if(neighbors.len)
+		if(length(neighbors))
 			var/r_num = pick(neighbors)
 			if(r_num)
 				var/obj/crawler/room_controller/neighbor = get_room_by_num(r_num)

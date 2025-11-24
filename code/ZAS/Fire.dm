@@ -60,11 +60,11 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 		fire_tiles.Cut()
 		fuel_objs.Cut()
 
-	if(!fire_tiles.len)
+	if(!length(fire_tiles))
 		SSair.active_fire_zones.Remove(src)
 
 /datum/zone/proc/remove_liquidfuel(used_liquid_fuel, remove_fire=0)
-	if(!fuel_objs.len)
+	if(!length(fuel_objs))
 		return
 
 	//As a simplification, we remove fuel equally from all fuel sources. It might be that some fuel sources have more fuel,
@@ -337,7 +337,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	if(!.)
 		return 0
 
-	if(fuel_objs && fuel_objs.len)
+	if(length(fuel_objs))
 		return 1
 
 	. = 0

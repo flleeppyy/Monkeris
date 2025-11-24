@@ -335,7 +335,7 @@ var/global/ManifestJSON
 	return M
 
 /datum/datacore/proc/ResetPDAManifest()
-	if(PDA_Manifest.len)
+	if(length(PDA_Manifest))
 		PDA_Manifest.Cut()
 
 /proc/find_general_record(field, value)
@@ -369,7 +369,7 @@ var/list/acting_rank_prefixes = list("acting", "temporary", "interim", "provisio
 	return rank
 
 /datum/datacore/proc/get_manifest_json()
-	if(PDA_Manifest.len)
+	if(length(PDA_Manifest))
 		return
 	var/heads[0]
 	var/sec[0]

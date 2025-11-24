@@ -16,7 +16,7 @@
 	color = "#664330"
 
 /datum/reagent/organic/nutriment/mix_data(list/newdata, newamount)
-	if(!islist(newdata) || !newdata.len)
+	if(!islist(newdata) || !length(newdata))
 		return
 	..()
 	for(var/i in 1 to newdata.len)

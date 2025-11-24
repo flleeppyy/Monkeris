@@ -30,7 +30,7 @@
 /datum/antagonist/proc/update_id()
 	if(!owner || !owner.current)
 		return
-	if (!default_access || !default_access.len)
+	if (!length(default_access))
 		return
 	var/list/things = owner.current.get_recursive_contents()
 	for (var/obj/item/card/id/W in things)

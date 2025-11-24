@@ -120,7 +120,7 @@
 	..()
 
 /obj/item/gun/projectile/heavysniper/get_ammo() // Let's keep it simple. Count spent casing twice otherwise.
-	if(loaded.len)
+	if(length(loaded))
 		return 1
 	return 0
 

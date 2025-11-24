@@ -217,7 +217,7 @@ GLOBAL_LIST_EMPTY(scrap_base_cache)
 
 	var/total_storage_space = 0
 
-	if(contents.len)
+	if(length(contents))
 		contents = shuffle(contents)
 		var/num = rand(2, loot_min)
 		for(var/obj/item/O in contents)

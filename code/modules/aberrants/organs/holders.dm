@@ -162,7 +162,7 @@
 /obj/item/organ/internal/scaffold/proc/update_color()
 	if(!num_colors)
 		return
-	if(!use_generated_color || !item_upgrades.len)
+	if(!use_generated_color || !length(item_upgrades))
 		color = ruined ? ruined_color : color
 		generated_color = null
 		return
@@ -193,7 +193,7 @@
 	use_generated_name = TRUE
 
 /obj/item/organ/internal/scaffold/proc/generate_name_from_eff()
-	if(!organ_efficiency.len)
+	if(!length(organ_efficiency))
 		return ruined && (name == initial(name)) ? ruined_name : name	// name == initial(name) check is to see if the name was overidden by mods
 
 	var/beginning
@@ -244,7 +244,7 @@
 
 	if(beginning)
 		new_name = prefix + beginning
-		if(middle.len)
+		if(length(middle))
 			for(var/chunk in middle)
 				new_name += chunk
 		new_name += end
@@ -299,10 +299,10 @@
 	if(!input_mod_path && !process_mod_path && !output_mod_path && !special_mod_path)
 		return
 	if(input_mod_path)
-		if(!input_mode && (!base_input_type && !specific_input_type_pool.len))
+		if(!input_mode && (!base_input_type && !length(specific_input_type_pool)))
 			return
 	if(output_mod_path)
-		if(!output_pool.len || !output_info.len)
+		if(!length(output_pool) || !length(output_info))
 			return
 	if(input_mod_path && output_mod_path)
 		if((specific_input_type_pool.len < req_num_inputs && !base_input_type) || output_pool.len < req_num_outputs || output_info.len < req_num_outputs)
@@ -319,7 +319,7 @@
 		var/list/inputs_sans_blacklist = list()
 		var/list/input_pool = list()
 
-		if(specific_input_type_pool.len)
+		if(length(specific_input_type_pool))
 			additional_input_info = specific_input_type_pool.Copy()
 			input_pool = specific_input_type_pool.Copy()
 		else if(base_input_type)

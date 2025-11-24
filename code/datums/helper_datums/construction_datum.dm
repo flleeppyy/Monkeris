@@ -18,7 +18,7 @@
 
 /datum/construction/proc/next_step()
 	steps.len--
-	if(!steps.len)
+	if(!length(steps))
 		spawn_result()
 	else
 		set_desc(steps.len)
@@ -51,7 +51,7 @@
 			if(custom_action(i, used_atom, user))
 				steps[i]=null;//stupid byond list from list removal...
 				list_clear_nulls(steps);
-				if(!steps.len)
+				if(!length(steps))
 					spawn_result()
 				return 1
 	return 0

@@ -71,7 +71,7 @@ SUBSYSTEM_DEF(statverbs)
 	statverbs -= path
 
 /atom/proc/show_stat_verbs()
-	if(statverbs && statverbs.len)
+	if(length(statverbs))
 		. = "Apply: "
 		for(var/stat in statverbs)
 			. += " <a href='byond://?src=\ref[src];statverb=[stat];obj_name=[src]'>[stat]</a>"

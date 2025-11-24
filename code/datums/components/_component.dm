@@ -141,7 +141,7 @@
 		else //just us
 			parents_components -= I
 
-	if(!parents_components.len)
+	if(!length(parents_components))
 		parent._datum_components = null
 
 	UnregisterFromParent()

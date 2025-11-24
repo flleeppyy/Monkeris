@@ -292,7 +292,7 @@
 
 /obj/item/roller_holder/attack_self(mob/user as mob)
 
-	if(!held.len)
+	if(!length(held))
 		to_chat(user, span_notice("The rack is empty."))
 		return
 

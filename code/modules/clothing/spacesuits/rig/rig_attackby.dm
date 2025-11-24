@@ -20,7 +20,7 @@
 			to_chat(user, span_danger("The lock clicks uselessly."))
 			return
 
-		if((!req_access || !req_access.len) && (!req_one_access || !req_one_access.len))
+		if((!length(req_access)) && (!length(req_one_access)))
 			locked = 0
 			to_chat(user, span_danger("\The [src] doesn't seem to have a locking mechanism."))
 			return
@@ -45,7 +45,7 @@
 				if(I.use_tool(user, src, WORKTIME_NEAR_INSTANT, tool_type, FAILCHANCE_VERY_EASY, required_stat = STAT_MEC))
 					var/list/current_mounts = list()
 					if(cell) current_mounts   += "cell"
-					if(installed_modules && installed_modules.len) current_mounts += "system module"
+					if(length(installed_modules)) current_mounts += "system module"
 
 					var/to_remove = input("Which would you like to modify?") as null|anything in current_mounts
 					if(!to_remove)
@@ -70,7 +70,7 @@
 									continue
 								possible_removals[module.name] = module
 
-							if(!possible_removals.len)
+							if(!length(possible_removals))
 								to_chat(user, "There are no installed modules to remove.")
 								return
 

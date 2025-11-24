@@ -13,7 +13,7 @@
 	cmp = compare
 
 /PriorityQueue/proc/IsEmpty()
-	return !L.len
+	return !length(L)
 
 //add an element in the list,
 //immediatly ordering it to its position using dichotomic search
@@ -22,7 +22,7 @@
 
 //removes and returns the first element in the queue
 /PriorityQueue/proc/Dequeue()
-	if(!L.len)
+	if(!length(L))
 		return 0
 	. = L[1]
 

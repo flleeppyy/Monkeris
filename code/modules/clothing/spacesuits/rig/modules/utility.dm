@@ -144,7 +144,7 @@
 // Rebuilds charges , sad but necesarry due to how rig UI's get its data
 /obj/item/rig_module/modular_injector/proc/rebuild_charges()
 	empties = 0
-	if(beakers && beakers.len)
+	if(length(beakers))
 		var/list/processed_charges = list()
 		for(var/obj/item/reagent_containers/beaker in beakers)
 			var/datum/rig_charge/charge_dat = new

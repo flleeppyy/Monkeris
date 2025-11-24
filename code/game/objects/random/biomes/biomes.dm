@@ -25,7 +25,7 @@
 	can_burrow = TRUE
 
 /obj/landmark/loot_biomes/mob/chek_tags()
-	if(!mob_tags.len)
+	if(!length(mob_tags))
 		CRASH("[src.name] has no spawn tag: [x],[y],[z]")
 
 /obj/spawner/mob/biome_spawner_mob
@@ -69,7 +69,7 @@
 	max_traps_amount = 1
 
 /obj/landmark/loot_biomes/trap/chek_tags()
-	if(!trap_tags.len)
+	if(!length(trap_tags))
 		CRASH("[src.name] has no spawn tag: [x],[y],[z]")
 
 /obj/spawner/traps/biome_spawner_trap

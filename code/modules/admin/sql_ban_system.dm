@@ -483,7 +483,7 @@
 			changes += list("Duration" = "[href_list["oldduration"]] MINUTE to [duration] [interval]")
 		if(reason != href_list["oldreason"])
 			changes += list("Reason" = "[href_list["oldreason"]]<br>to<br>[reason]")
-		if(!changes.len)
+		if(!length(changes))
 			error_state += "No changes were detected."
 		roles_to_ban += href_list["role"]
 	else
@@ -506,7 +506,7 @@
 						roles_to_ban |= key
 			else
 				error_state += "No ban type was selected."
-	if(error_state.len)
+	if(length(error_state))
 		to_chat(usr, span_danger("Ban not [edit_id ? "edited" : "created"] because the following errors were present:\n[error_state.Join("\n")]"), confidential = TRUE)
 		return
 	if(edit_id)

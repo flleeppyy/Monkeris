@@ -74,7 +74,7 @@
 		return FALSE
 	if(I in GLOB.all_faction_items)
 		if(GLOB.all_faction_items[I] == GLOB.department_security)
-			if(acquired_buffs.len)
+			if(length(acquired_buffs))
 				to_chat(user, "The [src] already has combat knowledge.")
 				return FALSE
 			user.remove_from_mob(I)

@@ -38,7 +38,7 @@ GLOBAL_LIST_INIT(art_types, file2list("strings/artist_strings/descriptors/art_ty
 			names.Add(H.last_name)
 		else
 			names.Add(H.real_name)
-	if(names.len)
+	if(length(names))
 		art_crew_name = pick(names)
 	return art_crew_name
 

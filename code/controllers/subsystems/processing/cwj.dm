@@ -79,7 +79,7 @@ PROCESSING_SUBSYSTEM_DEF(cwj)
 			GLOB.all_catalog_entries_by_type[thing.type] = new /datum/catalog_entry/atom(thing)
 		else
 			var/list/element = GLOB.catalogs[catalog_id]
-			if(!element.len)
+			if(!length(element))
 				qdel(element)
 				GLOB.catalogs.Remove(catalog_id)
 				return FALSE

@@ -267,7 +267,7 @@
 	return ..()
 
 /mob/living/silicon/robot/proc/set_module_sprites(list/new_sprites)
-	if(new_sprites && new_sprites.len)
+	if(length(new_sprites))
 		module_sprites = new_sprites.Copy()
 		//Custom_sprite check and entry
 
@@ -683,7 +683,7 @@
 							var/list/robotools = list()
 							for(var/obj/item/tool/robotool in module.modules)
 								robotools.Add(robotool)
-							if(robotools.len)
+							if(length(robotools))
 								var/obj/item/tool/chosen_tool = input(user,"Which tool are you trying to modify?","Tool Modification","Cancel") in robotools + "Cancel"
 								if(chosen_tool == "Cancel")
 									return
@@ -1054,7 +1054,7 @@
 	set category = "Robot Commands"
 	set name = "Choose Icon"
 
-	if(!module_sprites.len)
+	if(!length(module_sprites))
 		to_chat(src, "Something is badly wrong with the sprite selection. Harass a coder.")
 		return
 	if(icon_selected == 1)

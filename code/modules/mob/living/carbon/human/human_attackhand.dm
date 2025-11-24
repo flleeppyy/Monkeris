@@ -184,7 +184,7 @@
 				to_chat(M, span_danger("They are missing that limb!"))
 				return 1
 
-			if (M.grabbed_by.len)
+			if(length(M.grabbed_by))
 				// Someone got a good grip on them, they won't be able to do much damage
 				stat_damage = max(1, stat_damage - 2)
 
@@ -256,7 +256,7 @@
 					var/list/turfs = list()
 					for(var/turf/T in view())
 						turfs += T
-					if(turfs.len)
+					if(length(turfs))
 						var/turf/target = pick(turfs)
 						visible_message(span_danger("[src]'s [W] goes off during the struggle!"))
 						W.afterattack(target,src)

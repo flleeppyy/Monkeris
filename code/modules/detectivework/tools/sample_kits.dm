@@ -12,7 +12,7 @@
 
 /obj/item/sample/print/New(newloc, atom/supplied)
 	..(newloc, supplied)
-	if(evidence && evidence.len)
+	if(length(evidence))
 		icon_state = "fingerprint1"
 
 /obj/item/sample/proc/copy_evidence(atom/supplied)
@@ -21,7 +21,7 @@
 		supplied.suit_fibers.Cut()
 
 /obj/item/sample/proc/merge_evidence(obj/item/sample/supplied, mob/user)
-	if(!supplied.evidence || !supplied.evidence.len)
+	if(!length(supplied.evidence))
 		return 0
 	evidence |= supplied.evidence
 	name = "[initial(name)] (combined)"
@@ -29,7 +29,7 @@
 	return 1
 
 /obj/item/sample/print/merge_evidence(obj/item/sample/supplied, mob/user)
-	if(!supplied.evidence || !supplied.evidence.len)
+	if(!length(supplied.evidence))
 		return 0
 	for(var/print in supplied.evidence)
 		if(evidence[print])
@@ -61,7 +61,7 @@
 	item_state = "paper"
 
 /obj/item/sample/print/attack_self(mob/user)
-	if(evidence && evidence.len)
+	if(length(evidence))
 		return
 	if(!ishuman(user))
 		return
@@ -81,7 +81,7 @@
 	if(!ishuman(M))
 		return ..()
 
-	if(evidence && evidence.len)
+	if(length(evidence))
 		return 0
 
 	var/mob/living/carbon/human/H = M

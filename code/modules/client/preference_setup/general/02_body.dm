@@ -280,7 +280,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	var/datum/species/mob_species = GLOB.all_species[pref.species]
 	var/list/valid_hairstyles = mob_species.get_hair_styles()
 
-	if(valid_hairstyles.len)
+	if(length(valid_hairstyles))
 		pref.h_style = pick(valid_hairstyles)
 	else
 		//this shouldn't happen
@@ -293,7 +293,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	var/datum/species/mob_species = GLOB.all_species[pref.species]
 	var/list/valid_facialhairstyles = mob_species.get_facial_hair_styles(pref.gender)
 
-	if(valid_facialhairstyles.len)
+	if(length(valid_facialhairstyles))
 		pref.f_style = pick(valid_facialhairstyles)
 	else
 		//this shouldn't happen

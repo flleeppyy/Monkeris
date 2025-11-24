@@ -188,7 +188,7 @@
 				event = null
 				src.updateUsrDialog()
 				return
-			if(!settlers.len)
+			if(!length(settlers))
 				event_desc = "You and your crew were killed on the way to Orion, your ship left abandoned for scavengers to find."
 				next_event = ORION_TRAIL_GAMEOVER
 			if(port == 9)
@@ -288,7 +288,7 @@
 	event_info += "You've [add > 0 ? "gained" : "lost"] [abs(cost)] [supply_name["[specific]"]]<BR>"
 
 /obj/machinery/computer/arcade/orion_trail/proc/remove_settler(specific = null, desc = null)
-	if(!settlers.len)
+	if(!length(settlers))
 		return
 	if(!specific)
 		specific = rand(1,settlers.len)

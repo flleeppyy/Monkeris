@@ -302,7 +302,7 @@
 	if (connected)
 		icon_state = "crema0"
 	else
-		if (contents.len)
+		if(length(contents))
 			icon_state = "crema2"
 		else
 			icon_state = "crema1"

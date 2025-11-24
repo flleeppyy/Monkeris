@@ -1119,7 +1119,7 @@
 
 
 /mob/living/simple_animal/hostile/hivemind/phaser/death()
-	if(my_copies.len)
+	if(length(my_copies))
 		for(var/mob/living/simple_animal/hostile/hivemind/phaser/My_copy in my_copies)
 			qdel(My_copy)
 	..()

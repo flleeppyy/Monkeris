@@ -66,7 +66,7 @@
 	if((over_object == usr && (in_range(src, usr) || usr.contents.Find(src))))
 		if(!ishuman(usr))	return
 		if(opened)	return 0
-		if(contents.len)	return 0
+		if(length(contents))	return 0
 		visible_message("[usr] folds up the [src.name]")
 		new item_path(get_turf(src))
 		QDEL_IN(src, 0)

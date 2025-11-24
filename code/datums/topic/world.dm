@@ -171,7 +171,7 @@
 		if(match[M] < maxstrength)
 			match -= M
 
-	if(!match.len)
+	if(!length(match))
 		return "No matches"
 	else if(match.len == 1)
 		var/mob/M = match[1]

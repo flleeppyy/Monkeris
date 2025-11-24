@@ -123,10 +123,10 @@ SUBSYSTEM_DEF(plants)
 	return seed
 
 /datum/controller/subsystem/plants/fire()
-	if(plant_queue.len)
+	if(length(plant_queue))
 		var/target_to_process = min(plant_queue.len,plants_per_tick)
 		for(var/x=0;x<target_to_process;x++)
-			if(!plant_queue.len)
+			if(!length(plant_queue))
 				break
 			var/obj/effect/plant/plant = pick(plant_queue)
 			plant_queue -= plant

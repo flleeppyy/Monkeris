@@ -158,7 +158,7 @@
 
 //Returns the ideal gas specific entropy of the whole mix. This is the entropy per mole of /mixed/ gas.
 /datum/gas_mixture/proc/specific_entropy()
-	if (!gas.len || total_moles == 0)
+	if (!length(gas) || total_moles == 0)
 		return SPECIFIC_ENTROPY_VACUUM
 
 	. = 0
@@ -344,10 +344,10 @@
 
 
 	//Apply changes
-	if(graphic_add && graphic_add.len)
+	if(length(graphic_add))
 		graphic |= graphic_add
 		. = 1
-	if(graphic_remove && graphic_remove.len)
+	if(length(graphic_remove))
 		graphic -= graphic_remove
 		. = 1
 

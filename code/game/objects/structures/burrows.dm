@@ -136,7 +136,7 @@
 		if (is_valid(L))
 			population |= "\ref[L]"
 
-	if (population.len)
+	if(length(population))
 		populated_burrows |= src
 		unpopulated_burrows -= src
 	else
@@ -436,7 +436,7 @@
 
 	//Lets check there's anyone to evacuate
 	life_scan()
-	if (population.len)
+	if(length(population))
 		var/obj/structure/burrow/btarget = SSmigration.choose_burrow_target(src, FALSE, 100)
 		if (!btarget)
 			//If no target then maybe there are no nonmaint burrows left. In that case lets try to get one in maint
@@ -623,7 +623,7 @@
 
 		floors |= F
 
-	if (!floors.len)
+	if (!length(floors))
 		return FALSE
 
 	new /obj/effect/decal/cleanable/rubble(pick(floors))

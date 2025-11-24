@@ -76,7 +76,7 @@
 				powers_to_buy += P.name
 
 		core.purchasedpowers.Cut()
-		if(!powerinstances.len)
+		if(!length(powerinstances))
 			for(var/P in powers)
 				powerinstances += new P()
 

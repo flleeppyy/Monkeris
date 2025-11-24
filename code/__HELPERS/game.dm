@@ -39,7 +39,7 @@
 	source.luminosity = world.view
 	var/list/heard = view(range, source)
 	var/list/extra_heard = view(range+3, source) - heard
-	if(extra_heard.len)
+	if(length(extra_heard))
 		for(var/ear in extra_heard)
 			if(!ishuman(ear))
 				continue
@@ -560,7 +560,7 @@
 		if (istype(S, ltype))
 			L.Add(S)
 
-	if (L.len)
+	if(length(L))
 		return pick(L)
 
 /proc/activate_mobs_in_range(atom/requester , distance)

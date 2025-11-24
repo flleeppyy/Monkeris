@@ -156,7 +156,7 @@
 	set desc = "Empties the contents of your stomach"
 	set category = "Abilities"
 
-	if(stomach_contents.len)
+	if(length(stomach_contents))
 		for(var/mob/M in src)
 			if(M in stomach_contents)
 				stomach_contents.Remove(M)
@@ -313,7 +313,7 @@
 		if(istype(H) && !H.stat)
 			mobs_in_view += H
 
-	if(!mobs_in_view.len)
+	if(!length(mobs_in_view))
 		to_chat(src, span_notice("There is no valid targets around."))
 		return
 

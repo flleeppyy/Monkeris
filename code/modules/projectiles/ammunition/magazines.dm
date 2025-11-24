@@ -716,7 +716,7 @@
 	..()
 	cut_overlays()
 
-	if(stored_ammo.len)
+	if(length(stored_ammo))
 		var/obj/item/ammo_casing/LS = stored_ammo[1]
 		overlays += "m12_shell_[LS.shell_color]" // Last shell is sticking out
 
@@ -745,7 +745,7 @@
 	..()
 	cut_overlays()
 
-	if(stored_ammo.len)
+	if(length(stored_ammo))
 		var/obj/item/ammo_casing/LS = stored_ammo[1]
 		overlays += "m12_short_shell_[LS.shell_color]"
 

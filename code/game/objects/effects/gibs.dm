@@ -49,7 +49,7 @@
 					gib.blood_DNA["Non-human DNA"] = "A+"
 				if(istype(location,/turf/))
 					var/list/directions = gibdirections[i]
-					if(directions.len)
+					if(length(directions))
 						gib.streak(directions)
 
 	qdel(src)

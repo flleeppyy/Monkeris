@@ -65,7 +65,7 @@
 	if(get_amount() <= 0 || !product_location)
 		return
 	var/atom/movable/product
-	if(instances && instances.len)
+	if(length(instances))
 		product = instances[instances.len]
 		instances.Remove(product)
 	else
@@ -833,7 +833,7 @@
 
 	//Pitch to the people!  Really sell it!
 	if(((last_slogan + slogan_delay) <= world.time) && (slogan_list.len > 0 || custom_vendor) && (!shut_up) && prob(5))
-		if(slogan_list.len)
+		if(length(slogan_list))
 			var/slogan = pick(slogan_list)
 			speak(slogan)
 			last_slogan = world.time

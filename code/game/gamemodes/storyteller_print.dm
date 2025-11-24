@@ -1,6 +1,6 @@
 /datum/storyteller/proc/declare_completion()
 	var/text = ""
-	if(GLOB.current_antags.len)
+	if(length(GLOB.current_antags))
 		var/list/antags_by_ids = list()
 		text += "<br><font size=3><b>Round antagonists were:</b></font>"
 		for(var/datum/antagonist/A in GLOB.current_antags)
@@ -21,7 +21,7 @@
 				text += "<br><b>The [fA.role_text]:</b>"
 				text += fA.print_success()
 
-	if(GLOB.current_factions.len)
+	if(length(GLOB.current_factions))
 		text += "<br><font size=3><b>Round factions were:</b></font>"
 		for(var/datum/faction/F in GLOB.current_factions)
 			text += F.print_success()
@@ -109,7 +109,7 @@
 
 	data += "<hr><b>Current antags:</b><div style='border:1px solid black;'><ul>"
 
-	if (GLOB.current_antags.len)
+	if(length(GLOB.current_antags))
 		for(var/datum/antagonist/A in GLOB.current_antags)
 			var/act = "<font color=red>DEAD</font>"
 			if(!A.is_dead())

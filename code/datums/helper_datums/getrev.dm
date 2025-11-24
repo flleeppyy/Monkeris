@@ -45,7 +45,7 @@ GLOBAL_DATUM_INIT(revdata,/datum/getrev, new)
 	return msg.Join("\n")
 
 /datum/getrev/proc/GetTestMergeInfo(header = TRUE)
-	if(!testmerge.len)
+	if(!length(testmerge))
 		return ""
 	. = header ? "The following pull requests are currently test merged:<br>" : ""
 	for(var/line in testmerge)

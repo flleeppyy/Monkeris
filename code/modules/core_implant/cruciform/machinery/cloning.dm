@@ -354,7 +354,7 @@
 /obj/machinery/neotheology/biomass_container/update_icon()
 	overlays.Cut()
 	var/list/new_overlays = update_overlays()
-	if(new_overlays.len)
+	if(length(new_overlays))
 		for(var/overlay in new_overlays)
 			overlays.Add(overlay)
 

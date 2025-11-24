@@ -125,7 +125,7 @@
 			continue
 		unreceived[asset_name] = ACI
 
-	if (unreceived.len)
+	if(length(unreceived))
 		if (unreceived.len >= ASSET_CACHE_TELL_CLIENT_AMOUNT)
 			to_chat(client, span_infoplain("Sending Resources..."))
 

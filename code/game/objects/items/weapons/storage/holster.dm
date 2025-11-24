@@ -290,7 +290,7 @@
 /obj/item/clothing/accessory/holster/attack_hand(mob/user as mob)
 	add_fingerprint(user)
 	if(loc == has_suit)
-		if(holster.contents.len)
+		if(length(holster.contents))
 			var/obj/item/I = holster.contents[holster.contents.len]
 			if(istype(I))
 				user.put_in_active_hand(I)
@@ -338,7 +338,7 @@
 				holster_handled = TRUE
 				break
 		else
-			if(holster.contents.len)//pulling items out of holsters
+			if(length(holster.contents))//pulling items out of holsters
 				holster.attack_hand(H)
 				holster_handled = TRUE
 				break
@@ -350,7 +350,7 @@
 		return TRUE
 
 /obj/item/storage/pouch/holster/attack_hand(mob/living/carbon/human/H)
-	if(contents.len)
+	if(length(contents))
 		var/obj/item/I = contents[contents.len]
 		if(istype(I))
 			if(H.a_intent == I_HURT)
@@ -379,19 +379,19 @@
 /obj/item/storage/pouch/holster/update_icon()
 	..()
 	cut_overlays()
-	if(contents.len)
+	if(length(contents))
 		overlays += image('icons/inventory/pockets/icon.dmi', "pistol_layer")
 
 /obj/item/storage/pouch/holster/baton/update_icon()
 	..()
 	cut_overlays()
-	if(contents.len)
+	if(length(contents))
 		overlays += image('icons/inventory/pockets/icon.dmi', "baton_layer")
 
 /obj/item/storage/pouch/holster/belt/update_icon()
 	..()
 	cut_overlays()
-	if(contents.len)
+	if(length(contents))
 		overlays += image('icons/inventory/pockets/icon.dmi', "revolver_layer[contents.len]")
 
 /obj/item/storage/pouch/holster/belt/sheath/update_icon()
@@ -406,13 +406,13 @@
 /obj/item/storage/pouch/holster/belt/knife/update_icon()
 	..()
 	cut_overlays()
-	if(contents.len)
+	if(length(contents))
 		overlays += image('icons/inventory/pockets/icon.dmi', "knife_[contents.len]")
 
 /obj/item/storage/pouch/holster/belt/sheath/improvised/update_icon()
 	..()
 	cut_overlays()
-	if(contents.len)
+	if(length(contents))
 		add_overlay(image('icons/inventory/accessory/icon.dmi', "sheath_scrapsword_layer"))
 
 /obj/item/clothing/accessory/holster/scabbard/update_icon()
@@ -421,11 +421,11 @@
 		icon_to_set = SW.icon_state
 	..()
 	cut_overlays()
-	if(contents.len)
+	if(length(contents))
 		add_overlay(image('icons/inventory/accessory/icon.dmi', "sheath_[contents.len ? icon_to_set :"0"]"))
 
 /obj/item/clothing/accessory/holster/scabbard/improvised/update_icon()
 	..()
 	cut_overlays()
-	if(contents.len)
+	if(length(contents))
 		add_overlay(image('icons/inventory/accessory/icon.dmi', "sheath_scrapsword_layer"))

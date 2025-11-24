@@ -2,7 +2,7 @@
 	return mix_color_from_reagents(reagent_list)
 
 /proc/mix_color_from_reagents(list/reagent_list)
-	if(!istype(reagent_list) || !reagent_list.len)
+	if(!istype(reagent_list) || !length(reagent_list))
 		return "#ffffffff"
 
 	var/mixcolor

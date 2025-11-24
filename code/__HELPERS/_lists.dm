@@ -78,7 +78,7 @@
 #define LAZYAMINUS(L,K,V) if(L && L[K]) { L[K] -= V; if(!LAZYLEN(L[K])) { L -= K } }
 
 // Insert an object A into a sorted list using cmp_proc (/code/_helpers/cmp.dm) for comparison.
-#define ADD_SORTED(list, A, cmp_proc) if(!list.len) {list.Add(A)} else {list.Insert(FindElementIndex(A, list, cmp_proc), A)}
+#define ADD_SORTED(list, A, cmp_proc) if(!length(list)) {list.Add(A)} else {list.Insert(FindElementIndex(A, list, cmp_proc), A)}
 
 /// Passed into BINARY_INSERT to compare keys
 #define COMPARE_KEY __BIN_LIST[__BIN_MID]
@@ -158,7 +158,7 @@
 
 //Checks if the list is empty
 /proc/isemptylist(list/L)
-	if(!L.len)
+	if(!length(L))
 		return TRUE
 	return FALSE
 
@@ -371,7 +371,7 @@
 
 //Pick a random element from the list and remove it from the list.
 /proc/pick_n_take(list/L)
-	if(L.len)
+	if(length(L))
 		var/picked = rand(1,L.len)
 		. = L[picked]
 		L.Cut(picked,picked+1)			//Cut is far more efficient that Remove()
@@ -379,13 +379,13 @@
 //Pick a random element from the list by weight and remove it from the list.
 //Result is returned as a list in the format list(key, value)
 /proc/pickweight_n_take(list/L)
-	if (L.len)
+	if(length(L))
 		. = pickweight(L)
 		L.Remove(.)
 
 //Returns the top(last) element from the list and removes it from the list (typical stack function)
 /proc/pop(list/L)
-	if(L.len)
+	if(length(L))
 		. = L[L.len]
 		L.len--
 
@@ -396,7 +396,7 @@
 		return target_list[list_length]
 
 /proc/popleft(list/L)
-	if(L.len)
+	if(length(L))
 		. = L[1]
 		L.Cut(1,2)
 
@@ -429,7 +429,7 @@
  */
 
 /proc/reverseRange(list/L, start=1, end=0)
-	if(L.len)
+	if(length(L))
 		start = start % L.len
 		end = end % (L.len+1)
 		if(start <= 0)
@@ -855,7 +855,7 @@ Checks if a list has the same entries and values as an element of big.
 	return 0
 
 /proc/parse_for_paths(list/data)
-	if(!islist(data) || !data.len)
+	if(!islist(data) || !length(data))
 		return list()
 	var/list/types = list()
 	if(is_associative(data))

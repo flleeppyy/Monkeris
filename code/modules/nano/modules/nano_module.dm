@@ -120,7 +120,7 @@
 		return 0
 
 	if(href_list["go_back_entry"])
-		if(entry_history.len)
+		if(length(entry_history))
 			selected_entry = entry_history[entry_history.len]
 			entry_history.Remove(selected_entry)
 			browse_catalog_entry(selected_entry, usr)

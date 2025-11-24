@@ -269,7 +269,7 @@ var/list/global/cutoff_plant_icons = list()
 		if(direction & i)
 			dirList += i
 
-	if(dirList.len)
+	if(length(dirList))
 		var/newDir = pick(dirList)
 		if(newDir == UP)
 			newDir = 1

@@ -80,7 +80,7 @@
 	var/list/robotools = list()
 	for(var/obj/item/tool/robotool in R.module.modules)
 		robotools.Add(robotool)
-	if(robotools.len)
+	if(length(robotools))
 		var/obj/item/tool/chosen_tool = input(user,"Which tool are you trying to modify?","Tool Modification","Cancel") in robotools + "Cancel"
 		if(chosen_tool == "Cancel")
 			return FALSE
@@ -90,7 +90,7 @@
 	return FALSE
 
 /datum/component/item_upgrade/proc/check_tool(obj/item/tool/T, mob/living/user)
-	if(!tool_upgrades.len)
+	if(!length(tool_upgrades))
 		to_chat(user, span_warning("\The [parent] can not be attached to a tool."))
 		return FALSE
 
@@ -99,7 +99,7 @@
 			to_chat(user, span_warning("This tool can't fit anymore modifications!"))
 		return FALSE
 
-	if(required_qualities.len)
+	if(length(required_qualities))
 		var/qmatch = FALSE
 		for (var/q in required_qualities)
 			if(T.ever_has_quality(q))
@@ -111,7 +111,7 @@
 				to_chat(user, span_warning("This tool lacks the required qualities!"))
 			return FALSE
 
-	if(negative_qualities.len)
+	if(length(negative_qualities))
 		for(var/i in negative_qualities)
 			if(T.ever_has_quality(i))
 				if(user)
@@ -152,7 +152,7 @@
 	return TRUE
 
 /datum/component/item_upgrade/proc/check_gun(obj/item/gun/G, mob/living/user)
-	if(!weapon_upgrades.len)
+	if(!length(weapon_upgrades))
 		if(user)
 			to_chat(user, span_warning("\The [parent] can not be applied to guns!"))
 		return FALSE //Can't be applied to a weapon
@@ -185,7 +185,7 @@
 	if(istype(parent, /obj/item/part/gun/modular))
 		// Caliber check coming for barrels
 		if(istype(parent, /obj/item/part/gun/modular/barrel))
-			if(MG.good_calibers.len)
+			if(length(MG.good_calibers))
 				var/obj/item/part/gun/modular/barrel/B = parent
 				var/check = FALSE
 				for(var/i in MG.good_calibers)
@@ -525,11 +525,11 @@
 		reference.Add(span_warning("Increases tool size by [tool_upgrades[UPGRADE_BULK]]"))
 	if(tool_upgrades[UPGRADE_MAXUPGRADES])
 		reference.Add(span_notice("Adds [tool_upgrades[UPGRADE_MAXUPGRADES]] additional modification slots."))
-	if(required_qualities.len)
+	if(length(required_qualities))
 		reference.Add(span_warning("Requires a tool with one of the following qualities:"))
 		reference.Add(english_list(required_qualities, and_text = " or "))
 
-	if(weapon_upgrades.len)
+	if(length(weapon_upgrades))
 		reference.Add(span_notice("Can be attached to a firearm, giving the following benefits:"))
 
 		if(weapon_upgrades[GUN_UPGRADE_DAMAGEMOD_PLUS])

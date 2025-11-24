@@ -20,7 +20,7 @@
 		fail("[T.name]\'s mutated flesh rejects your will.", user, C)
 		return FALSE
 
-	if(T.metabolism_effects.addiction_list.len)
+	if(length(T.metabolism_effects.addiction_list))
 		for(var/addiction in T.metabolism_effects.addiction_list)
 			var/datum/reagent/R = addiction
 			if(!R)

@@ -115,7 +115,7 @@ GLOBAL_LIST_INIT(default_uplink_source_priority, list(
 	if(M.client && M.client.prefs)
 		priority_order = M.client.prefs.uplink_sources
 
-	if(!priority_order || !priority_order.len)
+	if(!length(priority_order))
 		priority_order = list()
 		for(var/entry in GLOB.default_uplink_source_priority)
 			priority_order += decls_repository.get_decl(entry)

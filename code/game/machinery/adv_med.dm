@@ -331,7 +331,7 @@
 
 		if(e.rejecting)
 			other_wounds += "being rejected"
-		if (e.implants.len)
+		if(length(e.implants))
 			var/unknown_body = FALSE
 			for(var/I in e.implants)
 				if(is_type_in_list(I,known_implants))

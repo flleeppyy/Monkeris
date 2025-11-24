@@ -172,7 +172,7 @@ var/global/list/robot_modules = list(
 		else if(F.times_used)
 			F.times_used--
 
-	if(!synths || !synths.len)
+	if(!length(synths))
 		return
 
 	for(var/datum/matter_synth/T in synths)

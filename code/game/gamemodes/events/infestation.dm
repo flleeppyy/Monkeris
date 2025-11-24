@@ -203,7 +203,7 @@ It focuses on spawning large numbers of moderate-to-weak monsters, and includes 
 				continue
 			var/area/A = get_area(B)
 			areanames += strip_improper(A.name)
-		if (areanames.len)
+		if(length(areanames))
 			switch(severity)
 				if (EVENT_LEVEL_MUNDANE)
 					priority_announce("Bioscans indicate that [chosen_mob] [chosen_verb] [english_list(areanames)]. Clear them out before this starts to affect productivity.", event_name, sound = 'sound/AI/vermin.ogg')

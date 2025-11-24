@@ -13,17 +13,17 @@ var/decl/overmap_event_handler/overmap_event_handler = new()
 	// Acquire the list of not-yet utilized overmap turfs on this Z-level
 	var/list/events_by_turf = get_event_turfs_by_z_level(z_level)
 	var/list/candidate_turfs = block(locate(OVERMAP_EDGE, OVERMAP_EDGE, z_level),locate(overmap_size - OVERMAP_EDGE, overmap_size - OVERMAP_EDGE,z_level))
-//	if(!candidate_turfs.len)
+//	if(!length(candidate_turfs))
 //		world << "candidate_tufs list is empty after creation"
 	candidate_turfs -= events_by_turf
-//	if(!candidate_turfs.len)
+//	if(!length(candidate_turfs))
 //		world << "candidate_tufs list gets empty after removing events_by_turf"
 	candidate_turfs = where(candidate_turfs, /proc/can_not_locate, /obj/effect/overmap)
-//	if(!candidate_turfs.len)
+//	if(!length(candidate_turfs))
 //		world << "candidate_tufs list gets empty after where()"
 
 	for(var/i = 1 to number_of_events)
-		if(!candidate_turfs.len)
+		if(!length(candidate_turfs))
 //			world << "No candidate_tufs"
 			break
 		var/overmap_event_type = pick(subtypesof(/datum/overmap_event))
@@ -53,7 +53,7 @@ var/decl/overmap_event_handler/overmap_event_handler = new()
 /decl/overmap_event_handler/proc/spawn_points_of_interest(list/candidate_turfs)
 	var/list/pois = list(/obj/effect/overmap_event/poi/debris, /obj/effect/overmap_event/poi/station)
 	for(var/path in pois)
-		if(!candidate_turfs.len)
+		if(!length(candidate_turfs))
 			break
 		var/turf/poi_turf = pick(candidate_turfs)
 		candidate_turfs -= poi_turf

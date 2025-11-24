@@ -208,7 +208,7 @@ var/intercom_range_display_status = 0
 	testZAScolors_turfs.Cut()
 	testZAScolors_zones.Cut()
 
-	if(images.len)
+	if(length(images))
 		for(var/image/i in images)
 			if(i.icon_state == "zasdebug")
 				images.Remove(i)

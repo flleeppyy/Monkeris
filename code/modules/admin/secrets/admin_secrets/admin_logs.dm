@@ -8,6 +8,6 @@
 	var/dat = "<B>Admin Log<HR></B>"
 	for(var/l in admin_log)
 		dat += "<li>[l]</li>"
-	if(!admin_log.len)
+	if(!length(admin_log))
 		dat += "No-one has done anything this round!"
 	user << browse(HTML_SKELETON_TITLE("Admin Logs", dat), "window=admin_log")

@@ -6,7 +6,7 @@
 
 
 /proc/chem_splash(turf/epicenter, affected_range = 3, list/datum/reagents/reactants = list(), extra_heat = 0, threatscale = 1)
-	if(!isturf(epicenter) || !reactants.len || threatscale <= 0 || affected_range < 0)
+	if(!isturf(epicenter) || !length(reactants) || threatscale <= 0 || affected_range < 0)
 		return
 	var/has_reagents
 	var/total_reagents
@@ -64,7 +64,7 @@
 				reactable |= A
 			if(extra_heat >= 300)
 				T.hotspot_expose(extra_heat*2, 5)
-		if(!reactable.len) //Nothing to react with. Probably means we're in nullspace.
+		if(!length(reactable)) //Nothing to react with. Probably means we're in nullspace.
 			return
 		for(var/thing in reactable)
 			var/atom/A = thing

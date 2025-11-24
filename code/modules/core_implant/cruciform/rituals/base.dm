@@ -140,7 +140,7 @@
 			to_chat(H, span_rose("[T] has a cruciform installed."))
 			cruciforms++
 		humans.Add(T)
-	if(!humans.len)
+	if(!length(humans))
 		fail("There is no one around you.", H, C)
 		return FALSE
 	else if(!cruciforms)

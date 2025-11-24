@@ -168,7 +168,7 @@
 
 /obj/item/storage/fancy/cigarettes/close_all()
 	. = ..()
-	if(contents.len)
+	if(length(contents))
 		open = FALSE
 
 /obj/item/storage/fancy/cigarettes/show_to(mob/user)

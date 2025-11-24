@@ -35,9 +35,9 @@
 		ae = new/obj/item/electronics/airlock( src.loc )
 		if(!src.req_access)
 			src.check_access()
-		if(src.req_access.len)
+		if(length(src.req_access))
 			ae.conf_access = src.req_access
-		else if (src.req_one_access.len)
+		else if(length(src.req_one_access))
 			ae.conf_access = src.req_one_access
 			ae.one_access = 1
 	else
@@ -228,9 +228,9 @@
 				ae = new/obj/item/electronics/airlock( src.loc )
 				if(!src.req_access)
 					src.check_access()
-				if(src.req_access.len)
+				if(length(src.req_access))
 					ae.conf_access = src.req_access
-				else if (src.req_one_access.len)
+				else if(length(src.req_one_access))
 					ae.conf_access = src.req_one_access
 					ae.one_access = 1
 			else

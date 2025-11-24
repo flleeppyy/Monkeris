@@ -17,7 +17,7 @@
 	color_key = default_dna_machinery_style
 	update_icon()
 	log_add("Initialization complete.")
-	if(req_access.len)
+	if(length(req_access))
 		add_statverb(/datum/statverb/hack_console)
 
 

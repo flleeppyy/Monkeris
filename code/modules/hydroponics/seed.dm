@@ -118,7 +118,7 @@
 		return
 
 	var/datum/reagents/R = new/datum/reagents(100)
-	if(chems.len)
+	if(length(chems))
 		for(var/rid in chems)
 			var/injecting = min(5,max(1,get_trait(TRAIT_POTENCY)/3))
 			R.add_reagent(rid,injecting)
@@ -177,7 +177,7 @@
 /datum/seed/proc/do_sting(mob/living/carbon/human/target, obj/item/fruit)
 	if(!get_trait(TRAIT_STINGS))
 		return
-	if(chems && chems.len)
+	if(length(chems))
 
 		var/body_coverage = HEAD|FACE|EYES|UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 
@@ -298,7 +298,7 @@
 
 	var/health_change = 0
 	// Handle gas consumption.
-	if(consume_gasses && consume_gasses.len)
+	if(length(consume_gasses))
 		var/missing_gas = 0
 		for(var/gas in consume_gasses)
 			if(environment && environment.gas && environment.gas[gas] && \
@@ -462,7 +462,7 @@
 			)
 
 		for(var/x=1;x<=additional_chems;x++)
-			if(!possible_chems.len)
+			if(!length(possible_chems))
 				break
 			var/new_chem = pick(possible_chems)
 			possible_chems -= new_chem
@@ -522,7 +522,7 @@
 
 //Returns a key corresponding to an entry in the global seed list.
 /datum/seed/proc/get_mutant_variant()
-	if(!mutants || !mutants.len || get_trait(TRAIT_IMMUTABLE) > 0) return 0
+	if(!mutants || !length(mutants) || get_trait(TRAIT_IMMUTABLE) > 0) return 0
 	return pick(mutants)
 
 //Mutates the plant overall (randomly).

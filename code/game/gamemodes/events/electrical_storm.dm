@@ -45,14 +45,14 @@
 					apcs += apc
 
 		for(var/i = 1; i <= lightsoutAmount; i++)
-			if(apcs.len)
+			if(length(apcs))
 				var/picked = pick(apcs)
 				epicentreList += picked
 				apcs -= picked
 			else
 				break
 
-		if(!epicentreList.len)
+		if(!length(epicentreList))
 			return
 
 		for(var/epicentre in epicentreList)

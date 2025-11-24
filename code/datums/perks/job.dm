@@ -119,7 +119,7 @@
 	if(!..())
 		return
 	var/list/choices = list(CHOICE_RAREOBJ)
-	if(GLOB.various_antag_contracts.len)
+	if(length(GLOB.various_antag_contracts))
 		choices += CHOICE_TCONTRACT
 	var/datum/stash/stash = pick_n_take_stash_datum()
 	if(stash)
@@ -132,7 +132,7 @@
 		var/datum/language/L = GLOB.all_languages[l]
 		if(L in holder.languages)
 			valid_languages -= l
-	if(valid_languages.len)
+	if(length(valid_languages))
 		choices += CHOICE_LANG
 	// Let's pick a random choice
 	switch(pick(choices))

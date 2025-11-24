@@ -239,7 +239,7 @@
 		extra_description += span_notice("\nRequirements: <span style='color:red'>[blood_req]</span>/<span style='color:blue'>[oxygen_req]</span>/<span style='color:orange'>[nutriment_req]</span>")
 		extra_description += span_notice("\nOrgan tissues present (efficiency): <span style='color:pink'>[organs ? organs : "none"]</span>")
 
-		if(item_upgrades.len)
+		if(length(item_upgrades))
 			extra_description += span_notice("\nOrgan grafts present ([item_upgrades.len]/[max_upgrades]). Use a laser cutting tool to remove.")
 	..(user, extra_description)
 

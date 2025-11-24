@@ -106,7 +106,7 @@
 		return ..()
 	if(istype(AM, /mob/living/exosuit))
 		var/mob/living/exosuit/exosuit = AM
-		if(exosuit.pilots.len)
+		if(length(exosuit.pilots))
 			for(var/mob/M in exosuit.pilots)
 				if(world.time - M.last_bumped <= 10) return //Can bump-open one airlock per second. This is to prevent popup message spam.
 				M.last_bumped = world.time

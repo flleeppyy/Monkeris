@@ -184,7 +184,7 @@
 				"content" = F.gene_value,
 				"index" = "[++index]")))
 
-	if(files.len)
+	if(length(files))
 		data["have_files"] = TRUE
 		data["files"] = files
 

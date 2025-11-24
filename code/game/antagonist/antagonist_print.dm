@@ -123,7 +123,7 @@
 	return text
 
 /datum/antagonist/proc/print_uplink()
-	if(!uplinks.len || !owner)
+	if(!length(uplinks) || !owner)
 		return
 
 	var/text = ""
@@ -138,7 +138,7 @@
 				purchases.Add("[H.purchase_log[UI]]x[UI.log_icon()][UI.name]")
 
 	text += " (used [TC_uses] TC)"
-	if(purchases.len)
+	if(length(purchases))
 		text += "<br>[english_list(purchases, nothing_text = "")]"
 
 	return text

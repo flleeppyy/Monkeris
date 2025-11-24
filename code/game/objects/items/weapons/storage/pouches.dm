@@ -263,7 +263,7 @@
 /obj/item/storage/pouch/tubular/update_icon()
 	..()
 	cut_overlays()
-	if(contents.len)
+	if(length(contents))
 		overlays += image('icons/inventory/pockets/icon.dmi', "flare_[contents.len]")
 
 /obj/item/storage/pouch/holding

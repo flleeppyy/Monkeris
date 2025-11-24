@@ -83,7 +83,7 @@ var/global/list/all_objectives_types = null
 		return FALSE
 
 	//Special handling for targeting other antags
-	if (M.antagonist.len)
+	if(length(M.antagonist))
 		for (var/datum/antagonist/A in M.antagonist)
 			//Make sure we don't target our own faction
 			if (owner_faction && (owner_faction == A.faction))
@@ -109,7 +109,7 @@ var/global/list/all_objectives_types = null
 
 /datum/objective/proc/select_human_target(mob/user)
 	var/list/possible_targets = get_targets_list()
-	if(!possible_targets || !possible_targets.len)
+	if(!length(possible_targets))
 		to_chat(user, span_warning("Sorry! No possible targets found!"))
 		return
 	var/datum/mind/M = input(user, "New target") as null|anything in possible_targets

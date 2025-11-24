@@ -142,7 +142,7 @@
 		if(saw_off == FALSE)
 			to_chat(user, span_notice("Sawing down \the [src] will achieve nothing or may impede operation."))
 			return
-		if (src.item_upgrades.len)
+		if(length(src.item_upgrades))
 			if(src.dna_compare_samples) //or else you can override dna lock
 				to_chat(user, span_notice("Sawing down \the [src] will not allow use of the firearm."))
 				return

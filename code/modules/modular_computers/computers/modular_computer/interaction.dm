@@ -225,7 +225,7 @@
 		switch(tool_type)
 			if(QUALITY_BOLT_TURNING)
 				var/list/components = get_all_components()
-				if(components.len)
+				if(length(components))
 					to_chat(user, "Remove all components from \the [src] before disassembling it.")
 					return
 				if(tool.use_tool(user, src, WORKTIME_SLOW, QUALITY_BOLT_TURNING, FAILCHANCE_VERY_EASY, required_stat = STAT_COG))
@@ -245,7 +245,7 @@
 
 			if(QUALITY_SCREW_DRIVING)
 				var/list/all_components = get_all_components()
-				if(!all_components.len)
+				if(!length(all_components))
 					to_chat(user, "This device doesn't have any components installed.")
 					return
 				var/list/component_names = list()

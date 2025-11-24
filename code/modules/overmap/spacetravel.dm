@@ -33,7 +33,7 @@ var/list/cached_space = list()
 	var/obj/effect/overmap/sector/temporary/res = locate(x, y, GLOB.maps_data.overmap_z)
 	if(istype(res))
 		return res
-	else if(cached_space.len)
+	else if(length(cached_space))
 		res = cached_space[cached_space.len]
 		cached_space -= res
 		res.x = x

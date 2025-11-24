@@ -88,7 +88,7 @@
 
 
 	var/choice
-	if(!choices.len)
+	if(!length(choices))
 		to_chat(user, span_warning("There is no evidence on \the [A]."))
 		return
 	else if(choices.len == 1)
@@ -102,7 +102,7 @@
 	var/sample_type
 	switch(choice)
 		if("Blood")
-			if(!A.blood_DNA || !A.blood_DNA.len)
+			if(!length(A.blood_DNA))
 				return FALSE
 			dna = A.blood_DNA.Copy()
 			sample_type = "blood"

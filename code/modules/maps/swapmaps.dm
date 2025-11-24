@@ -470,18 +470,18 @@
 	// do not save mobs with keys; do save other mobs
 	var/mob/M
 	for(M in src) if(M.key) break
-	if(overlays.len) S["overlays"]<<overlays
-	if(underlays.len) S["underlays"]<<underlays
+	if(length(overlays)) S["overlays"]<<overlays
+	if(length(underlays)) S["underlays"]<<underlays
 	if(contents.len && !isarea(src))
 		var/list/l=contents
 		if(M)
 			l=l.Copy()
 			for(M in src) if(M.key) l-=M
-		if(l.len) S["contents"]<<l
+		if(length(l)) S["contents"]<<l
 		if(l!=contents) qdel(l)
 /atom/Read(savefile/S)
 	var/list/l
-	if(contents.len) l=contents
+	if(length(contents)) l=contents
 	..()
 	// if the icon was a text string, it would not have loaded properly
 	// replace it from the cache list

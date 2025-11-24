@@ -163,7 +163,7 @@
 										"output" = output, \
 										"con_lock" = P.con_lock)
 
-	if(portData.len)
+	if(length(portData))
 		data["ports"] = portData
 	if(output)
 		data["set_flow_rate"] = round(set_flow_rate*10)		//because nanoui can't handle rounded decimals.

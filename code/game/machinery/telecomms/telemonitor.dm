@@ -25,7 +25,7 @@
 		if(0)
 			dat += "<br>[temp]<br><br>"
 			dat += "<br>Current Network: <a href='byond://?src=\ref[src];network=1'>[network]</a><br>"
-			if(machinelist.len)
+			if(length(machinelist))
 				dat += "<br>Detected Network Entities:<ul>"
 				for(var/obj/machinery/telecomms/T in machinelist)
 					dat += "<li><a href='byond://?src=\ref[src];viewmachine=[T.id]'>\ref[T] [T.name]</a> ([T.id])</li>"
@@ -85,7 +85,7 @@
 				else
 					machinelist = find_machines()
 
-					if(!machinelist.len)
+					if(!length(machinelist))
 						temp = "<font color = #D70B00>- FAILED: UNABLE TO LOCATE NETWORK ENTITIES IN \[[network]\] -</font>"
 					else
 						temp = "<font color = #336699>- [machinelist.len] ENTITIES LOCATED & BUFFERED -</font>"

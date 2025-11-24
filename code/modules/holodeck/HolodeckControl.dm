@@ -46,7 +46,7 @@
 		onclose(user, "computer")
 		return
 
-	if(!supported_programs.len)
+	if(!length(supported_programs))
 		dat += span_danger("Warning: No supported holo-programs loaded.<br>")
 		user << browse(HTML_SKELETON_TITLE("Holodeck Control", dat), "window=computer;size=400x500")
 		onclose(user, "computer")

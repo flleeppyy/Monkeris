@@ -51,13 +51,13 @@
 	var/list/valid_paths
 
 /datum/gear_tweak/path/New(list/valid_paths)
-	if(!valid_paths.len)
+	if(!length(valid_paths))
 		CRASH("No type paths given")
 	var/list/duplicate_keys = duplicates(valid_paths)
-	if(duplicate_keys.len)
+	if(length(duplicate_keys))
 		CRASH("Duplicate names found: [english_list(duplicate_keys)]")
 	var/list/duplicate_values = duplicates(list_values(valid_paths))
-	if(duplicate_values.len)
+	if(length(duplicate_values))
 		CRASH("Duplicate types found: [english_list(duplicate_values)]")
 	for(var/path_name in valid_paths)
 		if(!istext(path_name))

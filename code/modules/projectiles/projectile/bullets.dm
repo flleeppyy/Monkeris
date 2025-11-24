@@ -168,7 +168,7 @@
 					return
 
 /obj/item/projectile/bullet/pellet/adjust_damages(list/newdamages)
-	if(!newdamages.len)
+	if(!length(newdamages))
 		return
 	for(var/damage_type in newdamages)
 		var/bonus = pellets > 2 ? newdamages[damage_type] / pellets * 2 : newdamages[damage_type]

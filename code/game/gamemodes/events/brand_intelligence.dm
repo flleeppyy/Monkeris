@@ -34,7 +34,7 @@
 			continue
 		vendingMachines.Add(V)
 
-	if(!vendingMachines.len)
+	if(!length(vendingMachines))
 		kill()
 		return
 
@@ -48,7 +48,7 @@
 
 
 /datum/event/brand_intelligence/tick()
-	if(!vendingMachines.len || !originMachine || originMachine.shut_up || infectedVendingMachines.len >= max_infections)	//if every machine is infected, or if the original vending machine is missing or has it's voice switch flipped
+	if(!length(vendingMachines) || !originMachine || originMachine.shut_up || infectedVendingMachines.len >= max_infections)	//if every machine is infected, or if the original vending machine is missing or has it's voice switch flipped
 		end()
 		kill()
 		return

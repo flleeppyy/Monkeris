@@ -69,7 +69,7 @@
 /decl/observ/proc/is_listening(event_source, datum/listener, proc_call)
 	// Return whether there are global listeners unless the event source is given.
 	if (!event_source)
-		return !!global_listeners.len
+		return !!length(global_listeners)
 
 	// Return whether anything is listening to a source, if no listener is given.
 	if (!listener)
@@ -143,7 +143,7 @@
 	if (!proc_call)
 		if(listeners.Remove(listener))
 			// Perform some cleanup and return true.
-			if (!listeners.len)
+			if (!length(listeners))
 				event_sources -= event_source
 			return TRUE
 		return FALSE
@@ -157,9 +157,9 @@
 	if(!callbacks.Remove(proc_call))
 		return FALSE
 
-	if (!callbacks.len)
+	if (!length(callbacks))
 		listeners -= listener
-	if (!listeners.len)
+	if (!length(listeners))
 		event_sources -= event_source
 	return TRUE
 
@@ -197,13 +197,13 @@
 	if(!callbacks.Remove(proc_call))
 		return FALSE
 
-	if (!callbacks.len)
+	if (!length(callbacks))
 		global_listeners -= listener
 	return TRUE
 
 /decl/observ/proc/raise_event()
 	// Sanity
-	if (!args.len)
+	if (!length(args))
 		return FALSE
 
 	// Call the global listeners.

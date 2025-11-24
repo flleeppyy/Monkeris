@@ -214,7 +214,7 @@
 			else if(patrol_target)
 				spawn(0)
 					calc_path()
-					if(!path.len)
+					if(!length(path))
 						patrol_target = null
 						mode = SECBOT_IDLE
 					else
@@ -284,7 +284,7 @@
 				if(!C.handcuffed)
 					C.handcuffed = new /obj/item/handcuffs(C)
 					C.update_inv_handcuffed()
-				if(preparing_arrest_sounds.len)
+				if(length(preparing_arrest_sounds))
 					playsound(loc, pick(preparing_arrest_sounds), 50, 0)
 	else if(isanimal(M))
 		var/mob/living/simple_animal/S = M

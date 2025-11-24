@@ -155,7 +155,7 @@
 	var/datum/reagents/to_splash = new()
 	to_splash.maximum_volume = INFINITY
 	//well i'll never test this cause there is no recipes with byproducts, so if YOU, yes you, the one who decided to add some, its up to you to fix this
-	if(byproducts.len)
+	if(length(byproducts))
 		for(var/i = 1 to created_volume/result_amount) // this to evenly fill holder
 			for(var/id in byproducts)
 				if(holder.get_free_space() > byproducts[id])

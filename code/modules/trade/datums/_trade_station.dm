@@ -178,7 +178,7 @@
 				restock_candidates[restock_index] = content
 
 	for(var/count in 1 to 20)
-		if(!restock_candidates.len || !wealth)
+		if(!length(restock_candidates) || !wealth)
 			break
 
 		var/list/good_packet = pick(restock_candidates)
@@ -253,7 +253,7 @@
 			var/list/category = inventory[category_name]
 			var/list/item_path_check = list(item_path)
 			var/list/good_path = category & item_path_check
-			if(good_path.len)
+			if(length(good_path))
 				if(islist(category[item_path]))
 					var/list/good_packet = category[item_path]
 					. += good_packet["price"]

@@ -335,14 +335,14 @@ This file contains the underlying code for stash datums
 	var/category = null
 	var/list/possible_stashes = list()
 	while (category_resolved == FALSE)
-		if (!possible_categories.len)
+		if (!length(possible_categories))
 			break
 
 		category = pickweight_n_take(possible_categories)
 
 		//Now lets check that this category actually has any stashes left in it
 		possible_stashes = GLOB.all_stash_datums[category]
-		if (possible_stashes.len)
+		if(length(possible_stashes))
 			category_resolved = TRUE
 		else
 			category = null //Go around again

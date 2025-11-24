@@ -43,11 +43,11 @@
 		if(latejoin)
 			return INITIALIZE_HINT_LATELOAD
 		var/list/spawns = spawn_item()
-		if(spawns.len)
+		if(length(spawns))
 			burrow()
 			if(has_postspawn)
 				post_spawn(spawns)
-			if(editvar.len)
+			if(length(editvar))
 				for(var/atom/tospawn in spawns)
 					for(var/replacewith in editvar)
 						if(hasvar(tospawn, replacewith)) //this broke roachcubes spawning near roaches somehow
@@ -61,7 +61,7 @@
 	..()
 	if(latejoin)
 		var/list/spawns = spawn_item()
-		if(spawns.len)
+		if(length(spawns))
 			burrow()
 			if(has_postspawn)
 				post_spawn(spawns)
@@ -91,7 +91,7 @@
 		var/build_path = item_to_spawn()
 		if(!build_path)
 			return list()
-		if(!points_for_spawn.len)
+		if(!length(points_for_spawn))
 			to_world_log("Spawner \"[type]\" ([x],[y],[z]) try spawn without free space around!")
 			break
 		var/atom/T = pick(points_for_spawn)
@@ -157,7 +157,7 @@
 			if(top <= candidates.len)
 				var/top_spawn = CLAMP(top, 1, min(candidates.len,7))
 				candidates = SSspawn_data.only_top_candidates(candidates, top_spawn)
-	//if(!candidates.len)
+	//if(!length(candidates))
 	//	return
 	return pick_spawn(candidates)
 
@@ -207,14 +207,14 @@
 
 /obj/randomcatcher/proc/get_item(type, with_aditional_object=FALSE)
 	new type(src, with_aditional_object)
-	if(contents.len)
+	if(length(contents))
 		. = pick(contents)
 	else
 		return
 
 /obj/randomcatcher/proc/get_items(type, with_aditional_object=FALSE)
 	new type(src, with_aditional_object)
-	if(contents.len)
+	if(length(contents))
 		return contents
 	else
 		return

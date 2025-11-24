@@ -528,7 +528,7 @@ var/global/list/damage_icon_parts = list()
 		//accessories
 		if (istype(w_uniform, /obj/item/clothing/under))//Prevent runtime errors with unusual objects
 			var/obj/item/clothing/under/under = w_uniform
-			if(under.accessories.len)
+			if(length(under.accessories))
 				for(var/obj/item/clothing/accessory/A in under.accessories)
 					standing.overlays |= A.get_mob_overlay()
 
@@ -975,7 +975,7 @@ var/global/list/damage_icon_parts = list()
 
 		//Rig module overlays on mob.
 		if(istype(back, /obj/item/rig))
-			var/obj/item/rig/rig = back//Maybe add if(rig.installed_modules.len) below this since the code for accessories does that far as I know.
+			var/obj/item/rig/rig = back//Maybe add if(length(rig.installed_modules)) below this since the code for accessories does that far as I know.
 			for(var/obj/item/rig_module/module in rig.installed_modules)
 				if(module.suit_overlay)
 					standing.overlays += image("icon" = 'icons/mob/rig_modules.dmi', "icon_state" = module.suit_overlay)

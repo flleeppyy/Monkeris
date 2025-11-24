@@ -354,7 +354,7 @@
 		if(computer?.printer)
 			var/list/log_data = SStrade.get_log_data_by_id(log_id)
 
-			if(!log_data.len)
+			if(!length(log_data))
 				to_chat(usr, span_warning("Unable to print invoice: no log with id \"[log_id]\" found."))
 				return
 

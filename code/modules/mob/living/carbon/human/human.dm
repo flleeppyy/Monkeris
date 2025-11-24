@@ -275,7 +275,7 @@
 	if(legcuffed)
 		dat += "<BR><A href='byond://?src=\ref[src];item=[slot_legcuffed]'>Legcuffed</A>"
 
-	if(suit && suit.accessories.len)
+	if(length(suit?.accessories))
 		dat += "<BR><A href='byond://?src=\ref[src];item=tie'>Remove accessory</A>"
 	dat += "<BR><A href='byond://?src=\ref[src];item=splints'>Remove splints</A>"
 	dat += "<BR><A href='byond://?src=\ref[src];item=pockets'>Empty pockets</A>"
@@ -554,7 +554,7 @@ var/list/rank_prefix = list(\
 								if(setmedical != "Cancel")
 									R.fields["p_stat"] = setmedical
 									modified = 1
-									if(PDA_Manifest.len)
+									if(length(PDA_Manifest))
 										PDA_Manifest.Cut()
 
 									spawn()
@@ -852,7 +852,7 @@ var/list/rank_prefix = list(\
 			if(shoes.clean_blood())
 				update_inv_shoes()
 		else
-			if(feet_blood_DNA && feet_blood_DNA.len)
+			if(length(feet_blood_DNA))
 				feet_blood_color = null
 				feet_blood_DNA.Cut()
 				update_inv_shoes()
@@ -957,7 +957,7 @@ var/list/rank_prefix = list(\
 		maxHealth = species.total_health
 		skin_color = species.base_color || "#000000"
 		icon_state = lowertext(species.name)
-		if (!organs.len)
+		if (!length(organs))
 			rebuild_organs()
 			src.sync_organ_dna()
 
@@ -981,7 +981,7 @@ var/list/rank_prefix = list(\
 
 	icon_state = lowertext(species.name)
 
-	if(species.has_process.len)
+	if(length(species.has_process))
 		for(var/process in species.has_process)
 			internal_organs_by_efficiency[process] = list()
 
@@ -1043,11 +1043,11 @@ var/list/rank_prefix = list(\
 		for(var/obj/item/organ/organ in (organs|internal_organs))
 			qdel(organ)
 
-		if(organs.len)
+		if(length(organs))
 			organs.Cut()
-		if(internal_organs.len)
+		if(length(internal_organs))
 			internal_organs.Cut()
-		if(organs_by_name.len)
+		if(length(organs_by_name))
 			organs_by_name.Cut()
 		var/datum/preferences/Pref
 		if(istype(from_preference, /datum/preferences))
@@ -1079,10 +1079,14 @@ var/list/rank_prefix = list(\
 				new organ_type(src)
 
 		var/datum/category_item/setup_option/core_implant/I = Pref.get_option("Core implant")
+		log_debug("implant hopefully [I] [I?.implant_type]")
 		if(I.implant_type && (!mind || mind.assigned_role != "Robot"))
+			log_debug("yeah we be implanting n shit")
 			var/obj/item/implant/core_implant/C = new I.implant_type
 			C.install(src)
+			log_debug("we are INSTALLED! [QDELETED(C)]")
 			C.activate()
+			log_debug("we are ACTIVATED! [QDELETED(C)]")
 			if(mind)
 				C.install_default_modules_by_job(mind.assigned_job)
 				C.access.Add(mind.assigned_job.cruciform_access)
@@ -1111,10 +1115,14 @@ var/list/rank_prefix = list(\
 
 		if(checkprefcruciform && client)
 			var/datum/category_item/setup_option/core_implant/I = client.prefs.get_option("Core implant")
+			log_debug("NOT formpref implant hopefully [I] [I?.implant_type]")
 			if(I.implant_type)
+				log_debug("NOT formpref  yeah we be implanting n shit")
 				var/obj/item/implant/core_implant/C = new I.implant_type
 				C.install(src)
+				log_debug("NOT formpref  we are INSTALLED! [QDELETED(C)]")
 				C.activate()
+				log_debug("NOT formpref we are ACTIVATED! [QDELETED(C)]")
 				C.install_default_modules_by_job(mind.assigned_job)
 				C.access.Add(mind.assigned_job.cruciform_access)
 				C.security_clearance = mind.assigned_job.security_clearance
@@ -1129,9 +1137,13 @@ var/list/rank_prefix = list(\
 
 /mob/living/carbon/human/proc/post_prefinit()
 	var/obj/item/implant/core_implant/C = locate() in src
+	log_debug("post pref init [src]")
 	if(C)
+		log_debug("post pref init [src] - cruicicrofmr exists!")
 		C.install(src)
+		log_debug("post pref init [src] - we are instlaled!!")
 		C.activate()
+		log_debug("post pref init [src] - we are activated!!")
 		C.install_default_modules_by_job(mind.assigned_job)
 		C.access |= mind.assigned_job.cruciform_access
 		C.security_clearance = mind.assigned_job.security_clearance
@@ -1248,12 +1260,12 @@ var/list/rank_prefix = list(\
 	return ..()
 
 /mob/living/carbon/human/has_brain()
-	if(organ_list_by_process(BP_BRAIN).len)
+	if(length(organ_list_by_process(BP_BRAIN)))
 		return TRUE
 	return FALSE
 
 /mob/living/carbon/human/has_eyes()
-	if(organ_list_by_process(BP_EYES).len)
+	if(length(organ_list_by_process(BP_EYES)))
 		for(var/obj/item/organ/internal/eyes in organ_list_by_process(OP_EYES))
 			if(!(eyes && istype(eyes) && !(eyes.status & ORGAN_CUT_AWAY)))
 				return FALSE
@@ -1316,7 +1328,7 @@ var/list/rank_prefix = list(\
 	if(w_uniform)
 		if(istype(w_uniform,/obj/item/clothing/under))
 			var/obj/item/clothing/under/U = w_uniform
-			if(U.accessories.len)
+			if(length(U.accessories))
 				for(var/obj/item/clothing/accessory/holster/H in U.accessories)
 					if(get_active_held_item())//do we hold something?
 						H.attackby(get_active_held_item(), src)
@@ -1348,7 +1360,7 @@ var/list/rank_prefix = list(\
 //			output for machines^	^^^^^^^output for people^^^^^^^^^
 
 /mob/living/carbon/human/proc/pulse()
-	if(stat == DEAD || !(organ_list_by_process(OP_HEART).len))
+	if(stat == DEAD || !length(organ_list_by_process(OP_HEART)))
 		return PULSE_NONE
 	else
 		return pulse
@@ -1437,7 +1449,7 @@ var/list/rank_prefix = list(\
 			status += "dangling uselessly"
 
 		var/status_text = span_notice("OK")
-		if(status.len)
+		if(length(status))
 			status_text = span_warning(english_list(status))
 
 		combined_msg += "My [org.name] is [status_text]."
@@ -1556,7 +1568,7 @@ var/list/rank_prefix = list(\
 		b_type = pick(GLOB.blood_types)
 
 	if(!isMonkey(src))
-		while(dormant_mutations.len < STARTING_MUTATIONS)
+		while(length(dormant_mutations) < STARTING_MUTATIONS)
 			var/datum/mutation/M = pickweight(list(
 				pick(subtypesof(/datum/mutation/t0)) = 45,
 				pick(subtypesof(/datum/mutation/t1)) = 25,

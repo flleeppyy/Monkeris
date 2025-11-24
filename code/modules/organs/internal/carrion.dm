@@ -89,7 +89,7 @@
 
 	var/list/options = list()
 	var/obj/item/implant/carrion_spider/S
-	if (!spiderlist.len)
+	if (!length(spiderlist))
 		to_chat(owner, span_warning("You dont have any spiders evolved!"))
 		return
 
@@ -277,7 +277,7 @@
 	if (!owner)
 		return
 
-	if(!absorbed_dna.len)
+	if(!length(absorbed_dna))
 		to_chat(owner, span_warning("You have no DNA absorbed!"))
 		return
 
@@ -410,7 +410,7 @@
 					else if (istype(to_blacklist, /obj/item/organ/internal/vital/brain/))
 						blacklist += to_blacklist// removing bones from a valid_organs list based on
 				var/list/valid_organs = E.internal_organs - blacklist// E.internal_organs gibs the victim.
-				if (!valid_organs.len)
+				if (!length(valid_organs))
 					visible_message(span_danger("[owner] tears up [H]'s [E.name]!"))
 					return
 				var/obj/item/organ/internal/organ_to_remove = pick(valid_organs)

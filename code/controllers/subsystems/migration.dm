@@ -103,7 +103,7 @@ This proc will attempt to create a burrow against a wall, within view of the tar
 
 
 	//This can happen, there's at least one room made of catwalks that has no floor, and thusly no burrow spots
-	if (!possible_turfs.len)
+	if (!length(possible_turfs))
 		return
 
 
@@ -128,7 +128,7 @@ This proc will attempt to create a burrow against a wall, within view of the tar
 	if (world.time > next_scan)
 		do_scan()
 
-	if (distressed_burrows.len)
+	if(length(distressed_burrows))
 		handle_distress_calls()
 
 	if (world.time > next_migrate)
@@ -265,7 +265,7 @@ This proc will attempt to create a burrow against a wall, within view of the tar
 
 	for (var/i = 0; i < num_attempts; i++)
 
-		if (!candidates || !candidates.len)
+		if (!length(candidates))
 			return null
 
 		candidate = pick_n_take(candidates)

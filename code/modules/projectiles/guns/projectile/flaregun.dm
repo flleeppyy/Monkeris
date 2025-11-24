@@ -25,12 +25,12 @@
 	..()
 
 	if(bolt_open)
-		if(loaded.len)
+		if(length(loaded))
 			icon_state = "full_open"
 		else
 			icon_state = "empty_open"
 	else
-		if(loaded.len)
+		if(length(loaded))
 			icon_state = "full"
 		else
 			icon_state = "empty"
@@ -81,7 +81,7 @@
 	..()
 
 /obj/item/gun/projectile/flare_gun/get_ammo() // Let's keep it simple. Count spent casing twice otherwise.
-	if(loaded.len)
+	if(length(loaded))
 		return 1
 	return 0
 
@@ -100,12 +100,12 @@
 	..()
 
 	if(bolt_open)
-		if(loaded.len)
+		if(length(loaded))
 			icon_state = "full_open_r"
 		else
 			icon_state = "empty_open_r"
 	else
-		if(loaded.len)
+		if(length(loaded))
 			icon_state = "full_r"
 		else
 			icon_state = "empty_r"

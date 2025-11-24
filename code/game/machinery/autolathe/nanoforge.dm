@@ -77,7 +77,7 @@
 		to_chat(user, span_warning("Catalyst not found."))
 		return
 	var/list/candidates = SSspawn_data.valid_candidates(tags_to_spawn, null, FALSE, null, null, TRUE, null, nano_disks, null)
-	if(!candidates.len)
+	if(!length(candidates))
 		to_chat(user, span_warning("[src] has reached its maximum capacity."))
 		return
 	var/path = SSspawn_data.pick_spawn(candidates)

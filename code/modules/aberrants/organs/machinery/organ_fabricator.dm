@@ -96,7 +96,7 @@
 /obj/machinery/autolathe/organ_fabricator/nano_ui_interact()
 	if(!islist(categories))		// Runtime occured when the categories var was 0, but the null check wasn't catching it.
 		categories = list()
-	if(!categories.len)
+	if(!length(categories))
 		categories = files.design_categories_organfab
 	if(!disk && !show_category && categories.len)
 		show_category = categories[1]

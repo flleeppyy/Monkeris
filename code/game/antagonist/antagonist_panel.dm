@@ -30,7 +30,7 @@
 			dat += "<a href='byond://?src=\ref[src];add_faction=1'>\[add\]</a>"
 			dat += "<a href='byond://?src=\ref[src];new_faction=1'>\[new\]</a>"
 		dat += "<br><i>Objectives are in faction panel.</i>"
-	else if(objectives.len)
+	else if(length(objectives))
 		dat += "<b>Objectives</b><br>"
 		var/num = 1
 		for(var/datum/objective/O in objectives)
@@ -157,7 +157,7 @@
 /* !TODO: This should be implemented in storyteller_print.dm (GLOB.storyteller.antagonist_report())
 /datum/antagonist/proc/get_check_antag_output(datum/admins/requester)
 
-	if(!current_antagonists || !current_antagonists.len)
+	if(!length(current_antagonists))
 		return ""
 
 	var/dat = "<br><table cellspacing=5><tr><td><B>[role_text_plural]</B></td><td></td></tr>"

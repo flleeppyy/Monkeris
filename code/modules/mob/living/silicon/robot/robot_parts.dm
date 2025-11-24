@@ -111,11 +111,11 @@
 
 /obj/item/robot_parts/robot_suit/is_ready()
 	var/list/missed = req_parts - parts
-	return !missed.len
+	return !length(missed)
 
 /obj/item/robot_parts/robot_suit/attackby(obj/item/W as obj, mob/user as mob)
 	..()
-	if(istype(W, /obj/item/stack/material) && W.get_material_name() == MATERIAL_STEEL && !parts.len)
+	if(istype(W, /obj/item/stack/material) && W.get_material_name() == MATERIAL_STEEL && !length(parts))
 		var/obj/item/stack/material/M = W
 		if (M.use(1))
 			var/obj/item/secbot_assembly/ed209_assembly/B = new(loc)

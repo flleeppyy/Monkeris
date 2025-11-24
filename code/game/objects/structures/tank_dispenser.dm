@@ -97,14 +97,14 @@
 
 	var/obj/item/tank/tank
 	if(href_list["oxygen"] && oxygentanks > 0)
-		if(oxytanks.len)
+		if(length(oxytanks))
 			tank = oxytanks[oxytanks.len]	// Last stored tank is always the first one to be dispensed
 			oxytanks.Remove(tank)
 		else
 			tank = new /obj/item/tank/oxygen(loc)
 		oxygentanks--
 	if(href_list["plasma"] && plasmatanks > 0)
-		if(platanks.len)
+		if(length(platanks))
 			tank = platanks[platanks.len]
 			platanks.Remove(tank)
 		else

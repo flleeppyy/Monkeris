@@ -40,7 +40,7 @@ calculate text size per text.
 				tastes[desc] = 0
 			tastes[desc] += temp.get_reagent_amount(R.id) * R.taste_mult
 			total_taste += temp.get_reagent_amount(R.id) * R.taste_mult
-		if(tastes.len)
+		if(length(tastes))
 			for(var/i in 1 to tastes.len)
 				var/size = "a hint of "
 				var/percent = tastes[tastes[i]]/total_taste * 100

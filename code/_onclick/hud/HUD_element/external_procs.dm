@@ -577,7 +577,7 @@ alignElements(var/horizontal, var/vertical, var/list/atom/movable/hud_element/ta
 	error("No element found with id \"[id]\".")
 
 /atom/movable/hud_element/proc/moveChildOnTop(id)
-	if(!_elements.len)
+	if(!length(_elements))
 		error("Element has no child elements.")
 		return
 	var/atom/movable/hud_element/E = getChildElementWithID(id)
@@ -589,7 +589,7 @@ alignElements(var/horizontal, var/vertical, var/list/atom/movable/hud_element/ta
 		error("moveChildOnTop(): No element with id \"[id]\" found.")
 
 /atom/movable/hud_element/proc/moveChildToBottom(id)
-	if(!_elements.len)
+	if(!length(_elements))
 		error("Element has no child elements.")
 		return
 	var/atom/movable/hud_element/E = getChildElementWithID(id)

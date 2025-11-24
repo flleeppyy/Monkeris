@@ -14,7 +14,7 @@
 	return 0
 
 /obj/effect/spider/attackby(obj/item/I, mob/user)
-	if(I.attack_verb.len)
+	if(length(I.attack_verb))
 		visible_message(span_warning("\The [src] have been [pick(I.attack_verb)] with \the [I][(user ? " by [user]." : ".")]"))
 	else
 		visible_message(span_warning("\The [src] have been attacked with \the [I][(user ? " by [user]." : ".")]"))
@@ -169,7 +169,7 @@
 				var/list/vents = list()
 				for(var/obj/machinery/atmospherics/unary/vent_pump/temp_vent in entry_vent.network.normal_members)
 					vents.Add(temp_vent)
-				if(!vents.len)
+				if(!length(vents))
 					entry_vent = null
 					return
 				var/obj/machinery/atmospherics/unary/vent_pump/exit_vent = pick(vents)
@@ -210,7 +210,7 @@
 	if(isturf(loc))
 		if(prob(25))
 			var/list/nearby = RANGE_TURFS(5, src) - loc
-			if(nearby.len)
+			if(length(nearby))
 				var/target_atom = pick(nearby)
 				walk_to(src, target_atom, 5)
 				if(prob(25))

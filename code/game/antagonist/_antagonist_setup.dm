@@ -223,7 +223,7 @@ GLOBAL_LIST_EMPTY(faction_types)
 		if(F.id == f_id)
 			factions.Add(F)
 
-	if(!factions.len)
+	if(!length(factions))
 		return new f_id
 	else
 		return factions[1]

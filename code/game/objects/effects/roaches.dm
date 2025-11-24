@@ -21,7 +21,7 @@
 	qdel(src)
 
 /obj/item/roach_egg/attackby(obj/item/I, mob/user)
-	if(I.attack_verb.len)
+	if(length(I.attack_verb))
 		visible_message(span_warning("\The [src] have been [pick(I.attack_verb)] with \the [I][(user ? " by [user]." : ".")]"))
 	else
 		visible_message(span_warning("\The [src] have been attacked with \the [I][(user ? " by [user]." : ".")]"))

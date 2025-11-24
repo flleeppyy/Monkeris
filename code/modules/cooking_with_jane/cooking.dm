@@ -684,7 +684,7 @@ Food quality is calculated based on the steps taken.
 							exclude_list += id
 							break
 				if(can_add)
-					if(exclude_specific_reagents.len)
+					if(length(exclude_specific_reagents))
 						for(var/id in exclude_specific_reagents)
 							#ifdef CWJ_DEBUG
 							log_debug("/recipe/proc/create_product: Removing [added_item.reagents.get_reagent_amount(id)] units of id [id] from [added_item]")

@@ -279,7 +279,7 @@ GLOBAL_LIST_EMPTY(all_catalog_entries_by_type)
 			nutrition = E.nutriment_factor > 1 ? "High" : "Low"
 		strength = E.strength <= 15 ? "Light" : E.strength <= 50 ? "Strong" : "Knocking out"
 		thing_nature = "Alcohol drink"
-		if(E.taste_tag.len)
+		if(length(E.taste_tag))
 			taste_tag = list()
 			for(var/tastes in E.taste_tag)
 				taste_tag += tastes

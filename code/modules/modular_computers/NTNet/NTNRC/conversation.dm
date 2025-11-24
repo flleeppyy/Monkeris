@@ -49,7 +49,7 @@ var/global/ntnrc_uid = 0
 	// Channel operator left, pick new operator
 	if(C == operator)
 		operator = null
-		if(GLOB.clients.len)
+		if(length(GLOB.clients))
 			var/datum/computer_file/program/chatclient/newop = pick(GLOB.clients)
 			changeop(newop)
 

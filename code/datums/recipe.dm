@@ -52,7 +52,7 @@
 
 /datum/recipe/proc/check_fruit(obj/container)
 	. = 1
-	if(fruit && fruit.len)
+	if(length(fruit))
 		var/list/checklist = list()
 		 // You should trust Copy().
 		checklist = fruit.Copy()
@@ -71,7 +71,7 @@
 
 /datum/recipe/proc/check_items(obj/container as obj)
 	. = 1
-	if (items && items.len)
+	if(length(items))
 		var/list/checklist = list()
 		checklist = items.Copy() // You should really trust Copy
 		for(var/obj/O in container)
@@ -86,7 +86,7 @@
 					break
 			if (!found)
 				. = 0
-		if (checklist.len)
+		if(length(checklist))
 			. = -1
 	return .
 

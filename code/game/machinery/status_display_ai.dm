@@ -103,14 +103,14 @@ var/list/ai_status_emotions = list(
 
 /obj/machinery/ai_status_display/proc/set_picture(state)
 	picture_state = state
-	if(overlays.len)
+	if(length(overlays))
 		overlays.Cut()
 	overlays += image('icons/obj/status_display.dmi', icon_state=picture_state)
 
 /obj/machinery/ai_status_display/power_change()
 	..()
 	if(stat & NOPOWER)
-		if(overlays.len)
+		if(length(overlays))
 			overlays.Cut()
 	else
 		update()

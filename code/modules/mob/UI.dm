@@ -219,7 +219,7 @@ TODO: LATER
 	if(!styleName)
 		error("UI style has no name.")
 		failed = TRUE
-	if(!_elements || !_elements.len)
+	if(!length(_elements))
 		error("UI style has no elements.")
 		failed = TRUE
 	for(var/atom/movable/hud_element/E in _elements)

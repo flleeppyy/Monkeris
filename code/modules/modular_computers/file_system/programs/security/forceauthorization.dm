@@ -40,7 +40,7 @@
 		data["guns"] += list(list("name" = "[G]", "ref" = "\ref[G]", "owner" = G.registered_owner, "modes" = modes, "loc" = list("x" = T.x, "y" = T.y, "z" = T.z)))
 	*/
 	var/list/guns = data["guns"]
-	if(!guns.len)
+	if(!length(guns))
 		data["message"] = "No weapons registered"
 
 	if(!data["is_silicon_usr"]) // don't send data even though they won't be able to see it

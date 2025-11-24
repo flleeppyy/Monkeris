@@ -88,7 +88,7 @@
 			continue
 
 		spawn_tags = params2list(initial(A.spawn_tags))
-		if(!spawn_tags.len)
+		if(!length(spawn_tags))
 			if(generate_files)
 				hard_blacklist_data << "[path]"
 			continue
@@ -101,7 +101,7 @@
 		accompanying_objs = initial(A.accompanying_object)
 		if(istext(accompanying_objs))
 			accompanying_objs = splittext(accompanying_objs, ",")
-			if(accompanying_objs.len)
+			if(length(accompanying_objs))
 				var/list/temp_list = accompanying_objs
 				accompanying_objs = list()
 				for(var/obj_text in temp_list)
@@ -338,7 +338,7 @@ the value of stock parts increases with the rating.
 		var/path_value = cached_values[path] || get_spawn_value(path)
 		if(path_value == spawn_value)
 			things += path
-	if(!things.len)
+	if(!length(things))
 		return
 	return pick(things)
 
@@ -425,7 +425,7 @@ the value of stock parts increases with the rating.
 		if(invert_value)
 			max_value = INFINITY
 		var/selected_path
-		if(!copy_paths.len)
+		if(!length(copy_paths))
 			break
 		for(var/actual_path in copy_paths)
 			var/actual_value = cached_values[actual_path] || get_spawn_value(actual_path)
@@ -444,7 +444,7 @@ the value of stock parts increases with the rating.
 		if(invert_value)
 			max_value = -INFINITY
 		var/selected_path
-		if(!copy_paths.len)
+		if(!length(copy_paths))
 			break
 		for(var/actual_path in copy_paths)
 			var/actual_value = cached_prices[actual_path] || get_spawn_price(actual_path)

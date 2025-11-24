@@ -88,7 +88,7 @@
 
 
 /obj/effect/plant/hivemind/spread()
-	if(!hive_mind_ai || !master_node || !neighbors.len)
+	if(!hive_mind_ai || !master_node || !length(neighbors))
 		return
 
 	var/turf/target_turf = pick(neighbors)

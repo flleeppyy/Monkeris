@@ -967,7 +967,7 @@ All Canmove setting in this proc is temporary. This var should not be set from h
 		self = 1 // Removing object from yourself.
 
 	valid_objects = get_visible_implants()
-	if(!valid_objects.len)
+	if(!length(valid_objects))
 		if(self)
 			to_chat(src, "You have nothing stuck in your body that is large enough to remove.")
 		else
@@ -1029,7 +1029,7 @@ All Canmove setting in this proc is temporary. This var should not be set from h
 	for(var/obj/item/O in pinned)
 		if(O == selection)
 			pinned -= O
-		if(!pinned.len)
+		if(!length(pinned))
 			anchored = FALSE
 	return 1
 

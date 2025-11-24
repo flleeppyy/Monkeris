@@ -32,7 +32,7 @@
 		return
 
 	matter = material.get_matter()
-	if(matter.len)
+	if(length(matter))
 		for(var/material_type in matter)
 			if(!isnull(matter[material_type]))
 				matter[material_type] = round(max(1, matter[material_type] * force_divisor)) // current system uses rounded values, so no less than 1.

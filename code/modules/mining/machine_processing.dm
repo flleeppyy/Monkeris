@@ -156,7 +156,7 @@
 		for(var/alloytype in subtypesof(/datum/alloy))
 			alloy_data += new alloytype()
 
-	if(!ore_data || !ore_data.len)
+	if(!length(ore_data))
 		for(var/oretype in subtypesof(/ore))
 			var/ore/OD = new oretype()
 			ore_data[OD.name] = OD

@@ -146,7 +146,7 @@
 
 	average_field_strength = max(average_field_strength, 0)
 
-	if(field.len)
+	if(length(field))
 		time_since_fail++
 		var/total_renwick_increase = 0 //the amount of renwicks that the generator can add this tick, over the entire field
 		var/renwick_upkeep_per_field = max(average_field_strength * dissipation_rate, min_dissipation)

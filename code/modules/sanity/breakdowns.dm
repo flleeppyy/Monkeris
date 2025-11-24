@@ -196,7 +196,7 @@
 						"[holder.owner] bites [G.his] own limbs uncontrollably!"
 					))))
 					var/list/obj/item/organ/external/parts = holder.owner.get_damageable_organs()
-					if(parts.len)
+					if(length(parts))
 						holder.owner.damage_through_armor(rand(2,4), def_zone = pick(parts))
 
 /datum/breakdown/negative/selfharm/occur()
@@ -405,7 +405,7 @@
 
 /datum/breakdown/negative/glassification/can_occur()
 	var/list/candidates = (GLOB.player_list & GLOB.living_mob_list & GLOB.human_mob_list) - holder.owner
-	if(candidates.len)
+	if(length(candidates))
 		return TRUE
 	return FALSE
 
@@ -419,7 +419,7 @@
 	if(!.)
 		return FALSE
 	var/list/targets = (GLOB.player_list & GLOB.living_mob_list & GLOB.human_mob_list) - holder.owner
-	if(targets.len)
+	if(length(targets))
 		target = pick(targets)
 		holder.owner.remoteviewer = TRUE
 		holder.owner.set_remoteview(target)
@@ -571,7 +571,7 @@
 
 /datum/breakdown/common/obsession/can_occur()
 	var/list/candidates = (GLOB.player_list & GLOB.living_mob_list & GLOB.human_mob_list) - holder.owner
-	if(candidates.len)
+	if(length(candidates))
 		target = pick(candidates)
 		start_messages = list("[target.name] knows the way out. [target.name] is hiding something. [target.name] is the key! [target.name] is yours!")
 		return TRUE

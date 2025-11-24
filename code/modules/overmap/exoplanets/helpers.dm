@@ -36,7 +36,7 @@ var/list/exoplanet_map_data = list()
 GLOBAL_LIST_EMPTY(banned_ruin_ids)
 
 /proc/seedRuins(list/z_levels = null, budget = 0, whitelist = /area/space, list/potentialRuins, maxx = world.maxx, maxy = world.maxy)
-	if(!z_levels || !z_levels.len)
+	if(!length(z_levels))
 		testing("No Z levels provided - Not generating ruins")
 		return
 
@@ -56,7 +56,7 @@ GLOBAL_LIST_EMPTY(banned_ruin_ids)
 	while(budget > 0)
 		// Pick a ruin
 		var/datum/map_template/ruin/ruin = null
-		if(ruins && ruins.len)
+		if(length(ruins))
 			ruin = pick(ruins)
 			if(ruin.cost > budget)
 				ruins -= ruin

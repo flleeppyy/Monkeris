@@ -199,9 +199,9 @@
 	var/list/candidates = get_candidates_list(role_id)
 
 
-	if (candidates.len)
+	if(length(candidates))
 		for (var/i = 1; i <= target_quantity;i++)
-			if (!candidates.len)
+			if (!length(candidates))
 				break
 
 			var/datum/antagonist/A = new antag.type

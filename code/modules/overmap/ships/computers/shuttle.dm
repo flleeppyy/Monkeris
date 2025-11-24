@@ -34,9 +34,9 @@
 	var/fuel_pressure = 0
 	var/fuel_max_pressure = 0
 	if(shuttle.fuel_ports)
-		if(shuttle.fuel_ports.len)
+		if(length(shuttle.fuel_ports))
 			for(var/obj/structure/fuel_port/FP in shuttle.fuel_ports) //loop through fuel ports
-				if(FP.contents.len)
+				if(length(FP.contents))
 					var/obj/item/tank/fuel_tank = FP.contents[1]
 					if(istype(fuel_tank))
 						fuel_pressure += fuel_tank.air_contents.return_pressure()
@@ -84,7 +84,7 @@
 	if(href_list["pick"])
 		var/list/possible_d = shuttle.get_possible_destinations()
 		var/D
-		if(possible_d.len)
+		if(length(possible_d))
 			D = input("Choose shuttle destination", "Shuttle Destination") as null|anything in possible_d
 		else
 			to_chat(usr, span_warning("No valid landing sites in range."))

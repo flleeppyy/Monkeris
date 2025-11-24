@@ -42,7 +42,7 @@
 
 /obj/item/extinguisher/Initialize()
 	. = ..()
-	if(overlaylist.len)
+	if(length(overlaylist))
 		var/icon/temp = new /icon('icons/obj/items.dmi', overlaylist[rand(1,overlaylist.len)])
 		overlays += temp
 	create_reagents(max_water)

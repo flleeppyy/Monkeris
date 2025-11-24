@@ -27,7 +27,7 @@ GLOBAL_LIST_EMPTY(fabric_list)
 	var/list/states = icon_states('icons/effects/fabric_symbols.dmi', 2)
 
 	// Why this is happening?
-	if (!states.len)
+	if (!length(states))
 		return
 	fabric_image.icon_state = pick(states)
 	fabric_image.pixel_x = rand(-1,1)

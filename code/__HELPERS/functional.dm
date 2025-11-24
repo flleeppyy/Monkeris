@@ -13,7 +13,7 @@
 /proc/any_predicate_true(list/input, list/predicates)
 	functional_sanity(input, predicates)
 
-	if(!predicates.len)
+	if(!length(predicates))
 		return TRUE
 
 	for(var/i = 1 to predicates.len)

@@ -174,7 +174,7 @@
 /obj/item/clothing/nano_ui_data()
 	var/list/data = list()
 	var/list/armorlist = armor.getList()
-	if(armorlist.len)
+	if(length(armorlist))
 		var/list/armor_vals = list()
 		for(var/i in armorlist)
 			if(armorlist[i])
@@ -625,7 +625,7 @@ BLIND     // can't see anything
 
 
 /obj/item/clothing/under/attack_hand(mob/user)
-	if(accessories && accessories.len)
+	if(length(accessories))
 		..()
 	if ((ishuman(usr) || issmall(usr)) && src.loc == user)
 		return

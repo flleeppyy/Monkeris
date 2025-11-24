@@ -131,7 +131,7 @@ Works together with spawning an observer, noted above.
 	if(!loc) return
 	if(!client) return 0
 
-	if(client.images.len)
+	if(length(client.images))
 		for(var/image/hud in client.images)
 			if(copytext(hud.icon_state,1,4) == "hud")
 				client.images.Remove(hud)
@@ -141,7 +141,7 @@ Works together with spawning an observer, noted above.
 		for(var/mob/living/target in oview(src, 14))
 			if(target.mind && target.mind.antagonist.len != 0)
 				target_list += target
-		if(target_list.len)
+		if(length(target_list))
 			assess_targets(target_list, src)
 	if(medHUD)
 		process_medHUD(src)
@@ -312,7 +312,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		for(var/turf/T in get_area_turfs(thearea.type))
 			L+=T
 
-	if(!L || !L.len)
+	if(!length(L))
 		to_chat(usr, "No area available.")
 
 	stop_following()

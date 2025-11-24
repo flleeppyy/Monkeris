@@ -84,7 +84,7 @@
 	RegisterSignal(mind_holder, COMSIG_CARBON_HAPPY, PROC_REF(task_completed))
 
 /datum/individual_objective/addict/task_completed(datum/reagent/happy, signal)
-	if(!drugs.len)
+	if(!length(drugs))
 		timer = world.time
 	if(!(happy.id in drugs))
 		if(signal != MOB_DELETE_DRUG)

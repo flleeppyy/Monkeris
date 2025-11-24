@@ -49,7 +49,7 @@
 		var/tie_msg
 		if(istype(w_uniform,/obj/item/clothing/under))
 			var/obj/item/clothing/under/U = w_uniform
-			if(U.accessories.len)
+			if(length(U.accessories))
 				tie_msg += ". Attached to it is:"
 				for (var/obj/item/clothing/accessory in U.accessories)
 					tie_msg += "\n - [icon2html(accessory, user)] \A [accessory]"
@@ -71,7 +71,7 @@
 		var/tie_msg
 		if(istype(wear_suit, /obj/item/clothing/suit))
 			var/obj/item/clothing/suit/U = wear_suit
-			if(U.accessories.len)
+			if(length(U.accessories))
 				tie_msg += ". Attached to it is:"
 				for (var/obj/item/clothing/accessory in U.accessories)
 					tie_msg += "\n - [icon2html(accessory, user)] \A [accessory]"

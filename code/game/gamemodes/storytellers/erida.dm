@@ -45,7 +45,7 @@
 	var/max = 0
 	var/target = 0
 
-	if(!L.len)
+	if(!length(L))
 		return null
 
 	for(var/datum/storyevent/S in L)

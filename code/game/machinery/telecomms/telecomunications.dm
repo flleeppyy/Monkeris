@@ -119,7 +119,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	// return 1 if found, 0 if not found
 	if(!signal)
 		return 0
-	if((signal.frequency in freq_listening) || (!freq_listening.len))
+	if((signal.frequency in freq_listening) || (!length(freq_listening)))
 		return 1
 	else
 		return 0
@@ -138,7 +138,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 /obj/machinery/telecomms/LateInitialize()
 	..()
 	// Links nearby machines after the telecomm list is already populated
-	if(autolinkers.len)
+	if(length(autolinkers))
 		if(!long_range_link)
 			for(var/obj/machinery/telecomms/T in orange(20, src))
 				add_link(T)

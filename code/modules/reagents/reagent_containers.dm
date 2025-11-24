@@ -216,7 +216,7 @@
 	for(var/obj/item/reagent_containers/C in containers)
 		if(!C.is_refillable())
 			containers.Remove(C)
-	if(!containers.len)
+	if(!length(containers))
 		return FALSE
 	for(var/datum/reagent/R in reagents.reagent_list)
 		if(R.id in ignore_reagents_ids)

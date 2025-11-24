@@ -73,14 +73,14 @@
 		dat += "<a href='byond://?src=\ref[src];choice=toggle_cash_lock'>[cash_locked? "Unlock" : "Lock"] Cash Box</a> | "
 	dat += "<a href='byond://?src=\ref[src];choice=custom_order'>Custom Order</a><hr>"
 
-	if(item_list.len)
+	if(length(item_list))
 		dat += get_current_transaction()
 		dat += "<br>"
 
 	for(var/i=transaction_logs.len; i>=1; i--)
 		dat += "[transaction_logs[i]]<br>"
 
-	if(transaction_logs.len)
+	if(length(transaction_logs))
 		dat += locked ? "<br>" : "<a href='byond://?src=\ref[src];choice=reset_log'>Reset Log</a><br>"
 		dat += "<br>"
 	dat += "<i>Device ID:</i> [machine_id]"

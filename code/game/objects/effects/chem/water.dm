@@ -34,7 +34,7 @@
 			for (var/mob/M in affected_mobs)
 				reagents.splash(M, reagents.total_volume/affected_mobs.len, min_spill=0, max_spill=0)
 
-			if (affected_mobs.len)
+			if(length(affected_mobs))
 				break
 
 			if (T == get_turf(target))

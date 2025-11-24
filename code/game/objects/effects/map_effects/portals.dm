@@ -188,7 +188,7 @@ when portals are shortly lived, or when portals are made to be obvious with spec
 		if(M.portal_id == src.portal_id)
 			counterpart = M
 			M.counterpart = src
-			if(portal_lines.len)
+			if(length(portal_lines))
 				for(var/i = 1 to portal_lines.len)
 					var/obj/effect/map_effect/portal/line/our_line = portal_lines[i]
 					var/obj/effect/map_effect/portal/line/their_line = M.portal_lines[i]

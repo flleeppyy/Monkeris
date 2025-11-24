@@ -25,7 +25,7 @@
 
 	var/datum/species/mob_species = GLOB.all_species[species]
 	var/list/valid_hairstyles = mob_species.get_hair_styles()
-	if(valid_hairstyles.len)
+	if(length(valid_hairstyles))
 		h_style = pick(valid_hairstyles)
 
 	return h_style
@@ -34,7 +34,7 @@
 	var/f_style = "Shaved"
 	var/datum/species/mob_species = GLOB.all_species[species]
 	var/list/valid_facialhairstyles = mob_species.get_facial_hair_styles(gender)
-	if(valid_facialhairstyles.len)
+	if(length(valid_facialhairstyles))
 		f_style = pick(valid_facialhairstyles)
 		return f_style
 

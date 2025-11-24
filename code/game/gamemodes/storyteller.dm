@@ -276,7 +276,7 @@ GLOBAL_VAR_INIT(chaos_level, 1) //Works as global multiplier for all storyteller
 		if (EVENT_LEVEL_ROLESET)
 			temp_pool = event_pool_roleset.Copy()
 
-	if (!temp_pool || !temp_pool.len)
+	if (!length(temp_pool))
 		return FALSE
 
 	var/datum/storyevent/choice = null
@@ -288,7 +288,7 @@ GLOBAL_VAR_INIT(chaos_level, 1) //Works as global multiplier for all storyteller
 			temp_pool -= choice
 			choice = null
 
-		if (!temp_pool.len)
+		if (!length(temp_pool))
 			return FALSE
 			//Repeat until we find one which is allowed, or the pool is empty
 

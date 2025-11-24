@@ -182,7 +182,7 @@
 	max_spread = rand(1, max_spread)
 	for(var/i in 1 to max_spread)
 		sleep(rand(3,5))
-		if(!neighbors.len)
+		if(!length(neighbors))
 			break
 		var/turf/target_turf = pick(neighbors)
 		target_turf = get_connecting_turf(target_turf, loc)

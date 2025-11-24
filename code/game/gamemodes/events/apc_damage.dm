@@ -36,7 +36,7 @@
 			if(!istype(A,/area/eris/maintenance) || prob(25))
 				apcs += apc
 
-	if(!apcs.len)
+	if(!length(apcs))
 		return
 
 	return pick(apcs)

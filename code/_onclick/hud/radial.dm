@@ -223,7 +223,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	return "c_[choices.len]"
 
 /datum/radial_menu/proc/set_choices(list/new_choices, use_tooltips)
-	if(choices.len)
+	if(length(choices))
 		Reset()
 	for(var/E in new_choices)
 		var/id = get_next_id()

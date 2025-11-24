@@ -84,9 +84,9 @@ SUBSYSTEM_DEF(blackbox)
 			unresolved_tickets++
 	record_feedback("tally", "ahelp_stats", unresolved_tickets, "unresolved")
 	// for (var/obj/machinery/telecomms/message_server/MS in GLOB.telecomms_list)
-	// 	if (MS.pda_msgs.len)
+	// 	if(length(MS.pda_msgs))
 	// 		record_feedback("tally", "radio_usage", MS.pda_msgs.len, "PDA")
-	// 	if (MS.rc_msgs.len)
+	// 	if(length(MS.rc_msgs))
 	// 		record_feedback("tally", "radio_usage", MS.rc_msgs.len, "request console")
 
 	for(var/player_key in GLOB.clients)
@@ -328,7 +328,7 @@ Versioning
 
 	var/did_they_suicide = L.suicided
 
-	if(!did_they_suicide && !first_death.len)
+	if(!did_they_suicide && !length(first_death))
 		first_death["name"] = "[(L.real_name == L.name) ? L.real_name : "[L.real_name] as [L.name]"]"
 		first_death["role"] = null
 		first_death["role"] = L.mind.assigned_role

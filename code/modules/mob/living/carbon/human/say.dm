@@ -226,7 +226,7 @@
 				if(l_ear && istype(l_ear, /obj/item/device/radio))
 					if(l_ear.talk_into(src, message, message_mode, verb, speaking, speech_volume))
 						used_radios += l_ear
-				if(!used_radios.len && r_ear && istype(r_ear, /obj/item/device/radio))
+				if(!length(used_radios) && r_ear && istype(r_ear, /obj/item/device/radio))
 					if(r_ear.talk_into(src, message, message_mode, verb, speaking, speech_volume))
 						used_radios += r_ear
 

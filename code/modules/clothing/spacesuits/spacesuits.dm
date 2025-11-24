@@ -46,7 +46,7 @@
 
 /obj/item/clothing/head/space/Initialize()
 	. = ..()
-	if(camera_networks && camera_networks.len)
+	if(length(camera_networks))
 		verbs += /obj/item/clothing/head/space/proc/toggle_camera
 
 /obj/item/clothing/head/space/proc/toggle_camera()
@@ -118,7 +118,7 @@
 /obj/item/clothing/suit/space/proc/check_limb_support(mob/living/carbon/human/user)
 
 	// If this isn't set, then we don't need to care.
-	if(!supporting_limbs || !supporting_limbs.len)
+	if(!length(supporting_limbs))
 		return
 
 	if(!istype(user) || user.wear_suit == src)

@@ -61,7 +61,7 @@
 			candidates.Add(T)
 
 		//No nearby cables? Cancel
-		if (!candidates.len)
+		if (!length(candidates))
 			return INITIALIZE_HINT_QDEL
 
 

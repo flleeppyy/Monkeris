@@ -17,7 +17,7 @@
 /proc/sanitize_inlist(value, list/List, default)
 	if(value in List)	return value
 	if(default)			return default
-	if(List && List.len)return List[1]
+	if(length(List)) return List[1]
 
 
 

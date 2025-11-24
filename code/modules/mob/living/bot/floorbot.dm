@@ -117,7 +117,7 @@
 	if(prob(5))
 		visible_message("[src] makes an excited booping beeping sound!")
 
-	if(ignorelist.len) // Don't stick forever
+	if(length(ignorelist)) // Don't stick forever
 		for(var/T in ignorelist)
 			if(prob(1))
 				ignorelist -= T
@@ -171,7 +171,7 @@
 	if(target && get_turf(target) == loc)
 		UnarmedAttack(target)
 
-	if(target && get_turf(target) != loc && !path.len)
+	if(target && get_turf(target) != loc && !length(path))
 		spawn(0)
 			path = AStar(loc, get_turf(target), /turf/proc/AdjacentTurfsSpace, /turf/proc/Distance, 0, 30, id = botcard)
 			if(!path)
@@ -179,7 +179,7 @@
 				ignorelist += target
 				target = null
 
-	if(path.len)
+	if(length(path))
 		step_to(src, path[1])
 		path -= path[1]
 

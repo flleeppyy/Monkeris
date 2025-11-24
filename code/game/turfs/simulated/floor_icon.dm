@@ -110,7 +110,7 @@ var/list/flooring_cache = list()
 
 
 
-	if(decals && decals.len)
+	if(length(decals))
 		overlays |= decals
 
 	if(broken || burnt)

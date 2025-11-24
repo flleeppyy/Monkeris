@@ -117,7 +117,7 @@
 
 //fills the given dart with reagents
 /obj/item/gun/projectile/dartgun/proc/fill_dart(obj/item/projectile/bullet/chemdart/dart)
-	if(mixing.len)
+	if(length(mixing))
 		var/mix_amount = dart.reagent_amount/mixing.len
 		for(var/obj/item/reagent_containers/glass/beaker/B in mixing)
 			B.reagents.trans_to_obj(dart, mix_amount)
@@ -126,7 +126,7 @@
 	user.set_machine(src)
 	var/dat = "<b>[src] mixing control:</b><br><br>"
 
-	if (beakers.len)
+	if(length(beakers))
 		var/i = 1
 		for(var/obj/item/reagent_containers/glass/beaker/B in beakers)
 			dat += "Beaker [i] contains: "

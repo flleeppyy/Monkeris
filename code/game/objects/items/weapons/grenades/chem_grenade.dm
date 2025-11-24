@@ -37,7 +37,7 @@
 			det_time = null
 			stage = EMPTY
 			icon_state = initial(icon_state)
-		else if(beakers.len)
+		else if(length(beakers))
 			for(var/obj/B in beakers)
 				beakers -= B
 				user.put_in_hands(B)
@@ -82,7 +82,7 @@
 	else if(istype(W,/obj/item/tool/screwdriver) && path != 2)
 		if(stage == WIRED)
 			path = 1
-			if(beakers.len)
+			if(length(beakers))
 				to_chat(user, span_notice("You lock the assembly."))
 				name = "grenade"
 			else
@@ -225,7 +225,7 @@
 						S.reagents.trans_to(G, S.reagents.total_volume)
 				else
 				//	S.forceMove(get_turf(src))
-					if(beakers.len)
+					if(length(beakers))
 						for(var/obj/item/slime_extract/O in beakers)
 							O.forceMove(get_turf(src))
 						beakers = list()

@@ -29,10 +29,10 @@
 		return list("failReason" = JOB_REPORT_MENU_FAIL_REASON_TRACKING_DISABLED)
 
 	var/list/play_records = owner.prefs.exp
-	if (!play_records.len)
+	if (!length(play_records))
 		owner.set_exp_from_db()
 		play_records = owner.prefs.exp
-		if (!play_records.len)
+		if (!length(play_records))
 			return list("failReason" = JOB_REPORT_MENU_FAIL_REASON_NO_RECORDS)
 
 	var/list/data = list()

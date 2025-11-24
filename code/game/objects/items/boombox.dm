@@ -211,7 +211,7 @@
 
 // Advance to the next track - Don't start playing it unless we were already playing
 /obj/item/media/boombox/proc/NextTrack()
-	if(!tracks.len) return
+	if(!length(tracks)) return
 	var/curTrackIndex = max(1, tracks.Find(current_track))
 	var/newTrackIndex = (curTrackIndex % tracks.len) + 1  // Loop back around if past end
 	current_track = tracks[newTrackIndex]
@@ -221,7 +221,7 @@
 
 // Un-advance to the previous track - Don't start playing it unless we were already playing
 /obj/item/media/boombox/proc/PrevTrack()
-	if(!tracks.len) return
+	if(!length(tracks)) return
 	var/curTrackIndex = max(1, tracks.Find(current_track))
 	var/newTrackIndex = curTrackIndex == 1 ? tracks.len : curTrackIndex - 1
 	current_track = tracks[newTrackIndex]

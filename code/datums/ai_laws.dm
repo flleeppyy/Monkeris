@@ -53,7 +53,7 @@ var/global/const/base_law_type = /datum/ai_laws/eris
 	return statements
 
 /datum/ai_laws/proc/sort_laws()
-	if(sorted_laws.len)
+	if(length(sorted_laws))
 		return
 
 	for(var/ion_law in ion_laws)
