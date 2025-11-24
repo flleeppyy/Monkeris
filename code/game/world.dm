@@ -98,7 +98,6 @@ GLOBAL_VAR(restart_counter)
  * All atoms in both compiled and uncompiled maps are initialized()
  */
 /world/New()
-	log_world("Genesis over, loading world...")
 	//logs
 	href_logfile = file("[GLOB.log_directory]/hrefs.htm")
 
