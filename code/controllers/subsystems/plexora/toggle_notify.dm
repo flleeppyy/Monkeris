@@ -28,7 +28,7 @@
 		to_chat(src, span_notice("The server is still starting up. Please wait before attempting to link your account "))
 		return
 
-	if(!CONFIG_GET(flag/plexora_enabled) || !SSplexora.enabled)
+	if(!CONFIG_GET(string/plexora_url) || !SSplexora.enabled)
 		to_chat(src, span_warning("This feature requires Plexora to be enabled."))
 		return
 
