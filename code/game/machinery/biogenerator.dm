@@ -211,7 +211,7 @@
 		menustat = "nopoints"
 		return FALSE
 
-	if(reagent && !beaker)
+	if(recipe["reagent"] && !beaker)
 		to_chat(usr, span_notice("You need to insert a beaker!"))
 		return FALSE
 

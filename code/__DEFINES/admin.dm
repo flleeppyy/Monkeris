@@ -31,7 +31,7 @@
 /// When passed in as the duration for ban_panel, will make the ban default to permanent
 #define BAN_PANEL_PERMANENT "permanent"
 
-// Admin permissions.
+// Admin permissions. Make sure to update rights2text when you're done.
 #define R_NONE 			 NONE
 #define R_FUN           (1<<0)
 #define R_SERVER        (1<<1)
