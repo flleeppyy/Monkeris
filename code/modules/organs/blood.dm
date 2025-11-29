@@ -32,7 +32,7 @@
 		data["virus2"] = list()
 	data["blood_DNA"] = dna_trace
 	data["blood_type"] = b_type
-	data["species"] = species.name
+	data["species"] = species?.name || null
 	var/list/temp_chem = list()
 	for(var/datum/reagent/R in reagents.reagent_list)
 		temp_chem[R.type] = R.volume

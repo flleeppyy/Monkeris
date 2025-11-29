@@ -305,7 +305,7 @@
 	for(var/datum/component/fabric/F in GLOB.fabric_list)
 		if(F.parent == holder.owner)
 			continue
-		add_image(F.fabric_image)
+		add_image(null, F.fabric_image)
 	++holder.owner.language_blackout
 	return ..()
 
