@@ -679,7 +679,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
     return 0
 
 /mob/observer/ghost/can_admin_interact()
-	return check_rights(R_ADMIN, 0, src)
+	return check_rights(R_ADMIN)
 
 /mob/observer/ghost/verb/toggle_ghostsee()
 	set name = "Toggle Ghost Vision"
