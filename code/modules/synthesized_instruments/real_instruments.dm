@@ -276,7 +276,7 @@
 		if (!new_instrument.id) continue
 		new_instrument.create_full_sample_deviation_map()
 		src.instruments[new_instrument.name] = new_instrument
-	src.real_instrument = new /datum/real_instrument(src, new sound_player(src, instruments[pick(instruments)]), instruments)
+	src.real_instrument = new /datum/real_instrument(src, new sound_player(src, pick(instruments)), instruments)
 
 /obj/item/device/synthesized_instrument/Destroy()
 	QDEL_NULL(src.real_instrument)
