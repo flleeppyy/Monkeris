@@ -26,6 +26,7 @@
 	var/area_uid
 	var/id_tag
 
+	var/hibernate = 0 //Do we even process?
 	var/pump_direction = 1 //0 = siphoning, 1 = releasing
 	var/expanded_range = FALSE
 
@@ -147,6 +148,9 @@
 /obj/machinery/atmospherics/unary/vent_pump/Process()
 	..()
 
+	if (hibernate > world.time)
+		return 1
+
 	if (!node1)
 		use_power = NO_POWER_USE
 		return
@@ -188,6 +192,9 @@
 				//limit flow rate from turfs
 				transfer_moles = min(transfer_moles, environment.total_moles*air_contents.volume/environment.volume)	//group_multiplier gets divided out here
 				power_draw = pump_gas(src, environment, air_contents, transfer_moles, power_rating)
+		else
+			if(pump_direction && pressure_checks == PRESSURE_CHECK_EXTERNAL) //99% of all vents
+				hibernate = world.time + (rand(100,200))
 
 
 	if(power_draw > 0)
