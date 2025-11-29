@@ -202,7 +202,7 @@
 	var/datum/real_instrument/real_instrument
 	icon = 'icons/obj/musician.dmi'
 	//Initialization data
-	var/alist/instruments = alist()
+	var/datum/instrument/instruments = list()
 	var/path = /datum/instrument
 	var/sound_player = /datum/sound_player
 
@@ -213,7 +213,7 @@
 		if (!new_instrument.id) continue
 		new_instrument.create_full_sample_deviation_map()
 		src.instruments[new_instrument.name] = new_instrument
-	src.real_instrument = new /datum/real_instrument(src, new sound_player(src, pick(instruments)), instruments)
+	src.real_instrument = new /datum/real_instrument(src, new sound_player(src, instruments[pick(instruments)]), instruments)
 
 /obj/structure/synthesized_instrument/Destroy()
 	QDEL_NULL(src.real_instrument)
@@ -265,7 +265,7 @@
 /obj/item/device/synthesized_instrument
 	var/datum/real_instrument/real_instrument
 	icon = 'icons/obj/musician.dmi'
-	var/alist/instruments = alist()
+	var/datum/instrument/instruments = list()
 	var/path = /datum/instrument
 	var/sound_player = /datum/sound_player
 
@@ -276,7 +276,7 @@
 		if (!new_instrument.id) continue
 		new_instrument.create_full_sample_deviation_map()
 		src.instruments[new_instrument.name] = new_instrument
-	src.real_instrument = new /datum/real_instrument(src, new sound_player(src, pick(instruments)), instruments)
+	src.real_instrument = new /datum/real_instrument(src, new sound_player(src, instruments[pick(instruments)]), instruments)
 
 /obj/item/device/synthesized_instrument/Destroy()
 	QDEL_NULL(src.real_instrument)
