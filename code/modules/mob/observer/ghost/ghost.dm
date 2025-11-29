@@ -295,13 +295,18 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		M.antagHUD = 1
 		to_chat(src, span_blue("<B>AntagHUD Enabled</B>"))
 
-/mob/observer/ghost/proc/dead_tele(A in SSmapping.ghostteleportlocs)
+/mob/observer/ghost/proc/dead_tele()
 	set category = "Ghost"
 	set name = "Teleport"
 	set desc= "Teleport to a location"
 	if(!isghost(usr))
 		to_chat(usr, "Not when you're not dead!")
 		return
+
+	var/A = tgui_input_list(src, "Teleport to a location", "Teleport", SSmapping.ghostteleportlocs)
+	if (!A)
+		return
+
 	remove_verb(usr, /mob/observer/ghost/proc/dead_tele)
 	spawn(30)
 		add_verb(usr, /mob/observer/ghost/proc/dead_tele)

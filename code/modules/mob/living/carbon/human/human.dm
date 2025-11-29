@@ -1359,7 +1359,31 @@ var/list/rank_prefix = list(\
 				return
 		to_chat(src, span_notice("You can see [above]."))
 	else
-		to_chat(src, span_notice("You can't do it right now."))
+		to_chat(src, span_notice("You can't do this right now."))
+	return
+
+/mob/living/carbon/human/verb/lookdown()
+	set name = "Look down"
+	set desc = "If you want to know what's below."
+	set category = "IC"
+
+	// /mob/living/handle_vision has vision not reset if the user has the machine var referencing something
+	// which it will always have since it is very poorly handled in its dereferencing SPCR - 2022
+	machine = null
+	if(!is_physically_disabled())
+		var/turf/below = GetBelow(src)
+		if(shadow)
+			if(client.eye == shadow)
+				reset_view(0)
+				return
+			if(below.is_hole)
+				to_chat(src, span_notice("You look down."))
+				if(client)
+					reset_view(shadow)
+				return
+		to_chat(src, span_notice("You can see [below]."))
+	else
+		to_chat(src, span_notice("You can't do this right now."))
 	return
 
 /mob/living/carbon/human/should_have_process(organ_check)
