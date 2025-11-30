@@ -51,7 +51,7 @@
 
 	var/braceable = 1 // Offset reduction based on whether the gun is braced
 
-	var/list/gun_parts = list(/obj/item/part/gun = 1 ,/obj/item/stack/material/steel = 4)
+	var/list/gun_parts = list(/obj/item/part/gun = 1, /obj/item/stack/material/steel = 4)
 
 	var/muzzle_flash = 3
 	var/dual_wielding
@@ -684,7 +684,7 @@
 /obj/item/gun/proc/toggle_scope(mob/living/user, switchzoom = FALSE)
 	//looking through a scope limits your periphereal vision
 	//still, increase the view size by a tiny amount so that sniping isn't too restricted to NSEW
-	if(!zoom_factors)
+	if(!zoom_factors || length(zoom_factors) <= 1)
 		zoom = FALSE
 		return
 	var/tozoom = zoom_factors[active_zoom_factor]
