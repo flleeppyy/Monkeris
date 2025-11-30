@@ -345,8 +345,10 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	for(var/mob/M in sortNames(SSmobs.mob_list | SShumans.mob_list))
 		if(M.ckey && !isnewplayer(M))
 			player_controlled_mobs.Add(M)
-
-	ManualFollow(input("Follow and haunt a player", "Follow player") as anything in player_controlled_mobs)
+	var/mob/to_follow = tgui_input_list(usr, "Follow and haunt a player", "Follow player", player_controlled_mobs)
+	if(!to_follow)
+		return
+	ManualFollow(to_follow)
 
 /mob/observer/ghost/verb/follow_mob(input in getmobs()) ////// Follow mobs on list
 	set category = "Ghost"
