@@ -273,7 +273,7 @@
 /obj/item/organ/proc/replaced(obj/item/organ/external/affected)
 	parent = affected
 	forceMove(parent)
-	if(parent.owner)
+	if(parent?.owner)
 		replaced_mob(parent.owner)
 
 
@@ -329,8 +329,8 @@
 	return !(status & (ORGAN_CUT_AWAY|ORGAN_DEAD))
 
 
-/obj/item/organ/internal/proc/find_owner_recursively()
-	var/obj/item/organ/internal/O = src
+/obj/item/organ/proc/find_owner_recursively()
+	var/obj/item/organ/O = src
 
 	while (O)
 		if (O.owner)
