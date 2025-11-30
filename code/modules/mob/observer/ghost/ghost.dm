@@ -361,6 +361,10 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/observer/ghost/proc/ManualFollow(atom/movable/target)
 	if(!target || target == following || target == src)
 		return
+	if(isclient(target))
+		target = astype(target, /client)?.mob
+	if(!target)
+		return
 
 	stop_following()
 	following = target
