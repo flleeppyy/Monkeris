@@ -196,7 +196,7 @@
 						"[holder.owner] bites [G.his] own limbs uncontrollably!"
 					))))
 					var/list/obj/item/organ/external/parts = holder.owner.get_damageable_organs()
-					if(parts.len)
+					if(length(parts))
 						holder.owner.damage_through_armor(rand(2,4), def_zone = pick(parts))
 
 /datum/breakdown/negative/selfharm/occur()

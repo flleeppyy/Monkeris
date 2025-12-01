@@ -1068,7 +1068,7 @@ var/list/rank_prefix = list(\
 			var/obj/item/implant/core_implant/C = new I.implant_type
 			C.install(src)
 			C.activate()
-			if(mind)
+			if(mind && mind.assigned_job)
 				C.install_default_modules_by_job(mind.assigned_job)
 				C.access.Add(mind.assigned_job.cruciform_access)
 				C.security_clearance = mind.assigned_job.security_clearance
@@ -1100,9 +1100,10 @@ var/list/rank_prefix = list(\
 				var/obj/item/implant/core_implant/C = new I.implant_type
 				C.install(src)
 				C.activate()
-				C.install_default_modules_by_job(mind.assigned_job)
-				C.access.Add(mind.assigned_job.cruciform_access)
-				C.security_clearance = mind.assigned_job.security_clearance
+				if(mind && mind.assigned_job)
+					C.install_default_modules_by_job(mind.assigned_job)
+					C.access.Add(mind.assigned_job.cruciform_access)
+					C.security_clearance = mind.assigned_job.security_clearance
 
 	for(var/obj/item/organ/internal/carrion/C in organs_to_readd)
 		C.replaced(get_organ(C.parent_organ_base))
@@ -1117,6 +1118,8 @@ var/list/rank_prefix = list(\
 	if(C)
 		C.install(src)
 		C.activate()
+		if (!mind || !mind.assigned_job)
+			return
 		C.install_default_modules_by_job(mind.assigned_job)
 		C.access |= mind.assigned_job.cruciform_access
 		C.security_clearance = mind.assigned_job.security_clearance

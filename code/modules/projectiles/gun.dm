@@ -684,7 +684,7 @@
 /obj/item/gun/proc/toggle_scope(mob/living/user, switchzoom = FALSE)
 	//looking through a scope limits your periphereal vision
 	//still, increase the view size by a tiny amount so that sniping isn't too restricted to NSEW
-	if(!zoom_factors || length(zoom_factors) <= 1)
+	if(length(zoom_factors) <= 1)
 		zoom = FALSE
 		return
 	var/tozoom = zoom_factors[active_zoom_factor]
@@ -696,9 +696,7 @@
 	update_hud_actions()
 
 /obj/item/gun/proc/switch_zoom(mob/living/user)
-	if(!zoom_factors)
-		return null
-	if(LAZYLEN(zoom_factors) <= 1)
+	if(!length(zoom_factors))
 		return null
 //	update_firemode(FALSE) //Disable the old firing mode before we switch away from it
 	active_zoom_factor++

@@ -255,7 +255,7 @@
 
 	if(vital && !(owner.status_flags & REBUILDING_ORGANS) && owner.stat != DEAD)
 		if(user)
-			admin_attack_log(user, owner, "Removed a vital organ ([src])", "Had a a vital organ ([src]) removed.", "removed a vital organ ([src]) from")
+			admin_attack_log(user, owner, "Removed a vital organ ([src])", "Had a vital organ ([src]) removed.", "removed a vital organ ([src]) from")
 		owner.death()
 
 	if(LAZYLEN(item_upgrades))

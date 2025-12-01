@@ -106,7 +106,7 @@
 			astype(I, /obj/item/storage/deferred).populate_contents()
 		var/success = TRUE
 		if(istype(I, /obj/item/storage/secure))
-			if(astype(I, obj/item/storage/secure).locked)
+			if(astype(I, /obj/item/storage/secure/).locked)
 				to_chat(user, (span_warning("[I] is locked.")))
 				success = FALSE
 		if(success && istype(I, /obj/item/storage))
