@@ -77,6 +77,7 @@ var/list/sounds_cache = list()
 	var/stop_web_sounds = FALSE
 	var/list/music_extra_data = list()
 	if(istext(input))
+		to_chat(usr, span_warning("Loading URL info, please hold..."))
 		var/list/output = world.shelleo("[ytdl] --geo-bypass --format \"bestaudio\[ext=mp3]/best\[ext=mp4]\[height <= 360]/bestaudio\[ext=m4a]/bestaudio\[ext=aac]\" --dump-single-json --no-playlist --extractor-args \"youtube:lang=en\" -- \"[input]\"")
 		var/errorlevel = output[SHELLEO_ERRORLEVEL]
 		var/stdout = output[SHELLEO_STDOUT]
