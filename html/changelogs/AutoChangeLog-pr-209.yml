@@ -1,8 +1,0 @@
-author: Sun-Soaked
-delete-after: true
-changes:
-  - balance: Adds 1 additional deconstruction step to windows, bringing their 
-      total to 2
-  - code_imp: adds missing paths for onestar variants of windows
-  - bugfix: fixes type 90 spawns in 2 OS dungeon rooms
-  - bugfix: OS windows should now spawn in properly
