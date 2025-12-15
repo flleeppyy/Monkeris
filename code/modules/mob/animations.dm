@@ -27,16 +27,21 @@ note dizziness decrements automatically in the mob's Life() proc.
 	is_dizzy = 1
 	while(dizziness > 100)
 		if(client)
-			var/amplitude = dizziness*(sin(dizziness * 0.044 * world.time) + 1) / 70
-			client.pixel_x = amplitude * sin(0.008 * dizziness * world.time)
-			client.pixel_y = amplitude * cos(0.008 * dizziness * world.time)
+			var/amplitude = dizziness * (sin(dizziness * 0.044 * world.time) + 1) / 70
+			var/iforgor = 0.004
+			if(resting)
+				iforgor *= 1.5
+				dizziness -= 2
 
+			var/target_x = amplitude * sin(iforgor * dizziness * world.time)
+			var/target_y = amplitude * cos(iforgor * dizziness * world.time)
+			animate(client, pixel_x = target_x, pixel_y = target_y, time = 1, easing = QUAD_EASING | EASE_OUT)
 		sleep(1)
 	//endwhile - reset the pixel offsets to zero
 	is_dizzy = 0
 	if(client)
-		client.pixel_x = 0
-		client.pixel_y = 0
+		animate(client, pixel_x = 0, pixel_y = 0, time = 2, easing = QUAD_EASING | EASE_OUT)
+
 
 // jitteriness - copy+paste of dizziness
 /mob/proc/make_jittery(amount)
@@ -193,78 +198,46 @@ note dizziness decrements automatically in the mob's Life() proc.
 	// And animate the attack!
 	animate(I, alpha = 175, pixel_x = 0, pixel_y = 0, pixel_z = 0, time = 3)
 
-//Shakes the mob's camera
-//Strength is not recommended to set higher than 4, and even then its a bit wierd
-// Lots of if !M.client checks because yeah.
-/proc/shake_camera(mob/M, duration, strength = 1, taper = 0.25)
-	if(!M || !M.client || M.shakecamera || M.stat || isEye(M) || isAI(M))
+#define TILES_PER_SECOND 0.7
+///Shake the camera of the person viewing the mob SO REAL!
+///Takes the mob to shake, the time span to shake for, and the amount of tiles we're allowed to shake by in tiles
+///Duration isn't taken as a strict limit, since we don't trust our coders to not make things feel shitty. So it's more like a soft cap.
+/proc/shake_camera(mob/M, duration, strength=1)
+	if(!M || !M.client || duration < 1)
 		return
+	var/client/C = M.client
+	var/oldx = C.pixel_x
+	var/oldy = C.pixel_y
+	var/max = strength*world.icon_size
+	var/min = -(strength*world.icon_size)
 
-	M.shakecamera = 1
-	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_shake_camera), M, duration, strength, taper), 2 TICKS, TIMER_CLIENT_TIME)
+	//How much time to allot for each pixel moved
+	var/time_scalar = (1 / world.icon_size) * TILES_PER_SECOND
+	var/last_x = oldx
+	var/last_y = oldy
 
-#define CLIENT_CHECK if (!M.client) {M.shakecamera = 0;return;}
+	var/time_spent = 0
+	while(time_spent < duration)
+		//Get a random pos in our box
+		var/x_pos = rand(min, max) + oldx
+		var/y_pos = rand(min, max) + oldy
 
-/proc/_shake_camera(target, duration, strength = 1, taper = 0.25)
-	if(!target)
-		return
-	var/mob/M
-	var/mob/eye_atom
+		//We take the smaller of our two distances so things still have the propencity to feel somewhat jerky
+		var/time = round(max(min(abs(last_x - x_pos), abs(last_y - y_pos)) * time_scalar, 1))
 
-	if (ismob(target))
-		M = target
-		CLIENT_CHECK
+		if (time_spent == 0)
+			animate(C, pixel_x=x_pos, pixel_y=y_pos, time=time)
+		else
+			animate(pixel_x=x_pos, pixel_y=y_pos, time=time)
 
-		eye_atom = M.client.eye
-	else
-		eye_atom = target
+		last_x = x_pos
+		last_y = y_pos
+		//We go based on time spent, so there is a chance we'll overshoot our duration. Don't care
+		time_spent += time
 
-		if (!istype(eye_atom.client))
-			return
-		M = eye_atom.client.mob
+	animate(pixel_x=oldx, pixel_y=oldy, time=3)
 
-	var/atom/oldeye = M.client.eye
-
-	var/atom/base = isAIEye(eye_atom) ? eye_atom : M
-
-	for (var/x=0; x<duration; x++)
-		CLIENT_CHECK
-
-		var/dx = rand(-strength, strength)
-		var/dy = rand(-strength, strength)
-
-		M.client.eye = locate(
-			dd_range(1, base.loc.x + dx, world.maxx),
-			dd_range(1, base.loc.y + dy, world.maxy),
-			base.loc.z
-		)
-
-		sleep(1)
-
-	CLIENT_CHECK
-	//Taper code added by nanako.
-	//Will make the strength falloff after the duration.
-	//This helps to reduce jarring effects of major screenshaking suddenly returning to stability
-	//Recommended taper values are 0.05-0.1
-	while (taper > 0 && strength > 0)
-		CLIENT_CHECK
-
-		strength -= taper
-
-		var/dx = rand(-strength, strength)
-		var/dy = rand(-strength, strength)
-
-		M.client.eye = locate(
-			dd_range(1, base.loc.x + dx, world.maxx),
-			dd_range(1, base.loc.y + dy, world.maxy),
-			base.loc.z
-		)
-
-		sleep(1)
-
-	M.client.eye=oldeye
-	M.shakecamera = 0
-
+#undef TILES_PER_SECOND
 
 //Deprecated, use SpinAnimation when possible
 /mob/proc/spin(spintime, speed)
