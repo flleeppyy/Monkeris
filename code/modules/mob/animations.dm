@@ -28,8 +28,8 @@ note dizziness decrements automatically in the mob's Life() proc.
 	while(dizziness > 100)
 		if(client)
 			var/amplitude = dizziness*(sin(dizziness * 0.044 * world.time) + 1) / 70
-			client.pixel_x = amplitude * sin(0.004 * dizziness * world.time)
-			client.pixel_y = amplitude * cos(0.004 * dizziness * world.time)
+			client.pixel_x = amplitude * sin(0.008 * dizziness * world.time)
+			client.pixel_y = amplitude * cos(0.008 * dizziness * world.time)
 
 		sleep(1)
 	//endwhile - reset the pixel offsets to zero
@@ -197,25 +197,23 @@ note dizziness decrements automatically in the mob's Life() proc.
 //Strength is not recommended to set higher than 4, and even then its a bit wierd
 // Lots of if !M.client checks because yeah.
 /proc/shake_camera(mob/M, duration, strength = 1, taper = 0.25)
-	if(!M || !M.client || M.shakecamera || M.stat || (isEye(M) && !isAIEye(M)) || isAI(M))
+	if(!M || !M.client || M.shakecamera || M.stat || isEye(M) || isAI(M))
 		return
 
 	M.shakecamera = 1
-	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_shake_camera)), 2 TICKS, TIMER_CLIENT_TIME)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_shake_camera), M, duration, strength, taper), 2 TICKS, TIMER_CLIENT_TIME)
 
-#warn shake_camera code should be tested as it's now switched to a timer, and different internal code
+#define CLIENT_CHECK if (!M.client) {M.shakecamera = 0;return;}
+
 /proc/_shake_camera(target, duration, strength = 1, taper = 0.25)
-	if (!target)
+	if(!target)
 		return
-
 	var/mob/M
 	var/mob/eye_atom
 
 	if (ismob(target))
 		M = target
-		if (!M.client)
-			M.shakecamera = 0
-			return
+		CLIENT_CHECK
 
 		eye_atom = M.client.eye
 	else
@@ -230,9 +228,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 	var/atom/base = isAIEye(eye_atom) ? eye_atom : M
 
 	for (var/x=0; x<duration; x++)
-		if (!M.client)
-			M.shakecamera = 0
-			return
+		CLIENT_CHECK
 
 		var/dx = rand(-strength, strength)
 		var/dy = rand(-strength, strength)
@@ -245,14 +241,13 @@ note dizziness decrements automatically in the mob's Life() proc.
 
 		sleep(1)
 
+	CLIENT_CHECK
 	//Taper code added by nanako.
 	//Will make the strength falloff after the duration.
 	//This helps to reduce jarring effects of major screenshaking suddenly returning to stability
 	//Recommended taper values are 0.05-0.1
 	while (taper > 0 && strength > 0)
-		if (!M.client)
-			M.shakecamera = 0
-			return
+		CLIENT_CHECK
 
 		strength -= taper
 
