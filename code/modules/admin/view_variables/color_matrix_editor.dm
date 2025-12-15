@@ -17,10 +17,7 @@
 	else
 		current_color = color_matrix_identity()
 
-	#pragma push
-	#pragma ignore unused_var
 	var/mutable_appearance/view = image('icons/misc/colortest.dmi', "colors")
-	#pragma pop
 	if(_target)
 		target = WEAKREF(_target)
 		if(!(_target.appearance_flags & PLANE_MASTER))
