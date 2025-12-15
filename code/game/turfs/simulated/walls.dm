@@ -42,8 +42,8 @@
 	else
 		update_icon()
 
-/turf/wall/LateInitialize()
-	update_connections()
+/turf/wall/LateInitialize(mapload_arg)
+	update_connections(mapload_arg)
 	if(window_prespawned_material)
 		create_window(window_prespawned_material)
 	else
@@ -337,7 +337,7 @@
 		update_icon()
 
 
-/turf/wall/explosion_act(target_power, explosion_handler/handler)
+/turf/wall/explosion_act(target_power, datum/explosion_handler/handler)
 	if(!is_simulated)
 		return 0
 	var/absorbed = take_damage(target_power)

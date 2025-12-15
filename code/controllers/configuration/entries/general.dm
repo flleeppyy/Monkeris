@@ -104,6 +104,31 @@
 /datum/config_entry/flag/autoconvert_notes //if all connecting player's notes should attempt to be converted to the database
 	protection = CONFIG_ENTRY_LOCKED
 
+// Pop caps
+/datum/config_entry/number/soft_popcap
+	default = null
+	min_val = 0
+
+/datum/config_entry/number/hard_popcap
+	default = null
+	min_val = 0
+
+/datum/config_entry/number/extreme_popcap
+	default = null
+	min_val = 0
+
+/datum/config_entry/string/soft_popcap_message
+	default = "Be warned that the server is currently serving a high number of users, consider using alternative game servers."
+
+/datum/config_entry/string/hard_popcap_message
+	default = "The server is currently serving a high number of users, You cannot currently join. You may wait for the number of living crew to decline, observe, or find alternative servers."
+
+/datum/config_entry/string/extreme_popcap_message
+	default = "The server is currently serving a high number of users, find alternative servers."
+
+/datum/config_entry/flag/byond_member_bypass_popcap
+
+
 /******************/
 /* Job/Role Prefs */
 /******************/
@@ -369,6 +394,15 @@
 /*     ADMIN     */
 /*****************/
 
+/// if autoadmin is enabled
+/datum/config_entry/flag/autoadmin
+	protection = CONFIG_ENTRY_LOCKED
+
+/// the rank given to autoadmins
+/datum/config_entry/string/autoadmin_rank
+	default = "Game Master"
+	protection = CONFIG_ENTRY_LOCKED
+
 /// allows admins with relevant permissions to have their own ooc colour
 /datum/config_entry/flag/allow_admin_ooccolor
 
@@ -380,10 +414,6 @@
 
 /// Forid admins from possessing scringularaitirtiys
 /datum/config_entry/flag/forbid_singulo_possession
-
-/// Gives the !localhost! rank to any client connecting from 127.0.0.1 or ::1
-/datum/config_entry/flag/enable_localhost_rank
-	protection = CONFIG_ENTRY_LOCKED
 
 /// Defines whether the server uses the legacy admin system with admins.txt or the SQL system
 /datum/config_entry/flag/admin_legacy_system
@@ -516,10 +546,6 @@
 /datum/config_entry/flag/random_submap_orientation
 
 /datum/config_entry/flag/use_overmap
-
-
-/// Path to the python2 executable on the system.
-/datum/config_entry/string/python_path
 
 /**
  * motd.txt
