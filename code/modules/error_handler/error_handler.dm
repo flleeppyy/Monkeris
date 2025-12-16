@@ -102,6 +102,9 @@ GLOBAL_VAR_INIT(total_runtimes_skipped, 0)
 		locinfo = loc_name(usr)
 		if(locinfo)
 			usrinfo += "  usr.loc: [locinfo]"
+		if(usr.client)
+			usrinfo = list("  usr.client: [key_name(usr.client)]")
+
 	// The proceeding mess will almost definitely break if error messages are ever changed
 	var/list/splitlines = splittext(E.desc, "\n")
 	var/list/desclines = list()
