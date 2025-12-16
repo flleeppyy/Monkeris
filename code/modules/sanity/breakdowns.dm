@@ -201,7 +201,9 @@
 
 /datum/breakdown/negative/selfharm/occur()
 	spawn(delay)
-		++holder?.owner.suppress_communication
+		if(ishuman(holder?.owner))
+			var/mob/living/carbon/human/tobreakdown = holder.owner
+			++tobreakdown.suppress_communication
 	return ..()
 
 /datum/breakdown/negative/selfharm/conclude()
@@ -240,9 +242,11 @@
 
 /datum/breakdown/negative/hysteric/occur()
 	spawn(delay)
-		holder?.owner.SetWeakened(4)
-		holder?.owner.SetStunned(4)
-		++holder?.owner.suppress_communication
+		if(ishuman(holder?.owner))
+			var/mob/living/carbon/human/tobreakdown = holder.owner
+			tobreakdown.SetWeakened(4)
+			tobreakdown.SetStunned(4)
+			++tobreakdown.suppress_communication
 	return ..()
 
 /datum/breakdown/negative/hysteric/conclude()
@@ -317,12 +321,12 @@
 	images.Cut()
 	..()
 
-/datum/breakdown/negative/fabric/proc/add_image(image/I)
+/datum/breakdown/negative/fabric/proc/add_image(datum/source, image/I)
 	SIGNAL_HANDLER
 	images |= I
 	holder.owner.client?.images |= I
 
-/datum/breakdown/negative/fabric/proc/update_client_images()
+/datum/breakdown/negative/fabric/proc/update_client_images(datum/source)
 	SIGNAL_HANDLER
 	holder.owner.client?.images |= images
 

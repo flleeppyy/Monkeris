@@ -20,14 +20,21 @@
 		mind.active = TRUE
 		mind.current = src
 
+	if(!loc)
+		Move(locate(/area/misc/start))
+
+	// we get a hud in the parent proc, a hud is neccessary for ma2html which character previews rely on
 	. = ..()
 	if(!. || !client)
 		return FALSE
-	loc = null
 
 	if(join_motd)
 		to_chat(src, "<div class='motd'>[join_motd]</div>")
 	to_chat(src, "<div class='info'>Round ID: <div class='danger'>[GLOB.round_id]</div></div>")
+
+	var/spc = CONFIG_GET(number/soft_popcap)
+	if(spc && living_player_count() >= spc)
+		to_chat(src, span_notice("<b>Server Notice:</b>\n \t [CONFIG_GET(string/soft_popcap_message)]"))
 
 	my_client = client
 	sight |= SEE_TURFS
