@@ -115,3 +115,6 @@
   - bugfix: smartfridge non-existence shit check
   - bugfix: use get turf for src when pairing/making a new wormhole
   - bugfix: turf not existing in density check
+2025-12-17:
+  flleeppyy:
+  - code_imp: update rust-g
