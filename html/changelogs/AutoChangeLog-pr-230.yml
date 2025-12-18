@@ -1,0 +1,6 @@
+author: Sun-Soaked
+delete-after: true
+changes:
+  - bugfix: organs are now properly restored by rejuvenation
+  - bugfix: you can no longer stack biotech modifications beyond their limit
+  - bugfix: hormone output organoids now work again
