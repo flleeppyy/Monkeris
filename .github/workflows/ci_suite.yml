@@ -61,6 +61,7 @@ jobs:
           pip install -r tools/requirements.txt
           bash tools/ci/install_node.sh
           bash tools/ci/install_spaceman_dmm.sh dreamchecker
+          tools/bootstrap/python -c ''
       - name: Give Linters A Go
         id: linter-setup
         run: ":"
