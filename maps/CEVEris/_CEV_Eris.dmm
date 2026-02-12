@@ -9921,12 +9921,15 @@
 /obj/machinery/firealarm{
 	pixel_y = 28
 	},
+/obj/structure/table/woodentable,
+/obj/machinery/computer/libraryconsole{
+	pixel_x = 0;
+	pixel_y = 7
+	},
 /turf/floor/wood,
 /area/eris/crew_quarters/library)
 "ayl" = (
-/obj/structure/bookcase{
-	name = "bookcase (Adult)"
-	},
+/obj/structure/bookcase/random/nonfiction,
 /turf/floor/wood,
 /area/eris/crew_quarters/library)
 "aym" = (
@@ -10042,9 +10045,7 @@
 /turf/floor/wood,
 /area/eris/crew_quarters/library)
 "ayA" = (
-/obj/structure/bookcase{
-	name = "bookcase (Non-Fiction)"
-	},
+/obj/structure/bookcase/random/adult,
 /turf/floor/wood,
 /area/eris/crew_quarters/library)
 "ayB" = (
@@ -10184,9 +10185,7 @@
 /turf/floor/tiled/techmaint,
 /area/eris/maintenance/section3deck2starboard)
 "ayW" = (
-/obj/structure/bookcase{
-	name = "Forbidden Knowledge"
-	},
+/obj/structure/bookcase/random/fiction,
 /turf/floor/wood,
 /area/eris/crew_quarters/library)
 "ayX" = (
@@ -10226,11 +10225,12 @@
 /turf/floor/tiled/white,
 /area/eris/crew_quarters/fitness)
 "azb" = (
-/obj/structure/bookcase{
-	name = "bookcase (Tactics)"
+/obj/structure/closet/boxinggloves,
+/obj/machinery/light{
+	dir = 8
 	},
-/turf/floor/wood,
-/area/eris/crew_quarters/library)
+/turf/floor/tiled/white/brown_perforated,
+/area/eris/crew_quarters/fitness)
 "azc" = (
 /obj/machinery/light,
 /turf/floor/wood,
@@ -10507,6 +10507,7 @@
 	pixel_x = 0;
 	pixel_y = 8
 	},
+/obj/machinery/light,
 /turf/floor/tiled/white,
 /area/eris/crew_quarters/fitness)
 "azL" = (
@@ -54239,6 +54240,9 @@
 /obj/structure/sign/faction/neotheology_old{
 	pixel_y = 32
 	},
+/obj/machinery/light{
+	dir = 1
+	},
 /turf/floor/tiled/white,
 /area/eris/crew_quarters/fitness)
 "cDq" = (
@@ -93341,6 +93345,9 @@
 /obj/machinery/firealarm{
 	pixel_y = 28
 	},
+/obj/machinery/light/small{
+	dir = 1
+	},
 /turf/floor/tiled/dark,
 /area/eris/crew_quarters/librarybackroom)
 "eyn" = (
@@ -96316,16 +96323,11 @@
 /turf/floor/tiled/techmaint,
 /area/eris/maintenance/section3deck2port)
 "eFr" = (
-/obj/structure/cable/green{
-	d1 = 4;
-	d2 = 8;
-	icon_state = "4-8"
+/obj/machinery/light/small{
+	dir = 1
 	},
-/obj/structure/bookcase{
-	name = "bookcase (Religious)"
-	},
-/turf/floor/wood,
-/area/eris/crew_quarters/library)
+/turf/floor/tiled/dark,
+/area/eris/crew_quarters/librarybackroom)
 "eFs" = (
 /obj/structure/cable/green{
 	d1 = 4;
@@ -96418,7 +96420,7 @@
 	d2 = 8;
 	icon_state = "4-8"
 	},
-/obj/structure/bookcase/manuals/medical,
+/obj/structure/bookcase/random/religion,
 /turf/floor/wood,
 /area/eris/crew_quarters/library)
 "eFD" = (
@@ -97264,6 +97266,9 @@
 /area/eris/maintenance/section2deck3port)
 "fyG" = (
 /obj/spawner/closet/wardrobe,
+/obj/machinery/light{
+	dir = 8
+	},
 /turf/floor/tiled/steel/gray_perforated,
 /area/eris/crew_quarters/fitness)
 "fyY" = (
@@ -99389,7 +99394,10 @@
 	pixel_y = 28
 	},
 /obj/structure/table/woodentable,
-/obj/machinery/computer/libraryconsole/bookmanagement,
+/obj/machinery/computer/libraryconsole/bookmanagement{
+	pixel_x = 0;
+	pixel_y = 7
+	},
 /turf/floor/wood,
 /area/eris/crew_quarters/library)
 "jnX" = (
@@ -103969,7 +103977,7 @@
 	dir = 4;
 	icon_state = "pipe-c"
 	},
-/obj/structure/table/woodentable,
+/obj/machinery/libraryscanner,
 /turf/floor/wood,
 /area/eris/crew_quarters/library)
 "siL" = (
@@ -105234,9 +105242,7 @@
 /turf/floor/wood,
 /area/eris/medical/psych)
 "uls" = (
-/obj/structure/bookcase{
-	name = "bookcase (Reference)"
-	},
+/obj/structure/bookcase/random/reference,
 /turf/floor/wood,
 /area/eris/crew_quarters/library)
 "ulE" = (
@@ -243132,7 +243138,7 @@ fyG
 bse
 bse
 ezA
-ezA
+azb
 eCK
 ebW
 ebz
@@ -243545,8 +243551,8 @@ axB
 axB
 axB
 eFv
-azb
-azb
+axW
+axW
 axW
 dHk
 abF
@@ -243948,7 +243954,7 @@ rVB
 uND
 voZ
 awr
-eFr
+eFA
 axW
 uls
 axW
@@ -245562,7 +245568,7 @@ icS
 awr
 nQj
 ezU
-axW
+ayA
 ayg
 eyy
 axW
@@ -282731,7 +282737,7 @@ bsa
 btP
 brs
 blB
-axG
+eFr
 blB
 boS
 aNe
