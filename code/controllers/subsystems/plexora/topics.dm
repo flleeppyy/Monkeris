@@ -96,7 +96,7 @@
 		var/list/mentor_info = list(
 			"name" = mentor,
 			"ckey" = mentor.ckey,
-			"rank" = mentor.holder.rank_names(),
+			"rank" = mentor.holder?.rank_names(),
 			"afk" = mentor.is_afk(),
 		)
 
@@ -108,7 +108,6 @@
 			mentor_info["state"] = "playing"
 
 		. += LIST_VALUE_WRAP_LISTS(mentor_info)
-
 
 /datum/world_topic/plx_getplayerdetails
 	keyword = "PLX_getplayerdetails"
@@ -190,6 +189,9 @@
 /datum/world_topic/plx_mobpicture/Run(list/input)
 	var/ckey = input["ckey"]
 
+	if (!ckey)
+		return list("error" = PLEXORA_ERROR_MISSING_CKEY)
+
 	var/client/client = disambiguate_client(ckey)
 
 	if (QDELETED(client))
@@ -212,7 +214,10 @@
 	var/emote = input["emote"]
 	var/emote_args = input["emote_args"]
 
-	var/client/client = GLOB.directory[ckey(target_ckey)]
+	if(!target_ckey || !emote)
+		return list("error" = PLEXORA_ERROR_BAD_PARAM, "param" = "ckey/emote", "reason" = "missing required parameter")
+
+	var/client/client = disambiguate_client(ckey(target_ckey))
 
 	if (QDELETED(client))
 		return list("error" = PLEXORA_ERROR_CLIENTNOTEXIST)
@@ -234,7 +239,10 @@
 	var/target_ckey = input["ckey"]
 	var/message = input["message"]
 
-	var/client/client = GLOB.directory[ckey(target_ckey)]
+	if(!target_ckey || !message)
+		return list("error" = PLEXORA_ERROR_BAD_PARAM, "param" = "ckey/message", "reason" = "missing required parameter")
+
+	var/client/client = disambiguate_client(ckey(target_ckey))
 
 	if (QDELETED(client))
 		return list("error" = PLEXORA_ERROR_CLIENTNOTEXIST)
@@ -254,6 +262,9 @@
 	var/target_ckey = input["ckey"]
 	var/selected_smite = input["smite"]
 	var/smited_by = input["smited_by_ckey"]
+
+	if(!target_ckey || !selected_smite || !smited_by)
+		return list("error" = PLEXORA_ERROR_BAD_PARAM, "param" = "ckey/smite/smited_by_ckey", "reason" = "missing required parameter")
 
 	if (!GLOB.smites[selected_smite])
 		return list("error" = PLEXORA_ERROR_INVALIDSMITE)
@@ -283,6 +294,9 @@
 /datum/world_topic/plx_jailmob/Run(list/input)
 	var/ckey = input["ckey"]
 	var/jailer = input["admin_ckey"]
+
+	if(!ckey || !jailer)
+		return list("error" = PLEXORA_ERROR_BAD_PARAM, "param" = "ckey/admin_ckey", "reason" = "missing required parameter")
 
 	var/client/client = disambiguate_client(ckey)
 
@@ -346,6 +360,8 @@
 	var/action_by_ckey = input["action_by"]
 	var/action = input["action"]
 
+	if(!ticketid || !action_by_ckey || !action)
+		return list("error" = PLEXORA_ERROR_BAD_PARAM, "param" = "id/action_by/action", "reason" = "missing required parameter")
 
 	var/datum/client_interface/mockadmin = new(key = action_by_ckey)
 
@@ -389,6 +405,9 @@
 	var/sender = input["sender_ckey"]
 	var/stealth = input["stealth"]
 	var/message = input["message"]
+
+	if(!input_ckey || !sender || !message)
+		return list("error" = PLEXORA_ERROR_BAD_PARAM, "param" = "ckey/sender_ckey/message", "reason" = "missing required parameter")
 
 	var/requested_ckey = ckey(input_ckey)
 	var/client/recipient = disambiguate_client(requested_ckey)
@@ -458,6 +477,9 @@
 	var/sender = input["sender_ckey"]
 	var/message = input["message"]
 
+	if(!target_ckey || !sender || !message)
+		return list("error" = PLEXORA_ERROR_BAD_PARAM, "param" = "ckey/sender_ckey/message", "reason" = "missing required parameter")
+
 	var/client/recipient = disambiguate_client(ckey(target_ckey))
 
 	if (QDELETED(recipient))
@@ -482,6 +504,9 @@
 /datum/world_topic/plx_relayadminsay/Run(list/input)
 	var/sender = input["sender"]
 	var/msg = input["message"]
+
+	if (!sender || !msg)
+		return
 
 	msg = emoji_parse(copytext_char(sanitize(msg), 1, MAX_MESSAGE_LEN))
 	if(!msg)
@@ -519,6 +544,9 @@
 /datum/world_topic/plx_relaymentorsay/Run(list/input)
 	var/sender = input["sender"]
 	var/msg = input["message"]
+
+	if (!sender || !msg)
+		return
 
 	msg = emoji_parse(copytext(sanitize(msg), 1, MAX_MESSAGE_LEN))
 	if(!msg)
