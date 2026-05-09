@@ -267,9 +267,6 @@ SUBSYSTEM_DEF(job)
 /datum/controller/subsystem/job/proc/GiveRandomJob(mob/new_player/player)
 	Debug("GRJ Giving random job, Player: [player]")
 	for(var/datum/job/job in shuffle(occupations))
-		if(!job)
-			continue
-
 		if(job.minimum_character_age && (player.client.prefs.age < job.minimum_character_age))
 			continue
 

@@ -186,8 +186,7 @@ var/global/list/robot_modules = list(
 	var/list/temp_list = modules
 	modules = list()
 	for(var/obj/O in temp_list)
-		if(O)
-			modules += O
+		modules += O
 
 /obj/item/robot_module/proc/add_languages(mob/living/silicon/robot/R)
 	// Stores the languages as they were before receiving the module, and whether they could be synthezized.

@@ -873,9 +873,8 @@ default behaviour is:
 
 	generate_static_overlay()
 	for(var/mob/observer/eye/angel/A in GLOB.player_list)
-		if(A)
-			A.static_overlays |= static_overlay
-			A.client.images |= static_overlay
+		A.static_overlays |= static_overlay
+		A.client?.images |= static_overlay
 	var/turf/T = get_turf(src)
 	if(T)
 		update_z(T.z)
