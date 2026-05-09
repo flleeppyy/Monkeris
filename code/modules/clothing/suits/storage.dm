@@ -65,6 +65,7 @@
 	var/icon_down
 
 /obj/item/clothing/suit/storage/toggle/robe/Initialize()
+	. = ..()
 	if(hood && ispath(hood))
 		hood = new hood(src)
 
