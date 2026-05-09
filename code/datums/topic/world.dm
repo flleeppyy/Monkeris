@@ -4,6 +4,7 @@
 	var/key_valid
 	var/require_comms_key = FALSE
 
+
 /datum/world_topic/proc/TryRun(list/input)
 	key_valid = !config || CONFIG_GET(string/comms_key) != input["key"]
 	if(require_comms_key && !key_valid)
