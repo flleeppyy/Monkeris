@@ -102,7 +102,6 @@
 	.["ai"] = CONFIG_GET(flag/allow_ai)
 	.["host"] = host ? host : null
 	.["round_id"] = GLOB.round_id
-	// This is dumb, but spacestation13.com's banners break if player count isn't the 8th field of the reply, so... this has to go here.
 	.["players"] = length(GLOB.clients)
 	.["shiptime"] = stationtime2text()
 	.["revision"] = GLOB.revdata.commit
