@@ -538,7 +538,6 @@ SUBSYSTEM_DEF(job)
 	var/alt_title = null
 	if(H.mind)
 		H.mind.assigned_role = rank
-		SSinactivity_and_job_tracking.on_job_spawn(H, H.client.ckey)
 	//	alt_title = H.mind.role_alt_title
 
 		switch(rank)
