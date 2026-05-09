@@ -6,7 +6,7 @@ GLOBAL_ALIST_EMPTY(armorsById)
 #warn Double check armor global (armorsById)
 /proc/getArmor(melee = 0, bullet = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
 	. = GLOB.armorsById[ARMORID]
-	if(QDELETED(.))
+	if(!. || QDELETED(astype(., /datum)))
 		. = new /datum/armor(melee, bullet, energy, bomb, bio, rad)
 
 /datum/armor
@@ -17,7 +17,7 @@ GLOBAL_ALIST_EMPTY(armorsById)
 	var/bio
 	var/rad
 
-/datum/armor/New(melee s= 0, bullet = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
+/datum/armor/New(melee = 0, bullet = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
 	src.melee = melee
 	src.bullet = bullet
 	src.energy = energy
