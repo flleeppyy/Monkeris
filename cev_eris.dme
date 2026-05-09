@@ -17,7 +17,6 @@
 // BEGIN_INCLUDE
 #include "code\_compile_options.dm"
 #include "code\client_macros.dm"
-#include "code\global.dm"
 #include "code\stylesheet.dm"
 #include "code\world.dm"
 #include "code\__DEFINES\_bitfields.dm"

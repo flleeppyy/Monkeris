@@ -388,7 +388,7 @@ var/list/mob/living/forced_ambiance_list = new
 			gravity_blocker = null
 
 	if (GLOB.active_gravity_generator)
-		has_gravity = gravity_is_on
+		has_gravity = GLOB.gravity_is_on
 
 	if (grav_before != has_gravity)
 		gravity_changed()

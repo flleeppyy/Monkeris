@@ -42,12 +42,12 @@
 		GLOB.topic_status_lastcache = world.time + 5
 	var/list/s = list()
 	s["version"] = GLOB.game_version
-	s["storyteller"] = master_storyteller
+	s["storyteller"] = GLOB.master_storyteller
 	s["respawn"] = CONFIG_GET(flag/abandon_allowed)
 	s["enter"] = GLOB.enter_allowed
 	s["vote"] = CONFIG_GET(flag/allow_vote_mode)
 	s["ai"] = CONFIG_GET(flag/allow_ai)
-	s["host"] = host ? host : null
+	s["host"] = GLOB.host ? GLOB.host : null
 	// This is dumb, but spacestation13.com's banners break if player count isn't the 8th field of the reply, so... this has to go here.
 	s["players"] = GLOB.clients.len
 	s["shiptime"] = stationtime2text()
@@ -108,7 +108,7 @@
 			"bot" = nonhuman_positions
 		)
 
-	for(var/datum/data/record/t in data_core.general)
+	for(var/datum/data/record/t in GLOB.data_core.general)
 		var/name = t.fields["name"]
 		var/rank = t.fields["rank"]
 		var/real_rank = make_list_rank(t.fields["real_rank"])
