@@ -110,7 +110,7 @@
 				voice_sub = "Unknown"
 		for(var/obj/item/gear in list(wear_mask, wear_suit, head))
 			var/obj/item/voice_changer/changer = locate() in gear
-			if(changer && changer.active && changer.voice_name)
+			if(changer?.active && changer.voice_name)
 				voice_sub = changer.voice_name
 	if(voice_sub)
 		return voice_sub

@@ -784,7 +784,7 @@ var/list/ai_verbs_default = list(
 		mind.active = 0 // We want to transfer the key manually
 		mind.transfer_to(bound_drone) // Transfer mind to drone
 		bound_drone.laws = laws // Resync laws in case they have been changed
-		bound_drone.key = key // Manually transfer the key to log them in
+		bound_drone.PossessByPlayer(key)
 
 /mob/living/silicon/ai/proc/destroy_drone()
 	if(bound_drone)

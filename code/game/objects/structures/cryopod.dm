@@ -47,7 +47,7 @@
 
 /obj/structure/cryopod_spawner/proc/create_spawnmob(mob/observer/O)
 	var/mob/living/carbon/human/H = new(loc)
-	H.ckey = O.ckey
+	H.PossessByPlayer(O.key)
 	justequip(H, spawn_faction, spawn_role, outfit_type)
 	add_stats(H)
 

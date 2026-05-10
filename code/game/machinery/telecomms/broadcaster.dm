@@ -336,7 +336,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 						else
 							for(var/obj/item/gear in list(H.wear_mask, H.wear_suit, H.head))
 								var/obj/item/voice_changer/changer = locate() in gear
-								if(changer?.active && changer?.voice_tts)
+								if(changer?.active && changer.voice_tts)
 									seed = changer.voice_tts
 				else if(M.gender == "male")
 					seed = TTS_SEED_DEFAULT_MALE
