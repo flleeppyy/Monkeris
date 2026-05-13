@@ -1065,6 +1065,10 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 /client/proc/colour_transition(list/colour_to = null, time = 10) //Call this with no parameters to reset to default.
 	animate(src, color = colour_to, time = time, easing = SINE_EASING)
 
+/client/proc/AnnouncePR(announcement)
+	if(get_preference_value(/datum/client_preference/show_pullrequests))
+		to_chat(src, announcement, type = MESSAGE_TYPE_OOC)
+
 /// Compiles a full list of verbs and sends it to the browser
 /client/proc/init_verbs()
 	var/list/verblist = list()

@@ -316,7 +316,6 @@
 #include "code\controllers\subsystems\explosions.dm"
 #include "code\controllers\subsystems\garbage.dm"
 #include "code\controllers\subsystems\holomaps.dm"
-#include "code\controllers\subsystems\inactivity.dm"
 #include "code\controllers\subsystems\inventory.dm"
 #include "code\controllers\subsystems\jamming.dm"
 #include "code\controllers\subsystems\jobs.dm"
