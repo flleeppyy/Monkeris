@@ -71,3 +71,41 @@
       no bullets left
   blackwolf602:
   - rscadd: Added seuche costume
+2026-05-14:
+  BartDrown:
+  - bugfix: Clicking "View" on AI law change notification now teleports the ghost
+      to the AI and shows its current laws
+  Snack-Max:
+  - rscadd: Ported more hair from monke main
+  Sun-Soaked:
+  - rscadd: the disgorger now hints icly at the need for a heart and blood vessels,
+      with the hint changing based on what specifically is needed
+  - bugfix: the disgorger now properly displays it's extended description
+  - balance: the disgorger's final kidney eff threshold for adding new reagents is
+      now slightly more reasonable
+  - rscadd: many spawn points for pocket-change level money
+  - rscadd: lost wallets, which carry varing amounts of pocket change and may rarely
+      carry greater treasures
+  - balance: removed all normal money spawns above 500 credits.
+  - rscadd: Blurriness debuff now actually blurs the screen, using filters.
+  - rscadd: A "hazy" debuff containing previous screen clouding behavior of blurriness
+  - bugfix: The damage of welding without protection now scales and gives visual effects
+      as intended
+  - code_imp: filters can now be assigned and manipulated with some discrete procs
+      on atom
+  - code_imp: Adds template helpers for different filter operations
+  - admin: adds "filteriffic", tg's tgui interface for admin manipulation of filters
+      ingame. Accessed via the vv menu "edit filters"
+  - balance: the liver disease starting wound now has 2 additional stages, increasing
+      the time it takes for inflammation(curable) to become scarring(incurable)
+  - bugfix: chemsmoke no longer dupes chemicals across multiple metabolism channels
+  flleeppyy:
+  - rscadd: In-game Github PR announcer
+  - config: New config option for PR announcer, "pr_announcements_per_round" (number)
+  - refactor: Refactor world topic status
+  - bugfix: server status message announcement not working (Discord -> Game server
+      announcement)
+  - code_imp: Add JSON support for world topics (neccessary for Plexora)
+  - rscdel: Remove inactivity and jobs tracker, it serves no purpose at this time;
+      Use server maint for AFK kicking
+  - rscdel: Remove unused new_player motd
