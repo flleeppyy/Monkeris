@@ -19730,28 +19730,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
 "tgui-core@npm:^5.3.2":
-  version: 5.3.2
-  resolution: "tgui-core@npm:5.3.2"
+  version: 5.10.0
+  resolution: "tgui-core@npm:5.10.0"
   dependencies:
     "@floating-ui/react": "npm:^0.27.16"
-=======
-"tgui-core@npm:^3.3.1":
-  version: 3.3.1
-  resolution: "tgui-core@npm:3.3.1"
-  dependencies:
-    "@floating-ui/react": "npm:^0.27.8"
->>>>>>> 3ae2438327a58be4edddf150b0750f389086f283
     "@nozbe/microfuzz": "npm:^1.0.0"
   peerDependencies:
     react: ^19.1.0
     react-dom: ^19.1.0
-<<<<<<< HEAD
-  checksum: 10c0/3fb36f837ee97732152fbba73b822fb846ebff39645fd2a376aad9a5a284bc55a17cfdcef99d582343e99e66097ca90dd95698f72b5f3d405b87179dc9846fa8
-=======
-  checksum: 10c0/94c1c15318e36d66b0741e10eef8061d9578a58ca0f8c5653bd6537ff95eabb243cda9c582f96d50dcd5e7d8d4857b02ded3c454965ac5d6ae434e9002edb0af
->>>>>>> 3ae2438327a58be4edddf150b0750f389086f283
+  checksum: 10c0/e9c22966b714670918dce700f08dc7951d1f00d835b46862538239649d884be5112a574f53e445c4f9c10f5c504935b9ac740b1744464c1c1079c663942cbe83
   languageName: node
   linkType: hard
 
@@ -19854,11 +19842,7 @@ __metadata:
     marked: "npm:^4.3.0"
     react: "npm:^19.1.0"
     react-dom: "npm:^19.1.0"
-<<<<<<< HEAD
     tgui-core: "npm:^5.3.2"
-=======
-    tgui-core: "npm:^3.3.1"
->>>>>>> 3ae2438327a58be4edddf150b0750f389086f283
     tgui-dev-server: "workspace:*"
     vitest: "npm:^3.1.1"
   languageName: unknown
