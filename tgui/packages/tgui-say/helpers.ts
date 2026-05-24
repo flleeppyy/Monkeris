@@ -59,11 +59,8 @@ export function getPrefix(
     return;
   }
 
-  let adjusted = value
-    .slice(0, 4)
-    ?.trim()
-    ?.toLowerCase()
-    ?.replace('.', ':') + " " as keyof typeof RADIO_PREFIXES;
+  let adjusted = (value.slice(0, 4)?.trim()?.toLowerCase()?.replace('.', ':') +
+    ' ') as keyof typeof RADIO_PREFIXES;
 
   if (!RADIO_PREFIXES[adjusted]) {
     return;

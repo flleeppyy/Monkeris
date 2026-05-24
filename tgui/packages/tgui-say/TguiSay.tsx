@@ -270,7 +270,8 @@ export function TguiSay() {
 
   const theme =
     (lightMode && 'lightMode') ||
-    (currentPrefix && RADIO_PREFIXES[currentPrefix].replaceAll(cssSafeRegex, '')) ||
+    (currentPrefix &&
+      RADIO_PREFIXES[currentPrefix].replaceAll(cssSafeRegex, '')) ||
     channelIterator.current.current();
 
   return (
