@@ -82,6 +82,7 @@
 	/// Can be possessed by ghosts if unplayed.
 	var/possession_candidate
 
+	var/eye_hazy    //Carbon
 	var/eye_blind	//Carbon
 	var/eye_blurry	//Carbon
 	var/ear_damage	//Carbon
@@ -109,6 +110,14 @@
 
 	var/can_multiz_pb = FALSE
 	var/is_watching = FALSE
+
+	/**
+	 * possible drops from this mob when butchering. If set to null, butchery is disabled
+	 * stored like [typepath] = list[number of possible drops, base chance of getting it](which should be expressed as a number)
+	 */
+	var/list/butcher_results
+	///Whether this animal has a chance for complications when butchered. Set up complications under the butchery_fail() proc
+	var/butchery_hazard = FALSE
 
 	spawn_frequency = 10
 	bad_type = /mob/living

@@ -260,15 +260,6 @@
 	color = "#49002E"
 	strength = 0.4
 
-/datum/reagent/toxin/plantbgone/touch_turf(turf/T)
-	if(istype(T, /turf/wall))
-		var/turf/wall/W = T
-		if(locate(/obj/effect/overlay/wallrot) in W)
-			for(var/obj/effect/overlay/wallrot/E in W)
-				qdel(E)
-			W.visible_message(span_notice("The fungi are completely dissolved by the solution!"))
-	return TRUE
-
 /datum/reagent/toxin/plantbgone/touch_obj(obj/O, volume)
 	if(istype(O, /obj/effect/plant) && !istype(O, /obj/effect/plant/hivemind))
 		qdel(O)
@@ -607,7 +598,7 @@
 			if(M.mind)
 				M.mind.transfer_to(new_mob)
 			else
-				new_mob.key = M.key
+				new_mob.PossessByPlayer(M.key)
 			qdel(M)
 		else //if victim was cruciformed, gib the body instead of creating a slime. Deus saves
 			M.gib()
