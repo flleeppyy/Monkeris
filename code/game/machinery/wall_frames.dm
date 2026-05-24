@@ -89,7 +89,7 @@
 	M.fingerprintslast = src.fingerprintslast
 	qdel(src)
 
-/obj/item/frame/GLOB.fire_alarm
+/obj/item/frame/fire_alarm
 	name = "fire alarm frame"
 	desc = "Used for building fire alarms."
 	icon_state = "fire_bitem"

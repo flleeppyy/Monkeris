@@ -1042,7 +1042,7 @@ FIRE ALARM
 			if(buildstage == 0)
 				if(I.use_tool(user, src, WORKTIME_NEAR_INSTANT, tool_type, FAILCHANCE_VERY_EASY, , required_stat = STAT_MEC))
 					to_chat(user, "You remove the fire alarm assembly from the wall!")
-					new /obj/item/frame/GLOB.fire_alarm(get_turf(user))
+					new /obj/item/frame/fire_alarm(get_turf(user))
 					qdel(src)
 			return
 

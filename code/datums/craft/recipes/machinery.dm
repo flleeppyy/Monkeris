@@ -106,9 +106,9 @@
 	name = "air alarm frame"
 	result = /obj/item/frame/air_alarm
 
-/datum/craft_recipe/machinery/wall/GLOB.fire_alarm
+/datum/craft_recipe/machinery/wall/fire_alarm
 	name = "fire alarm frame"
-	result = /obj/item/frame/GLOB.fire_alarm
+	result = /obj/item/frame/fire_alarm
 
 /datum/craft_recipe/machinery/wall/station_holomap
 	name = "holomap frame"
