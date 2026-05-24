@@ -68,7 +68,6 @@
 	. = ..()
 	if(hood && ispath(hood))
 		hood = new hood(src)
-	..()
 
 /obj/item/clothing/suit/storage/toggle/robe/ui_action_click(mob/living/user, action_name)
 	if(..())
