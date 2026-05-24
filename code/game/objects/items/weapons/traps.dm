@@ -245,7 +245,7 @@ Freeing yourself is much harder than freeing someone else. Calling for help is a
 		buckled_mob.Stun(4) //A short stun prevents spamming failure attempts
 		shake_camera(user, 2, 1)
 
-	if (ishuman(L))
+	if (ishuman(buckled_mob))
 		var/mob/living/carbon/human/H = buckled_mob
 		visible_message(span_danger("\The [src] snaps back, digging deeper into [buckled_mob]'s [H.get_organ(target_zone)]"))
 	else
