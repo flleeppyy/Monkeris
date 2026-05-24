@@ -284,13 +284,11 @@ const Administration = (props: AdministrationProps) => {
       {<LabeledList.Item label="Account">{accountname}</LabeledList.Item>}
       {authorization && (
         <NumberInput
-          minValue={0}
-          maxValue={99999999}
-          step={1}
           value={newaccount}
-          onChange={(value) => {
-            setAccount(value);
-          }}
+          onChange={setAccount}
+          minValue={0}
+          maxValue={9_999_999}
+          step={1}
         />
       )}
       {authorization && (
@@ -302,11 +300,12 @@ const Administration = (props: AdministrationProps) => {
         <Collapsible title="Set Required Access Code">
           {idnums.map((mapped, count: number) => (
             <Button
-              content={iddescs[count]}
               selected={IDcodereq === mapped}
               onClick={() => act('setID', { newID: mapped })}
               key={mapped}
-            />
+            >
+              {iddescs[count]}
+            </Button>
           ))}
         </Collapsible>
       )}

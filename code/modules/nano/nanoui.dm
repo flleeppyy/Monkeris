@@ -131,6 +131,7 @@ nanoui is used to open and update nano browser uis
 	add_script("nano_base_callbacks.js") // The NanoBaseCallbacks JS, this is used to set up (before and after update) callbacks which are common to all UIs
 	add_script("nano_base_helpers.js") // The NanoBaseHelpers JS, this is used to set up template helpers which are common to all UIs
 	add_stylesheet("shared.css") // this CSS sheet is common to all UIs
+	add_stylesheet("excelsior.css") // this CSS sheet is common to excelsior UIs
 	add_stylesheet("tgui.css") // this CSS sheet is common to all UIs
 	add_stylesheet("icons.css") // this CSS sheet is common to all UIs
 
@@ -468,6 +469,8 @@ nanoui is used to open and update nano browser uis
   * @return nothing
   */
 /datum/nanoui/proc/focus()
+	if (!user || !user.client)
+		return
 	winset(user, window_id, "focus=true")
 	winset(user, "mapwindow.map", "focus=true") // return keyboard focus to map
 

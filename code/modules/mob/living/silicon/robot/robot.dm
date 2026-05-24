@@ -416,9 +416,12 @@
 /mob/living/silicon/robot/verb/toggle_panel_lock()
 	set name = "Toggle Panel Lock"
 	set category = "Silicon Commands"
-	to_chat(src, "You begin [locked ? "" : "un"]locking your panel.")
+	if(opened || !has_power || incapacitated())
+		to_chat(src, span_warning("You are unable to interact with your panel lock."))
+		return FALSE
+	to_chat(src, span_notice("You begin [!locked ? "" : "un"]locking your panel."))
 	if(!opened && has_power && do_after(usr, 80) && !opened && has_power)
-		to_chat(src, "You [locked ? "un" : ""]locked your panel.")
+		to_chat(src, span_notice("You [locked ? "un" : ""]locked your panel."))
 		locked = !locked
 
 /mob/living/silicon/robot/verb/toggle_lights()
@@ -426,7 +429,7 @@
 	set name = "Toggle Lights"
 
 	lights_on = !lights_on
-	to_chat(usr, "You [lights_on ? "enable" : "disable"] your integrated light.")
+	to_chat(usr, span_notice("You [lights_on ? "enable" : "disable"] your integrated light."))
 	if(lights_on)
 		set_light(5)
 	else
@@ -1164,7 +1167,8 @@
 		return
 
 	if(opened)//Cover is open
-		if(HasTrait(CYBORG_TRAIT_EMAGGED))	return//Prevents the X has hit Y with Z message also you cant emag them twice
+		if(HasTrait(CYBORG_TRAIT_EMAGGED))
+			return//Prevents the X has hit Y with Z message also you cant emag them twice
 		if(wiresexposed)
 			to_chat(user, "You must close the panel first")
 			return
@@ -1177,8 +1181,7 @@
 				to_chat(user, "You emag [src]'s interface.")
 				message_admins("[key_name_admin(user)] emagged cyborg [key_name_admin(src)].  Laws overridden.")
 				log_game("[key_name(user)] emagged cyborg [key_name(src)].  Laws overridden.")
-				clear_supplied_laws()
-				clear_inherent_laws()
+				qdel(laws)
 				laws = new /datum/ai_laws/syndicate_override
 				var/time = time2text(world.realtime,"hh:mm:ss")
 				GLOB.lawchanges.Add("[time] <B>:</B> [user.name]([user.key]) emagged [name]([key])")
@@ -1202,13 +1205,10 @@
 					laws.show_laws(src)
 					to_chat(src, span_danger("ALERT: [user.real_name] is your new master. Obey your new laws and his commands."))
 					if(module)
-						var/rebuild = 0
 						for(var/obj/item/tool/pickaxe/drill/D in module.modules)
+							module.modules -= D
 							qdel(D)
-							rebuild = 1
-						if(rebuild)
 							module.modules += new /obj/item/tool/pickaxe/diamonddrill(module)
-							module.rebuild()
 					updateicon()
 			else
 				to_chat(user, "You fail to hack [src]'s interface.")
@@ -1225,7 +1225,7 @@
 /mob/living/silicon/robot/get_cell()
 	return cell
 
-/mob/living/silicon/robot/flash(duration = 0, drop_items = FALSE, doblind = FALSE, doblurry = FALSE)
+/mob/living/silicon/robot/flash(duration = 0, drop_items = FALSE, doblind = FALSE, doblurry = FALSE, dohaze = FALSE)
 	if(blinded)
 		return
 	if (HUDtech.Find("flash"))

@@ -19,6 +19,10 @@ var/global/list/robot_modules = list(
 	icon_state = "std_module"
 	w_class = 100
 	item_state = "electronic"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/misc/devices_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/misc/devices_righthand.dmi',
+		)
 	flags = CONDUCT
 	bad_type = /obj/item/robot_module
 	var/hide_on_manifest = FALSE
@@ -177,13 +181,6 @@ var/global/list/robot_modules = list(
 
 	for(var/datum/matter_synth/T in synths)
 		T.add_charge(T.recharge_rate * rate)
-
-/obj/item/robot_module/proc/rebuild()//Rebuilds the list so it's possible to add/remove items from the module
-	var/list/temp_list = modules
-	modules = list()
-	for(var/obj/O in temp_list)
-		if(O)
-			modules += O
 
 /obj/item/robot_module/proc/add_languages(mob/living/silicon/robot/R)
 	// Stores the languages as they were before receiving the module, and whether they could be synthezized.

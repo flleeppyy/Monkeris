@@ -41,8 +41,6 @@
 			bad_external_organs |= E
 
 	for(var/obj/item/organ/external/E in bad_external_organs)
-		if(!E)
-			continue
 		if(!E.need_process())
 			bad_external_organs -= E
 			continue
@@ -171,7 +169,7 @@
 		. += organ
 
 /mob/living/carbon/human/proc/random_organ_by_process(organ_process)
-	if(organ_list_by_process(organ_process).len)
+	if(length(organ_list_by_process(organ_process)))
 		return pick(organ_list_by_process(organ_process))
 	return	FALSE
 

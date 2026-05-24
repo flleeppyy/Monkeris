@@ -206,6 +206,10 @@ var/list/_client_preferences_by_type
 	key = "CHAT_LOGINOUT"
 	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
 
+/datum/client_preference/show_pullrequests
+	description ="Show pull request notifications"
+	key = "CHAT_PULLR"
+	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
 
 /datum/client_preference/show_ghostlaws
 	description ="Show silicon law updates"
@@ -221,6 +225,10 @@ var/list/_client_preferences_by_type
 	description = "Fake NanoUI Browser Style"
 	key = "BROWSER_STYLED"
 	options = list(GLOB.PREF_FANCY, GLOB.PREF_PLAIN)
+
+/datum/client_preference/auto_fit_viewport
+	description = "Auto Fit Viewport"
+	key = "AUTO_FIT_VIEWPORT"
 
 /*
 /datum/client_preference/autohiss

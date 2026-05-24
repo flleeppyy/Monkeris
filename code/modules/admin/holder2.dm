@@ -23,10 +23,14 @@ GLOBAL_PROTECT(href_token)
 
 	var/deadmined
 
+	///ref to the filter editor datum
+	var/datum/filter_editor/filteriffic
+
 	var/admincaster_screen = 0	//See newscaster.dm under machinery for a full description
 	var/datum/feed_message/admincaster_feed_message = new /datum/feed_message   //These two will act as holders.
 	var/datum/feed_channel/admincaster_feed_channel = new /datum/feed_channel
 	var/admincaster_signature	//What you'll sign the newsfeeds as
+	var/obj/machinery/computer/libraryconsole/admin_only_do_not_map_in_you_fucker/library_manager
 
 
 	/// A lazylist of tagged datums, for quick reference with the View Tags verb
@@ -290,6 +294,8 @@ you will have to do something like if(client.rights & R_ADMIN) yourself.
 
 //This proc checks whether subject has at least ONE of the rights specified in rights_required.
 /proc/check_rights_for(client/subject, rights_required)
+	if(!QDELETED(subject) && ismob(subject))
+		subject = astype(subject, /mob).client
 	if(subject?.holder)
 		return subject.holder.check_for_rights(rights_required)
 	return FALSE

@@ -142,6 +142,9 @@
 	var/list/item_upgrades = list()
 	var/max_upgrades = 3
 
+	///if set, this item should add the associated sprite id to a modgun's sprite when used as an upgrade
+	var/modular_overlay
+
 	var/can_use_lying = 0
 
 	var/chameleon_type
@@ -162,6 +165,8 @@
 	if(chameleon_type)
 		verbs.Add(/obj/item/proc/set_chameleon_appearance)
 	tact_visual = new /obj/effect/effect/melee/alert
+	if(sharp && !isProjectile(src))//any item with sharpness on spawn gets butchering
+		AddComponent(/datum/component/butchering, FALSE, FALSE)
 	. = ..()
 
 /obj/item/Destroy(force)
@@ -170,6 +175,7 @@
 	master = null
 	if(ismob(loc))
 		var/mob/m = loc
+		unwield(m)
 		m.u_equip(src)
 		remove_hud_actions(m)
 		loc = null
@@ -271,6 +277,9 @@
 			if(has_offers)
 				offer_message = copytext(offer_message, 1, LAZYLEN(offer_message) - 1)
 				extra_description += offer_message
+
+	if(watermark && user.stats.getStat(STAT_MEC) > STAT_LEVEL_EXPERT)
+		extra_description += span_notice("\n Looking closely at \the [src.name], you notice signs of [watermark].")
 
 	..(user, extra_description)
 

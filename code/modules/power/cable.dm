@@ -29,7 +29,8 @@ var/list/possible_cable_coil_colours = list(
 		"Blue" = COLOR_BLUE,
 		"Orange" = COLOR_ORANGE,
 		"Cyan" = COLOR_CYAN,
-		"Red" = COLOR_RED
+		"Red" = COLOR_RED,
+		"White" = COLOR_WHITE
 	)
 
 /obj/structure/cable
@@ -294,10 +295,6 @@ var/list/possible_cable_coil_colours = list(
 	var/turf/T  = get_step(src, direction&3)//go north/south
 
 	for(var/obj/structure/cable/C in T)
-
-		if(!C)
-			continue
-
 		if(src == C)
 			continue
 
@@ -315,10 +312,6 @@ var/list/possible_cable_coil_colours = list(
 	T  = get_step(src, direction&12)//go east/west
 
 	for(var/obj/structure/cable/C in T)
-
-		if(!C)
-			continue
-
 		if(src == C)
 			continue
 		if(C.d1 == (direction^12) || C.d2 == (direction^12)) //we've got a diagonally matching cable
@@ -342,10 +335,6 @@ var/list/possible_cable_coil_colours = list(
 	var/turf/TB  = get_step(src, direction)
 
 	for(var/obj/structure/cable/C in TB)
-
-		if(!C)
-			continue
-
 		if(src == C)
 			continue
 
@@ -509,6 +498,10 @@ var/list/possible_cable_coil_colours = list(
 	name = "cable coil"
 	icon = 'icons/obj/power.dmi'
 	icon_state = "coil"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/equipment/tools_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/equipment/tools_righthand.dmi',
+		)
 	amount = MAXCOIL
 	max_amount = MAXCOIL
 	color = COLOR_RED

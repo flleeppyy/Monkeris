@@ -8,7 +8,7 @@
 
 	return
 
-/mob/living/proc/flash(duration = 0, drop_items = FALSE, doblind = FALSE, doblurry = FALSE)
+/mob/living/proc/flash(duration = 0, drop_items = FALSE, doblind = FALSE, doblurry = FALSE, dohaze = FALSE)
 	if(blinded)
 		return
 	if (HUDtech.Find("flash"))
@@ -19,8 +19,9 @@
 		if(doblind)
 			eye_blind += duration
 		if(doblurry)
-			eye_blurry += duration
-
+			eye_blurry += duration / 2
+		if(dohaze)
+			eye_hazy += duration / 4
 
 //mob verbs are faster than object verbs. See above.
 /mob/living/pointed(atom/A as mob|obj|turf in view())
@@ -140,6 +141,8 @@ default behaviour is:
 
 /proc/swap_density_check(mob/swapper, mob/swapee)
 	var/turf/T = get_turf(swapper)
+	if (!T)
+		return FALSE
 	if(T.density)
 		return TRUE
 	for(var/atom/movable/A in T)
@@ -871,9 +874,8 @@ default behaviour is:
 
 	generate_static_overlay()
 	for(var/mob/observer/eye/angel/A in GLOB.player_list)
-		if(A)
-			A.static_overlays |= static_overlay
-			A.client.images |= static_overlay
+		A.static_overlays |= static_overlay
+		A.client?.images |= static_overlay
 	var/turf/T = get_turf(src)
 	if(T)
 		update_z(T.z)
@@ -949,3 +951,7 @@ default behaviour is:
 		exp_list[mind.assigned_role] = minutes
 
 	return exp_list
+
+///Negative effect that may be triggered by butchering the mob, especially with low stats
+/mob/living/proc/butchery_fail(mob/butcher)
+	return

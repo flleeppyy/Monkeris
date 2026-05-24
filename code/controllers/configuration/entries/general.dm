@@ -300,6 +300,9 @@
 // log emotes
 /datum/config_entry/flag/log_emote
 
+///Log Music Requests
+/datum/config_entry/flag/log_internet_request
+
 /// log telecomms messages
 /datum/config_entry/flag/log_telecomms
 
@@ -528,12 +531,15 @@
 
 /datum/config_entry/flag/emojis
 
-/datum/config_entry/flag/paper_input
-
 /// If true, submaps loaded automatically can be rotated.
 /datum/config_entry/flag/random_submap_orientation
 
 /datum/config_entry/flag/use_overmap
+
+/datum/config_entry/number/pr_announcements_per_round
+	default = 5
+	min_val = 0
+	integer = TRUE
 
 /**
  * motd.txt
@@ -545,6 +551,16 @@
 
 /datum/config_entry/flag/config_errors_runtime
 	default = FALSE
+
+/datum/config_entry/string/invoke_youtubedl
+	protection = CONFIG_ENTRY_LOCKED | CONFIG_ENTRY_HIDDEN
+
+/datum/config_entry/flag/request_internet_sound
+
+
+/datum/config_entry/string/request_internet_allowed
+	protection = CONFIG_ENTRY_LOCKED
+
 /*****************/
 /*  URLS & Lang  */
 /*****************/

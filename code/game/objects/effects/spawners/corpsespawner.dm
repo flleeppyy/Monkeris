@@ -241,6 +241,8 @@
 		/obj/item/clothing/head/soft/tan2soft,
 		/obj/item/clothing/head/space/emergency
 		)
+	corpsepocket1 = list(/obj/spawner/pack/randcredits/low_chance)
+	corpsepocket2 = list(/obj/spawner/pack/randcredits/low_chance)
 	min_age = 40
 	max_age = 250
 	//corpseid = TRUE
@@ -450,3 +452,16 @@
 
 /obj/landmark/corpse/russian/ranged
 	corpsehelmet = /obj/item/clothing/head/ushanka
+
+/obj/landmark/corpse/skeleton/miner
+	name = "Fallen Miner"
+	corpseuniform = /obj/item/clothing/under/rank/miner
+	corpsesuit = /obj/item/clothing/suit/space/void/mining
+	corpseshoes = /obj/item/clothing/shoes/color/brown
+	corpsegloves = /obj/item/clothing/gloves/thick
+	corpseradio = /obj/item/device/radio/headset/headset_cargo
+	corpseglasses = /obj/item/clothing/glasses/powered/meson
+	corpsemask = /obj/item/clothing/mask/breath
+	corpsebelt = /obj/item/storage/belt/utility
+	corpseback = /obj/item/storage/backpack
+	injury_level = 1

@@ -104,14 +104,14 @@
 			to_chat(user, span_warning("\The [src] is undamaged!"))
 		return
 
-	else if(istype(O, /obj/item/card/id)||istype(O, /obj/item/modular_computer/pda))
+	else if(isidcard(O)||istype(O, /obj/item/modular_computer/pda))
 		if (!mmi)
 			to_chat(user, span_danger("There's no reason to swipe your ID - \the [src] has no brain to remove."))
 			return 0
 
 		var/obj/item/card/id/id_card
 
-		if(istype(O, /obj/item/card/id))
+		if(isidcard(O))
 			id_card = O
 		else
 			id_card = O.GetIdCard()
@@ -140,11 +140,10 @@
 		spawn(200)	to_chat(src, span_danger("Internal heat sensors are spiking! Something is badly wrong with your cell!"))
 		spawn(300)	src.explode()
 
+#warn test transfer_personality on spiderbot with mmi
 /mob/living/simple_animal/spiderbot/proc/transfer_personality(obj/item/device/mmi/M as obj)
-
-		src.mind = M.brainmob.mind
-		src.mind.key = M.brainmob.key
-		src.ckey = M.brainmob.ckey
+		M.brainmob.mind?.transfer_to(src)
+		src.PossessByPlayer(M.brainmob.key)
 		src.name = "spider-bot ([M.brainmob.name])"
 
 /mob/living/simple_animal/spiderbot/proc/explode() //When emagged.

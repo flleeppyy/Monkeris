@@ -44,6 +44,10 @@
 	name = "navigation console"
 	build_path = /obj/item/electronics/circuitboard/nav
 
+/datum/design/autolathe/circuit/libraryconsole
+	name = "navigation console"
+	build_path = /obj/item/electronics/circuitboard/libraryconsole
+
 /datum/design/autolathe/circuit/jtb
 	name = "junk tractor beam control console"
 	build_path = /obj/item/electronics/circuitboard/jtb
@@ -95,6 +99,10 @@
 /datum/design/autolathe/circuit/grill
 	name = "grill"
 	build_path = /obj/item/electronics/circuitboard/cooking_with_jane/grill
+
+/datum/design/autolathe/circuit/biogenerator
+	name = "biogenerator"
+	build_path = /obj/item/electronics/circuitboard/biogenerator
 
 //Exelsior ciruits
 /datum/design/autolathe/circuit/shieldgen_excelsior

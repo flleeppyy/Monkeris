@@ -20,11 +20,7 @@ function Story() {
     <Section>
       <LabeledList>
         <LabeledList.Item label="Use theme">
-          <Input
-            placeholder="theme_name"
-            value={theme}
-            onChange={(value) => setTheme(value)}
-          />
+          <Input placeholder="theme_name" value={theme} onChange={setTheme} />
         </LabeledList.Item>
       </LabeledList>
     </Section>

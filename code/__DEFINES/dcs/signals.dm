@@ -82,6 +82,8 @@
 #define COMSIG_ATOM_CONTAINERED "atom_containered"
 ///When the transform or an atom is varedited through vv topic.
 #define COMSIG_ATOM_VV_MODIFY_TRANSFORM "atom_vv_modify_transform"
+///signal sent out by an atom upon onZImpact : (turf/impacted_turf, levels)
+#define COMSIG_ATOM_ON_Z_IMPACT "movable_on_z_impact"
 
 // /area signals
 #define COMSIG_AREA_SANCTIFY "sanctify_area"
@@ -146,6 +148,12 @@
 #define SWORD_OF_TRUTH_OF_DESTRUCTION "sword_of_truth"
 #define COMSIG_EXTRA_EXAMINE "send_extra_examine"
 
+///from base of obj/deconstruct(): (disassembled)
+#define COMSIG_OBJ_DECONSTRUCT "obj_deconstruct"
+
+/// from /obj/structure/sign/poster/trap_succeeded() : (mob/user)
+#define COMSIG_POSTER_TRAP_SUCCEED "poster_trap_succeed"
+
 //machinery
 #define COMSIG_AREA_APC_OPERATING "area_operating"  //from apc process()
 #define COMSIG_AREA_APC_DELETED "area_apc_gone"
@@ -154,6 +162,9 @@
 #define COMSIG_TURRENT "create_turrent"
 #define COMSIG_DOOR_OPENED "door_opened"
 #define COMSIG_DOOR_CLOSED "door_closed"
+
+//excelsior
+#define COMSIG_EX_CONNECT "excelsior_connect"
 
 // /obj/item signals
 #define COMSIG_IATTACK "item_attack"									//from /mob/ClickOn(): (/atom, /src, /params) If any reply to this returns TRUE, overrides attackby and afterattack
@@ -220,3 +231,4 @@
 #define COMSIG_SHIP_STILL "ship_still" // /obj/effect/overmap/ship/Process() && is_still()
 
 /*******Non-Signal Component Related Defines*******/
+

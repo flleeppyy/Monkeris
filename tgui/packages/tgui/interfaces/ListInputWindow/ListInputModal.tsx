@@ -20,6 +20,8 @@ type ListInputModalProps = {
 };
 
 export const ListInputModal = (props: ListInputModalProps) => {
+  const { act } = useBackend();
+
   const { items = [], default_item, message, on_selected, on_cancel } = props;
 
   const [selected, setSelected] = useState(items.indexOf(default_item));
@@ -151,7 +153,10 @@ export const ListInputModal = (props: ListInputModalProps) => {
             autoFocus
             autoSelect
             fluid
-            onEnter={() => on_selected(filteredItems[selected])}
+            expensive
+            onEnter={() => {
+              act('submit', { entry: filteredItems[selected] });
+            }}
             onChange={onSearch}
             placeholder="Search..."
             value={searchQuery}
@@ -200,10 +205,13 @@ const ListDisplay = (props: ListDisplayProps) => {
           className="candystripe"
           color="transparent"
           fluid
-          id={`${index}`}
+          id={index}
           key={index}
           onClick={() => onClick(index)}
-          onDoubleClick={() => onDoubleClick(item)}
+          onDoubleClick={(event) => {
+            event.preventDefault();
+            act('submit', { entry: filteredItems[selected] });
+          }}
           onKeyDown={(event) => {
             const keyCode = window.event ? event.which : event.keyCode;
             if (searchBarVisible && keyCode >= KEY_A && keyCode <= KEY_Z) {

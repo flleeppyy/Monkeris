@@ -40,6 +40,9 @@
 #define PARTMOD_FOLDING_STOCK 1
 #define PARTMOD_SLIDE 2
 #define PARTMOD_FRAME_SPRITE 4 // Defines whether grips or frames determine the inhands, TODO: remove this when V3 comes
+#define PARTMOD_BAYONET 8
+#define PARTMOD_SILENCER 16
+#define PARTMOD_SILENCER_HIDES_BARREL 32 //If placed in spritetags, silencer overrides gun barrel sprite
 
 //Weapon upgrade defines
 
@@ -98,8 +101,13 @@
 #define GUN_UPGRADE_DEFINE_GRIP "grip"
 #define GUN_UPGRADE_DEFINE_LOADER "loadtype"
 #define GUN_UPGRADE_DENY_MAG "no_mag"
-#define GUN_UPGRADE_DEFINE_WCLASS "add_wclass"
+#define GUN_UPGRADE_DEFINE_WCLASS "wclass"
 #define GUN_UPGRADE_SCOPE_POWER "scope_power"
+#define GUN_UPGRADE_SET_FIRESOUND "sound_fire"
+#define GUN_UPGRADE_SET_SILENT_FIRESOUND "sound_fire_silent"
+#define GUN_UPGRADE_SET_RELOADSOUND "sound_reload"
+#define GUN_UPGRADE_SET_COCKEDSOUND "sound_cocked"
+#define GUN_UPGRADE_SET_INSERTSOUND "sound_insert"
 
 //Gun Interaction flags
 #define GI_ATTACKSELF 1
@@ -171,7 +179,7 @@
 					/obj/spawner/pouch = 2,\
 					/obj/spawner/tool_upgrade/rare = 4,\
 					/obj/spawner/rig_module/rare = 4,\
-					/obj/spawner/credits/c1000 = 3,\
+					/obj/spawner/credits/c500 = 2,\
 					/obj/spawner/exosuit_equipment = 3,\
 					/obj/spawner/cloth/holster = 4,\
 					/obj/item/stash_spawner = 4,\

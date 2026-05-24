@@ -87,7 +87,7 @@ export function StatusDisplayControls(props) {
               fluid
               maxLength={maxStatusLineLength}
               value={upperText}
-              onChange={(value) => setUpperText(value)}
+              onChange={setUpperText}
             />
           </Flex.Item>
 
@@ -96,7 +96,7 @@ export function StatusDisplayControls(props) {
               fluid
               maxLength={maxStatusLineLength}
               value={lowerText}
-              onChange={(value) => setLowerText(value)}
+              onChange={setLowerText}
             />
           </Flex.Item>
 

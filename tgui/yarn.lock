@@ -6418,9 +6418,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.0, caniuse-lite@npm:^1.0.30000981, caniuse-lite@npm:^1.0.30001109, caniuse-lite@npm:^1.0.30001125, caniuse-lite@npm:^1.0.30001688, caniuse-lite@npm:^1.0.30001707":
-  version: 1.0.30001712
-  resolution: "caniuse-lite@npm:1.0.30001712"
-  checksum: 10c0/b3df8bdcc3335969380c2e47acb36c89bfc7f8fb4ef7ee2a5380e30ba46aa69e9d411654bc29894a06c201a1d60d490ab9b92787f3b66d7a7a38d71360e68215
+  version: 1.0.30001746
+  resolution: "caniuse-lite@npm:1.0.30001746"
+  checksum: 10c0/e656a9dc811be2316e3b6dbd3bf25d0e32dbce645b1284821b4ec93fb81dc3e3f73b9473e2f66c921b620ea8b25ebbae9ee70c3d13dad85f8dd69d6bb2c91d46
   languageName: node
   linkType: hard
 
@@ -19730,16 +19730,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "tgui-core@npm:^5.3.2":
   version: 5.3.2
   resolution: "tgui-core@npm:5.3.2"
   dependencies:
     "@floating-ui/react": "npm:^0.27.16"
+=======
+"tgui-core@npm:^3.3.1":
+  version: 3.3.1
+  resolution: "tgui-core@npm:3.3.1"
+  dependencies:
+    "@floating-ui/react": "npm:^0.27.8"
+>>>>>>> 3ae2438327a58be4edddf150b0750f389086f283
     "@nozbe/microfuzz": "npm:^1.0.0"
   peerDependencies:
     react: ^19.1.0
     react-dom: ^19.1.0
+<<<<<<< HEAD
   checksum: 10c0/3fb36f837ee97732152fbba73b822fb846ebff39645fd2a376aad9a5a284bc55a17cfdcef99d582343e99e66097ca90dd95698f72b5f3d405b87179dc9846fa8
+=======
+  checksum: 10c0/94c1c15318e36d66b0741e10eef8061d9578a58ca0f8c5653bd6537ff95eabb243cda9c582f96d50dcd5e7d8d4857b02ded3c454965ac5d6ae434e9002edb0af
+>>>>>>> 3ae2438327a58be4edddf150b0750f389086f283
   languageName: node
   linkType: hard
 
@@ -19842,7 +19854,11 @@ __metadata:
     marked: "npm:^4.3.0"
     react: "npm:^19.1.0"
     react-dom: "npm:^19.1.0"
+<<<<<<< HEAD
     tgui-core: "npm:^5.3.2"
+=======
+    tgui-core: "npm:^3.3.1"
+>>>>>>> 3ae2438327a58be4edddf150b0750f389086f283
     tgui-dev-server: "workspace:*"
     vitest: "npm:^3.1.1"
   languageName: unknown

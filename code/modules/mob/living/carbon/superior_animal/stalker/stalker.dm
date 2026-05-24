@@ -8,7 +8,7 @@
 
 	mob_size = MOB_MEDIUM
 
-	maxHealth = 200 
+	maxHealth = 200
 	health = 200
 
 	//spawn_values
@@ -27,8 +27,7 @@
 	move_to_delay = 6
 	turns_per_move = 5
 	see_in_dark = 10
-	meat_type = null
-	meat_amount = 0
+	butcher_results = null
 	stop_automated_movement_when_pulled = 0
 
 	melee_damage_lower = 12
@@ -61,7 +60,7 @@
 	fire_verb = "fires"
 	acceptableTargetDistance = 6
 	kept_distance = 3
-	
+
 	var/already_shooting = 0
 
 /mob/living/carbon/superior_animal/stalker/Move()
@@ -82,7 +81,7 @@
 	icon_state = "stalker_mk2"
 	icon_living = "stalker_mk2"
 
-	maxHealth = 400 
+	maxHealth = 400
 	health = 400
 	rapid = 1
 
@@ -133,7 +132,7 @@
 			new casingtype(get_turf(src))
 		sleep(1)
 	already_shooting--
-	
+
 	stance = HOSTILE_STANCE_IDLE
 	target_mob = null
 	if(!rapid && src.stat != DEAD)

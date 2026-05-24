@@ -152,7 +152,7 @@
 
 /atom/movable/screen/item_action/top_bar/update_icon()
 	..()
-	if(!ismob(owner.loc))
+	if(!owner || !ismob(owner.loc))
 		return
 
 	var/mob/living/M = owner.loc
@@ -1407,7 +1407,7 @@
 //		var/obj/item/clothing/glasses/G = parentmob.get_equipped_item(slot_glasses)
 //		if(!G || !G.prescription)
 //			underlays += global_hud.vimpaired
-	if (parentmob.eye_blurry)
+	if (parentmob.eye_hazy)
 		underlays |= global_hud.blurry
 	if (parentmob.druggy)
 		underlays |= global_hud.druggy

@@ -104,6 +104,7 @@
 #define VV_HK_ADD_AI "add_ai"
 #define VV_HK_ARMOR_MOD "mod_obj_armor"
 #define VV_HK_ADJUST_ANIMATIONS "adjust_animations"
+#define VV_HK_EDIT_FILTERS "edit_filters"
 
 // /obj
 #define VV_HK_OSAY "osay"
@@ -148,9 +149,6 @@
 #define VV_HK_MAKE_ROBOT "makerobot"
 #define VV_HK_MAKE_SLIME "makeslime"
 #define VV_HK_MODIFY_LANGUAGES "modifylanguages"
-
-// misc
-#define VV_HK_SPACEVINE_PURGE "spacevine_purge"
 
 // paintings
 #define VV_HK_REMOVE_PAINTING "remove_painting"

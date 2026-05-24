@@ -19,6 +19,7 @@
 	var/used_now = FALSE
 	var/auto_init = TRUE
 	var/initialized = FALSE
+	/// If this has a positive value, it will drain that value of sanity from those in view of this atom.
 	var/sanity_damage = 0
 
 	/// Last name used to calculate a color for the chatmessage overlays
@@ -68,6 +69,9 @@
 	var/tmp/list/light_sources
 	/// Our light source. Don't fuck with this directly unless you have a good reason!
 	var/tmp/datum/light_source/light
+
+	///Lazy assoc list for managing filters attached to us
+	var/list/filter_data
 
 /atom/proc/update_icon()
 	return
@@ -937,6 +941,7 @@
 	if(href_list["statpanel_item_click"])
 		var/mouseparams = list2params(paramslist)
 		usr_client.Click(src, loc, null, mouseparams)
+		return TRUE // prevent NanoUI Topic chain (CouldUseTopic/set_machine) from firing
 
 /// Called after we wrench/unwrench this object
 /obj/proc/wrenched_change()
