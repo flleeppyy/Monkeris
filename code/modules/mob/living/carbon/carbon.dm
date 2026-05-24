@@ -248,7 +248,7 @@
 /mob/living/carbon/proc/earcheck()
 	return 0
 
-/mob/living/carbon/flash(duration = 0, drop_items = FALSE, doblind = FALSE, doblurry = FALSE)
+/mob/living/carbon/flash(duration = 0, drop_items = FALSE, doblind = FALSE, doblurry = FALSE, dohaze = FALSE)
 	if(blinded)
 		return
 	if(species)
@@ -263,11 +263,13 @@
 	src.throw_mode_off()
 	if(usr.stat || !target)
 		return
-	if(target.type == /atom/movable/screen) return
+	if(istype(target, /atom/movable/screen))
+		return
 
 	var/atom/movable/item = src.get_active_held_item()
 
-	if(!item) return
+	if(!item)
+		return
 
 	if(istype(item, /obj/item/stack/thrown))
 		var/obj/item/stack/thrown/V = item
@@ -277,7 +279,8 @@
 	if (istype(item, /obj/item/grab))
 		var/obj/item/grab/G = item
 		item = G.throw_held() //throw the person instead of the grab
-		if(!item) return
+		if(!item)
+			return
 		unEquip(G, loc)
 		if(ismob(item))
 			var/turf/start_T = get_turf(loc) //Get the start and target tile for the descriptors
@@ -457,3 +460,22 @@
 			to_chat(usr, "Removed [rem_organ] from [src].")
 			rem_organ.removed()
 			qdel(rem_organ)
+
+/// checks if a location on a mob is protected from skin-contact effects. Returns null if no protection, or the protecting item if protected
+/mob/living/carbon/proc/find_skin_protection(var/protection_zone)
+	var/obj/item/protecting_item
+	var/list/protection_items
+	if(!ishuman(src))//if human, check human inventory slots
+		var/mob/living/carbon/human/ashuman = src
+		protection_items = list(ashuman.head, ashuman.glasses, ashuman.wear_mask, ashuman.wear_suit, ashuman.w_uniform, ashuman.gloves, ashuman.shoes)
+	else //otherwise just check for a mask
+		protection_items = list(src.wear_mask)
+
+	for(var/obj/item/ourcloth in protection_items)
+		if((ourcloth && ourcloth.body_parts_covered & protection_zone))
+			if(!(ourcloth.item_flags & FLEXIBLEMATERIAL) && !(ourcloth.item_flags & AIRTIGHT))//flexible non-airtight items are porous and let liquids/gas through
+				protecting_item = ourcloth.name
+				break
+	return protecting_item
+
+
