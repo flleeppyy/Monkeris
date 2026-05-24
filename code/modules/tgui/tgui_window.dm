@@ -134,7 +134,7 @@
 	// Detect whether the control is a browser
 	is_browser = winexists(client, id) == "BROWSER"
 	// Instruct the client to signal UI when the window is closed.
-	if(!is_browser && !QDELETED(client)) // monkestation: extra anti-runtime checks
+	if(!is_browser && !QDELETED(client)) // extra anti-runtime checks
 		winset(client, id, "on-close=\"uiclose [id]\"")
 
 /**
