@@ -354,7 +354,7 @@ Contractors and the like can also be revived with the previous role mostly intac
 	else
 		new_character.mind_initialize()
 	if(!new_character.mind.assigned_role)
-		new_character.mind.assigned_role = ASSISTANT_TITLE
+		new_character.mind.assigned_role = JOB_ASSISTANT
 
 	new_character.PossessByPlayer(G_found.key)
 

@@ -60,8 +60,8 @@ SUBSYSTEM_DEF(statpanels)
 					var/job_of_choice = "Unknown"
 					// Player chose to be a vagabond, that takes priority over all other settings,
 					// and is in a low priority job list for some reason
-					if(ASSISTANT_TITLE in player.client.prefs.job_low)
-						job_of_choice = ASSISTANT_TITLE
+					if(JOB_ASSISTANT in player.client.prefs.job_low)
+						job_of_choice = JOB_ASSISTANT
 					// Only take top priority job into account, no use divining what lower priority job player could get
 					else if(player.client.prefs.job_high)
 						job_of_choice = player.client.prefs.job_high

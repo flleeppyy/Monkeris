@@ -511,7 +511,7 @@
 	data["total_danger"] = danger_level
 	data["environment"] = environment_data
 	data["atmos_alarm"] = alarm_area.atmosalm
-	data["fire_alarm"] = alarm_area.fire != null
+	data["GLOB.fire_alarm"] = alarm_area.fire != null
 	data["target_temperature"] = "[target_temperature - T0C]C"
 
 /obj/machinery/alarm/proc/populate_controls(list/data)
@@ -1042,7 +1042,7 @@ FIRE ALARM
 			if(buildstage == 0)
 				if(I.use_tool(user, src, WORKTIME_NEAR_INSTANT, tool_type, FAILCHANCE_VERY_EASY, , required_stat = STAT_MEC))
 					to_chat(user, "You remove the fire alarm assembly from the wall!")
-					new /obj/item/frame/fire_alarm(get_turf(user))
+					new /obj/item/frame/GLOB.fire_alarm(get_turf(user))
 					qdel(src)
 			return
 
@@ -1111,7 +1111,7 @@ FIRE ALARM
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
-		ui = new(user, src, ui_key, "fire_alarm.tmpl", "Fire Alarm", 240, 330, state = state)
+		ui = new(user, src, ui_key, "GLOB.fire_alarm.tmpl", "Fire Alarm", 240, 330, state = state)
 		ui.set_initial_data(data)
 		ui.open()
 		ui.set_auto_update(1)
@@ -1151,7 +1151,7 @@ FIRE ALARM
 		return
 	var/area/area = get_area(src)
 	for(var/obj/machinery/firealarm/FA in area)
-		fire_alarm.clearAlarm(loc, FA)
+		GLOB.fire_alarm.clearAlarm(loc, FA)
 	if(iscarbon(usr))
 		visible_message("[usr] resets \the [src].", "You have reset \the [src].")
 	else
@@ -1164,7 +1164,7 @@ FIRE ALARM
 		return
 	var/area/area = get_area(src)
 	for(var/obj/machinery/firealarm/FA in area)
-		fire_alarm.triggerAlarm(loc, FA, duration)
+		GLOB.fire_alarm.triggerAlarm(loc, FA, duration)
 	if(iscarbon(usr))
 		visible_message(span_warning("[usr] pulled \the [src]'s pull station!"), span_warning("You have pulled \the [src]'s pull station!"))
 	else

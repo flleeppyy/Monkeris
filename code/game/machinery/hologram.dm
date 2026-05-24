@@ -29,7 +29,7 @@ Possible to do for anyone motivated enough:
 #define RANGE_BASED 4
 #define AREA_BASED 6
 
-var/const/HOLOPAD_MODE = RANGE_BASED
+#define HOLOPAD_MODE RANGE_BASED
 
 /obj/machinery/hologram/holopad
 	name = "\improper AI holopad"
@@ -85,9 +85,9 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 				last_request = world.time
 				to_chat(user, span_notice("You request an AI's presence."))
 				var/area/area = get_area(src)
-				for(var/mob/living/silicon/ai/AI in GLOB.living_mob_list)
-					if(!AI.client)	continue
-					to_chat(AI, span_info("Your presence is requested at <a href='byond://?src=\ref[AI];jumptoholopad=\ref[src]'>\the [area]</a>."))
+				for(var/mob/living/silicon/ai/ai in GLOB.living_mob_list)
+					if(!ai.client)	continue
+					to_chat(ai, span_info("Your presence is requested at <a href='byond://?src=\ref[ai];jumptoholopad=\ref[src]'>\the [area]</a>."))
 			else
 				to_chat(user, span_notice("A request for AI presence was already sent recently."))
 		if("Holocomms")
