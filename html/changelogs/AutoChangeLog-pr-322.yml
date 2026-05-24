@@ -1,0 +1,5 @@
+author: blackwolf602
+delete-after: true
+changes:
+  - rscadd: unique in_hand sprites to freezer
+  - rscadd: unique in_hand sprites to freezer_red
