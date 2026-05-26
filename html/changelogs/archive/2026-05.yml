@@ -116,3 +116,6 @@
   blackwolf602:
   - rscadd: unique in_hand sprites to freezer
   - rscadd: unique in_hand sprites to freezer_red
+2026-05-26:
+  blackwolf602:
+  - bugfix: bedsheets offset
