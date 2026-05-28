@@ -78,15 +78,6 @@
 	// Create and destroy is weird and I wanna cover my bases
 	var/harddel_deets_dumped = FALSE
 
-#ifdef REFERENCE_TRACKING
-	var/running_find_references
-	var/last_find_references = 0
-	#ifdef REFERENCE_TRACKING_DEBUG
-	///Stores info about where refs are found, used for sanity checks and testing
-	var/list/found_refs
-	#endif
-#endif
-
 /**
  * Default implementation of clean-up code.
  *
