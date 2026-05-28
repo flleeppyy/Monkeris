@@ -41,6 +41,15 @@
 /// Intended to be used in the manner of `TEST_FOCUS(/datum/unit_test/math)`
 #define TEST_FOCUS(test_path) ##test_path { focus = TRUE; }
 
+/// Run the test provided within the parentheses run_count times
+/// Useful for debugging flaky tests that only fail sometimes
+#define TEST_REPEAT(test_path, run_count) ##test_path { times_to_run = ##run_count; }
+
+/// Logs a noticable message on GitHub, but will not mark as an error.
+/// Use this when something shouldn't happen and is of note, but shouldn't block CI.
+/// Does not mark the test as failed.
+#define TEST_NOTICE(source, message) source.log_for_test((##message), "notice", __FILE__, __LINE__)
+
 /// Constants indicating unit test completion status
 #define UNIT_TEST_PASSED 0
 #define UNIT_TEST_FAILED 1
@@ -82,6 +91,7 @@
 // #include "dynamic_ruleset_sanity.dm"
 // #include "emoting.dm"
 // #include "food_edibility_check.dm"
+#include "find_reference_sanity.dm"
 // #include "glasses_vision.dm" // disabled due to the ci itself being broken
 // #include "heretic_knowledge.dm"
 // #include "holidays.dm"

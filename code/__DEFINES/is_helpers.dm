@@ -23,6 +23,8 @@ GLOBAL_VAR_INIT(refid_filter, TYPEID(filter(type="angular_blur")))
 
 #define isgenerator(A) (istype(A, /generator))
 
+#define isalist(A) (istype(A, /alist))
+
 #define islist(A) istype(A, /list)
 
 #define ismob(A) istype(A, /mob)
