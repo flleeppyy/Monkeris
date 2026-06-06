@@ -25,7 +25,7 @@
 			if (!check_screens_for_track(track))
 				TEST_FAIL("Lobby track '[type]' has no lobby screen parents!")
 
-/datum/unit_test/lobby_music/proc/check_screens_for_track(/datum/lobbyscreen_music/track)
+/datum/unit_test/lobby_music/proc/check_screens_for_track(datum/lobbyscreen_music/track)
 	for(var/datum/lobbyscreen/artist as anything in subtypesof(/datum/lobbyscreen))
 		for(var/datum/lobbyscreen/lobby_screen as anything in subtypesof(artist))
 			if(track in initial(lobby_screen.possible_music))
