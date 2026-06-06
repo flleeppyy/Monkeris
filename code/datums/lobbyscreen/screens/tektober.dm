@@ -15,9 +15,6 @@
 	image_file = 'icons/title_screens/tektober/ironhammer.png'
 	possible_music = list(
 		/datum/lobbyscreen_music/duke_gneiss/quantums_escape_plan,
-		/datum/lobbyscreen_music/duke_gneiss/metropolis,
-		/datum/lobbyscreen_music/duke_gneiss/night_at_the_citadel,
-		/datum/lobbyscreen_music/davz/light_pollution,
 	)
 
 /datum/lobbyscreen/tektober/onestar

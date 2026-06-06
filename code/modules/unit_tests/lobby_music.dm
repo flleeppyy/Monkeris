@@ -10,7 +10,7 @@
 		for(var/datum/lobbyscreen_music/track as anything in subtypesof(artist))
 			// example: /datum/lobbyscreen_music/duke_gneiss/bluespace
 			if(isnull(initial(track.title)))
-				TEST_FAIL("Lobby track '[track]' has a bad/null author_url")
+				TEST_FAIL("Lobby track '[track]' has a bad/null title")
 			if(isnull(initial(track.file)))
 				TEST_FAIL("Lobby track '[track]' has a bad/null file")
 			if(isnull(initial(track.artist)))
