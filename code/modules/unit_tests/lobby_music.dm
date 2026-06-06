@@ -23,7 +23,7 @@
 	for(var/datum/lobbyscreen_music/artist as anything in subtypesof(/datum/lobbyscreen_music))
 		for(var/datum/lobbyscreen_music/track as anything in subtypesof(artist))
 			if (!check_screens_for_track(track))
-				TEST_FAIL("Lobby track '[type]' has no lobby screen parents!")
+				TEST_FAIL("Lobby track '[track]' has no lobby screen parents!")
 
 /datum/unit_test/lobby_music/proc/check_screens_for_track(datum/lobbyscreen_music/track)
 	for(var/datum/lobbyscreen/artist as anything in subtypesof(/datum/lobbyscreen))
