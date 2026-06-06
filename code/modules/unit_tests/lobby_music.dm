@@ -27,7 +27,7 @@
 
 /datum/unit_test/lobby_music/proc/check_screens_for_track(datum/lobbyscreen_music/track)
 	for(var/datum/lobbyscreen/artist as anything in subtypesof(/datum/lobbyscreen))
-		for(var/datum/lobbyscreen/type as anything in subtypesof(artist))
-			var/datum/lobbyscreen/lobby_screen = new
+		for(var/datum/lobbyscreen/screen_type as anything in subtypesof(artist))
+			var/datum/lobbyscreen/lobby_screen = new screen_type
 			if(track in lobby_screen.possible_music)
 				return TRUE
