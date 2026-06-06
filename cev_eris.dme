@@ -319,6 +319,7 @@
 #include "code\controllers\subsystems\inventory.dm"
 #include "code\controllers\subsystems\jamming.dm"
 #include "code\controllers\subsystems\jobs.dm"
+#include "code\controllers\subsystems\language.dm"
 #include "code\controllers\subsystems\library.dm"
 #include "code\controllers\subsystems\lighting.dm"
 #include "code\controllers\subsystems\machines.dm"
