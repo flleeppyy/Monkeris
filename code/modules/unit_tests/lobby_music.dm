@@ -41,9 +41,9 @@
 	for(var/datum/lobbyscreen/artist as anything in subtypesof(/datum/lobbyscreen))
 		var/datum/lobbyscreen/screen_artist = new artist
 		if(!screen_artist.art_artist_name)
-			TEST_FAIL("Lobby screen artist [screen_type] lacks a name!")
+			TEST_FAIL("Lobby screen artist [artist] lacks a name!")
 		if(!screen_artist.art_artist_link)
-			TEST_FAIL("Lobby screen artist [screen_type] lacks a link!")
+			TEST_FAIL("Lobby screen artist [artist] lacks a link!")
 		for(var/datum/lobbyscreen/screen_type as anything in subtypesof(artist))
 			var/datum/lobbyscreen/lobby_screen = new screen_type
 			if(!lobby_screen.image_file)
