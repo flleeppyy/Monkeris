@@ -1,13 +1,16 @@
 /datum/lobbyscreen_music/duke_gneiss
+	artist = "Duke Gneiss"
 	artist_url = "https://soundcloud.com/dukegneiss"
 
 // Tracks
 /datum/lobbyscreen_music/duke_gneiss/bluespace
 	file = 'sound/music/lobby/duke_gneiss/bluespace.ogg'
+	title = "Bluespace"
 	track_url = "https://soundcloud.com/dukegneiss/bluespace?in=dukegneiss/sets/ascention"
 
 /datum/lobbyscreen_music/duke_gneiss/exploring
 	file = 'sound/music/lobby/duke_gneiss/exploring.ogg'
+	title = "Exploring"
 	track_url = "https://soundcloud.com/dukegneiss/exploring?in=dukegneiss/sets/ascention"
 
 /datum/lobbyscreen_music/duke_gneiss/quantums_escape_plan

@@ -2,6 +2,7 @@
 /datum/unit_test/lobby_music/Run()
 	check_all_music_is_used()
 	check_all_music_has_valid_properties()
+	check_lobbyscreens()
 
 /datum/unit_test/lobby_music/proc/check_all_music_has_valid_properties()
 	var/list/types = list()
@@ -35,3 +36,17 @@
 			var/datum/lobbyscreen/lobby_screen = new screen_type
 			if(track in lobby_screen.possible_music)
 				return TRUE
+
+/datum/unit_test/lobby_music/proc/check_lobbyscreens()
+	for(var/datum/lobbyscreen/artist as anything in subtypesof(/datum/lobbyscreen))
+		var/datum/lobbyscreen/screen_artist = new artist
+		if(!screen_artist.art_artist_name)
+			TEST_FAIL("Lobby screen artist [screen_type] lacks a name!")
+		if(!screen_artist.art_artist_link)
+			TEST_FAIL("Lobby screen artist [screen_type] lacks a link!")
+		for(var/datum/lobbyscreen/screen_type as anything in subtypesof(artist))
+			var/datum/lobbyscreen/lobby_screen = new screen_type
+			if(!lobby_screen.image_file)
+				TEST_FAIL("Lobby screen [screen_type] lacks an image!")
+			if(!length(lobby_screen.possible_music))
+				TEST_FAIL("Lobby screen [screen_type] lacks music!")
