@@ -9,6 +9,7 @@
 		/datum/lobbyscreen_music/duke_gneiss/bluespace,
 		/datum/lobbyscreen_music/duke_gneiss/exploring,
 		/datum/lobbyscreen_music/duke_gneiss/phoron_industry,
+		/datum/lobbyscreen_music/davz/light_pollution,
 	)
 
 /datum/lobbyscreen/tektober/ironhammer
@@ -17,7 +18,6 @@
 		/datum/lobbyscreen_music/duke_gneiss/quantums_escape_plan,
 		/datum/lobbyscreen_music/duke_gneiss/metropolis,
 		/datum/lobbyscreen_music/duke_gneiss/night_at_the_citadel,
-		/datum/lobbyscreen_music/davz/light_pollution,
 	)
 
 /datum/lobbyscreen/tektober/onestar
