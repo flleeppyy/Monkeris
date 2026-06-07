@@ -5,20 +5,19 @@
 	check_lobbyscreens()
 
 /datum/unit_test/lobby_music/proc/check_all_music_has_valid_properties()
-	var/list/types = list()
 	for(var/datum/lobbyscreen_music/artist as anything in subtypesof(/datum/lobbyscreen_music))
 		// example: /datum/lobbyscreen_music/duke_gneiss
 		for(var/datum/lobbyscreen_music/track as anything in subtypesof(artist))
 			// example: /datum/lobbyscreen_music/duke_gneiss/bluespace
 			if(isnull(initial(track.title)))
 				TEST_FAIL("Lobby track '[track]' has a bad/null title")
-			if(!isnull(initial(track.title)) || initial(track.title) == "Unknown Track")
+			else if(initial(track.title) == "Unknown Track")
 				TEST_FAIL("Lobby track '[track]' has a missing title")
 			if(isnull(initial(track.file)))
 				TEST_FAIL("Lobby track '[track]' has a bad/null file")
 			if(isnull(initial(track.artist)))
 				TEST_FAIL("Lobby track '[track]' has a bad/null artist")
-			if(!isnull(initial(track.title)) || initial(track.artist) == "Unknown Artist")
+			else if(initial(track.artist) == "Unknown Artist")
 				TEST_FAIL("Lobby track '[track]' has a missing title")
 			if(isnull(initial(track.artist_url)))
 				TEST_FAIL("Lobby track '[track]' has a bad/null artist_url")
@@ -38,7 +37,12 @@
 				return TRUE
 
 /datum/unit_test/lobby_music/proc/check_lobbyscreens()
-	for(var/datum/lobbyscreen/artist as anything in subtypesof(/datum/lobbyscreen))
+	var/list/root_artists = list()
+	for(var/subtype in subtypesof(/datum/lobbyscreen))
+		if(subtype::parent_type == /datum/lobbyscreen)
+			root_artists += subtype
+
+	for(var/datum/lobbyscreen/artist as anything in root_artists)
 		var/datum/lobbyscreen/screen_artist = new artist
 		if(!screen_artist.art_artist_name)
 			TEST_FAIL("Lobby screen artist [artist] lacks a name!")

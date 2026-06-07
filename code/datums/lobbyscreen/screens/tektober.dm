@@ -1,4 +1,6 @@
 /datum/lobbyscreen/tektober
+	art_artist_name = "Tektober"
+	art_artist_link = "https://www.instagram.com/tektober"
 
 /datum/lobbyscreen/tektober/ship
 	image_file = 'icons/title_screens/tektober/ship.png'
