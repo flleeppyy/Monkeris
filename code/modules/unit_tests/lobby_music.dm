@@ -11,10 +11,14 @@
 			// example: /datum/lobbyscreen_music/duke_gneiss/bluespace
 			if(isnull(initial(track.title)))
 				TEST_FAIL("Lobby track '[track]' has a bad/null title")
+			if(!isnull(initial(track.title)) || initial(track.title) == "Unknown Track")
+				TEST_FAIL("Lobby track '[track]' has a missing title")
 			if(isnull(initial(track.file)))
 				TEST_FAIL("Lobby track '[track]' has a bad/null file")
 			if(isnull(initial(track.artist)))
 				TEST_FAIL("Lobby track '[track]' has a bad/null artist")
+			if(!isnull(initial(track.title)) || initial(track.artist) == "Unknown Artist")
+				TEST_FAIL("Lobby track '[track]' has a missing title")
 			if(isnull(initial(track.artist_url)))
 				TEST_FAIL("Lobby track '[track]' has a bad/null artist_url")
 
