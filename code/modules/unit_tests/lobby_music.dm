@@ -38,7 +38,7 @@
 
 /datum/unit_test/lobby_music/proc/check_lobbyscreens()
 	var/list/root_artists = list()
-	for(var/subtype in subtypesof(/datum/lobbyscreen))
+	for(var/datum/lobbyscreen/subtype in subtypesof(/datum/lobbyscreen))
 		if(subtype::parent_type == /datum/lobbyscreen)
 			root_artists += subtype
 
