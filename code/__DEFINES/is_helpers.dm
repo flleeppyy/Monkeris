@@ -141,6 +141,8 @@ GLOBAL_VAR_INIT(refid_filter, TYPEID(filter(type="angular_blur")))
 // Turfs
 #define isclosedturf(A) (A.layer == CLOSED_TURF_LAYER)
 
+#define isfloorturf(A) (istype(A, /turf/floor))
+
 // Book things
 GLOBAL_LIST_INIT(book_types, typecacheof(list(
 	/obj/item/book,
