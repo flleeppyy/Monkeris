@@ -1,0 +1,4 @@
+author: flleeppyy
+delete-after: true
+changes:
+  - bugfix: Help dropdown in the menu bar will now always be at the end
