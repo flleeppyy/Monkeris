@@ -1,0 +1,5 @@
+author: Sun-Soaked
+delete-after: true
+changes:
+  - code_imp: makes a bad stat check in playsound make sure stats actually exist
+      first
