@@ -1,0 +1,5 @@
+author: Sun-Soaked
+delete-after: true
+changes:
+  - bugfix: swarms of malfunctioning combat drones no longer immediately kill 
+      each other after spawning
