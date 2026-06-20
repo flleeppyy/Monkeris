@@ -1,5 +1,0 @@
-author: Sun-Soaked
-delete-after: true
-changes:
-  - admin: Running Tracy Immediately now has a warning prompt and can be 
-      cancelled out
