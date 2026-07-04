@@ -11,7 +11,7 @@ SUBSYSTEM_DEF(spawn_data)
 
 /datum/controller/subsystem/spawn_data/Initialize(timeofday)
 	generate_data()
-	. = ..()
+	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/spawn_data/stat_entry(msg)
 	if (!GLOB.Debug2)
