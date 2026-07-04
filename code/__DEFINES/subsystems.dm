@@ -218,9 +218,6 @@ if(Datum.is_processing) {\
 #define START_PROCESSING_POWER_OBJECT(Datum) START_PROCESSING_IN_LIST(Datum, power_objects)
 #define STOP_PROCESSING_POWER_OBJECT(Datum) STOP_PROCESSING_IN_LIST(Datum, power_objects)
 
-/// The timer key used to know how long subsystem initialization takes
-#define SS_INIT_TIMER_KEY "ss_init"
-
 #define SS_HOLOMAPS_TIMER_KEY "ss_holomaps"
 
 //Hibernation states
@@ -270,40 +267,6 @@ if(Datum.is_processing) {\
 
 #define SSAIR_TICK_MULTIPLIER 2
 
-
-// Explosion Subsystem subtasks
-#define SSEXPLOSIONS_MOVABLES 1
-#define SSEXPLOSIONS_TURFS 2
-#define SSEXPLOSIONS_THROWS 3
-
-// Machines subsystem subtasks.
-#define SSMACHINES_MACHINES_EARLY 1
-#define SSMACHINES_APCS_EARLY 2
-#define SSMACHINES_APCS_ENVIRONMENT 3
-#define SSMACHINES_APCS_LIGHTS 4
-#define SSMACHINES_APCS_EQUIPMENT 5
-#define SSMACHINES_APCS_LATE 6
-#define SSMACHINES_MACHINES 7
-#define SSMACHINES_MACHINES_LATE 8
-
-// Wardrobe subsystem tasks
-#define SSWARDROBE_STOCK 1
-#define SSWARDROBE_INSPECT 2
-
-// Wardrobe cache metadata indexes
-#define WARDROBE_CACHE_COUNT 1
-#define WARDROBE_CACHE_LAST_INSPECT 2
-#define WARDROBE_CACHE_CALL_INSERT 3
-#define WARDROBE_CACHE_CALL_REMOVAL 4
-
-// Wardrobe preloaded stock indexes
-#define WARDROBE_STOCK_CONTENTS 1
-#define WARDROBE_STOCK_CALL_INSERT 2
-#define WARDROBE_STOCK_CALL_REMOVAL 3
-
-// Wardrobe callback master list indexes
-#define WARDROBE_CALLBACK_INSERT 1
-#define WARDROBE_CALLBACK_REMOVE 2
 
 // Subsystem delta times or tickrates, in seconds. I.e, how many seconds in between each process() call for objects being processed by that subsystem.
 // Only use these defines if you want to access some other objects processing seconds_per_tick, otherwise use the seconds_per_tick that is sent as a parameter to process()

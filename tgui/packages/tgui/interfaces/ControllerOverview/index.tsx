@@ -1,5 +1,6 @@
+import { Button, Dropdown, Input, Section, Stack } from 'tgui-core/components';
+
 import { useLocalState } from '../../backend';
-import { Button, Dropdown, Input, Section, Stack } from '../../components';
 import { Window } from '../../layouts';
 import { SORTING_TYPES } from './contants';
 import { FilterAction, filterReducer, type FilterState } from './filters';
@@ -8,7 +9,7 @@ import { SubsystemDialog } from './SubsystemDialog';
 import { SubsystemViews } from './SubsystemViews';
 import { SortType, type SubsystemData } from './types';
 
-export const ControllerOverview = (props) => {
+export const ControllerOverview = () => {
   return (
     <Window title="Controller Overview" height={600} width={500}>
       <Window.Content>
@@ -18,7 +19,7 @@ export const ControllerOverview = (props) => {
   );
 };
 
-export const ControllerContent = (props) => {
+export const ControllerContent = () => {
   const [state, setState] = useLocalState<FilterState>('controllerFilter', {
     ascending: true,
     inactive: true,
@@ -35,7 +36,7 @@ export const ControllerContent = (props) => {
   const { label, inDeciseconds } =
     SORTING_TYPES?.[state.sortType] || SORTING_TYPES[0];
 
-  const dispatch = (action: { type: FilterAction; payload: any }) => {
+  const dispatch = (action: { type: FilterAction; payload: unknown }) => {
     setState(filterReducer(state, action));
   };
 
