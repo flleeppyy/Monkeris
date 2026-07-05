@@ -36,7 +36,7 @@ export const ControllerContent = () => {
   const { label, inDeciseconds } =
     SORTING_TYPES?.[state.sortType] || SORTING_TYPES[0];
 
-  const dispatch = (action: { type: FilterAction; payload: unknown }) => {
+  const dispatch = (action: { type: FilterAction; payload: any }) => {
     setState(filterReducer(state, action));
   };
 
