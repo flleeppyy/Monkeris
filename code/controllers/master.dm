@@ -441,7 +441,7 @@ GLOBAL_REAL(Master, /datum/controller/master)
 		warning("[subsystem.name] subsystem initialized, returning invalid result [result]. This is a bug.")
 
 	// just returned ..() or didn't implement Initialize() at all
-	if(result == SS_INIT_NONE)
+	if(result == SS_INIT_NONE || !result)
 		warning("[subsystem.name] subsystem does not implement Initialize() or it returns ..(). If the former is true, the SS_NO_INIT flag should be set for this subsystem.")
 
 	if(result != SS_INIT_FAILURE)
@@ -469,23 +469,23 @@ GLOBAL_REAL(Master, /datum/controller/master)
 			message_fancy = "<code>\[[order_string]\]</code> [span_bold("Failed")] to initialize [subsystem.name] subsystem after"
 			always_show = TRUE
 		if(SS_INIT_SUCCESS)
-			message = "\[[order_string]\] Initialized [name] subsystem within"
-			message_fancy = "<code>\[[order_string]\]</code> Initialized [span_adminsay(name)] subsystem within"
+			message = "\[[order_string]\] Initialized [subsystem.name] subsystem within"
+			message_fancy = "<code>\[[order_string]\]</code> Initialized [span_adminsay(subsystem.name)] subsystem within"
 		if(SS_INIT_NO_NEED)
 			// This SS is disabled or is otherwise shy.
 			pass()
 		else
 			// SS_INIT_NONE or an invalid value.
-			message = "\[[order_string]\] Initialized [name] subsystem with errors within"
-			message_fancy = "<code>\[[order_string]\]</code> Initialized [span_adminsay(name)] subsystem [span_bold("with errors")]  within"
+			message = "\[[order_string]\] Initialized [subsystem.name] subsystem with errors within"
+			message_fancy = "<code>\[[order_string]\]</code> Initialized [span_adminsay(subsystem.name)] subsystem [span_bold("with errors")]  within"
 			always_show = TRUE
 
 	if((message && !(subsystem.flags & SS_NO_INIT_MESSAGE)) || always_show)
 		message_fancy += " [get_colored_thresh_text("[seconds] second[seconds == 1 ? "" : "s"]!", seconds, subsystem.init_time_threshold / 10)]"
 		message += " [seconds] second[seconds == 1 ? "" : "s"]!"
-
-	to_chat(world, span_boldannounce(message_fancy))
-	log_world(message)
+		to_chat(world, span_boldannounce(message_fancy))
+	if(message)
+		log_world(message)
 
 /datum/controller/master/proc/SetRunLevel(new_runlevel)
 	var/old_runlevel = current_runlevel

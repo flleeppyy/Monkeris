@@ -69,7 +69,7 @@ SUBSYSTEM_DEF(air)
 	setup_allturfs()
 	setup_atmos_machinery()
 	setup_pipenets()
-	..()
+	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/air/fire(resumed = 0)
 	var/timer = world.tick_usage

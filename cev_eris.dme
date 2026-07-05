@@ -396,7 +396,6 @@
 #include "code\datums\http.dm"
 #include "code\datums\interaction_particle.dm"
 #include "code\datums\licences.dm"
-#include "code\datums\loot_spawner.dm"
 #include "code\datums\mind.dm"
 #include "code\datums\mixed.dm"
 #include "code\datums\mob_stats.dm"
