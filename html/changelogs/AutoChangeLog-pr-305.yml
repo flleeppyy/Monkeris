@@ -1,0 +1,5 @@
+author: Mycah142
+delete-after: true
+changes:
+  - bugfix: replaced problematic tiles in Asteroid POI, SM POI, and INCINERATOR 
+      chamber
