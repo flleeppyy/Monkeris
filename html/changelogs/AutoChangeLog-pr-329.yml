@@ -1,0 +1,5 @@
+author: flleeppyy
+delete-after: true
+changes:
+  - rscadd: Server now shows the currently playing lobby track
+  - code_imp: Lobby tracks are now datums for easier metadata storage
