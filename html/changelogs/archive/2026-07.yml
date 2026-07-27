@@ -26,3 +26,6 @@
   flleeppyy:
   - rscadd: Server now shows the currently playing lobby track
   - code_imp: Lobby tracks are now datums for easier metadata storage
+2026-07-27:
+  Mycah142:
+  - tweak: Commented out Deepmaint SM POI
