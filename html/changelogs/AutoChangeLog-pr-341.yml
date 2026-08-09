@@ -1,0 +1,5 @@
+author: HOTLINE
+delete-after: true
+changes:
+  - rscadd: CE_MUSIC
+  - rscadd: Procedural music fade-in/out
