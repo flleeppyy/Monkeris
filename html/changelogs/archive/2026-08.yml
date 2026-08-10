@@ -29,3 +29,7 @@
   Sun-Soaked:
   - balance: nerfs the spread and max spread distance of floor flora
   - code_imp: reduces the tick rate of ssplants
+2026-08-10:
+  HOTLINE:
+  - rscadd: CE_MUSIC
+  - rscadd: Procedural music fade-in/out
